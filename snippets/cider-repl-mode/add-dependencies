@@ -1,0 +1,7 @@
+# -*- coding: utf-8 -*-
+# name: add-dependencies
+# key: add-dep
+# --
+(./add-dependencies :coordinates '[$1]
+                     :repositories (merge cemerick.pomegranate.aether/maven-central
+                     {"clojars" "http://clojars.org/repo"}))

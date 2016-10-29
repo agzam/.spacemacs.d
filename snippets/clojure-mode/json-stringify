@@ -1,0 +1,5 @@
+# -*- coding: utf-8 -*-
+# name: json-stringify
+# key: jsons
+# --
+(.stringify js/JSON ${1:})

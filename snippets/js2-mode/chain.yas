@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+#name: chain
+#key: chain
+# --
+_(${1:x}).chain()
+.$0
+.value();

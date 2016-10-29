@@ -1,0 +1,8 @@
+
+* Blogs :elfeed:
+** Clojure
+*** https://www.reddit.com/r/clojurescript/.rss
+*** http://swannodette.github.com/atom.xml
+*** https://rigsomelight.com/feed.xml
+** Emacs
+*** https://www.reddit.com/r/emacs/.rss

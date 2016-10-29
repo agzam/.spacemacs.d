@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+#name: arrow function
+#key:>
+# --
+(${1:x})=> {$0}

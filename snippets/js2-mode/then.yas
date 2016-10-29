@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+#name: promise then
+#key:then
+# --
+then((${1:x})=> {
+    $0
+});
