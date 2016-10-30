@@ -3,19 +3,10 @@
                        ;; dired-rainbow
                        ;; dired-filetype-face
                        direx
-                       ;; org-pomodoro
                        ))
 
 ;; List of packages to exclude.
 (setq ag-general-excluded-packages '())
-
-;; (defun ag-general/init-org-pomodoro ()
-;;   (use-package org-pomodoro 
-;;     :init
-;;     (add-hook 'org-pomodoro-finished-hook (lambda () (hs-alert "task done")))
-;;     (add-hook 'org-pomodoro-break-finished-hook (lambda () (hs-alert "break over")))
-;;     (add-hook 'org-pomodoro-long-break-finished-hook (lambda () (hs-alert "break over")))
-;;     (add-hook 'org-pomodoro-killed-hook (lambda () (hs-alert "killed")))))
 
 (defun ag-general/init-editorconfig ()
   (use-package editorconfig

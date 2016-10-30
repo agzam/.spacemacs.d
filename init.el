@@ -33,7 +33,10 @@ values."
    '(
      csv
      yaml
-     (org :variables org-enable-reveal-js-support t
+     (org :variables
+          org-enable-reveal-js-support t
+          org-enable-bootstrap-support t
+          org-enable-github-support t
           :packages (not org-present))
      (spacemacs-ui-visual :packages (not fancy-battery))
      (auto-completion :variables
@@ -97,6 +100,7 @@ values."
      ag-general
      ag-dash
      ag-synonyms
+     ag-org
      ;; ;; ag-jira
      ;; ag-4clojure
      ;; List of additional packages that will be installed without being
@@ -108,20 +112,13 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(flycheck-package
-                                      dired+ ace-popup-menu
-                                      helm-flycheck flymake-sass
-                                      ox-twbs
-                                      flycheck-clojure ac-cider align-cljlet
+   dotspacemacs-additional-packages '(dired+
+                                      ace-popup-menu
+                                      flycheck-package helm-flycheck flymake-sass
                                       tern-auto-complete
                                       string-inflection
                                       writeroom-mode
-                                      yaml-mode dockerfile-mode
-                                      clojure-mode-extra-font-locking helm-clojuredocs clojars clojure-cheatsheet
-                                      ;; (cider :location (recipe :fetcher github
-                                      ;;                       :repo "clojure-emacs/cider"
-                                      ;;                         :commit "8a85d9410962cea28e2cbbb7b058c8b0b49240e1"))
-                                                               )
+                                      ac-cider align-cljlet flycheck-clojure clojure-mode-extra-font-locking helm-clojuredocs clojars clojure-cheatsheet)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -199,7 +196,7 @@ values."
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Source Code Pro"
                                :size 13
-                               :weight normal
+                               :weight light
                                :width normal
                                :powerline-scale 1.1)
    ;; The leader key
@@ -351,8 +348,7 @@ values."
    ;; `trailing' to delete only the whitespace at end of lines, `changed'to
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
-   dotspacemacs-whitespace-cleanup nil
-   ))
+   dotspacemacs-whitespace-cleanup nil))
 
 (defun dotspacemacs/user-init ()
   (add-to-list 'custom-theme-load-path "~/.spacemacs.d/themes")
@@ -360,32 +356,30 @@ values."
   (setq-default
    menu-bar-mode t
 
-   ;; dotspacemacs-fullscreen-use-non-native doesn't work in GNU Emacs and this is the fix
-   ns-use-native-fullscreen nil
    ns-use-srgb-colorspace nil
    exec-path-from-shell-check-startup-files nil
    ;; Editor
    line-spacing 6
    left-fringe-width 5
    right-fringe-width 0
-   truncate-lines t
+   ;; truncate-lines t
    evil-escape-key-sequence "jk"
    evil-escape-delay 0.1
    fill-column 120
-   frame-background-mode 'dark
+   ;; frame-background-mode 'dark
 
    ;; Helm
-   helm-buffer-details-flag nil        ;; Always show details in buffer list when non--nil.
+   ;; helm-buffer-details-flag nil        ;; Always show details in buffer list when non--nil.
    helm-follow-mode-persistent t
 
    ;; Magit
    magit-push-always-verify nil
 
    ;; Flycheck
-   flycheck-check-syntax-automatically '(save mode-enabled)
+   ;; flycheck-check-syntax-automatically '(save mode-enabled)
 
    ;; Avy
-   avy-all-windows 'all-frames
+   ;; avy-all-windows t
 
    ;; Ranger
    ranger-override-dired nil
@@ -414,17 +408,21 @@ values."
 
   (setq
    ;; Editor
-   frame-title-format "%f" ;; full filepath in the title
    powerline-default-separator nil
+   frame-title-format "%f" ;; full filepath in the title
    spacemacs-show-trailing-whitespace nil
    tab-width 4
    mouse-wheel-scroll-amount '(0.02)
    mouse-wheel-progressive-speed nil
    scroll-margin 2
    smooth-scroll-margin 2
+   default-input-method 'russian-computer
+   google-translate-default-source-language "ru"
+   google-translate-default-target-language "en"
 
    ;; Helm
    helm-echo-input-in-header-line nil
+   helm-ff--deleting-char-backward t
 
    ;; Misc
    vc-follow-symlinks t
@@ -434,11 +432,9 @@ values."
    ;; tramp-default-method "ssh"
 
    sass-indent-offset 2
-
    shell-file-name "/bin/zsh")
 
-  ;; (spaceline-compile) ; otherwise powerline-default-separator wouldn't work
-  (ace-popup-menu-mode 1)
+  ;; (ace-popup-menu-mode 1)
 
   (setq aw-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9)) ;; ace-windows instead of characters shows numbers
   ;; ---------------
@@ -454,35 +450,6 @@ values."
   (add-hook 'shell-mode-hook 'ag/shell-hook)
 
   (add-to-list 'sp-sexp-suffix '(js2-mode regex ""))
-
-  ;; ---------------
-  ;; Org
-  ;; ---------------
-  (with-eval-after-load 'org
-    (setq
-     org-startup-folded t
-     org-log-into-drawer t
-     org-M-RET-may-split-line '((headline))
-     org-capture-templates
-     '(("t" "Todo" entry (file (concat org-directory "/tasks.org"))
-        "* TODO %t  %?\n\t%i\n")
-       ("c" "Code Snippet" entry
-        (file (concat org-directory "/tasks.org"))
-        ;; Prompt for tag and language
-        "* %t  %?\n\t%f\n\t#+BEGIN_SRC %^{language}\n\t\t%i\n\t#+END_SRC"))
-     
-     ort/prefix-arg-directory "~/org"
-     org-agenda-files '("~/org/tasks.org")
-
-     ;; reveal.js
-     org-reveal-title-slide nil
-
-     ;; for Chrome layer
-     edit-server-default-major-mode 'org-mode)
-    (require 'ox-md nil t)
-    (org-clock-persistence-insinuate)
-    (spacemacs/toggle-mode-line-org-clock-on)
-    (add-hook 'org-mode-hook 'flyspell-mode))
 
   ;; ---------------
   ;; Haskell
@@ -511,10 +478,6 @@ values."
   ;; ---------------
   ;; Text
   ;; ---------------
-  (set-input-method 'russian-computer)
-  (setq google-translate-default-source-language "ru")
-  (setq google-translate-default-target-language "en")
-
   (add-hook 'markdown-mode-hook 'flyspell-mode)
 
   ;; ---------------
@@ -594,7 +557,6 @@ values."
   ;; ----------
   ;; Helm
   ;; ----------
-  (setq helm-ff--deleting-char-backward t)
   (with-eval-after-load 'helm-ag (setq helm-ag-use-agignore t))
 
   ;; -----------
@@ -612,35 +574,7 @@ values."
   (with-eval-after-load 'yasnippet (add-to-list 'yas-snippet-dirs "~/.spacemacs.d/snippets"))
 
   (pupo-mode -1)
-  (purpose-mode -1)
-
-  ;; (slack-register-team
-  ;;  :name "emacs-slack"
-  ;;  :default t
-  ;;  :client-id "ag.ibragimov@fundingcircle.com"
-  ;;  :client-secret "FCqu2gm1re"
-  ;;  :token "xoxp-2903761235-21060924756-79320828082-c3cdce77aa"
-  ;;  :subscribed-channels '(us-general slackbot us-janus))
-  )
+  (purpose-mode -1))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(safe-local-variable-values
-   (quote
-    ((eval when
-           (require
-            (quote rainbow-mode)
-            nil t)
-           (rainbow-mode 1))))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )

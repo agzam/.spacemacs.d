@@ -33,15 +33,6 @@
         (helm-google-suggest-action sub-str)
       (helm-google-suggest))))
 
-;;;;;;;;;;;;;;;;;;;
-;;;; Org-mode ;;;;;
-;;;;;;;;;;;;;;;;;;;
-(defun insert-current-date (arg)
-  (interactive "P")
-  (insert (if arg
-              (format-time-string "%d.%m.%Y")
-            (format-time-string "%Y-%m-%d"))))
-
 (defun notify-osx (title message)
   (call-process (executable-find "terminal-notifier")
                 nil 0 nil
@@ -56,43 +47,7 @@
                   nil 0 nil
                   (concat "-c" "hs.alert.show(\"" message "\", 1)"))))
 
-(defun pomodoro/modify-menu-item (color)
-  "color can be \"red\" \"green\" or \"yellow\""
-  (let* ((hs (executable-find "hs"))
-         (task-name (symbol-value 'org-clock-current-task))
-         (cmd (concat " txt = hs.styledtext.new(\""
-                      task-name
-                      "\",{ color = hs.drawing.color.hammerspoon.osx_" color " });"
-                      "globalMenubarItem = hs.menubar.newWithPriority(0);"
-                      "globalMenubarItem:setTitle(txt)")))
-    (call-process hs
-                  nil 0 nil
-                  (concat "-c" cmd))))
 
-(defun pomodoro/remove-menu-item ()
-  "removes currently set pomodoro menu item"
-  (let* ((hs (executable-find "hs"))
-         (cmd " globalMenubarItem:delete(); globalMenubarItem = nil"))
-    (call-process hs
-                  nil 0 nil
-                  (concat "-c" cmd))))
-
-(with-eval-after-load 'org-pomodoro
-  (add-hook 'org-pomodoro-finished-hook (lambda ()
-                                          (progn
-                                            (hs-alert "task done")
-                                            (pomodoro/remove-menu-item)
-                                            (pomodoro/modify-menu-item "green"))))
-
-  (add-hook 'org-pomodoro-break-finished-hook (lambda ()
-                                                (hs-alert "break over")
-                                                (pomodoro/remove-menu-item)))
-  (add-hook 'org-pomodoro-killed-hook (lambda ()
-                                        (hs-alert "killed")
-                                        (pomodoro/remove-menu-item)))
-  (add-hook 'org-pomodoro-started-hook (lambda ()
-                                         (hs-alert "- start churning -")
-                                         (pomodoro/modify-menu-item "red"))))
 ;;;;;;;;;;;;;;;;;;;
 ;;;; Clojure ;;;;;;
 ;;;;;;;;;;;;;;;;;;;

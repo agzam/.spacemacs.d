@@ -3,7 +3,7 @@
 (global-set-key (kbd "s-p") nil)
 (global-set-key (kbd "s-q") nil)
 (global-set-key (kbd "C-x b") 'spacemacs-layouts/non-restricted-buffer-list-helm)
-(global-set-key (kbd "C-x C-p") 'org-pomodoro)
+(global-set-key (kbd "C-x C-b") 'spacemacs-layouts/non-restricted-buffer-list-helm)
 
 ;; (bind-key* "<C-u>" 'universal-argument)
 ;; (global-set-key (kbd "C-u") 'universal-argument)
@@ -100,8 +100,7 @@
 ;; ---------------
 (spacemacs/set-leader-keys
   "swg" 'ag/helm-google-suggest
-  "ou" 'spacemacs/avy-open-url
-  "aoP" 'org-pomodoro)
+  "ou" 'spacemacs/avy-open-url)
 
 ;; -----------
 ;; Direx
@@ -118,7 +117,4 @@
 (spacemacs/set-leader-keys
   "xi" 'string-inflection-all-cycle)
 
-;; -----------
-;; Org-mode
-;; -----------
 (evil-define-key 'normal info-mode-map "p" 'info-prev)
