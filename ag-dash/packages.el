@@ -1,14 +1,3 @@
-;;; packages.el --- ag-dash layer packages file for Spacemacs.
-;;
-;; Copyright (c) 2012-2016 Sylvain Benner & Contributors
-;;
-;; Author: Ag Ibragimov <ag.ibragimov@C02MT2ZDFH05>
-;; URL: https://github.com/syl20bnr/spacemacs
-;;
-;; This file is not part of GNU Emacs.
-;;
-;;; License: GPLv3
-
 (setq ag-dash-packages '(helm-dash))
 
 (defun ag-dash/init-helm-dash ()

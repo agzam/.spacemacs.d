@@ -92,5 +92,11 @@
       (spacemacs/set-leader-keys-for-major-mode 'clojure-mode "c" 'ag/clojars-find)
     (spacemacs/set-leader-keys-for-major-mode 'clojure-mode "c" nil)))
 
+(defun ag/switch-focus-to-emacs-frame ()
+  (shell-command "open -a \"Emacs\""))
+
+(defun ag/switch-focus-to-chrome ()
+  (shell-command "open -a \"Google Chrome Canary\""))
+
 ;;(add-hook 'find-file-hook 'project-clj-hook)
 (with-eval-after-load 'bind-map (add-hook 'find-file-hook 'project-clj-hook))

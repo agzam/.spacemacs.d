@@ -3,11 +3,9 @@
 
 (setq ag-hipchat-excluded-packages '())
 
-
 (defun ag-hipchat/init-jabber ()
   (use-package jabber
   :defer t
-
   :init
   (evil-leader/set-key "a h s" 'jabber-connect-all)
   (evil-leader/set-key "a h c" 'jabber-chat-with)
@@ -18,9 +16,9 @@
         ssl-program-arguments '("--insecure" "-p" service host)
         ssl-certificate-verification-policy 1)
 
-  (setq jabber-account-list '(("43720_1945643@chat.hipchat.com"
+  (setq jabber-account-list '(("@chat.hipchat.com"
                                (:port . 5223)
-                               (:password . "O5xrwQoN")
+                               (:password . "")
                                (:connection-type . ssl))))
 
   (add-hook 'jabber-chat-mode-hook 'flyspell-mode)
@@ -31,9 +29,7 @@
   (add-hook 'jabber-alert-message-hooks 'notify-jabber-message)
 
   ;; this info is present on the hipchat xmpp info page
-  (defvar hipchat-room-list '(
-                              ("Dolphin Devs" . "43720_dolphin_devs")
-                              ))
+  (defvar hipchat-room-list '(("" . "")))
 
   ;; To join HipChat rooms easily
   (defvar hipchat-number "")
@@ -54,8 +50,7 @@
    '(jabber-chat-prompt-local ((t (:foreground "DodgerBlue2" :weight bold))))
    '(jabber-rare-time-face ((t (:foreground "green4" :underline t))))
    '(jabber-roster-user-away ((t (:foreground "light steel blue" :slant italic :weight normal))))
-   '(jabber-roster-user-online ((t (:foreground "chartreuse2" :slant normal :weight bold)))))
-  )
+   '(jabber-roster-user-online ((t (:foreground "chartreuse2" :slant normal :weight bold))))))
 
   (setq
    jabber-auto-reconnect t

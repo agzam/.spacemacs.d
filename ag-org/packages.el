@@ -1,6 +1,7 @@
-(defconst ag-org-packages '((org :location built-in)
+(defconst ag-org-packages '(org 
                             org-pomodoro
-                            ox-reveal))
+                            ;; ox-reveal
+			    ))
 
 (defun ag-org/post-init-org ()
   (with-eval-after-load 'org 
@@ -18,56 +19,54 @@
      
      ort/prefix-arg-directory "~/org"
      org-agenda-files '("~/org/tasks.org")
-
-     ;; for Chrome layer
-     edit-server-default-major-mode 'org-mode)
+     org-default-notes-file "tasks.org"
+     ;; I don't want to be prompted on every code block evaluation
+     org-confirm-babel-evaluate nil)
 
     ;; To save the clock history across Emacs sessions, use
     (org-clock-persistence-insinuate)
 
-    ;; (spacemacs/toggle-mode-line-org-clock-on)
-
     (add-hook 'org-mode-hook 'flyspell-mode)
 
-    (defun insert-current-date (arg)
-      (interactive "P")
-      (insert (if arg
-                  (format-time-string "%d.%m.%Y")
-                (format-time-string "%Y-%m-%d"))))))
+    (require 'ob-http)
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((shell . t)
+       (js . t)
+       (clojure . t)))))
 
-(defun ag-org/post-init-ox-reveal ()
+(defun ag-org/init-ox-reveal ()
   (use-package ox-reveal
     :config
     (progn
       (setq org-reveal-title-slide nil))))
 
+(defun pomodoro/modify-menu-item (color)
+  "color can be \"red\" \"green\" or \"yellow\""
+  (let* ((hs (executable-find "hs"))
+         (task-name (symbol-value 'org-clock-current-task))
+         (cmd (concat " txt = hs.styledtext.new(\""
+                      task-name
+                      "\",{ color = hs.drawing.color.hammerspoon.osx_" color " });"
+                      "globalMenubarItem = hs.menubar.newWithPriority(0);"
+                      "globalMenubarItem:setTitle(txt)")))
+    (call-process hs
+                  nil 0 nil
+                  (concat "-c" cmd))))
+
+(defun pomodoro/remove-menu-item ()
+  "removes currently set pomodoro menu item"
+  (let* ((hs (executable-find "hs"))
+         (cmd " globalMenubarItem:delete(); globalMenubarItem = nil"))
+    (call-process hs
+                  nil 0 nil
+                  (concat "-c" cmd))))
+
 (defun ag-org/post-init-org-pomodoro ()
   (with-eval-after-load 'org-pomodoro
-    (defun pomodoro/modify-menu-item (color)
-      "color can be \"red\" \"green\" or \"yellow\""
-      (let* ((hs (executable-find "hs"))
-             (task-name (symbol-value 'org-clock-current-task))
-             (cmd (concat " txt = hs.styledtext.new(\""
-                          task-name
-                          "\",{ color = hs.drawing.color.hammerspoon.osx_" color " });"
-                          "globalMenubarItem = hs.menubar.newWithPriority(0);"
-                          "globalMenubarItem:setTitle(txt)")))
-        (call-process hs
-                      nil 0 nil
-                      (concat "-c" cmd))))
-
-    (defun pomodoro/remove-menu-item ()
-      "removes currently set pomodoro menu item"
-      (let* ((hs (executable-find "hs"))
-             (cmd " globalMenubarItem:delete(); globalMenubarItem = nil"))
-        (call-process hs
-                      nil 0 nil
-                      (concat "-c" cmd))))
-
     (add-hook 'org-pomodoro-finished-hook (lambda ()
                                             (progn
                                               (hs-alert "task done")
-                                              (pomodoro/remove-menu-item)
                                               (pomodoro/modify-menu-item "green"))))
 
     (add-hook 'org-pomodoro-break-finished-hook (lambda ()

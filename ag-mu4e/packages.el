@@ -20,7 +20,7 @@
         smtpmail-smtp-service 587
         smtpmail-default-smtp-server "smtp.gmail.com"
         smtpmail-smtp-server "smtp.gmail.com"
-        smtpmail-smtp-user "to.plotnick@gmail.com")
+        smtpmail-smtp-user "")
   (setq starttls-extra-arguments '("--x509cafile" "/usr/local/etc/openssl/cert.pem"))
 
   ;; (setq mu4e-account-alist
@@ -29,7 +29,7 @@
   ;;          (mu4e-sent-folder "/personal/[Gmail].Sent Mail")
   ;;          (mu4e-drafts-folder "/personal/[Gmail].Drafts")
   ;;          (mu4e-trash-folder "/personal/[Gmail].Trash")
-  ;;          (user-mail-address "agzam.ibragimov@gmail.com")
+  ;;          (user-mail-address "")
   ;;          (user-full-name "Ag Ibragimov"))
 
   ;;         ("work"
@@ -37,7 +37,7 @@
   ;;          (mu4e-sent-folder "/work/[Gmail].Sent Mail")
   ;;          (mu4e-drafts-folder "/work/[Gmail].Drafts")
   ;;          (mu4e-trash-folder "/work/[Gmail].Trash")
-  ;;          (user-mail-address "ag.ibragimov@fundingcircle.com")
+  ;;          (user-mail-address "")
   ;;          (user-full-name "Ag Ibragimov"))))
 
   ;; (mu4e/mail-account-reset)
@@ -78,7 +78,7 @@
         :leave-func (lambda () (mu4e-clear-caches))
         :vars '((mu4e-maildir           . "~/.mail/personal")
                 (mu4e-get-mail-command  . "offlineimap -a Personal")
-                (user-mail-address      . "to.plotnick@gmail.com")
+                (user-mail-address      . "@gmail.com")
                 (user-full-name         . "Ag Ibragimov")
                 (mu4e-compose-signature . (concat "Thanks,\n" "Ag"))
                 (mu4e-sent-folder       . "/[Gmail].Sent Mail")
@@ -94,12 +94,12 @@
      ;;               (when msg
      ;;                 (mu4e-message-contact-field-matches
      ;;                  msg
-     ;;                  :to "ag.ibragimov@fundingcircle.com")))
+     ;;                  :to "@")))
 
      :leave-func (lambda () (mu4e-clear-caches))
      :vars '((mu4e-maildir           . "~/.mail/work")
              (mu4e-get-mail-command  . "offlineimap -a Work")
-             (user-mail-address      . "ag.ibragimov@fundingcircle.com")
+             (user-mail-address      . "")
              (user-full-name         . "Ag Ibragimov" )
              (mu4e-compose-signature . (concat "Thanks,\n" "Ag"))
              (mu4e-sent-folder       . "/[Gmail].Sent Mail")

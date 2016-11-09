@@ -1,7 +1,9 @@
 ;; Global keys
+;;;; just disable nonsensical keys
 (global-set-key (kbd "s-n") nil)
 (global-set-key (kbd "s-p") nil)
 (global-set-key (kbd "s-q") nil)
+(evil-define-key 'motion help-mode-map (kbd "<escape>") nil)
 (global-set-key (kbd "C-x b") 'spacemacs-layouts/non-restricted-buffer-list-helm)
 (global-set-key (kbd "C-x C-b") 'spacemacs-layouts/non-restricted-buffer-list-helm)
 
@@ -11,10 +13,10 @@
 
 (spacemacs/set-leader-keys
   "qq" nil ;; no quitting suddenly
-  "qQ" 'spacemacs/prompt-kill-emacs) 
+  "qQ" 'spacemacs/prompt-kill-emacs
+  "s/" 'engine/search-google)
 
 (define-key evil-normal-state-map "Q" 'bury-buffer)
-
 (define-key evil-normal-state-map (kbd "C-S-e") 'scroll-other-window)
 (define-key evil-normal-state-map (kbd "C-S-y") 'scroll-other-window-down)
 ;; (define-key evil-normal-state-map "\C-k" 'er/expand-region)
@@ -101,15 +103,6 @@
 (spacemacs/set-leader-keys
   "swg" 'ag/helm-google-suggest
   "ou" 'spacemacs/avy-open-url)
-
-;; -----------
-;; Direx
-;; -----------
-(spacemacs/set-leader-keys
-  "ft" 'direx:jump-to-directory
-  "pt" 'direx-project:jump-to-project-root)
-
-(evil-define-key 'normal direx:direx-mode-map "r" 'direx:refresh-whole-tree)
 
 ;; -----------
 ;; Inflections

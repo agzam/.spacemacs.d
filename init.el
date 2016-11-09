@@ -28,7 +28,7 @@ values."
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
    dotspacemacs-configuration-layer-path '("~/.spacemacs.d") ;
-   ;; List of configuration layers to load. 
+   ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
      csv
@@ -79,7 +79,6 @@ values."
      fasd
      ibuffer
      osx
-     chrome
      (semantic :disabled-for emacs-lisp)
      restclient
      emoji
@@ -98,16 +97,18 @@ values."
 
      ;; --- My own layers ----
      ag-general
+     ag-dired
      ag-dash
      ag-synonyms
      ag-org
+     )
      ;; ;; ag-jira
      ;; ag-4clojure
      ;; List of additional packages that will be installed without being
      ;; wrapped in a layer. If you need some configuration for these
      ;; packages then consider to create a layer, you can also put the
      ;; configuration in `dotspacemacs/config'.
-     )
+
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
@@ -196,7 +197,7 @@ values."
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Source Code Pro"
                                :size 13
-                               :weight light
+                               :weight normal
                                :width normal
                                :powerline-scale 1.1)
    ;; The leader key
@@ -407,9 +408,10 @@ values."
   "Configuration function for user code. This function is called at the very end of Spacemacs initialization after layers configuration. You are free to put any user code."
 
   (setq
-   ;; Editor
+   ;;;; Editor
    powerline-default-separator nil
-   frame-title-format "%f" ;; full filepath in the title
+   ;; full filepath in the title
+   frame-title-format "%f"
    spacemacs-show-trailing-whitespace nil
    tab-width 4
    mouse-wheel-scroll-amount '(0.02)
@@ -419,31 +421,26 @@ values."
    default-input-method 'russian-computer
    google-translate-default-source-language "ru"
    google-translate-default-target-language "en"
-
-   ;; Helm
+   ;;;; Helm
    helm-echo-input-in-header-line nil
    helm-ff--deleting-char-backward t
-
-   ;; Misc
+   ;;;; Misc
    vc-follow-symlinks t
    diff-hl-side 'left
    use-dialog-box nil
    apropos-sort-by-scores t
-   ;; tramp-default-method "ssh"
-
    sass-indent-offset 2
    shell-file-name "/bin/zsh")
 
-  ;; (ace-popup-menu-mode 1)
-
-  (setq aw-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9)) ;; ace-windows instead of characters shows numbers
+  ;; ace-windows instead of characters shows number
+  (setq aw-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9))
   ;; ---------------
   ;; Shell, Term
   ;; ---------------
   (defun ag/shell-hook ()
     (setq-local global-hl-line-mode nil)
     (setq-local scroll-margin 0)
-    (text-scale-decrease 1.5))
+    (text-scale-decrease 0.7))
 
   (add-hook 'eshell-mode-hook 'ag/shell-hook)
   (add-hook 'term-mode-hook 'ag/shell-hook)
@@ -465,15 +462,8 @@ values."
 
   (add-hook 'clojure-mode 'flyspell-prog-mode)
 
-  (setenv "JAVA_TOOL_OPTIONS" "-Dapple.awt.UIElement=true") ;; annoying Java Cup icon - no longer will bother you
-
-  ;; ---------------
-  ;; Chrome layer
-  ;; ---------------
-
-  ;;(add-to-list 'edit-server-new-frame-alist '(width .140))
-  ;;(add-to-list 'edit-server-new-frame-alist '(height .60))
-  (add-hook 'edit-server-done-hook (lambda () (shell-command "open -a \"Google Chrome\"")))  ;; After edited via Edit with Emacs chrome extension, automatically switch focus to Chrome
+  ;; annoying Java Cup icon - no longer will bother you
+  (setenv "JAVA_TOOL_OPTIONS" "-Dapple.awt.UIElement=true")
 
   ;; ---------------
   ;; Text
@@ -522,8 +512,7 @@ values."
   (defun jscs-disable ()
     (interactive)
     (setq flycheck-checkers (remove 'javascript-jscs flycheck-checkers)))
-  (setq js2-strict-inconsistent-return-warning
-        nil)
+  (setq js2-strict-inconsistent-return-warning nil)
 
   ;; Flycheck coffeelint
   (setq flycheck-coffee-coffeelint-executable
@@ -540,10 +529,10 @@ values."
   ;; Magit
   ;; ---------
   ;; don't exit magit on escape-sequence
-  (setq evil-escape-excluded-major-modes '(magit-status-mode magit-diff-mode))
+  (setq evil-escape-excluded-major-modes '(magit-status-mode magit-diff-mode help-mode paradox-menu-mode))
   (with-eval-after-load 'evil-magit
     ;; don't bury buffer on `esc`
-    (evil-magit-define-key 'normal 'magit-mode-map "<escape>" nil)) 
+    (evil-magit-define-key 'normal 'magit-mode-map "<escape>" nil))
 
   ;; --------
   ;; dired / ranger
@@ -572,6 +561,14 @@ values."
   ;; Yasnippet
   ;; ----------
   (with-eval-after-load 'yasnippet (add-to-list 'yas-snippet-dirs "~/.spacemacs.d/snippets"))
+
+  ;; https://github.com/syl20bnr/spacemacs/issues/7038
+  (eval-after-load 'semantic
+    (add-hook 'semantic-mode-hook
+              (lambda ()
+                (dolist (x (default-value 'completion-at-point-functions))
+                  (when (string-prefix-p "semantic-" (symbol-name x))
+                    (remove-hook 'completion-at-point-functions x))))))
 
   (pupo-mode -1)
   (purpose-mode -1))

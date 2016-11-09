@@ -25,13 +25,12 @@
    "http://www.4clojure.com/login"
    :type "POST"
    :sync t
-   :headers '(
-              ("User-Agent" . "Mozilla/5.0 (X11; Linux x86_64; rv:28.0) Gecko/20100101  Firefox/28.0")
+   :headers '(("User-Agent" . "Mozilla/5.0 (X11; Linux x86_64; rv:28.0) Gecko/20100101  Firefox/28.0")
               ("Referer" . "http://www.4clojure.com/login"))
                                         ;   :parser 'buffer-string
    :data `(("user" . ,user) ("pwd" . ,pwd))
    :success (function*
              (lambda (&key data &allow-other-keys) data))
-              ; when server send 302 header, `request` redirect request with original method POST,
-              ; So 4clojure will not handle this redirect and given 404
+  ; when server send 302 header, `request` redirect request with original method POST,
+  ; So 4clojure will not handle this redirect and given 404
    :status-code '((404 . (lambda (&rest _) (message "login successful!"))))))

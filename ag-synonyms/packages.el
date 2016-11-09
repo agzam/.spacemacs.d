@@ -55,7 +55,7 @@
   (advice-add 'synonyms-no-read :after #'switch-to-synonyms))
 
   ;; (require 'thesaurus)
-  ;; (setq thesaurus-bhl-api-key "268e6dcef65d60cea2f54799ec62eec1")
+  ;; (setq thesaurus-bhl-api-key "")
 
   ;; (defun thesaurus-fetch-synonyms (word)
   ;;   "replacing theasurus.el generic function with this, so it won't use message-box"   
