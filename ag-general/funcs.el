@@ -53,4 +53,22 @@
 (defun ag/switch-focus-to-chrome ()
   (shell-command "open -a \"Google Chrome\""))
 
+(defun ag/fix-frame ()
+  "Toggle fullscreen off and on. OS X workaround."
+  (interactive)
+  (when (spacemacs/toggle-fullscreen-frame-p)
+      (progn
+        (spacemacs/toggle-fullscreen-frame-off)
+        (spacemacs/toggle-fullscreen-frame-on))))
 
+(spacemacs|define-transient-state zoom-frm
+  :title "Zoom Frame Transient State"
+  :doc "
+[_+_/_=_] zoom frame in [_-_] zoom frame out [_0_] reset zoom [_q_] quit"
+        :bindings
+        ("+" spacemacs/zoom-frm-in)
+        ("=" spacemacs/zoom-frm-in)
+        ("-" spacemacs/zoom-frm-out)
+        ("0" spacemacs/zoom-frm-unzoom)
+        ("q" nil :exit t)
+:on-exit (ag/fix-frame))
