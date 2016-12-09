@@ -1,8 +1,8 @@
-(setq ag-general-packages '(editorconfig
+(setq ag-general-packages '(
+                            ;; editorconfig
                             rainbow-mode
                             atomic-chrome))
 
-;; List of packages to exclude.
 (setq ag-general-excluded-packages '())
 
 (defun ag-general/init-editorconfig ()

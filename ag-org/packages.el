@@ -21,7 +21,9 @@
      org-agenda-files '("~/org/tasks.org")
      org-default-notes-file "tasks.org"
      ;; I don't want to be prompted on every code block evaluation
-     org-confirm-babel-evaluate nil)
+     org-confirm-babel-evaluate nil
+     org-todo-keywords (quote ((sequence "TODO" "ONGOING" "DONE")))
+     org-todo-keyword-faces '(("ONGOING" . "orange")))
 
     ;; To save the clock history across Emacs sessions, use
     (org-clock-persistence-insinuate)
@@ -35,48 +37,23 @@
        (js . t)
        (clojure . t)))))
 
+(defun ag-org/post-init-org-pomodoro ()
+  (with-eval-after-load 'org-pomodoro
+    (add-hook 'org-pomodoro-finished-hook 'pomodoro/on-finished-hook)
+    (add-hook 'org-pomodoro-break-finished-hook 'pomodoro/on-break-over-hook)
+    (add-hook 'org-pomodoro-killed-hook 'pomodoro/on-killed-hook)
+    (add-hook 'org-pomodoro-started-hook 'pomodoro/on-started-hook)))
+
 (defun ag-org/init-ox-reveal ()
   (use-package ox-reveal
     :config
     (progn
       (setq org-reveal-title-slide nil))))
 
-(defun pomodoro/modify-menu-item (color)
-  "color can be \"red\" \"green\" or \"yellow\""
-  (let* ((hs (executable-find "hs"))
-         (task-name (symbol-value 'org-clock-current-task))
-         (cmd (concat " txt = hs.styledtext.new(\""
-                      task-name
-                      "\",{ color = hs.drawing.color.hammerspoon.osx_" color " });"
-                      "globalMenubarItem = hs.menubar.newWithPriority(0);"
-                      "globalMenubarItem:setTitle(txt)")))
-    (call-process hs
-                  nil 0 nil
-                  (concat "-c" cmd))))
 
-(defun pomodoro/remove-menu-item ()
-  "removes currently set pomodoro menu item"
-  (let* ((hs (executable-find "hs"))
-         (cmd " globalMenubarItem:delete(); globalMenubarItem = nil"))
-    (call-process hs
-                  nil 0 nil
-                  (concat "-c" cmd))))
 
-(defun ag-org/post-init-org-pomodoro ()
-  (with-eval-after-load 'org-pomodoro
-    (add-hook 'org-pomodoro-finished-hook (lambda ()
-                                            (progn
-                                              (hs-alert "task done")
-                                              (pomodoro/modify-menu-item "green"))))
 
-    (add-hook 'org-pomodoro-break-finished-hook (lambda ()
-                                                  (hs-alert "break over")
-                                                  (pomodoro/remove-menu-item)))
-    (add-hook 'org-pomodoro-killed-hook (lambda ()
-                                          (hs-alert "killed")
-                                          (pomodoro/remove-menu-item)))
-    (add-hook 'org-pomodoro-started-hook (lambda ()
-                                           (hs-alert "- start churning -")
-                                           (pomodoro/modify-menu-item "red"))))) 
+
+
 
 
