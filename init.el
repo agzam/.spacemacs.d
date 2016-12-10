@@ -75,7 +75,7 @@ values."
      fasd
      (ibuffer :variables
               ibuffer-group-buffers-by 'projects
-              ibuffer-old-time 8) 
+              ibuffer-old-time 8)
      osx
      ;; (semantic :disabled-for '(emacs-lisp org))
      restclient
@@ -352,63 +352,43 @@ values."
 
   (setq-default
    menu-bar-mode t
-
    ns-use-srgb-colorspace nil
    exec-path-from-shell-check-startup-files nil
    ;; Editor
    line-spacing 6
    left-fringe-width 5
    right-fringe-width 0
-   ;; truncate-lines t
    evil-escape-key-sequence "jk"
    evil-escape-delay 0.1
    fill-column 120
    ;; frame-background-mode 'dark
 
-   ;; Helm
-   ;; helm-buffer-details-flag nil        ;; Always show details in buffer list when non--nil.
-   helm-follow-mode-persistent t
-
-   ;; Magit
-   magit-push-always-verify nil
-
-   ;; Flycheck
-   ;; flycheck-check-syntax-automatically '(save mode-enabled)
-
-   ;; Avy
-   ;; avy-all-windows t
-
-   ;; Ranger
-   ranger-override-dired nil
-
-   ;; Coffeescript
-   coffee-tab-width 4
-   whitespace-action '(auto-cleanup)
-
    ;; Shell
-   system-uses-terminfo nil
-   shell-default-shell 'shell)
+   ;; system-uses-terminfo nil
+   ;; shell-default-shell 'shell
+   )
 
-  (setq ns-auto-hide-menu-bar nil
-        package-archives
-        '(("gnu" . "https://elpa.gnu.org/packages/")
-          ("marmalade" . "https://marmalade-repo.org/packages/")
-          ("melpa" . "https://melpa.org/packages/"))
+  (setq
+   ns-auto-hide-menu-bar nil
+   package-archives
+   '(("gnu" . "https://elpa.gnu.org/packages/")
+     ("marmalade" . "https://marmalade-repo.org/packages/")
+     ("melpa" . "https://melpa.org/packages/"))
 
-        dotspacemacs-default-layout-name "•"
+   dotspacemacs-default-layout-name "•"
 
-        ;; better looking font in books
-        doc-view-resolution 144))
+   ;; better looking font in books
+   doc-view-resolution 144))
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code. This function is called at the very end of Spacemacs initialization after layers configuration. You are free to put any user code."
-
   (setq
    ;;;; Editor
    powerline-default-separator nil
    avy-timeout-seconds 0.4
-   ;; full filepath in the title
-   frame-title-format "%f"
+   aw-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9)                       ;;;; ace-windows instead of characters shows number
+   linum-format "%3d\u2502"                                    ;;;; nicer line-numbers
+   frame-title-format "%f"                                     ;;;; full filepath in the title
    spacemacs-show-trailing-whitespace nil
    tab-width 4
    mouse-wheel-scroll-amount '(0.02)
@@ -421,22 +401,25 @@ values."
    ;;;; Helm
    helm-echo-input-in-header-line nil
    helm-ff--deleting-char-backward t
+   helm-follow-mode-persistent t
+   ;; helm-buffer-details-flag nil        ;; Always show details in buffer list when non--nil.
    ;;;; Misc
    vc-follow-symlinks t
    diff-hl-side 'left
    use-dialog-box nil
    apropos-sort-by-scores t
    sass-indent-offset 2
-   shell-file-name "/bin/zsh")
+   shell-file-name "/bin/zsh"
+   evil-escape-excluded-major-modes '(magit-status-mode magit-diff-mode help-mode paradox-menu-mode) ;; don't quit on esc
+   ranger-override-dired nil
+   )
 
-  ;; Put customizations in ~/.custom.el, creating it if necessary.
-  (setq custom-file "~/.spacemacs.d/.custom.el")
-  (when (not (file-exists-p "~/.spacemacs.d/.custom.el"))
-    (write-region nil nil "~/.spacemacs.d/.custom.el"))
-  (load custom-file)
+   (pupo-mode -1)
+   (purpose-mode -1)
+   (add-hook 'prog-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
+   (spacemacs/toggle-mode-line-version-control-off)
+   (spacemacs/toggle-mode-line-minor-modes-off)
 
-  ;; ace-windows instead of characters shows number
-  (setq aw-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9))
   ;; ---------------
   ;; Shell, Term
   ;; ---------------
@@ -477,12 +460,14 @@ values."
   ;; ------------
   ;; Javascript mode
   ;; ------------
-  (setq js2-include-node-externs t)
-  (setq js2-include-browser-externs t)
-  (setq js2-include-global-externs t)
-  (setq js2-global-externs (list "$" "window" "angular" "Rx" "_" "moment"))
-  ;; (setq-default js-indent-level 4)
-  ;; (setq-default js2-basic-offset 4)
+  (setq js2-include-node-externs t
+        js2-include-browser-externs t
+        js2-include-global-externs t
+        js2-global-externs (list "$" "window" "angular" "Rx" "_" "moment")
+        coffee-tab-width 4
+        ;; js-indent-level 4
+        ;; js2-basic-offset 4
+        )
   (add-hook 'js2-mode-hook 'flyspell-prog-mode)
 
   ;; Flycheck JSCS
@@ -519,10 +504,8 @@ values."
   ;; ---------
   ;; Magit
   ;; ---------
-  ;; don't exit magit on escape-sequence
-  (setq evil-escape-excluded-major-modes '(magit-status-mode magit-diff-mode help-mode paradox-menu-mode))
+  ;; don't exit magit on escape-sequence and don't bury its buffer on Esc
   (with-eval-after-load 'evil-magit
-    ;; don't bury buffer on `esc`
     (evil-magit-define-key 'normal 'magit-mode-map "<escape>" nil))
 
   ;; --------
@@ -549,38 +532,7 @@ values."
   ;; Yasnippet
   ;; ----------
   (with-eval-after-load 'yasnippet (add-to-list 'yas-snippet-dirs "~/.spacemacs.d/snippets"))
-
-  (pupo-mode -1)
-  (purpose-mode -1)
-  (spacemacs/toggle-mode-line-version-control-off)
-  (spacemacs/toggle-mode-line-minor-modes-off)
-  ;; (add-hook 'window-setup-hook
-  ;;           (lambda ()
-  ;;             (let ((frame-zoom-font-difference 2))
-  ;;               (zoom-frm-in))))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
-(defun dotspacemacs/emacs-custom-settings ()
-  "Emacs custom settings.
-This is an auto-generated function, do not modify its content directly, use
-Emacs customize menu instead.
-This function is called at the very end of Spacemacs initialization."
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (org-present yaml-mode xterm-color ws-butler writeroom-mode window-numbering which-key web-mode web-beautify volatile-highlights vmd-mode vi-tilde-fringe uuidgen use-package toc-org tern-auto-complete tagedit synonyms string-inflection spacemacs-theme spaceline smeargle shell-pop scss-mode sass-mode reveal-in-osx-finder restclient-helm restart-emacs ranger rainbow-mode rainbow-delimiters quelpa popwin persp-mode pdf-tools pcre2el pbcopy paradox ox-twbs ox-reveal ox-gfm osx-trash osx-dictionary orgit org-projectile org-pomodoro org-plus-contrib org-download org-bullets open-junk-file ob-restclient ob-http neotree multi-term move-text mmm-mode markdown-toc magit-gitflow magit-gh-pulls macrostep lua-mode lorem-ipsum livid-mode linum-relative link-hint less-css-mode launchctl js2-refactor js-doc insert-shebang info+ indent-guide ido-vertical-mode ibuffer-projectile hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-purpose helm-projectile helm-mode-manager helm-make helm-gitignore helm-flycheck helm-flx helm-descbinds helm-dash helm-css-scss helm-company helm-clojuredocs helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md flyspell-correct-helm flymake-sass flycheck-pos-tip flycheck-package flycheck-clojure flx-ido fill-column-indicator fasd fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eshell-z eshell-prompt-extras esh-help engine-mode emoji-cheat-sheet-plus emmet-mode elisp-slime-nav dumb-jump dockerfile-mode docker direx dired+ diff-hl csv-mode company-web company-tern company-statistics company-shell company-restclient company-quickhelp company-emoji column-enforce-mode coffee-mode clojure-snippets clojure-mode-extra-font-locking clojure-cheatsheet clojars clj-refactor clean-aindent-mode cider-eval-sexp-fu auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile atomic-chrome aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell ac-cider))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-)
-
-

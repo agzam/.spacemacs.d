@@ -29,6 +29,7 @@
     (org-clock-persistence-insinuate)
 
     (add-hook 'org-mode-hook 'flyspell-mode)
+    (add-hook 'org-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
 
     (require 'ob-http)
     (org-babel-do-load-languages
