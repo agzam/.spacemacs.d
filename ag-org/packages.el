@@ -50,11 +50,3 @@
     :config
     (progn
       (setq org-reveal-title-slide nil))))
-
-
-
-
-
-
-
-
