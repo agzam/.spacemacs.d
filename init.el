@@ -349,7 +349,7 @@ values."
 
   (setq-default
    menu-bar-mode t
-   ns-use-srgb-colorspace nil
+   ;; ns-use-srgb-colorspace t
    exec-path-from-shell-check-startup-files nil
    ;; Editor
    line-spacing 6
