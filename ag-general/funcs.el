@@ -64,11 +64,13 @@
 (spacemacs|define-transient-state zoom-frm
   :title "Zoom Frame Transient State"
   :doc "
-[_+_/_=_] zoom frame in [_-_] zoom frame out [_0_] reset zoom [_q_] quit"
+[_+_/_=_/_j_] zoom frame in [_-_/_k_] zoom frame out [_0_] reset zoom [_q_] quit"
         :bindings
         ("+" spacemacs/zoom-frm-in)
         ("=" spacemacs/zoom-frm-in)
+        ("j" spacemacs/zoom-frm-in)
         ("-" spacemacs/zoom-frm-out)
+        ("k" spacemacs/zoom-frm-out)
         ("0" spacemacs/zoom-frm-unzoom)
         ("q" nil :exit t)
 :on-exit (ag/fix-frame))

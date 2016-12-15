@@ -55,7 +55,7 @@ values."
      ;;       ruby-version-manager 'rvm)
      ;; ruby-on-rails
      ;; csharp
-     ;; haskell
+     haskell
 
      ;; --- Editor  ----
      (auto-completion :variables
@@ -73,9 +73,7 @@ values."
             shell-default-term-shell "/bin/zsh")
 
      fasd
-     (ibuffer :variables
-              ibuffer-group-buffers-by 'projects
-              ibuffer-old-time 8)
+     (ibuffer :variables ibuffer-old-time 8)
      osx
      ;; (semantic :disabled-for '(emacs-lisp org))
      restclient
@@ -83,7 +81,6 @@ values."
      ranger
      search-engine
      imenu-list
-     pdf-tools
      docker
 
      ;; ---- Version control ----
@@ -412,7 +409,7 @@ values."
    shell-file-name "/bin/zsh"
    evil-escape-excluded-major-modes '(magit-status-mode magit-diff-mode help-mode paradox-menu-mode) ;; don't quit on esc
    ranger-override-dired nil
-   )
+   delete-by-moving-to-trash nil)
 
    (pupo-mode -1)
    (purpose-mode -1)
@@ -536,3 +533,21 @@ values."
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
+(defun dotspacemacs/emacs-custom-settings ()
+  "Emacs custom settings.
+This is an auto-generated function, do not modify its content directly, use
+Emacs customize menu instead.
+This function is called at the very end of Spacemacs initialization."
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+)
