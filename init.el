@@ -175,7 +175,7 @@ values."
    ;; `recents' `bookmarks' `projects' `agenda' `todos'."
    ;; List sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
-   dotspacemacs-startup-lists '((warnings . 5) (recents . 5) (projects . 5) (todos . 5) (bookmarks . 5) (agenda . 5))
+   dotspacemacs-startup-lists '((warnings . 5) (recents . 5) (projects . 5) (todos . 10) (bookmarks . 5) (agenda . 5))
    ;; True if the home buffer should respond to resize events.
    dotspacemacs-startup-buffer-responsive nil
    ;; Default major mode of the scratch buffer (default `text-mode')
@@ -409,7 +409,8 @@ values."
    shell-file-name "/bin/zsh"
    evil-escape-excluded-major-modes '(magit-status-mode magit-diff-mode help-mode paradox-menu-mode) ;; don't quit on esc
    ranger-override-dired nil
-   delete-by-moving-to-trash nil)
+   delete-by-moving-to-trash nil
+   magit-delete-by-moving-to-trash nil)
 
    (pupo-mode -1)
    (purpose-mode -1)
@@ -543,7 +544,10 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(safe-local-variable-values
+   (quote
+    ((cider-cljs-lein-repl . "(boot (start))")
+     (cider-boot-parameters . "repl -s wait")))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
