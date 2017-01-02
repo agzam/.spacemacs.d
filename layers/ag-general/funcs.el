@@ -65,11 +65,11 @@
   :doc "
 [_+_/_=_/_j_] zoom frame in [_-_/_k_] zoom frame out [_0_] reset zoom [_m_] fullscreen [_q_] quit"
         :bindings
-        ("+" zoom-in)
-        ("=" zoom-in)
-        ("j" zoom-in)
-        ("-" zoom-out)
-        ("k" zoom-out)
+        ("+" zoom-frm-in)
+        ("=" zoom-frm-in)
+        ("j" zoom-frm-in)
+        ("-" zoom-frm-out)
+        ("k" zoom-frm-out)
         ("0" zoom-frm-unzoom)
         ("m" (spacemacs/toggle-frame-fullscreen-non-native))
         ("q" nil :exit t))

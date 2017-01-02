@@ -27,7 +27,7 @@ values."
    ;; If non-nil layers with lazy install support are lazy installed.
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
-   dotspacemacs-configuration-layer-path '("~/.spacemacs.d") ;
+   dotspacemacs-configuration-layer-path '("~/.spacemacs.d/") ;
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '((org :variables
@@ -383,6 +383,7 @@ values."
    ;;;; Editor
    powerline-default-separator nil
    avy-timeout-seconds 0.4
+   avy-all-windows nil
    aw-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9)                       ;;;; ace-windows instead of characters shows number
    linum-format "%3d\u2502"                                    ;;;; nicer line-numbers
    frame-title-format "%f"                                     ;;;; full filepath in the title
@@ -546,7 +547,12 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  '(safe-local-variable-values
    (quote
-    ((cider-cljs-lein-repl . "(boot (start))")
+    ((eval when
+           (require
+            (quote rainbow-mode)
+            nil t)
+           (rainbow-mode 1))
+     (cider-cljs-lein-repl . "(boot (start))")
      (cider-boot-parameters . "repl -s wait")))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

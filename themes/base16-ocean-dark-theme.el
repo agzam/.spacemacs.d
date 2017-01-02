@@ -574,7 +574,8 @@
    `(magit-popup-argument ((t (:foreground ,base08))))
    ;; `(magit-diff-added-highlight ((t (:background ,base0B :foreground ,base01))))
 
-   )
+   ;; avy 
+   `(avy-lead-face ((t (:foreground "yellow" :background "PaleGreen4" :inverse-video nil)))))
 
   (custom-theme-set-variables
    'base16-ocean-dark

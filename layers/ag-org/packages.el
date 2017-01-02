@@ -17,8 +17,8 @@
         ;; Prompt for tag and language
         "* %t  %?\n\t%f\n\t#+BEGIN_SRC %^{language}\n\t\t%i\n\t#+END_SRC"))
      
-     ort/prefix-arg-directory "~/org"
-     org-agenda-files '("~/org/tasks.org")
+     ort/prefix-arg-directory "~/Google Drive/org"
+     org-agenda-files '("~/Google Drive/org/tasks.org")
      org-default-notes-file "tasks.org"
      ;; I don't want to be prompted on every code block evaluation
      org-confirm-babel-evaluate nil
