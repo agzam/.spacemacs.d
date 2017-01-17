@@ -13,7 +13,8 @@
   "qq" nil ;; no unexpected exits 
   "qQ" 'spacemacs/prompt-kill-emacs
   "s/" 'engine/search-google
-  "jj" 'avy-goto-char-timer)
+  "jj" 'avy-goto-char-timer
+  "xx" 'ispell-word)
 
 (define-key evil-normal-state-map "Q" 'bury-buffer)
 (define-key evil-normal-state-map (kbd "C-S-e") 'scroll-other-window)

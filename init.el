@@ -68,9 +68,7 @@ values."
 
      ;; ---- Tools ----
      helm
-     (shell :variables
-            shell-enable-smart-eshell t
-            shell-default-term-shell "/bin/zsh")
+     (shell :variables shell-enable-smart-eshell t)
 
      fasd
      (ibuffer :variables ibuffer-old-time 8)
@@ -407,8 +405,7 @@ values."
    use-dialog-box nil
    apropos-sort-by-scores t
    sass-indent-offset 2
-   shell-file-name "/bin/zsh"
-   evil-escape-excluded-major-modes '(magit-status-mode magit-diff-mode help-mode paradox-menu-mode) ;; don't quit on esc
+   evil-escape-excluded-major-modes '(magit-status-mode magit-diff-mode magit-refs-mode help-mode paradox-menu-mode) ;; don't quit on esc
    ranger-override-dired nil
    delete-by-moving-to-trash nil
    magit-delete-by-moving-to-trash nil)
@@ -531,33 +528,18 @@ values."
   ;; Yasnippet
   ;; ----------
   (with-eval-after-load 'yasnippet (add-to-list 'yas-snippet-dirs "~/.spacemacs.d/snippets"))
+
+  ;; -----------
+  ;; Backups 
+  ;; ----------
+  (setq version-control t        
+        backup-by-copying t      
+        kept-new-versions 64     
+        kept-old-versions 0      
+        delete-old-versions nil)
+  (setq backup-directory-alist '(("." . ".bak")))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
-(defun dotspacemacs/emacs-custom-settings ()
-  "Emacs custom settings.
-This is an auto-generated function, do not modify its content directly, use
-Emacs customize menu instead.
-This function is called at the very end of Spacemacs initialization."
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(safe-local-variable-values
-   (quote
-    ((eval when
-           (require
-            (quote rainbow-mode)
-            nil t)
-           (rainbow-mode 1))
-     (cider-cljs-lein-repl . "(boot (start))")
-     (cider-boot-parameters . "repl -s wait")))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-)
+

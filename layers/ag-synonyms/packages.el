@@ -6,7 +6,7 @@
   :defer t
   :init
   :config
-  (setq synonyms-file        "~/.spacemacs.d/layer/sag-synonyms/mthes10/mthesaur.txt"
+  (setq synonyms-file        "~/.spacemacs.d/layers/ag-synonyms/mthes10/mthesaur.txt"
         synonyms-cache-file  "~/.spacemacs.d/layers/ag-synonyms/mthes10/mthesaur.txt.cache")
   
   (defvar synonyms-thesaurus-url "http://www.thesaurus.com/browse/")
