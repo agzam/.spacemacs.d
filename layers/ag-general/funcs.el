@@ -34,24 +34,27 @@
       (helm-google-suggest))))
 
 (defun notify-osx (title message)
-  (call-process (executable-find "terminal-notifier")
-                nil 0 nil
-                "-group" "Emacs"
-                "-title" title
-                "-sender" "org.gnu.Emacs"
-                "-message" message))
+  (when (eq system-type 'darwin)
+    (call-process (executable-find "terminal-notifier")
+                  nil 0 nil
+                  "-group" "Emacs"
+                  "-title" title
+                  "-sender" "org.gnu.Emacs"
+                  "-message" message)))
 
 (defun hs-alert (message)
-  (when message
+  (when (and message (eq system-type 'darwin)) 
     (call-process (executable-find "hs")
                   nil 0 nil
                   (concat "-c" "hs.alert.show(\"" message "\", 1)"))))
 
 (defun ag/switch-focus-to-emacs-frame ()
-  (shell-command "open -a \"Emacs\""))
+  (when (eq system-type 'darwin)
+    (shell-command "open -a \"Emacs\"")))
 
 (defun ag/switch-focus-to-chrome ()
-  (shell-command "open -a \"Google Chrome\""))
+  (when (eq system-type 'darwin)
+    (shell-command "open -a \"Google Chrome\"")))
 
 (defun ag/fix-frame ()
   "Toggle fullscreen off and on. OS X workaround."
@@ -60,16 +63,32 @@
         (spacemacs/toggle-fullscreen-frame-off)
         (spacemacs/toggle-fullscreen-frame-on))))
 
+(defun ag/move-frame-one-display (direction)
+  (when (eq system-type 'darwin)
+    (let* ((hs (executable-find "hs"))
+           (cmd (concat "hs.window.focusedWindow():moveOneScreen" direction "()")))
+      (call-process hs
+                    nil 0 nil
+                    (concat "-c" cmd))
+      (ag/fix-frame))))
+
 (spacemacs|define-transient-state zoom-frm
   :title "Zoom Frame Transient State"
   :doc "
-[_+_/_=_/_j_] zoom frame in [_-_/_k_] zoom frame out [_0_] reset zoom [_m_] fullscreen [_q_] quit"
-        :bindings
-        ("+" zoom-frm-in)
-        ("=" zoom-frm-in)
-        ("j" zoom-frm-in)
-        ("-" zoom-frm-out)
-        ("k" zoom-frm-out)
-        ("0" zoom-frm-unzoom)
-        ("m" (spacemacs/toggle-frame-fullscreen-non-native))
-        ("q" nil :exit t))
+ Zoom^^^^^^              Move^^^^^              Other^^
+ ────^^^^^^───────────── ────^^^^^^───────────── ─────^^──────────
+ [_+_/_=_/_j_] in        [_p_] prev. display [_m_]^^^ fullscreen
+ [_-_/_k_]^^   out       [_n_] next display  [_q_]^^^ quit
+ [_0_]^^^^     reset     "
+
+  :bindings
+  ("+" zoom-frm-in)
+  ("=" zoom-frm-in)
+  ("j" zoom-frm-in)
+  ("-" zoom-frm-out)
+  ("k" zoom-frm-out)
+  ("0" zoom-frm-unzoom)
+  ("m" (spacemacs/toggle-frame-fullscreen-non-native))
+  ("n" (ag/move-frame-one-display "North"))
+  ("p" (ag/move-frame-one-display "South"))
+  ("q" nil :exit t))

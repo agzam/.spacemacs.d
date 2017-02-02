@@ -341,9 +341,9 @@
    `(org-warning ((t (:weight bold :foreground ,base08))))
    `(org-tag ((t (:bold t :weight bold))))
    `(org-checkbox ((t (:background ,base00 :foreground ,base05))))
-   `(org-block-begin-line ((t (:underline ,base02 :foreground ,base02 :height 0.8 :slant italic))))
+   `(org-block-begin-line ((t (:underline ,base02 :foreground ,base03 :height 0.8 :weight ultra-light))))
    `(org-block-background ((t (:background ,base05))))
-   `(org-block-end-line ((t (:overline ,base02 :foreground ,base02 :height 0.8 :slant italic))))
+   `(org-block-end-line ((t (:overline ,base02 :foreground ,base03 :height 0.8 :weight ultra-light))))
 
    `(org-level-1 ((t (:foreground ,base0A))))
    `(org-level-2 ((t (:foreground ,base09 :height 1.0))))

@@ -104,12 +104,12 @@ values."
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(dired+
-                                      ;; ace-popup-menu
-                                      flycheck-package helm-flycheck flymake-sass
+                                      flycheck-package
+                                      helm-flycheck 
                                       tern-auto-complete
                                       string-inflection
                                       writeroom-mode
-                                      ;; align-cljlet
+                                      (base16-ocean-dark :location local)
                                       )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -181,7 +181,7 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(base16-ocean-dark zenburn ag-zenburn-old sanityinc-tomorrow-eighties obsidian solarized-light)
+   dotspacemacs-themes '(base16-ocean-dark zenburn sanityinc-tomorrow-eighties obsidian solarized-light)
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
@@ -542,4 +542,3 @@ values."
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
-
