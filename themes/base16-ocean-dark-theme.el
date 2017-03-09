@@ -141,6 +141,10 @@
    `(rainbow-delimiters-mismatched-face ((t (:background "Red"))))
    `(sp-pair-overlay-face ((t (:background "gray40"))))
    `(lazy-highlight-face ((t (:background "gray40"))))
+   ;; Auto-highlight symbol
+   `(ahs-plugin-whole-buffer-face ((t (:foreground ,base0B :background ,base00))))
+   `(ahs-face ((t (:foreground ,base0A :background ,base02))))
+   `(ahs-definition-face ((t (:foreground ,base01 :background ,base0D))))
 
    ;; `(sp-pair-overlay-face ((t (:background ,base02))))
    ;; `(sp-show-pair-match-face ((t (:background ,base08))))

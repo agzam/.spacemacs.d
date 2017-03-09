@@ -1,0 +1,5 @@
+# -*- coding: utf-8 -*-
+# name: spy
+# key: spy
+# --
+(spy "${1:}" $1$2)

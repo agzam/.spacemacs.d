@@ -9,8 +9,6 @@
 ;;
 ;;; License: GPLv3
 
-(setq ag-clojure-packages '())
-
 (defconst ag-clojure-packages
   '(
     ac-cider
@@ -18,7 +16,8 @@
     clojure-mode-extra-font-locking
     helm-clojuredocs
     clojars
-    clojure-cheatsheet))
+    clojure-cheatsheet
+    helm-cider))
 
 (defun ag-clojure/init-ac-cider ())
 (defun ag-clojure/init-flycheck-clojure ())
@@ -26,6 +25,8 @@
 (defun ag-clojure/init-helm-clojuredocs ())
 (defun ag-clojure/init-clojars ())
 (defun ag-clojure/init-clojure-cheatsheet ())
+(defun ag-clojure/init-helm-cider ())
+(defun ag-clojure/init-cider-hydra ())
 
 (with-eval-after-load 'clojure-mode
   (setq clojure-enable-fancify-symbols nil
@@ -34,8 +35,10 @@
         cider-overlays-use-font-lock nil
         cider-repl-use-clojure-font-lock nil
         cider-font-lock-dynamically nil
-        nrepl-log-messages nil)
-  (add-hook 'clojure-mode 'flyspell-prog-mode)
+        nrepl-log-messages nil
+        clojure-align-binding-forms '("binding" "loop" "doseq" "for" "with-open" "with-local-vars" "with-redefs"))
+
+  (add-hook 'clojure-mode #'flyspell-prog-mode)
 
   ;; annoying Java Cup icon - no longer will bother you
   (setenv "JAVA_TOOL_OPTIONS" "-Dapple.awt.UIElement=true"))

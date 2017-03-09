@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+# name: component
+# key: defui
+# --
+(defui ${1:}
+  static om/IQuery
+  (query
+    [_] [])
+  Object
+  (render
+    [this]
+    (let [{:keys [${3:}]} (om/props this)]
+      (html
+        [])
+      )))
+
+(def ui-${2:} (om/factory $1))

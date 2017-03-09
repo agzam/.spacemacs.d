@@ -52,9 +52,7 @@ values."
      ;; python
      ;; react
      ;; (ruby :variables ruby-enable-enh-ruby-mode t
-     ;;       ruby-version-manager 'rvm)
-     ;; ruby-on-rails
-     ;; csharp
+     ;;                  ruby-version-manager 'rvm)
      haskell
 
      ;; --- Editor  ----
@@ -76,7 +74,7 @@ values."
      ;; (semantic :disabled-for '(emacs-lisp org))
      restclient
      emoji
-     ranger
+     ;; ranger
      search-engine
      imenu-list
      docker
@@ -87,7 +85,8 @@ values."
                       version-control-diff-tool 'diff-hl
                       version-control-global-margin t)
 
-     (github :variables gist-view-gist t)
+     (github :variables gist-view-gist t
+             :packages (not magit-gh-pulls))
 
      ;; --- My own layers ----
      ag-dired
@@ -96,6 +95,7 @@ values."
      ag-synonyms
      ag-org
      ag-clojure
+     ag-cal
      ;; ag-jira
      ;; ag-4clojure
      )
@@ -105,16 +105,15 @@ values."
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(dired+
                                       flycheck-package
-                                      helm-flycheck 
+                                      helm-flycheck
                                       tern-auto-complete
                                       string-inflection
                                       writeroom-mode
-                                      (base16-ocean-dark :location local)
-                                      )
+                                      (base16-ocean-dark :location local))
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '(evil-unimpaired semantic)
+   dotspacemacs-excluded-packages '()
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and uninstall any
@@ -306,8 +305,18 @@ values."
    ;; scrolling overrides the default behavior of Emacs which recenters point
    ;; when it reaches the top or bottom of the screen. (default t)
    dotspacemacs-smooth-scrolling t
-   ;; If non-nil line numbers are turned on in all `prog-mode' and `text-mode'
-   ;; derivatives. If set to `relative', also turns on relative line numbers.
+   ;; Control line numbers activation.
+   ;; If set to `t' or `relative' line numbers are turned on in all `prog-mode' and
+   ;; `text-mode' derivatives. If set to `relative', line numbers are relative.
+   ;; This variable can also be set to a property list for finer control:
+   ;; '(:relative nil
+   ;;   :disabled-for-modes dired-mode
+   ;;                       doc-view-mode
+   ;;                       markdown-mode
+   ;;                       org-mode
+   ;;                       pdf-view-mode
+   ;;                       text-mode
+   ;;   :size-limit-kb 1000)
    ;; (default nil)
    dotspacemacs-line-numbers nil
    ;; Code folding method. Possible values are `evil' and `origami'.
@@ -347,7 +356,6 @@ values."
 
   (setq-default
    menu-bar-mode t
-   ;; ns-use-srgb-colorspace t
    exec-path-from-shell-check-startup-files nil
    ;; Editor
    line-spacing 6
@@ -356,11 +364,12 @@ values."
    evil-escape-key-sequence "jk"
    evil-escape-delay 0.1
    fill-column 120
-   ;; frame-background-mode 'dark
+   frame-background-mode 'dark
 
    ;; Shell
    ;; system-uses-terminfo nil
    ;; shell-default-shell 'shell
+   eyebrowse-keymap-prefix (kbd "C-x C-w")
    )
 
   (setq
@@ -381,7 +390,6 @@ values."
    ;;;; Editor
    powerline-default-separator nil
    avy-timeout-seconds 0.4
-   avy-all-windows nil
    aw-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9)                       ;;;; ace-windows instead of characters shows number
    linum-format "%3d\u2502"                                    ;;;; nicer line-numbers
    frame-title-format "%f"                                     ;;;; full filepath in the title
@@ -394,24 +402,31 @@ values."
    default-input-method 'russian-computer
    google-translate-default-source-language "ru"
    google-translate-default-target-language "en"
+
    ;;;; Helm
    helm-echo-input-in-header-line nil
    helm-ff--deleting-char-backward t
    helm-follow-mode-persistent t
    ;; helm-buffer-details-flag nil        ;; Always show details in buffer list when non--nil.
+
    ;;;; Misc
    vc-follow-symlinks t
    diff-hl-side 'left
    use-dialog-box nil
    apropos-sort-by-scores t
    sass-indent-offset 2
-   evil-escape-excluded-major-modes '(magit-status-mode magit-diff-mode magit-refs-mode help-mode paradox-menu-mode) ;; don't quit on esc
+
+   ;; don't quit on esc
+   evil-escape-excluded-major-modes '(magit-status-mode
+                                      magit-diff-mode
+                                      magit-refs-mode
+                                      help-mode paradox-menu-mode) 
    ranger-override-dired nil
    delete-by-moving-to-trash nil
    magit-delete-by-moving-to-trash nil)
 
-   (pupo-mode -1)
-   (purpose-mode -1)
+   ;; (pupo-mode -1)
+   ;; (purpose-mode -1)
    (add-hook 'prog-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
    (spacemacs/toggle-mode-line-version-control-off)
    (spacemacs/toggle-mode-line-minor-modes-off)
@@ -424,9 +439,9 @@ values."
     (setq-local scroll-margin 0)
     (text-scale-decrease 0.1))
 
-  (add-hook 'eshell-mode-hook 'ag/shell-hook)
-  (add-hook 'term-mode-hook 'ag/shell-hook)
-  (add-hook 'shell-mode-hook 'ag/shell-hook)
+  (add-hook 'eshell-mode-hook #'ag/shell-hook)
+  (add-hook 'term-mode-hook #'ag/shell-hook)
+  (add-hook 'shell-mode-hook #'ag/shell-hook)
 
   (add-to-list 'sp-sexp-suffix '(js2-mode regex ""))
 
@@ -438,16 +453,17 @@ values."
   ;; ---------------
   ;; Text
   ;; ---------------
-  (add-hook 'markdown-mode-hook 'flyspell-mode)
+  (add-hook 'markdown-mode-hook #'flyspell-mode)
 
   ;; ---------------
   ;; css-mode sass-mode
   ;; ---------------
   (add-hook 'css-mode-hook (lambda () (rainbow-mode 1)))
-  (defun sass-mode-hook ()
+  (defun ag/sass-mode-hook ()
     (auto-complete-mode 1)
     (rainbow-mode 1))
-  (add-hook 'sass-mode-hook 'sass-mode-hook)
+
+  (add-hook 'sass-mode-hook #'ag/sass-mode-hook)
   (with-eval-after-load 'sass (rvm-use-default))
 
   ;; auto-completion
@@ -464,7 +480,7 @@ values."
         ;; js-indent-level 4
         ;; js2-basic-offset 4
         )
-  (add-hook 'js2-mode-hook 'flyspell-prog-mode)
+  (add-hook 'js2-mode-hook #'flyspell-prog-mode)
 
   ;; Flycheck JSCS
   (flycheck-def-config-file-var flycheck-jscs
@@ -490,7 +506,7 @@ values."
   (setq flycheck-coffee-coffeelint-executable
         "~/.nvm/versions/node/v5.6.0/bin/node/bin/coffeelint")
   (setq flycheck-coffeelintrc "~/.coffeelintrc")
-  (add-hook 'coffee-mode-hook 'flyspell-prog-mode)
+  (add-hook 'coffee-mode-hook #'flyspell-prog-mode)
 
   (setenv "PATH" (concat (getenv "PATH") ":~/.nvm/versions/node/v5.6.0/bin/node"))
   (setq exec-path (append exec-path '("~/.nvm/versions/node/v5.6.0/bin/node/bin")))
@@ -508,8 +524,8 @@ values."
   ;; dired / ranger
   ;; -----
   (setq dired-omit-files "^\\.?#\\|^\\.DS_Store$")
-  (add-hook 'dired-mode-hook 'dired-hide-details-mode)
-  (add-hook 'dired-mode-hook 'dired-omit-mode)
+  (add-hook 'dired-mode-hook #'dired-hide-details-mode)
+  (add-hook 'dired-mode-hook #'dired-omit-mode)
   ;; (setq-default split-height-threshold 150 ;;http://stackoverflow.com/questions/23207958/how-to-prevent-emacs-dired-from-splitting-frame-into-more-than-two-windows
   ;;               split-width-threshold 200)
 
@@ -530,12 +546,12 @@ values."
   (with-eval-after-load 'yasnippet (add-to-list 'yas-snippet-dirs "~/.spacemacs.d/snippets"))
 
   ;; -----------
-  ;; Backups 
+  ;; Backups
   ;; ----------
-  (setq version-control t        
-        backup-by-copying t      
-        kept-new-versions 64     
-        kept-old-versions 0      
+  (setq version-control t
+        backup-by-copying t
+        kept-new-versions 64
+        kept-old-versions 0
         delete-old-versions nil)
   (setq backup-directory-alist '(("." . ".bak")))
   )

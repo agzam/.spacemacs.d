@@ -51,8 +51,6 @@
 ;; ---------------
 ;; css-mode
 ;; ---------------
-(evil-define-key 'normal css-mode-map "zc" 'css-contract-statement)
-(evil-define-key 'normal css-mode-map "zo" 'css-expand-statement)
 (evil-leader/set-key-for-mode 'css-mode "mhh" 'helm-css-scss)
 (evil-define-key 'normal css-mode-map "K" 'helm-css-scss)
 
@@ -77,3 +75,11 @@
   "xi" 'string-inflection-all-cycle)
 
 (evil-define-key 'normal info-mode-map "p" 'info-prev)
+
+;; -----------
+;; Company 
+;; -----------
+(with-eval-after-load 'company
+  (define-key company-active-map (kbd "C-n") 'company-select-next)
+  (define-key company-active-map (kbd "C-p") 'company-select-previous)
+  (define-key company-active-map (kbd "C-f") 'company-search-candidates))
