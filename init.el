@@ -36,9 +36,6 @@ values."
           org-enable-github-support t
           :packages (not org-present))
      ;; (spacemacs-ui-visual :packages (not fancy-battery))
-     (auto-completion :variables
-                      auto-completion-tab-key-behavior 'cycle)
-
      ;; ---- Languages -----
      csv
      yaml
@@ -57,6 +54,7 @@ values."
 
      ;; --- Editor  ----
      (auto-completion :variables
+                      auto-completion-tab-key-behavior 'cycle
                       auto-completion-enable-snippets-in-popup t
                       auto-completion-enable-help-tooltip t
                       auto-completion-enable-sort-by-usage t)
@@ -66,7 +64,10 @@ values."
 
      ;; ---- Tools ----
      helm
-     (shell :variables shell-enable-smart-eshell t)
+     (shell :variables
+            shell-enable-smart-eshell t
+            comint-scroll-show-maximum-output nil
+            comint-move-point-for-output nil)
 
      fasd
      (ibuffer :variables ibuffer-old-time 8)
@@ -85,8 +86,10 @@ values."
                       version-control-diff-tool 'diff-hl
                       version-control-global-margin t)
 
-     (github :variables gist-view-gist t
-             :packages (not magit-gh-pulls))
+     (github :packages (not magit-gh-pulls)
+             :variables
+             ;; view your Gist using `browse-url` after it is created 
+             gist-view-gist t)
 
      ;; --- My own layers ----
      ag-dired
@@ -186,7 +189,7 @@ values."
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Source Code Pro"
-                               :size 13
+                               :size 14
                                :weight normal
                                :width normal
                                :powerline-scale 0.5)
@@ -370,6 +373,7 @@ values."
    ;; system-uses-terminfo nil
    ;; shell-default-shell 'shell
    eyebrowse-keymap-prefix (kbd "C-x C-w")
+   evil-search-module 'isearch
    )
 
   (setq
@@ -389,6 +393,7 @@ values."
   (setq
    ;;;; Editor
    powerline-default-separator nil
+   powerline-center-theme t
    avy-timeout-seconds 0.4
    aw-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9)                       ;;;; ace-windows instead of characters shows number
    linum-format "%3d\u2502"                                    ;;;; nicer line-numbers
@@ -423,6 +428,7 @@ values."
                                       help-mode paradox-menu-mode) 
    ranger-override-dired nil
    delete-by-moving-to-trash nil
+   magit-show-refs-arguments '("--sort=-committerdate")
    magit-delete-by-moving-to-trash nil)
 
    ;; (pupo-mode -1)
@@ -508,8 +514,8 @@ values."
   (setq flycheck-coffeelintrc "~/.coffeelintrc")
   (add-hook 'coffee-mode-hook #'flyspell-prog-mode)
 
-  (setenv "PATH" (concat (getenv "PATH") ":~/.nvm/versions/node/v5.6.0/bin/node"))
-  (setq exec-path (append exec-path '("~/.nvm/versions/node/v5.6.0/bin/node/bin")))
+  ;; (setenv "PATH" (concat (getenv "PATH") ":~/.nvm/versions/node/v5.6.0/bin/node"))
+  ;; (setq exec-path (append exec-path '("~/.nvm/versions/node/v5.6.0/bin/node/bin")))
   ;; get rid of stupid tern-port files
   (setq tern-command '("tern" "--no-port-file"))
 
@@ -553,8 +559,8 @@ values."
         kept-new-versions 64
         kept-old-versions 0
         delete-old-versions nil)
-  (setq backup-directory-alist '(("." . ".bak")))
-  )
+  (setq backup-directory-alist '(("." . ".bak"))))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
+

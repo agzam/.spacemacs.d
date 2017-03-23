@@ -87,5 +87,5 @@
           ;; align
           (org-set-tags (point) t))))
     (when (and added-at (not sched))
-      (org--deadline-or-schedule nil 'deadline (add-days-to-ifttt-date added-at 30)))))
+      (org--deadline-or-schedule nil 'deadline (ag/add-days-to-ifttt-date added-at 10)))))
 

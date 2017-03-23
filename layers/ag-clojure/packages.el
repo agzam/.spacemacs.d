@@ -30,7 +30,7 @@
 
 (with-eval-after-load 'clojure-mode
   (setq clojure-enable-fancify-symbols nil
-        clojure-indent-style :align-arguments 
+        ;; clojure-indent-style :align-arguments 
         clojure-align-forms-automatically t
         cider-overlays-use-font-lock nil
         cider-repl-use-clojure-font-lock nil
@@ -42,3 +42,5 @@
 
   ;; annoying Java Cup icon - no longer will bother you
   (setenv "JAVA_TOOL_OPTIONS" "-Dapple.awt.UIElement=true"))
+
+(with-eval-after-load 'cider (setq cider-boot-parameters "dev")) 

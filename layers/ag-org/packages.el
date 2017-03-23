@@ -28,7 +28,7 @@
         "* %u  %?\n\t%f\n\t#+BEGIN_SRC %^{language}\n\t\t%i\n\t#+END_SRC"))
 
      ort/prefix-arg-directory "~/Dropbox/org"
-     org-agenda-files '("~/Dropbox/org/")
+     org-agenda-files '("~/Dropbox/org/" "~/Dropbox/org/pocket.org.txt")
      org-refile-targets '((nil :maxlevel . 3)
                           (org-agenda-files :maxlevel . 3))
      org-refile-allow-creating-parent-nodes 'confirm
@@ -83,7 +83,7 @@
 
 (defun ag-org/init-ox-reveal ()
   (use-package ox-reveal
+    :defer t
     :config
     (progn
       (setq org-reveal-title-slide nil))))
-
