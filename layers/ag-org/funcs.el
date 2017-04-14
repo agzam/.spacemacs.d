@@ -76,16 +76,17 @@
 
 (defun ag/set-tags-and-schedules-for-ifttt-items ()
   "For org items imported via IFTTT, sets the right tags and deadline (30 days from the added day)"
-  (let ((tags (-some-> (org-entry-get (point) "tag")
-                       (split-string "," t "\s")))
-        (sched (org-entry-get (point) "DEADLINE"))
-        (added-at (org-entry-get (point) "AddedAt")))
-    (when tags
-      (dolist (i tags)
-        (when (not (member i (org-get-tags)))
-          (org-toggle-tag i 'on)
-          ;; align
-          (org-set-tags (point) t))))
-    (when (and added-at (not sched))
-      (org--deadline-or-schedule nil 'deadline (ag/add-days-to-ifttt-date added-at 10)))))
-
+  (progn
+    (let ((tags (-some-> (org-entry-get (point) "tag")
+                         (split-string "," t "\s")))
+          (sched (org-entry-get (point) "DEADLINE"))
+          (added-at (org-entry-get (point) "AddedAt")))
+      (when tags
+        (dolist (i tags)
+          (when (not (member i (org-get-tags)))
+            (org-toggle-tag i 'on)
+            ;; align
+            (org-set-tags (point) t))))
+      (when (and added-at (not sched))
+        (org--deadline-or-schedule nil 'deadline (ag/add-days-to-ifttt-date added-at 10))))
+    (save-buffer)))

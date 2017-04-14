@@ -1,0 +1,5 @@
+# -*- coding: utf-8 -*-
+# name: require-finops-admin-core
+# key: req-fac
+# --
+(require '[finops-admin.core :refer [reconciler]])
