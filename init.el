@@ -48,8 +48,7 @@ values."
      lua
      ;; python
      ;; react
-     ;; (ruby :variables ruby-enable-enh-ruby-mode t
-     ;;                  ruby-version-manager 'rvm)
+     (ruby :variables ruby-version-manager 'rvm)
      haskell
 
      ;; --- Editor  ----
@@ -94,7 +93,7 @@ values."
      ;; --- My own layers ----
      ag-dired
      ag-general
-     ag-dash
+     ;; ag-dash
      ag-synonyms
      ag-org
      ag-clojure
@@ -106,10 +105,12 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(dired+
-                                      flycheck-package
+   dotspacemacs-additional-packages '(
+                                      ;; flycheck-package I'm not sure if I need this anymore
+                                      copy-as-format 
+                                      dired+
                                       helm-flycheck
-                                      tern-auto-complete
+                                      ;; tern-auto-complete
                                       string-inflection
                                       writeroom-mode
                                       (base16-ocean-dark :location local))
@@ -352,7 +353,11 @@ values."
    ;; `trailing' to delete only the whitespace at end of lines, `changed'to
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
-   dotspacemacs-whitespace-cleanup nil))
+   dotspacemacs-whitespace-cleanup nil
+   ;; Either nil or a number of seconds. If non-nil zone out after the specified
+   ;; number of seconds. (default nil)
+   dotspacemacs-zone-out-when-idle nil
+   ))
 
 (defun dotspacemacs/user-init ()
   (add-to-list 'custom-theme-load-path "~/.spacemacs.d/themes")
@@ -372,9 +377,7 @@ values."
    ;; Shell
    ;; system-uses-terminfo nil
    ;; shell-default-shell 'shell
-   eyebrowse-keymap-prefix (kbd "C-x C-w")
-   evil-search-module 'isearch
-   )
+   eyebrowse-keymap-prefix (kbd "C-x C-w"))
 
   (setq
    ns-auto-hide-menu-bar nil
@@ -391,6 +394,8 @@ values."
 (defun dotspacemacs/user-config ()
   "Configuration function for user code. This function is called at the very end of Spacemacs initialization after layers configuration. You are free to put any user code."
   (setq
+   ;; spacemacs-default-jump-handlers 'dumb-jump-go 
+   ;; evil-search-module 'isearch
    ;;;; Editor
    powerline-default-separator nil
    powerline-center-theme t
@@ -412,7 +417,7 @@ values."
    helm-echo-input-in-header-line nil
    helm-ff--deleting-char-backward t
    helm-follow-mode-persistent t
-   ;; helm-buffer-details-flag nil        ;; Always show details in buffer list when non--nil.
+   helm-buffer-details-flag nil        ;; Always show details in buffer list when non--nil.
 
    ;;;; Misc
    vc-follow-symlinks t
@@ -434,8 +439,10 @@ values."
    ;; (pupo-mode -1)
    ;; (purpose-mode -1)
    (add-hook 'prog-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
+   (add-hook 'prog-mode-hook 'flycheck-mode)
    (spacemacs/toggle-mode-line-version-control-off)
    (spacemacs/toggle-mode-line-minor-modes-off)
+   (spacemacs/toggle-evil-visual-mark-mode-on)
 
   ;; ---------------
   ;; Shell, Term
@@ -526,6 +533,8 @@ values."
   (with-eval-after-load 'evil-magit
     (evil-magit-define-key 'normal 'magit-mode-map "<escape>" nil))
 
+  (defun ag/magit-diff-mode-hook () (setq-local global-hl-line-mode nil))
+  (add-hook 'magit-diff-mode-hook #'ag/magit-diff-mode-hook)
   ;; --------
   ;; dired / ranger
   ;; -----
@@ -564,3 +573,28 @@ values."
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
 
+(defun dotspacemacs/emacs-custom-settings ()
+  "Emacs custom settings.
+This is an auto-generated function, do not modify its content directly, use
+Emacs customize menu instead.
+This function is called at the very end of Spacemacs initialization."
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(magit-pull-arguments nil)
+ '(paradox-github-token t)
+ '(safe-local-variable-values
+   (quote
+    ((eval org-map-entries
+           (function ag/set-tags-and-schedules-for-ifttt-items)
+           nil
+           (quote file))))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+)

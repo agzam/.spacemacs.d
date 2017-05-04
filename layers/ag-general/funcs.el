@@ -92,3 +92,8 @@
   ("n" (ag/move-frame-one-display "North"))
   ("p" (ag/move-frame-one-display "South"))
   ("q" nil :exit t))
+
+;; remove visual marks overlay after marks are deleted
+(advice-add 'evil-delete-marks :after
+            (lambda (&rest args)
+              (evil-visual-mark-render)))

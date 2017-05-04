@@ -81,7 +81,7 @@
    `(isearch-lazy-highlight-face ((t (:background ,base02))))
    `(isearch-fail ((t (:background ,base01 :inherit font-lock-warning-face :inverse-video t))))
    `(evil-search-highlight-persist-highlight-face ((t (:background ,base01 :inherit font-lock-warning-face :inverse-video t))))
-
+   `(evil-visual-mark-face ((t (:background "DarkOliveGreen" :foreground ,base0A))))
 
    ;; Popups
    `(popup-face ((t (:foreground ,base05 :background ,base02))))
@@ -576,7 +576,11 @@
    `(magit-popup-disabled-argument ((t (:foreground ,base02))))
    `(magit-popup-option-value ((t (:foreground ,base08))))
    `(magit-popup-argument ((t (:foreground ,base08))))
-   ;; `(magit-diff-added-highlight ((t (:background ,base0B :foreground ,base01))))
+
+   ;; `(magit-diff-removed ((t (:foreground "IndianRed4" :background "LightPink1"))))
+   ;; `(magit-diff-added ((t (:foreground "green4" :background "DarkSeaGreen3"))))
+   ;; `(magit-diff-removed-highlight ((t (:foreground "IndianRed4" :background "LightPink2"))))
+   ;; `(magit-diff-added-highlight ((t (:foreground "green4" :background "DarkSeaGreen2"))))
 
    ;; avy 
    `(avy-lead-face ((t (:foreground "yellow" :background "PaleGreen4" :inverse-video nil)))))

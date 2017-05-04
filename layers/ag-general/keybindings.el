@@ -3,6 +3,7 @@
 (global-set-key (kbd "s-n") nil)
 (global-set-key (kbd "s-p") nil)
 (global-set-key (kbd "s-q") nil)
+(global-set-key (kbd "C-x C-c") nil) ;; don't kill the frame unexpectedly
 (evil-define-key 'motion help-mode-map (kbd "<escape>") nil)
 (global-set-key (kbd "C-x b") 'spacemacs-layouts/non-restricted-buffer-list-helm)
 (global-set-key (kbd "C-x C-b") 'spacemacs-layouts/non-restricted-buffer-list-helm)

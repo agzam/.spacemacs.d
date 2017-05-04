@@ -69,7 +69,8 @@
     (require 'ob-ruby)
     (org-babel-do-load-languages
      'org-babel-load-languages
-     '((shell . t)
+     '((emacs-lisp . t)
+       (shell . t)
        (js . t)
        (clojure . t)
        (ruby . t)))))
