@@ -577,10 +577,11 @@
    `(magit-popup-option-value ((t (:foreground ,base08))))
    `(magit-popup-argument ((t (:foreground ,base08))))
 
-   ;; `(magit-diff-removed ((t (:foreground "IndianRed4" :background "LightPink1"))))
-   ;; `(magit-diff-added ((t (:foreground "green4" :background "DarkSeaGreen3"))))
-   ;; `(magit-diff-removed-highlight ((t (:foreground "IndianRed4" :background "LightPink2"))))
-   ;; `(magit-diff-added-highlight ((t (:foreground "green4" :background "DarkSeaGreen2"))))
+   `(magit-diff-context-highlight ((t (:background ,base00))))
+   `(magit-diff-removed ((t (:foreground ,base08))))
+   `(magit-diff-added ((t (:foreground ,base0B))))
+   `(magit-diff-removed-highlight ((t (:foreground "#ef6160"))))
+   `(magit-diff-added-highlight ((t (:foreground "#a3be70"))))
 
    ;; avy 
    `(avy-lead-face ((t (:foreground "yellow" :background "PaleGreen4" :inverse-video nil)))))

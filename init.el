@@ -87,7 +87,7 @@ values."
 
      (github :packages (not magit-gh-pulls)
              :variables
-             ;; view your Gist using `browse-url` after it is created 
+             ;; view your Gist using `browse-url` after it is created
              gist-view-gist t)
 
      ;; --- My own layers ----
@@ -107,7 +107,7 @@ values."
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(
                                       ;; flycheck-package I'm not sure if I need this anymore
-                                      copy-as-format 
+                                      copy-as-format
                                       dired+
                                       helm-flycheck
                                       ;; tern-auto-complete
@@ -360,6 +360,13 @@ values."
    ))
 
 (defun dotspacemacs/user-init ()
+  "Initialization function for user code.
+It is called immediately after `dotspacemacs/init', before layer configuration
+executes.
+ This function is mostly useful for variables that need to be set
+before packages are loaded. If you are unsure, you should try in setting them in
+`dotspacemacs/user-config' first."
+
   (add-to-list 'custom-theme-load-path "~/.spacemacs.d/themes")
 
   (setq-default
@@ -394,7 +401,7 @@ values."
 (defun dotspacemacs/user-config ()
   "Configuration function for user code. This function is called at the very end of Spacemacs initialization after layers configuration. You are free to put any user code."
   (setq
-   ;; spacemacs-default-jump-handlers 'dumb-jump-go 
+   ;; spacemacs-default-jump-handlers 'dumb-jump-go
    ;; evil-search-module 'isearch
    ;;;; Editor
    powerline-default-separator nil
@@ -412,6 +419,7 @@ values."
    default-input-method 'russian-computer
    google-translate-default-source-language "ru"
    google-translate-default-target-language "en"
+   scroll-margin 0
 
    ;;;; Helm
    helm-echo-input-in-header-line nil
@@ -533,8 +541,6 @@ values."
   (with-eval-after-load 'evil-magit
     (evil-magit-define-key 'normal 'magit-mode-map "<escape>" nil))
 
-  (defun ag/magit-diff-mode-hook () (setq-local global-hl-line-mode nil))
-  (add-hook 'magit-diff-mode-hook #'ag/magit-diff-mode-hook)
   ;; --------
   ;; dired / ranger
   ;; -----
@@ -583,7 +589,11 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(helm-source-names-using-follow nil)
  '(magit-pull-arguments nil)
+ '(package-selected-packages
+   (quote
+    (visual-fill-column powerline pcre2el alert log4e gntp org-plus-contrib skewer-mode simple-httpd js2-mode parent-mode window-purpose imenu-list projectile haml-mode gitignore-mode fringe-helper git-gutter+ git-gutter gh marshal logito pcache flyspell-correct flx with-editor iedit anzu goto-chg undo-tree ht json-mode tablist docker-tramp json-snatcher json-reformat diminish web-completion-data dash-functional tern know-your-http-well pos-tip ghc haskell-mode company request-deferred request deferred hydra inflections edn multiple-cursors paredit peg eval-sexp-fu highlight inf-ruby f s bind-map bind-key packed dash websocket avy async auto-complete spinner queue pkg-info clojure-mode epl popup smartparens yasnippet restclient markdown-mode evil cider flycheck magit magit-popup git-commit helm-core emojify git-link flycheck-pos-tip clojure-snippets adaptive-wrap helm zenburn-theme yaml-mode xterm-color ws-butler writeroom-mode winum which-key web-mode web-beautify volatile-highlights vmd-mode vi-tilde-fringe uuidgen use-package toc-org tagedit synonyms symon string-inflection spaceline solarized-theme smeargle shell-pop scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reveal-in-osx-finder restclient-helm restart-emacs rbenv rake rainbow-mode rainbow-delimiters popwin persp-mode pbcopy paradox ox-twbs ox-reveal ox-gfm osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro org-download org-bullets open-junk-file obsidian-theme ob-restclient ob-http neotree multi-term move-text mmm-mode minitest markdown-toc magithub magit-gitflow macrostep lua-mode lorem-ipsum livid-mode linum-relative link-hint less-css-mode launchctl js2-refactor js-doc intero insert-shebang info+ indent-guide ibuffer-projectile hungry-delete htmlize hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-purpose helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flycheck helm-flx helm-descbinds helm-css-scss helm-company helm-clojuredocs helm-cider helm-c-yasnippet helm-ag haskell-snippets google-translate golden-ratio gnuplot github-search github-clone gitconfig-mode gitattributes-mode git-timemachine git-messenger git-gutter-fringe git-gutter-fringe+ gist gh-md fuzzy flyspell-correct-helm flycheck-joker flycheck-haskell flx-ido fill-column-indicator fasd fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eshell-z eshell-prompt-extras esh-help engine-mode emoji-cheat-sheet-plus emmet-mode elisp-slime-nav dumb-jump dockerfile-mode docker direx dired+ diff-hl csv-mode copy-as-format company-web company-tern company-statistics company-shell company-restclient company-quickhelp company-ghci company-ghc company-emoji company-cabal column-enforce-mode color-theme-sanityinc-tomorrow coffee-mode cmm-mode clojure-mode-extra-font-locking clojure-cheatsheet clojars clj-refactor clean-aindent-mode cider-eval-sexp-fu chruby calfw bundler browse-at-remote auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile atomic-chrome aggressive-indent ace-window ace-link ace-jump-helm-line ac-ispell ac-cider)))
  '(paradox-github-token t)
  '(safe-local-variable-values
    (quote
