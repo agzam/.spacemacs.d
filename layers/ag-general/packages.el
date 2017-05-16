@@ -1,7 +1,10 @@
 (setq ag-general-packages '(
                             ;; editorconfig
                             rainbow-mode
-                            atomic-chrome))
+                            atomic-chrome
+                            page-break-lines
+                            helm-pages
+                            ))
 
 (setq ag-general-excluded-packages '())
 
@@ -27,3 +30,13 @@
           atomic-chrome-enable-bidirectional-edit nil)
     (add-hook 'atomic-chrome-edit-mode-hook #'ag/switch-focus-to-emacs-frame)
     (add-hook 'atomic-chrome-edit-done-hook #'ag/switch-focus-to-chrome)))
+
+(defun ag-general/init-page-break-lines ()
+  (use-package page-break-lines
+    :defer t
+    :init
+    (global-page-break-lines-mode 1)))
+
+(defun ag-general/init-helm-pages ()
+  (use-package helm-pages
+    :defer t))

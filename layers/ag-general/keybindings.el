@@ -84,3 +84,6 @@
   (define-key company-active-map (kbd "C-n") 'company-select-next)
   (define-key company-active-map (kbd "C-p") 'company-select-previous)
   (define-key company-active-map (kbd "C-f") 'company-search-candidates))
+
+(spacemacs/set-leader-keys
+  "ip" (kbd "i C-q C-l <RET><escape>"))
