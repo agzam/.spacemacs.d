@@ -15,7 +15,9 @@
   "qQ" 'spacemacs/prompt-kill-emacs
   "s/" 'engine/search-google
   "jj" 'avy-goto-char-timer
-  "xx" 'ispell-word)
+  "xx" 'ispell-word
+  "ja" 'beginning-of-defun
+  "je" 'end-of-defun)
 
 (define-key evil-normal-state-map "Q" 'bury-buffer)
 (define-key evil-normal-state-map (kbd "C-S-e") 'scroll-other-window)
@@ -72,8 +74,8 @@
 ;; -----------
 ;; Inflections
 ;; -----------
-(spacemacs/set-leader-keys
-  "xi" 'string-inflection-all-cycle)
+;; (spacemacs/set-leader-keys
+;;   "xi" 'string-inflection-all-cycle)
 
 (evil-define-key 'normal info-mode-map "p" 'info-prev)
 

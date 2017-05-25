@@ -6,6 +6,10 @@
 ;; List of packages to exclude.
 (setq ag-dired-excluded-packages '())
 
+(setq dired-omit-files "^\\.?#\\|^\\.DS_Store$")
+(add-hook 'dired-mode-hook #'dired-hide-details-mode)
+(add-hook 'dired-mode-hook #'dired-omit-mode)
+
 (defun ag-dired/init-direx ()
   (use-package direx
     :defer t

@@ -27,7 +27,7 @@ values."
    ;; If non-nil layers with lazy install support are lazy installed.
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
-   dotspacemacs-configuration-layer-path '("~/.spacemacs.d/") ;
+   dotspacemacs-configuration-layer-path '("~/.spacemacs.d/layers") ;
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '((org :variables
@@ -37,20 +37,13 @@ values."
           :packages (not org-present))
      ;; (spacemacs-ui-visual :packages (not fancy-battery))
      ;; ---- Languages -----
-     csv
-     yaml
-     emacs-lisp
-     javascript
+     csv yaml emacs-lisp clojure haskell lua javascript
      (html :packages (not pug-mode slim-mode))
      (markdown :variables markdown-live-preview-engine 'vmd)
      (shell-scripts :packages (not fish-mode))
-     clojure
-     lua
      ;; python
      ;; react
-     (ruby :variables ruby-version-manager 'rvm)
-     haskell
-
+     ;; (ruby :variables ruby-version-manager 'rvm)
      ;; --- Editor  ----
      (auto-completion :variables
                       auto-completion-tab-key-behavior 'cycle
@@ -58,73 +51,57 @@ values."
                       auto-completion-enable-help-tooltip t
                       auto-completion-enable-sort-by-usage t)
 
-     syntax-checking
-     spell-checking
-
+     syntax-checking spell-checking
      ;; ---- Tools ----
-     helm
+     helm fasd osx restclient emoji search-engine imenu-list docker
      (shell :variables
             shell-enable-smart-eshell t
             comint-scroll-show-maximum-output nil
             comint-move-point-for-output nil)
-
-     fasd
      (ibuffer :variables ibuffer-old-time 8)
-     osx
      ;; (semantic :disabled-for '(emacs-lisp org))
-     restclient
-     emoji
      ;; ranger
-     search-engine
-     imenu-list
-     docker
-
      ;; ---- Version control ----
      git
      (version-control :variables
                       version-control-diff-tool 'diff-hl
                       version-control-global-margin t)
-
      (github :packages (not magit-gh-pulls)
              :variables
              ;; view your Gist using `browse-url` after it is created
              gist-view-gist t)
-
      ;; --- My own layers ----
-     ag-dired
-     ag-general
-     ;; ag-dash
-     ag-synonyms
-     ag-org
-     ag-clojure
-     ag-cal
-     ;; ag-jira
-     ;; ag-4clojure
+     ag-dired ag-general ag-synonyms ag-org ag-clojure ag-web
+     ;; ag-cal ;; ag-dash ;; ag-jira ;; ag-4clojure
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(
-                                      ;; flycheck-package I'm not sure if I need this anymore
-                                      copy-as-format
+   dotspacemacs-additional-packages '(copy-as-format
                                       dired+
                                       helm-flycheck
-                                      ;; tern-auto-complete
-                                      string-inflection
                                       writeroom-mode
-                                      (base16-ocean-dark :location local))
+                                      (base16-ocean-dark :location local)
+                                      ;; string-inflection
+                                      ;; flycheck-package I'm not sure if I need this anymore
+                                      ;; tern-auto-complete
+                                      ;; temporary fix, until it gets fixed on MELPA
+                                      ;; (ghub+ :location (recipe
+                                      ;;                   :fetcher github
+                                      ;;                   :repo "vermiculus/ghub-plus"))
+                                      )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
    dotspacemacs-excluded-packages '()
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
-   ;; `used-only' installs only explicitly used packages and uninstall any
-   ;; unused packages as well as their unused dependencies.
-   ;; `used-but-keep-unused' installs only the used packages but won't uninstall
-   ;; them if they become unused. `all' installs *all* packages supported by
-   ;; Spacemacs and never uninstall them. (default is `used-only')
+   ;; `used-only' installs only explicitly used packages and deletes any unused
+   ;; packages as well as their unused dependencies. `used-but-keep-unused'
+   ;; installs only the used packages but won't delete unused ones. `all'
+   ;; installs *all* packages supported by Spacemacs and never uninstalls them.
+   ;; (default is `used-only')
    dotspacemacs-install-packages 'used-only))
 
 (defun dotspacemacs/init ()
@@ -176,27 +153,27 @@ values."
    ;; `recents' `bookmarks' `projects' `agenda' `todos'."
    ;; List sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
-   dotspacemacs-startup-lists '((warnings . 5) (recents . 5) (projects . 5) (todos . 10) (bookmarks . 5) (agenda . 5))
+   dotspacemacs-startup-lists '((recents . 5) (projects . 5) (todos . 10) (bookmarks . 5) (agenda . 5))
    ;; True if the home buffer should respond to resize events.
    dotspacemacs-startup-buffer-responsive nil
    ;; Default major mode of the scratch buffer (default `text-mode')
    dotspacemacs-scratch-mode 'org-mode
    ;; List of themes, the first of the list is loaded when spacemacs starts.
-   ;; Press <SPC> T n to cycle to the next theme in the list (works great
+   ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(base16-ocean-dark zenburn sanityinc-tomorrow-eighties obsidian solarized-light)
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Source Code Pro"
+   dotspacemacs-default-font '("Source Code Pro ExtraLight"
                                :size 14
                                :weight normal
                                :width normal
                                :powerline-scale 0.5)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
-   ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
+   ;; The key used for Emacs commands `M-x' (after pressing on the leader key).
    ;; (default "SPC")
    dotspacemacs-emacs-command-key "SPC"
    ;; The key used for Vim Ex commands (default ":")
@@ -211,9 +188,9 @@ values."
    ;; (default "C-M-m")
    dotspacemacs-major-mode-emacs-leader-key "C-M-m"
    ;; These variables control whether separate commands are bound in the GUI to
-   ;; the key pairs C-i, TAB and C-m, RET.
-   ;; Setting it to a non-nil value, allows for separate commands under <C-i>
-   ;; and TAB or <C-m> and RET.
+   ;; the key pairs `C-i', `TAB' and `C-m', `RET'.
+   ;; Setting it to a non-nil value, allows for separate commands under `C-i'
+   ;; and TAB or `C-m' and `RET'.
    ;; In the terminal, these pairs are generally indistinguishable, so this only
    ;; works in the GUI. (default nil)
    dotspacemacs-distinguish-gui-tab t
@@ -222,7 +199,7 @@ values."
    ;; If non-nil, the shift mappings `<' and `>' retain visual state if used
    ;; there. (default t)
    dotspacemacs-retain-visual-state-on-shift t
-   ;; If non-nil, J and K move lines up and down when in visual mode.
+   ;; If non-nil, `J' and `K' move lines up and down when in visual mode.
    ;; (default nil)
    dotspacemacs-visual-line-move-text t
    ;; If non-nil, inverse the meaning of `g' in `:substitute' Evil ex-command.
@@ -260,7 +237,7 @@ values."
    ;; source settings. Else, disable fuzzy matching in all sources.
    ;; (default 'always)
    dotspacemacs-helm-use-fuzzy 'always
-   ;; If non-nil the paste micro-state is enabled. When enabled pressing `p`
+   ;; If non-nil the paste micro-state is enabled. When enabled pressing `p'
    ;; several times cycle between the kill ring content. (default nil)
    dotspacemacs-enable-paste-transient-state t
    ;; Which-key delay in seconds. The which-key buffer is the popup listing
@@ -326,7 +303,7 @@ values."
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
-   ;; If non-nil smartparens-strict-mode will be enabled in programming modes.
+   ;; If non-nil `smartparens-strict-mode' will be enabled in programming modes.
    ;; (default nil)
    dotspacemacs-smartparens-strict-mode t
    ;; If non-nil pressing the closing parenthesis `)' key in insert mode passes
@@ -348,9 +325,29 @@ values."
    ;; specified with an installed package.
    ;; Not used for now. (default nil)
    dotspacemacs-default-package-repository nil
+   ;; Format specification for setting the frame title.
+   ;; %a - the `abbreviated-file-name', or `buffer-name'
+   ;; %t - `projectile-project-name'
+   ;; %I - `invocation-name'
+   ;; %S - `system-name'
+   ;; %U - contents of $USER
+   ;; %b - buffer name
+   ;; %f - visited file name
+   ;; %F - frame name
+   ;; %s - process status
+   ;; %p - percent of buffer above top of window, or Top, Bot or All
+   ;; %P - percent of buffer above bottom of window, perhaps plus Top, or Bot or All
+   ;; %m - mode name
+   ;; %n - Narrow if appropriate
+   ;; %z - mnemonics of buffer, terminal, and keyboard coding systems
+   ;; %Z - like %z, but including the end-of-line format
+   dotspacemacs-frame-title-format "%I@%S"
+   ;; Format specification for setting the icon title format
+   ;; (default nil - same as frame-title-format)
+   dotspacemacs-icon-title-format nil
    ;; Delete whitespace while saving buffer. Possible values are `all'
    ;; to aggressively delete empty line and long sequences of whitespace,
-   ;; `trailing' to delete only the whitespace at end of lines, `changed'to
+   ;; `trailing' to delete only the whitespace at end of lines, `changed' to
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
    dotspacemacs-whitespace-cleanup nil
@@ -380,29 +377,22 @@ before packages are loaded. If you are unsure, you should try in setting them in
    evil-escape-delay 0.1
    fill-column 120
    frame-background-mode 'dark
-
    ;; Shell
    ;; system-uses-terminfo nil
    ;; shell-default-shell 'shell
    eyebrowse-keymap-prefix (kbd "C-x C-w"))
 
   (setq
+   dotspacemacs-default-layout-name "•"
    ns-auto-hide-menu-bar nil
    package-archives
    '(("gnu" . "https://elpa.gnu.org/packages/")
      ("marmalade" . "https://marmalade-repo.org/packages/")
-     ("melpa" . "https://melpa.org/packages/"))
-
-   dotspacemacs-default-layout-name "•"
-
-   ;; better looking font in books
-   doc-view-resolution 144))
+     ("melpa" . "https://melpa.org/packages/"))))
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code. This function is called at the very end of Spacemacs initialization after layers configuration. You are free to put any user code."
   (setq
-   ;; spacemacs-default-jump-handlers 'dumb-jump-go
-   ;; evil-search-module 'isearch
    ;;;; Editor
    powerline-default-separator nil
    powerline-center-theme t
@@ -420,19 +410,20 @@ before packages are loaded. If you are unsure, you should try in setting them in
    google-translate-default-source-language "ru"
    google-translate-default-target-language "en"
    scroll-margin 0
+   ;; spacemacs-default-jump-handlers 'dumb-jump-go
+   ;; evil-search-module 'isearch
 
    ;;;; Helm
    helm-echo-input-in-header-line nil
    helm-ff--deleting-char-backward t
    helm-follow-mode-persistent t
    helm-buffer-details-flag nil        ;; Always show details in buffer list when non--nil.
+   apropos-sort-by-scores t
 
    ;;;; Misc
    vc-follow-symlinks t
    diff-hl-side 'left
    use-dialog-box nil
-   apropos-sort-by-scores t
-   sass-indent-offset 2
 
    ;; don't quit on esc
    evil-escape-excluded-major-modes '(magit-status-mode
@@ -443,6 +434,8 @@ before packages are loaded. If you are unsure, you should try in setting them in
    delete-by-moving-to-trash nil
    magit-show-refs-arguments '("--sort=-committerdate")
    magit-delete-by-moving-to-trash nil)
+
+  (with-eval-after-load 'helm-ag (setq helm-ag-use-agignore t))
 
    ;; (pupo-mode -1)
    ;; (purpose-mode -1)
@@ -464,8 +457,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (add-hook 'term-mode-hook #'ag/shell-hook)
   (add-hook 'shell-mode-hook #'ag/shell-hook)
 
-  (add-to-list 'sp-sexp-suffix '(js2-mode regex ""))
-
   ;; ---------------
   ;; Haskell
   ;; ---------------
@@ -476,63 +467,8 @@ before packages are loaded. If you are unsure, you should try in setting them in
   ;; ---------------
   (add-hook 'markdown-mode-hook #'flyspell-mode)
 
-  ;; ---------------
-  ;; css-mode sass-mode
-  ;; ---------------
-  (add-hook 'css-mode-hook (lambda () (rainbow-mode 1)))
-  (defun ag/sass-mode-hook ()
-    (auto-complete-mode 1)
-    (rainbow-mode 1))
-
-  (add-hook 'sass-mode-hook #'ag/sass-mode-hook)
-  (with-eval-after-load 'sass (rvm-use-default))
-
   ;; auto-completion
   (with-eval-after-load 'auto-complete (add-to-list 'ac-dictionary-directories "~/.spacemacs.d/ac-dict"))
-
-  ;; ------------
-  ;; Javascript mode
-  ;; ------------
-  (setq js2-include-node-externs t
-        js2-include-browser-externs t
-        js2-include-global-externs t
-        js2-global-externs (list "$" "window" "angular" "Rx" "_" "moment")
-        coffee-tab-width 4
-        ;; js-indent-level 4
-        ;; js2-basic-offset 4
-        )
-  (add-hook 'js2-mode-hook #'flyspell-prog-mode)
-
-  ;; Flycheck JSCS
-  (flycheck-def-config-file-var flycheck-jscs
-      javascript-jscs ".jscs.json" :safe #'stringp)
-  (flycheck-define-checker javascript-jscs
-    "A JavaScript code style checker. See URL `https://github.com/mdevils/node-jscs'."
-    :command ("jscs" "--reporter"
-              "checkstyle"
-              (config-file "--config" flycheck-jscs)
-              source):error-parser
-              flycheck-parse-checkstyle
-              :modes (js-mode js2-mode js3-mode):next-checkers
-              (javascript-jshint))
-  (defun jscs-enable ()
-    (interactive)
-    (add-to-list 'flycheck-checkers 'javascript-jscs))
-  (defun jscs-disable ()
-    (interactive)
-    (setq flycheck-checkers (remove 'javascript-jscs flycheck-checkers)))
-  (setq js2-strict-inconsistent-return-warning nil)
-
-  ;; Flycheck coffeelint
-  (setq flycheck-coffee-coffeelint-executable
-        "~/.nvm/versions/node/v5.6.0/bin/node/bin/coffeelint")
-  (setq flycheck-coffeelintrc "~/.coffeelintrc")
-  (add-hook 'coffee-mode-hook #'flyspell-prog-mode)
-
-  ;; (setenv "PATH" (concat (getenv "PATH") ":~/.nvm/versions/node/v5.6.0/bin/node"))
-  ;; (setq exec-path (append exec-path '("~/.nvm/versions/node/v5.6.0/bin/node/bin")))
-  ;; get rid of stupid tern-port files
-  (setq tern-command '("tern" "--no-port-file"))
 
   ;; ---------
   ;; Magit
@@ -540,20 +476,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
   ;; don't exit magit on escape-sequence and don't bury its buffer on Esc
   (with-eval-after-load 'evil-magit
     (evil-magit-define-key 'normal 'magit-mode-map "<escape>" nil))
-
-  ;; --------
-  ;; dired / ranger
-  ;; -----
-  (setq dired-omit-files "^\\.?#\\|^\\.DS_Store$")
-  (add-hook 'dired-mode-hook #'dired-hide-details-mode)
-  (add-hook 'dired-mode-hook #'dired-omit-mode)
-  ;; (setq-default split-height-threshold 150 ;;http://stackoverflow.com/questions/23207958/how-to-prevent-emacs-dired-from-splitting-frame-into-more-than-two-windows
-  ;;               split-width-threshold 200)
-
-  ;; ----------
-  ;; Helm
-  ;; ----------
-  (with-eval-after-load 'helm-ag (setq helm-ag-use-agignore t))
 
   ;; -----------
   ;; Perspectives
@@ -574,7 +496,12 @@ before packages are loaded. If you are unsure, you should try in setting them in
         kept-new-versions 64
         kept-old-versions 0
         delete-old-versions nil)
-  (setq backup-directory-alist '(("." . ".bak"))))
+  (setq backup-directory-alist '(("." . ".bak")))
+
+  ;; Temporary fix - for magithub on Emacs 26  
+  ;; (with-eval-after-load 'magithub
+  ;;   (defun ghubp--post-process (object &optional preserve-objects) object))
+  )
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
@@ -591,9 +518,6 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  '(helm-source-names-using-follow nil)
  '(magit-pull-arguments nil)
- '(package-selected-packages
-   (quote
-    (visual-fill-column powerline pcre2el alert log4e gntp org-plus-contrib skewer-mode simple-httpd js2-mode parent-mode window-purpose imenu-list projectile haml-mode gitignore-mode fringe-helper git-gutter+ git-gutter gh marshal logito pcache flyspell-correct flx with-editor iedit anzu goto-chg undo-tree ht json-mode tablist docker-tramp json-snatcher json-reformat diminish web-completion-data dash-functional tern know-your-http-well pos-tip ghc haskell-mode company request-deferred request deferred hydra inflections edn multiple-cursors paredit peg eval-sexp-fu highlight inf-ruby f s bind-map bind-key packed dash websocket avy async auto-complete spinner queue pkg-info clojure-mode epl popup smartparens yasnippet restclient markdown-mode evil cider flycheck magit magit-popup git-commit helm-core emojify git-link flycheck-pos-tip clojure-snippets adaptive-wrap helm zenburn-theme yaml-mode xterm-color ws-butler writeroom-mode winum which-key web-mode web-beautify volatile-highlights vmd-mode vi-tilde-fringe uuidgen use-package toc-org tagedit synonyms symon string-inflection spaceline solarized-theme smeargle shell-pop scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reveal-in-osx-finder restclient-helm restart-emacs rbenv rake rainbow-mode rainbow-delimiters popwin persp-mode pbcopy paradox ox-twbs ox-reveal ox-gfm osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro org-download org-bullets open-junk-file obsidian-theme ob-restclient ob-http neotree multi-term move-text mmm-mode minitest markdown-toc magithub magit-gitflow macrostep lua-mode lorem-ipsum livid-mode linum-relative link-hint less-css-mode launchctl js2-refactor js-doc intero insert-shebang info+ indent-guide ibuffer-projectile hungry-delete htmlize hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-purpose helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flycheck helm-flx helm-descbinds helm-css-scss helm-company helm-clojuredocs helm-cider helm-c-yasnippet helm-ag haskell-snippets google-translate golden-ratio gnuplot github-search github-clone gitconfig-mode gitattributes-mode git-timemachine git-messenger git-gutter-fringe git-gutter-fringe+ gist gh-md fuzzy flyspell-correct-helm flycheck-joker flycheck-haskell flx-ido fill-column-indicator fasd fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eshell-z eshell-prompt-extras esh-help engine-mode emoji-cheat-sheet-plus emmet-mode elisp-slime-nav dumb-jump dockerfile-mode docker direx dired+ diff-hl csv-mode copy-as-format company-web company-tern company-statistics company-shell company-restclient company-quickhelp company-ghci company-ghc company-emoji company-cabal column-enforce-mode color-theme-sanityinc-tomorrow coffee-mode cmm-mode clojure-mode-extra-font-locking clojure-cheatsheet clojars clj-refactor clean-aindent-mode cider-eval-sexp-fu chruby calfw bundler browse-at-remote auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile atomic-chrome aggressive-indent ace-window ace-link ace-jump-helm-line ac-ispell ac-cider)))
  '(paradox-github-token t)
  '(safe-local-variable-values
    (quote
