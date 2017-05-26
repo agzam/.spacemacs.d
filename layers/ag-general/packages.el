@@ -1,4 +1,4 @@
-(setq ag-general-packages '(
+(defconst ag-general-packages '(
                             ;; editorconfig
                             rainbow-mode
                             atomic-chrome
@@ -20,17 +20,19 @@
 
 (defun ag-general/init-atomic-chrome ()
   (use-package atomic-chrome
-    ;; :load-path "atomic-chrome/"
     :init
     (atomic-chrome-start-server)
+    (define-key atomic-chrome-edit-mode-map (kbd "C-c C-c") 'atomic-chrome-close-current-buffer)
     :config
     (setq atomic-chrome-default-major-mode 'markdown-mode
-          atomic-chrome-enable-bidirectional-edit t)
-    (add-hook 'atomic-chrome-edit-mode-hook #'ag/switch-focus-to-emacs-frame)
-    (add-hook 'atomic-chrome-edit-done-hook #'ag/switch-focus-to-chrome)))
+          atomic-chrome-enable-bidirectional-edit nil
+          atomic-chrome-extension-type-list '(atomic-chrome))
+    (add-hook 'atomic-chrome-edit-mode-hook #'ag/atomic-edit-start)
+    (add-hook 'atomic-chrome-edit-done-hook #'ag/atomic-edit-done)))
 
 (defun ag-general/init-helm-pages ()
   (use-package helm-pages
     :defer t))
+
 (defun flycheck-mode-off () (flycheck-mode -1))
 (add-hook 'emacs-lisp-mode-hook #'flycheck-mode-off)

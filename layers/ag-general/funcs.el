@@ -48,11 +48,11 @@
                   nil 0 nil
                   (concat "-c" "hs.alert.show(\"" message "\", 1)"))))
 
-(defun ag/switch-focus-to-emacs-frame ()
-  (when (eq system-type 'darwin)
-    (shell-command "open -a \"Emacs\"")))
+(defun ag/atomic-edit-start ()
+  (remove-hook 'markdown-mode-hook 'spacemacs/activate-mmm-mode)
+  (remove-hook 'markdown-mode-hook 'spacemacs//cleanup-org-tables-on-save))
 
-(defun ag/switch-focus-to-chrome ()
+(defun ag/atomic-edit-done ()
   (when (eq system-type 'darwin)
     (shell-command "open -a \"Google Chrome\"")))
 
