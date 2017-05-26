@@ -32,3 +32,5 @@
 (defun ag-general/init-helm-pages ()
   (use-package helm-pages
     :defer t))
+(defun flycheck-mode-off () (flycheck-mode -1))
+(add-hook 'emacs-lisp-mode-hook #'flycheck-mode-off)
