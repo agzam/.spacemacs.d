@@ -39,7 +39,9 @@ values."
      ;; ---- Languages -----
      csv yaml emacs-lisp clojure haskell lua javascript
      (html :packages (not pug-mode slim-mode))
-     (markdown :variables markdown-live-preview-engine 'vmd)
+     (markdown
+      :packages (not mmm-mode)
+      :variables markdown-live-preview-engine 'vmd)
      (shell-scripts :packages (not fish-mode))
      ;; python
      ;; react

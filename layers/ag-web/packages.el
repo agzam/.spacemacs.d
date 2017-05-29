@@ -16,8 +16,8 @@
         js2-include-global-externs t
         js2-global-externs (list "$" "window" "angular" "Rx" "_" "moment")
         coffee-tab-width 4
-        ;; js-indent-level 4
-        ;; js2-basic-offset 4
+        js-indent-level 2
+        js2-basic-offset 2
         )
   (add-hook 'js2-mode-hook #'flyspell-prog-mode)
 
