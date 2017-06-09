@@ -71,7 +71,8 @@ values."
      (github :packages (not magit-gh-pulls)
              :variables
              ;; view your Gist using `browse-url` after it is created
-             gist-view-gist t)
+             gist-view-gist t
+             magithub-api-timeout 5)
      ;; --- My own layers ----
      ag-dired ag-general ag-synonyms ag-org ag-clojure ag-web
      ;; ag-cal ;; ag-dash ;; ag-jira ;; ag-4clojure
@@ -377,7 +378,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
    right-fringe-width 0
    evil-escape-key-sequence "jk"
    evil-escape-delay 0.1
-   fill-column 120
    frame-background-mode 'dark
    ;; Shell
    ;; system-uses-terminfo nil
@@ -401,8 +401,8 @@ before packages are loaded. If you are unsure, you should try in setting them in
    avy-timeout-seconds 0.4
    aw-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9)                       ;;;; ace-windows instead of characters shows number
    linum-format "%3d\u2502"                                    ;;;; nicer line-numbers
-   frame-title-format "%f"                                     ;;;; full filepath in the title
-   spacemacs-show-trailing-whitespace nil
+   fill-column 120
+   spacemacs-show-trailing-whitespace t
    tab-width 4
    mouse-wheel-scroll-amount '(0.02)
    mouse-wheel-progressive-speed nil
@@ -431,7 +431,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
    evil-escape-excluded-major-modes '(magit-status-mode
                                       magit-diff-mode
                                       magit-refs-mode
-                                      help-mode paradox-menu-mode) 
+                                      help-mode paradox-menu-mode)
    ranger-override-dired nil
    delete-by-moving-to-trash nil
    magit-show-refs-arguments '("--sort=-committerdate")
@@ -500,7 +500,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
         delete-old-versions nil)
   (setq backup-directory-alist '(("." . ".bak")))
 
-  ;; Temporary fix - for magithub on Emacs 26  
+  ;; Temporary fix - for magithub on Emacs 26
   ;; (with-eval-after-load 'magithub
   ;;   (defun ghubp--post-process (object &optional preserve-objects) object))
   )
