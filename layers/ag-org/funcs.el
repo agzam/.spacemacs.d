@@ -64,9 +64,9 @@
 
 (defun ag/add-days-to-ifttt-date (dt days)
   "Takes datetime in IFTTT format e.g. `February 23, 2017 at 11:00AM`,
-   turns it into emacs-lisp datetime 
+   turns it into emacs-lisp datetime
    and adds given number of days"
-  (-some-> dt 
+  (-some-> dt
            (substring 0 -2)
            (split-string  " " nil ",")
            ((lambda (x) (cons (car (cdr x)) (cons (car x) (cdr (cdr x))))))
@@ -74,9 +74,21 @@
            (date-to-time)
            (time-add (days-to-time days))))
 
+(defun ag/indent-org-entry ()
+  "Indents current org entry"
+  (outline-show-entry)
+  (forward-line 1)
+  (set-mark-command nil)
+  (org-end-of-subtree)
+  (backward-char)
+  (indent-region (region-beginning) (region-end) 2)
+  (outline-hide-entry))
+
 (defun ag/set-tags-and-schedules-for-ifttt-items ()
-  "For org items imported via IFTTT, sets the right tags and deadline (30 days from the added day)"
+  "For org items imported via IFTTT, sets the right tags and specific
+   deadline (added-at + number of days)"
   (progn
+    (save-mark-and-excursion)
     (let ((tags (-some-> (org-entry-get (point) "tag")
                          (split-string "," t "\s")))
           (sched (org-entry-get (point) "DEADLINE"))
@@ -85,8 +97,10 @@
         (dolist (i tags)
           (when (not (member i (org-get-tags)))
             (org-toggle-tag i 'on)
-            ;; align
             (org-set-tags (point) t))))
       (when (and added-at (not sched))
-        (org--deadline-or-schedule nil 'deadline (ag/add-days-to-ifttt-date added-at 10))))
+        (org--deadline-or-schedule nil 'deadline (ag/add-days-to-ifttt-date added-at 15)))
+      (ag/indent-org-entry))
     (save-buffer)))
+
+

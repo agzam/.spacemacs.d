@@ -25,7 +25,7 @@
     (define-key atomic-chrome-edit-mode-map (kbd "C-c C-c") 'atomic-chrome-close-current-buffer)
     :config
     (setq atomic-chrome-default-major-mode 'markdown-mode
-          atomic-chrome-enable-bidirectional-edit nil
+          atomic-chrome-enable-bidirectional-edit t
           atomic-chrome-extension-type-list '(atomic-chrome))
     (add-hook 'atomic-chrome-edit-mode-hook #'ag/atomic-edit-start)
     (add-hook 'atomic-chrome-edit-done-hook #'ag/atomic-edit-done)))
