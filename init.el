@@ -3,9 +3,8 @@
 ;; It must be stored in your home directory.
 
 (defun dotspacemacs/layers ()
-  "Configuration Layers declaration.
-You should not put any user code in this function besides modifying the variable
-values."
+  "Layer configuration:
+This function should only modify configuration layer settings."
   (setq-default
    ;; Base distribution to use. This is a layer contained in the directory
    ;; `+distribution'. For now available distributions are `spacemacs-base'
@@ -37,7 +36,7 @@ values."
           :packages (not org-present))
      ;; (spacemacs-ui-visual :packages (not fancy-battery))
      ;; ---- Languages -----
-     csv yaml emacs-lisp clojure haskell lua javascript
+     csv yaml emacs-lisp haskell lua javascript
      (html :packages (not pug-mode slim-mode))
      (markdown
       :packages (not mmm-mode)
@@ -56,6 +55,7 @@ values."
      syntax-checking spell-checking
      ;; ---- Tools ----
      helm fasd osx restclient emoji search-engine imenu-list docker
+     parinfer
      (shell :variables
             shell-enable-smart-eshell t
             comint-scroll-show-maximum-output nil
@@ -75,14 +75,13 @@ values."
              magithub-api-timeout 5)
      ;; --- My own layers ----
      ag-dired ag-general ag-synonyms ag-org ag-clojure ag-web
-     ;; ag-cal ;; ag-dash ;; ag-jira ;; ag-4clojure
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(copy-as-format
-                                      dired+
+                                      ;; dired+
                                       helm-flycheck
                                       writeroom-mode
                                       (base16-ocean-dark :location local)
@@ -93,6 +92,8 @@ values."
                                       ;; (ghub+ :location (recipe
                                       ;;                   :fetcher github
                                       ;;                   :repo "vermiculus/ghub-plus"))
+                                      ;;(smartparens :location (recipe :fetcher github
+                                      ;;                               :repo "Fuco1/smartparens"))
                                       )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -108,11 +109,10 @@ values."
    dotspacemacs-install-packages 'used-only))
 
 (defun dotspacemacs/init ()
-  "Initialization function.
-This function is called at the very startup of Spacemacs initialization
-before layers configuration.
-You should not put any user code in there besides modifying the variable
-values."
+  "Initialization:
+This function is called at the very beginning of Spacemacs startup,
+before layer configuration.
+It should only modify the values of Spacemacs settings."
   ;; This setq-default sexp is an exhaustive list of all the supported
   ;; spacemacs settings.
   (setq-default
@@ -216,6 +216,9 @@ values."
    ;; If non-nil then the last auto saved layouts are resume automatically upon
    ;; start. (default nil)
    dotspacemacs-auto-resume-layouts nil
+   ;; If non-nil, auto-generate layout name when creating new layouts. Only has
+   ;; effect when using the "jump to layout by number" commands.
+   dotspacemacs-auto-generate-layout-names t
    ;; Size (in MB) above which spacemacs will prompt to open the large file
    ;; literally to avoid performance issues. Opening a file literally means that
    ;; no major mode or minor modes are active. (default is 1)
@@ -390,7 +393,8 @@ before packages are loaded. If you are unsure, you should try in setting them in
    package-archives
    '(("gnu" . "https://elpa.gnu.org/packages/")
      ("marmalade" . "https://marmalade-repo.org/packages/")
-     ("melpa" . "https://melpa.org/packages/"))))
+     ("melpa" . "https://melpa.org/packages/"))
+   custom-file "~/.spacemacs.d/custom.el"))
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code. This function is called at the very end of Spacemacs initialization after layers configuration. You are free to put any user code."
@@ -439,13 +443,13 @@ before packages are loaded. If you are unsure, you should try in setting them in
 
   (with-eval-after-load 'helm-ag (setq helm-ag-use-agignore t))
 
-   ;; (pupo-mode -1)
-   ;; (purpose-mode -1)
-   (add-hook 'prog-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
-   (add-hook 'prog-mode-hook 'flycheck-mode)
-   (spacemacs/toggle-mode-line-version-control-off)
-   (spacemacs/toggle-mode-line-minor-modes-off)
-   (spacemacs/toggle-evil-visual-mark-mode-on)
+  ;; (pupo-mode -1)
+  ;; (purpose-mode -1)
+  (add-hook 'prog-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
+  (add-hook 'prog-mode-hook 'flycheck-mode)
+  (spacemacs/toggle-mode-line-version-control-off)
+  (spacemacs/toggle-mode-line-minor-modes-off)
+  ;; (spacemacs/toggle-evil-visual-mark-mode-on)
 
   ;; ---------------
   ;; Shell, Term
@@ -507,30 +511,3 @@ before packages are loaded. If you are unsure, you should try in setting them in
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
-
-(defun dotspacemacs/emacs-custom-settings ()
-  "Emacs custom settings.
-This is an auto-generated function, do not modify its content directly, use
-Emacs customize menu instead.
-This function is called at the very end of Spacemacs initialization."
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(helm-source-names-using-follow nil)
- '(magit-pull-arguments nil)
- '(paradox-github-token t)
- '(safe-local-variable-values
-   (quote
-    ((eval org-map-entries
-           (function ag/set-tags-and-schedules-for-ifttt-items)
-           nil
-           (quote file))))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-)

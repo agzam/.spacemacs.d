@@ -1,8 +1,6 @@
 (setq ag-hipchat-packages
     '(jabber))
 
-(setq ag-hipchat-excluded-packages '())
-
 (defun ag-hipchat/init-jabber ()
   (use-package jabber
   :defer t

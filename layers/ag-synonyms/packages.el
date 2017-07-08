@@ -1,14 +1,12 @@
 (setq ag-synonyms-packages '(synonyms))
 
-(setq ag-synonyms-excluded-packages '())
-
 (defun ag-synonyms/init-synonyms ()
   :defer t
   :init
   :config
   (setq synonyms-file        "~/.spacemacs.d/layers/ag-synonyms/mthes10/mthesaur.txt"
         synonyms-cache-file  "~/.spacemacs.d/layers/ag-synonyms/mthes10/mthesaur.txt.cache")
-  
+
   (defvar synonyms-thesaurus-url "http://www.thesaurus.com/browse/")
 
   (defun ag/thesaurus-definition-no-read ()
@@ -58,7 +56,7 @@
   ;; (setq thesaurus-bhl-api-key "")
 
   ;; (defun thesaurus-fetch-synonyms (word)
-  ;;   "replacing theasurus.el generic function with this, so it won't use message-box"   
+  ;;   "replacing theasurus.el generic function with this, so it won't use message-box"
   ;;   (let ((synonym-list nil)
   ;;         (buf (thesaurus-get-buffer-for-word word)))
   ;;     (if buf
@@ -77,7 +75,7 @@
 
   ;; (defun ag/thesaurus-choose-synonym-no-read ()
   ;;   (interactive)
-  ;;   (let* ((word (ag/buffer-substring)) 
+  ;;   (let* ((word (ag/buffer-substring))
   ;;          (reg (ag/region-or-symbol-bounds))
   ;;          (chosen (thesaurus-prompt-user-with-choices (thesaurus-get-synonyms word))))
   ;;     (when chosen (progn

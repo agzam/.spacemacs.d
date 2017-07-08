@@ -1,7 +1,5 @@
 (setq ag-web-packages '())
 
-(setq ag-web-excluded-packages '())
-
 (with-eval-after-load 'css-mode
   (defun ag/rainbow-mode-on () (rainbow-mode 1))
   (add-hook 'css-mode-hook #'ag/rainbow-mode-on)

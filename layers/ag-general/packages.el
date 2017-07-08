@@ -4,8 +4,6 @@
                             atomic-chrome
                             helm-pages))
 
-(setq ag-general-excluded-packages '())
-
 (defun ag-general/init-editorconfig ()
   (use-package editorconfig
     :defer t

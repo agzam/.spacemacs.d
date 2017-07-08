@@ -1,7 +1,5 @@
 (setq ag-4clojure-packages '(4clojure))
 
-(setq ag-4clojure-excluded-packages '())
-
 (defun ag-4clojure/init-4clojure ()
   (use-package 4clojure
     :defer t
