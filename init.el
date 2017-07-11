@@ -55,7 +55,6 @@ This function should only modify configuration layer settings."
      syntax-checking spell-checking
      ;; ---- Tools ----
      helm fasd osx restclient emoji search-engine imenu-list docker
-     parinfer
      (shell :variables
             shell-enable-smart-eshell t
             comint-scroll-show-maximum-output nil
@@ -394,7 +393,9 @@ before packages are loaded. If you are unsure, you should try in setting them in
    '(("gnu" . "https://elpa.gnu.org/packages/")
      ("marmalade" . "https://marmalade-repo.org/packages/")
      ("melpa" . "https://melpa.org/packages/"))
-   custom-file "~/.spacemacs.d/custom.el"))
+   custom-file "~/.spacemacs.d/custom.el")
+
+  (load custom-file))
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code. This function is called at the very end of Spacemacs initialization after layers configuration. You are free to put any user code."
@@ -439,7 +440,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
    ranger-override-dired nil
    delete-by-moving-to-trash nil
    magit-show-refs-arguments '("--sort=-committerdate")
-   magit-delete-by-moving-to-trash nil)
+   magit-delete-by-moving-to-trash nil) ;; end setq
 
   (with-eval-after-load 'helm-ag (setq helm-ag-use-agignore t))
 
@@ -447,8 +448,11 @@ before packages are loaded. If you are unsure, you should try in setting them in
   ;; (purpose-mode -1)
   (add-hook 'prog-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
   (add-hook 'prog-mode-hook 'flycheck-mode)
+  (add-hook 'before-save-hook 'whitespace-cleanup)
   (spacemacs/toggle-mode-line-version-control-off)
   (spacemacs/toggle-mode-line-minor-modes-off)
+  (with-eval-after-load 'auto-complete (add-to-list 'ac-dictionary-directories "~/.spacemacs.d/ac-dict"))
+
   ;; (spacemacs/toggle-evil-visual-mark-mode-on)
 
   ;; ---------------
@@ -472,9 +476,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
   ;; Text
   ;; ---------------
   (add-hook 'markdown-mode-hook #'flyspell-mode)
-
-  ;; auto-completion
-  (with-eval-after-load 'auto-complete (add-to-list 'ac-dictionary-directories "~/.spacemacs.d/ac-dict"))
+  (add-hook 'markdown-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
 
   ;; ---------
   ;; Magit
@@ -502,12 +504,12 @@ before packages are loaded. If you are unsure, you should try in setting them in
         kept-new-versions 64
         kept-old-versions 0
         delete-old-versions nil)
-  (setq backup-directory-alist '(("." . ".bak")))
+  (setq backup-directory-alist '(("." . ".bak"))))
 
-  ;; Temporary fix - for magithub on Emacs 26
-  ;; (with-eval-after-load 'magithub
-  ;;   (defun ghubp--post-process (object &optional preserve-objects) object))
-  )
+;; Temporary fix - for magithub on Emacs 26
+;; (with-eval-after-load 'magithub
+;;   (defun ghubp--post-process (object &optional preserve-objects) object))
+
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
