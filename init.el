@@ -29,12 +29,7 @@ This function should only modify configuration layer settings."
    dotspacemacs-configuration-layer-path '("~/.spacemacs.d/layers") ;
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '((org :variables
-          org-enable-reveal-js-support t
-          org-enable-bootstrap-support t
-          org-enable-github-support t
-          :packages (not org-present))
-     ;; (spacemacs-ui-visual :packages (not fancy-battery))
+   '(
      ;; ---- Languages -----
      csv yaml emacs-lisp haskell lua javascript
      (html :packages (not pug-mode slim-mode))
@@ -73,8 +68,13 @@ This function should only modify configuration layer settings."
              gist-view-gist t
              magithub-api-timeout 5)
      ;; --- My own layers ----
-     ag-dired ag-general ag-synonyms ag-org ag-clojure ag-web
+     ag-dired ag-general ag-synonyms ag-clojure ag-web
+     (ag-org :variables
+             org-enable-reveal-js-support t
+             org-enable-bootstrap-support t
+             org-enable-github-support t)
      )
+
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
@@ -168,9 +168,9 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Source Code Pro ExtraLight"
+   dotspacemacs-default-font '("Source Code Pro"
                                :size 14
-                               :weight normal
+                               :weight light
                                :width normal
                                :powerline-scale 0.5)
    ;; The leader key

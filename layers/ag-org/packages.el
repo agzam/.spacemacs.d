@@ -1,7 +1,7 @@
 (defconst ag-org-packages '(org
                             org-pomodoro
                             ;; ox-reveal
-			    ))
+                            (org-present :excluded t)))
 
 (defun ag-org/post-init-org ()
   ;; (with-eval-after-load 'evil-org-mode
