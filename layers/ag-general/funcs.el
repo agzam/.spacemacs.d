@@ -6,7 +6,7 @@
   (+ 13 (/ (- (display-pixel-width) 120)
            (frame-char-width))))
 
-(defun max-frame () 
+(defun max-frame ()
   "maximizing frame without borders"
   (interactive)
   (set-frame-position nil 0 -21)
@@ -43,7 +43,7 @@
                   "-message" message)))
 
 (defun hs-alert (message)
-  (when (and message (eq system-type 'darwin)) 
+  (when (and message (eq system-type 'darwin))
     (call-process (executable-find "hs")
                   nil 0 nil
                   (concat "-c" "hs.alert.show(\"" message "\", 1)"))))
@@ -77,9 +77,10 @@
   :doc "
  Zoom^^^^^^              Move^^^^^              Other^^
  ────^^^^^^───────────── ────^^^^^^───────────── ─────^^──────────
- [_+_/_=_/_j_] in        [_p_] prev. display [_m_]^^^ fullscreen
- [_-_/_k_]^^   out       [_n_] next display  [_q_]^^^ quit
- [_0_]^^^^     reset     "
+ [_+_/_=_/_j_] in        [_p_] prev. display [_f_]^^^ fullscreen
+ [_-_/_k_]^^   out       [_n_] next display  [_m_]^^^ max-frame
+ [_0_]^^^^   reset                         [_q_]^^^ quit
+"
 
   :bindings
   ("+" zoom-frm-in)
@@ -88,7 +89,8 @@
   ("-" zoom-frm-out)
   ("k" zoom-frm-out)
   ("0" zoom-frm-unzoom)
-  ("m" (spacemacs/toggle-frame-fullscreen-non-native))
+  ("f" (spacemacs/toggle-frame-fullscreen-non-native))
+  ("m" (spacemacs/toggle-maximize-frame))
   ("n" (ag/move-frame-one-display "North"))
   ("p" (ag/move-frame-one-display "South"))
   ("q" nil :exit t))

@@ -28,9 +28,7 @@
         "* %u  %?\n\t%f\n\t#+BEGIN_SRC %^{language}\n\t\t%i\n\t#+END_SRC"))
 
      ort/prefix-arg-directory "~/Dropbox/org"
-     org-agenda-files '("~/Dropbox/org/tasks.org"
-                        "~/Dropbox/org/yakety.org"
-                        "~/Dropbox/org/pocket.org.txt")
+     org-agenda-files "~/Dropbox/org/.agenda-files"
 
      org-refile-targets '((nil :maxlevel . 3)
                           (org-agenda-files :maxlevel . 3))
@@ -80,6 +78,7 @@
 
 (defun ag-org/post-init-org-pomodoro ()
   (with-eval-after-load 'org-pomodoro
+    (setq org-pomodoro-keep-killed-pomodoro-time t)
     (add-hook 'org-pomodoro-finished-hook 'pomodoro/on-finished-hook)
     (add-hook 'org-pomodoro-break-finished-hook 'pomodoro/on-break-over-hook)
     (add-hook 'org-pomodoro-killed-hook 'pomodoro/on-killed-hook)

@@ -152,7 +152,7 @@ It should only modify the values of Spacemacs settings."
    ;; List of items to show in startup buffer or an association list of
    ;; the form `(list-type . list-size)`. If nil then it is disabled.
    ;; Possible values for list-type are:
-   ;; `recents' `bookmarks' `projects' `agenda' `todos'."
+   ;; `recents' `bookmarks' `projects' `agenda' `todos'.
    ;; List sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
    dotspacemacs-startup-lists '((recents . 5) (projects . 5) (todos . 10) (bookmarks . 5) (agenda . 5))
@@ -163,14 +163,14 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(base16-ocean-dark zenburn sanityinc-tomorrow-eighties obsidian solarized-light)
+   dotspacemacs-themes '(base16-ocean-dark spacemacs-light)
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Source Code Pro"
                                :size 14
-                               :weight light
+                               :weight normal
                                :width normal
                                :powerline-scale 0.5)
    ;; The leader key
@@ -212,7 +212,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil the default layout name is displayed in the mode-line.
    ;; (default nil)
    dotspacemacs-display-default-layout t
-   ;; If non-nil then the last auto saved layouts are resume automatically upon
+   ;; If non-nil then the last auto saved layouts are resumed automatically upon
    ;; start. (default nil)
    dotspacemacs-auto-resume-layouts nil
    ;; If non-nil, auto-generate layout name when creating new layouts. Only has
@@ -242,8 +242,8 @@ It should only modify the values of Spacemacs settings."
    ;; source settings. Else, disable fuzzy matching in all sources.
    ;; (default 'always)
    dotspacemacs-helm-use-fuzzy 'always
-   ;; If non-nil the paste micro-state is enabled. When enabled pressing `p'
-   ;; several times cycle between the kill ring content. (default nil)
+   ;; If non-nil, the paste transient-state is enabled. And pressing `p' several
+   ;; times, cycles through the elements in the `kill-ring'. (default nil)
    dotspacemacs-enable-paste-transient-state t
    ;; Which-key delay in seconds. The which-key buffer is the popup listing
    ;; the commands bound to the current keystroke sequence. (default 0.4)
@@ -359,15 +359,18 @@ It should only modify the values of Spacemacs settings."
    ;; Either nil or a number of seconds. If non-nil zone out after the specified
    ;; number of seconds. (default nil)
    dotspacemacs-zone-out-when-idle nil
+   ;; Run `spacemacs/prettify-org-buffer' when
+   ;; visiting README.org files of Spacemacs.
+   ;; (default nil)
+   dotspacemacs-pretty-docs t
    ))
 
 (defun dotspacemacs/user-init ()
-  "Initialization function for user code.
-It is called immediately after `dotspacemacs/init', before layer configuration
-executes.
- This function is mostly useful for variables that need to be set
-before packages are loaded. If you are unsure, you should try in setting them in
-`dotspacemacs/user-config' first."
+  "Initialization for user code:
+This function is called immediately after `dotspacemacs/init', before layer
+configuration.
+It is mostly for variables that should be set before packages are loaded.
+If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   (add-to-list 'custom-theme-load-path "~/.spacemacs.d/themes")
 
@@ -424,7 +427,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
    helm-echo-input-in-header-line nil
    helm-ff--deleting-char-backward t
    helm-follow-mode-persistent t
-   helm-buffer-details-flag nil        ;; Always show details in buffer list when non--nil.
+   helm-buffer-details-flag t        ;; Always show details in buffer list when non--nil.
    apropos-sort-by-scores t
 
    ;;;; Misc
@@ -444,8 +447,8 @@ before packages are loaded. If you are unsure, you should try in setting them in
 
   (with-eval-after-load 'helm-ag (setq helm-ag-use-agignore t))
 
-  ;; (pupo-mode -1)
-  ;; (purpose-mode -1)
+  (spaceline-toggle-buffer-encoding-abbrev-off)
+  (spaceline-toggle-purpose-off)
   (add-hook 'prog-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
   (add-hook 'prog-mode-hook 'flycheck-mode)
   (add-hook 'before-save-hook 'whitespace-cleanup)
