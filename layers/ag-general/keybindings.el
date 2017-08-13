@@ -11,7 +11,7 @@
 (define-key evil-normal-state-map (kbd "C-u") 'universal-argument)
 
 (spacemacs/set-leader-keys
-  "qq" nil ;; no unexpected exits 
+  "qq" nil ;; no unexpected exits
   "qQ" 'spacemacs/prompt-kill-emacs
   "s/" 'engine/search-google
   "jj" 'avy-goto-char-timer
@@ -80,7 +80,7 @@
 (evil-define-key 'normal info-mode-map "p" 'info-prev)
 
 ;; -----------
-;; Company 
+;; Company
 ;; -----------
 (with-eval-after-load 'company
   (define-key company-active-map (kbd "C-n") 'company-select-next)
