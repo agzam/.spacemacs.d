@@ -74,7 +74,9 @@
        (shell . t)
        (js . t)
        (clojure . t)
-       (ruby . t)))))
+       (ruby . t)))
+
+    (add-hook 'org-babel-post-tangle-hook 'ag/set-tangled-file-permissions)))
 
 (defun ag-org/post-init-org-pomodoro ()
   (with-eval-after-load 'org-pomodoro

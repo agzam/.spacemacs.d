@@ -410,7 +410,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    aw-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9)                       ;;;; ace-windows instead of characters shows number
    linum-format "%3d\u2502"                                    ;;;; nicer line-numbers
    fill-column 120
-   spacemacs-show-trailing-whitespace t
+   spacemacs-show-trailing-whitespace nil
    tab-width 4
    mouse-wheel-scroll-amount '(0.02)
    mouse-wheel-progressive-speed nil

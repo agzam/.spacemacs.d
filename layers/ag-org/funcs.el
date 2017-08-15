@@ -103,4 +103,10 @@
       (ag/indent-org-entry))
     (save-buffer)))
 
-
+(defun ag/set-tangled-file-permissions ()
+  "set specific file permissions after files are tangled"
+  (let ((fs-lst '(("~/.ssh/config" . #o600)
+                  ("~/.ec" . #o700))))
+    (dolist (el fs-lst)
+      (when (file-exists-p (car el))
+            (set-file-modes (car el) (cdr el))))))
