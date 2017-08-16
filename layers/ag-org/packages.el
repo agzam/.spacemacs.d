@@ -76,7 +76,11 @@
        (clojure . t)
        (ruby . t)))
 
-    (add-hook 'org-babel-post-tangle-hook 'ag/set-tangled-file-permissions)))
+    (add-hook 'org-babel-post-tangle-hook 'ag/set-tangled-file-permissions)
+
+    ;; lower-casing tab-expanded options e.g.: <s
+    (mapc (lambda (arg) (setcdr arg (list (downcase (cadr arg)))))
+          org-structure-template-alist)))
 
 (defun ag-org/post-init-org-pomodoro ()
   (with-eval-after-load 'org-pomodoro
