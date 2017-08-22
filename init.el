@@ -19,7 +19,7 @@ This function should only modify configuration layer settings."
    ;; installation feature and you have to explicitly list a layer in the
    ;; variable `dotspacemacs-configuration-layers' to install it.
    ;; (default 'unused)
-   dotspacemacs-enable-lazy-installation 'unused
+   dotspacemacs-enable-lazy-installation nil
    ;; If non-nil then Spacemacs will ask for confirmation before installing
    ;; a layer lazily. (default t)
    dotspacemacs-ask-for-lazy-installation t
@@ -31,7 +31,8 @@ This function should only modify configuration layer settings."
    dotspacemacs-configuration-layers
    '(
      ;; ---- Languages -----
-     csv yaml emacs-lisp haskell lua javascript
+     csv yaml emacs-lisp lua javascript
+     (haskell :variables haskell-process-type 'stack-ghci)
      (html :packages (not pug-mode slim-mode))
      (markdown
       :packages (not mmm-mode)
