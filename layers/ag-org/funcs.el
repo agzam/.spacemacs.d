@@ -92,7 +92,8 @@
     (let ((tags (-some-> (org-entry-get (point) "tag")
                          (split-string "," t "\s")))
           (sched (org-entry-get (point) "DEADLINE"))
-          (added-at (org-entry-get (point) "AddedAt")))
+          (added-at (org-entry-get (point) "AddedAt"))
+          (should-save? (not (buffer-modified-p))))
       (when tags
         (dolist (i tags)
           (when (not (member i (org-get-tags)))
@@ -100,8 +101,10 @@
             (org-set-tags (point) t))))
       (when (and added-at (not sched))
         (org--deadline-or-schedule nil 'deadline (ag/add-days-to-ifttt-date added-at 15)))
-      (ag/indent-org-entry))
-    (save-buffer)))
+      (ag/indent-org-entry)
+      (flush-lines "^$" nil nil t)
+      (when should-save?
+        (save-buffer)))))
 
 (defun ag/set-tangled-file-permissions ()
   "set specific file permissions after files are tangled"
