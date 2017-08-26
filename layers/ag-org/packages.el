@@ -53,7 +53,11 @@
 
      ;; https://github.com/syl20bnr/spacemacs/issues/8455
      org-src-fontify-natively nil
-     )
+
+     org-src-window-setup 'current-window
+     org-src-preserve-indentation t
+     org-src-ask-before-returning-to-edit-buffer nil)
+
     (add-to-list 'auto-mode-alist '("\\Dropbox/org/.*\.txt\\'" . org-mode))
 
 
