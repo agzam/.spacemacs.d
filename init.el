@@ -500,6 +500,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; ----------
   (with-eval-after-load 'yasnippet (add-to-list 'yas-snippet-dirs "~/.spacemacs.d/snippets"))
 
+  (remove-hook 'diff-mode-hook 'whitespace-mode)
   ;; -----------
   ;; Backups
   ;; ----------

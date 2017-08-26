@@ -5,6 +5,7 @@
 (global-set-key (kbd "s-q") nil)
 (global-set-key (kbd "C-x C-c") nil) ;; don't kill the frame unexpectedly
 (evil-define-key 'motion help-mode-map (kbd "<escape>") nil)
+(evil-define-key 'normal diff-mode-map "q" #'quit-window)
 (global-set-key (kbd "C-x b") 'spacemacs-layouts/non-restricted-buffer-list-helm)
 (global-set-key (kbd "C-x C-b") 'spacemacs-layouts/non-restricted-buffer-list-helm)
 
@@ -87,5 +88,6 @@
   (define-key company-active-map (kbd "C-p") 'company-select-previous)
   (define-key company-active-map (kbd "C-f") 'company-search-candidates))
 
+;; add a page-break
 (spacemacs/set-leader-keys
   "ip" (kbd "i C-q C-l <RET><escape>"))

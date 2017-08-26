@@ -50,7 +50,6 @@
   ;; get rid of stupid tern-port files
   (setq tern-command '("tern" "--no-port-file"))
 
-  (add-to-list 'sp-sexp-suffix '(js2-mode regex ""))
+  (add-to-list 'sp-sexp-suffix '(js2-mode regex "")))
 
-  (setq flycheck-stylelintrc ".stylelintrc.yml")
-  )
+(setq flycheck-stylelintrc ".stylelintrc.yml")
