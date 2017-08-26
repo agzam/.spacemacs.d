@@ -55,7 +55,6 @@ This function should only modify configuration layer settings."
             shell-enable-smart-eshell t
             comint-scroll-show-maximum-output nil
             comint-move-point-for-output nil)
-     (ibuffer :variables ibuffer-old-time 8)
      ;; (semantic :disabled-for '(emacs-lisp org))
      ;; ranger
      ;; ---- Version control ----
@@ -501,6 +500,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (with-eval-after-load 'yasnippet (add-to-list 'yas-snippet-dirs "~/.spacemacs.d/snippets"))
 
   (remove-hook 'diff-mode-hook 'whitespace-mode)
+
   ;; -----------
   ;; Backups
   ;; ----------

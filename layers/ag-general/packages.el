@@ -34,3 +34,26 @@
 
 (defun flycheck-mode-off () (flycheck-mode -1))
 (add-hook 'emacs-lisp-mode-hook #'flycheck-mode-off)
+
+(with-eval-after-load 'ibuf-ext
+  (setq
+    ibuffer-old-time 8 ;; buffer considered old after that many hours
+    ibuffer-group-buffers-by 'projects
+    ibuffer-expert t
+    ibuffer-show-empty-filter-groups nil)
+
+  (define-ibuffer-filter unsaved-file-buffers
+    "Toggle current view to buffers whose file is unsaved."
+  (:description "file is unsaved")
+  (ignore qualifier)
+  (and (buffer-local-value 'buffer-file-name buf)
+       (buffer-modified-p buf)))
+
+  (define-ibuffer-filter file-buffers
+      "Only show buffers backed by a file."
+    (:description "file buffers")
+    (ignore qualifier)
+    (buffer-local-value 'buffer-file-name buf))
+
+  (define-key ibuffer-mode-map (kbd "/ u") #'ibuffer-filter-by-unsaved-file-buffers)
+  (define-key ibuffer-mode-map (kbd "/ F") #'ibuffer-filter-by-file-buffers))
