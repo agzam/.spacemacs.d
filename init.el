@@ -455,20 +455,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (spacemacs/toggle-mode-line-minor-modes-off)
   (with-eval-after-load 'auto-complete (add-to-list 'ac-dictionary-directories "~/.spacemacs.d/ac-dict"))
 
-  ;; (spacemacs/toggle-evil-visual-mark-mode-on)
-
-  ;; ---------------
-  ;; Shell, Term
-  ;; ---------------
-  (defun ag/shell-hook ()
-    (setq-local global-hl-line-mode nil)
-    (setq-local scroll-margin 0)
-    (text-scale-decrease 0.1))
-
-  (add-hook 'eshell-mode-hook #'ag/shell-hook)
-  (add-hook 'term-mode-hook #'ag/shell-hook)
-  (add-hook 'shell-mode-hook #'ag/shell-hook)
-
   ;; ---------------
   ;; Haskell
   ;; ---------------
