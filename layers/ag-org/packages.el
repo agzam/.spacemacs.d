@@ -1,7 +1,9 @@
 (defconst ag-org-packages '(org
                             org-pomodoro
                             ;; ox-reveal
-                            (org-present :excluded t)))
+                            (org-present :excluded t)
+                            (org-journal :excluded t)
+                            (org-brain :excluded t)))
 
 (defun ag-org/post-init-org ()
   ;; (with-eval-after-load 'evil-org-mode
@@ -55,7 +57,7 @@
      org-src-fontify-natively nil
 
      org-src-window-setup 'current-window
-     org-src-preserve-indentation t
+     ;; org-src-preserve-indentation t
      org-src-ask-before-returning-to-edit-buffer nil)
 
     (add-to-list 'auto-mode-alist '("\\Dropbox/org/.*\.txt\\'" . org-mode))
@@ -66,7 +68,7 @@
 
     ;; (add-hook 'org-mode-hook 'flyspell-mode)
     (add-hook 'org-mode-hook #'ag/org-mode-hook)
-    (add-hook 'org-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
+    (add-hook 'org-mode-hook #'spacemacs/toggle-visual-line-navigation-on)
     (add-hook 'org-timer-done-hook (lambda () (hs-alert "-- timer done! --")))
 
     (require 'ob-http)
@@ -80,7 +82,8 @@
        (clojure . t)
        (ruby . t)))
 
-    (add-hook 'org-babel-post-tangle-hook 'ag/set-tangled-file-permissions)
+    (add-hook 'org-babel-post-tangle-hook #'ag/set-tangled-file-permissions)
+    (add-hook 'helm-after-persistent-action-hook #'ag/org-reveal-on-helm-peristent-action)
 
     ;; lower-casing tab-expanded options e.g.: <s
     (mapc (lambda (arg) (setcdr arg (list (downcase (cadr arg)))))
@@ -89,10 +92,10 @@
 (defun ag-org/post-init-org-pomodoro ()
   (with-eval-after-load 'org-pomodoro
     (setq org-pomodoro-keep-killed-pomodoro-time t)
-    (add-hook 'org-pomodoro-finished-hook 'pomodoro/on-finished-hook)
-    (add-hook 'org-pomodoro-break-finished-hook 'pomodoro/on-break-over-hook)
-    (add-hook 'org-pomodoro-killed-hook 'pomodoro/on-killed-hook)
-    (add-hook 'org-pomodoro-started-hook 'pomodoro/on-started-hook)))
+    (add-hook 'org-pomodoro-finished-hook #'pomodoro/on-finished-hook)
+    (add-hook 'org-pomodoro-break-finished-hook #'pomodoro/on-break-over-hook)
+    (add-hook 'org-pomodoro-killed-hook #'pomodoro/on-killed-hook)
+    (add-hook 'org-pomodoro-started-hook #'pomodoro/on-started-hook)))
 
 (defun ag-org/init-ox-reveal ()
   (use-package ox-reveal

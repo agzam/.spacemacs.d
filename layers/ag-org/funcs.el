@@ -113,3 +113,8 @@
     (dolist (el fs-lst)
       (when (file-exists-p (car el))
             (set-file-modes (car el) (cdr el))))))
+
+(defun ag/org-reveal-on-helm-peristent-action ()
+  "reveal content for helm-persistent-action used in an Org file with folded outline"
+  (when (equalp major-mode 'org-mode)
+    (org-reveal)))
