@@ -48,7 +48,9 @@ This function should only modify configuration layer settings."
                       auto-completion-enable-help-tooltip t
                       auto-completion-enable-sort-by-usage t)
 
-     syntax-checking spell-checking
+     syntax-checking
+     (spell-checking :variables
+                     ispell-program-name "aspell")
      ;; ---- Tools ----
      helm fasd osx restclient emoji search-engine imenu-list docker pdf-tools
      (shell :variables
@@ -72,7 +74,7 @@ This function should only modify configuration layer settings."
              org-enable-reveal-js-support t
              org-enable-bootstrap-support t
              org-enable-github-support t)
-     )
+     mw-thesaurus)
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
@@ -155,7 +157,7 @@ It should only modify the values of Spacemacs settings."
    ;; `recents' `bookmarks' `projects' `agenda' `todos'.
    ;; List sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
-   dotspacemacs-startup-lists '((recents . 5) (projects . 5) (todos . 10) (bookmarks . 5) (agenda . 5))
+   dotspacemacs-startup-lists '((recents . 5) (projects . 5))
    ;; True if the home buffer should respond to resize events. (default t)
    dotspacemacs-startup-buffer-responsive nil
    ;; Default major mode of the scratch buffer (default `text-mode')
@@ -212,13 +214,13 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-default-layout-name "•"
    ;; If non-nil the default layout name is displayed in the mode-line.
    ;; (default nil)
-   dotspacemacs-display-default-layout t
+   dotspacemacs-display-default-layout nil
    ;; If non-nil then the last auto saved layouts are resumed automatically upon
    ;; start. (default nil)
    dotspacemacs-auto-resume-layouts nil
    ;; If non-nil, auto-generate layout name when creating new layouts. Only has
    ;; effect when using the "jump to layout by number" commands. (default nil)
-   dotspacemacs-auto-generate-layout-names t
+   dotspacemacs-auto-generate-layout-names nil
    ;; Size (in MB) above which spacemacs will prompt to open the large file
    ;; literally to avoid performance issues. Opening a file literally means that
    ;; no major mode or minor modes are active. (default is 1)
