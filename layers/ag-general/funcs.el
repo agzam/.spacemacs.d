@@ -1,37 +1,11 @@
-(defun get-default-height ()
-  (+ 8 (/ (- (display-pixel-height) 120)
-          (frame-char-height))))
-
-(defun get-default-width ()
-  (+ 13 (/ (- (display-pixel-width) 120)
-           (frame-char-width))))
-
-(defun max-frame ()
-  "maximizing frame without borders"
-  (interactive)
-  (set-frame-position nil 0 -21)
-  (set-frame-height (selected-frame) (get-default-height))
-  (set-frame-width (selected-frame) (get-default-width)))
-
-(defun ag/region-or-symbol-bounds ()
-  (if (region-active-p)
-      (cons (region-beginning)
-            (region-end))
-    (bounds-of-thing-at-point 'symbol)))
-
-(defun ag/buffer-substring ()
-  "grabs selected region's text, if any"
-  (if (region-active-p)
-      (buffer-substring-no-properties (region-beginning) (region-end))
-      (word-at-point)))
-
-(defun ag/helm-google-suggest ()
-  "Smarter helm-google-suggest - searches for selected text (if any)"
-  (interactive)
-  (let ((sub-str (ag/buffer-substring)))
-    (if sub-str
-        (helm-google-suggest-action sub-str)
-      (helm-google-suggest))))
+(defun ag/region-or-word-at-point-str ()
+  "Returns string of selected region or word at point"
+  (let* ((bds (if (use-region-p)
+                  (cons (region-beginning) (region-end))
+                (bounds-of-thing-at-point 'word)))
+         (p1 (car bds))
+         (p2 (cdr bds)))
+    (buffer-substring-no-properties p1 p2)))
 
 (defun notify-osx (title message)
   (when (eq system-type 'darwin)

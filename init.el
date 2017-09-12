@@ -74,7 +74,7 @@ This function should only modify configuration layer settings."
              org-enable-reveal-js-support t
              org-enable-bootstrap-support t
              org-enable-github-support t)
-     mw-thesaurus)
+     ag-lang-tools)
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
@@ -351,7 +351,7 @@ It should only modify the values of Spacemacs settings."
    ;; %z - mnemonics of buffer, terminal, and keyboard coding systems
    ;; %Z - like %z, but including the end-of-line format
    ;; (default "%I@%S")
-   dotspacemacs-frame-title-format "%I@%S"
+   dotspacemacs-frame-title-format "%t           ― · ―            %b"
    ;; Format specification for setting the icon title format
    ;; (default nil - same as frame-title-format)
    dotspacemacs-icon-title-format nil
@@ -408,6 +408,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   "Configuration function for user code. This function is called at the very end of Spacemacs initialization after layers configuration. You are free to put any user code."
   (setq
    ;;;; Editor
+   frame-resize-pixelwise t       ;; make sure `(maximize-frame)` leaves no borders
    powerline-default-separator nil
    powerline-center-theme t
    avy-timeout-seconds 0.4
