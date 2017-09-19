@@ -55,8 +55,9 @@ This function should only modify configuration layer settings."
      helm fasd osx restclient emoji search-engine imenu-list docker pdf-tools
      (shell :variables
             shell-enable-smart-eshell t
-            comint-scroll-show-maximum-output nil
-            comint-move-point-for-output nil)
+            ;; comint-scroll-show-maximum-output nil
+            ;; comint-move-point-for-output nil
+            )
      ;; (semantic :disabled-for '(emacs-lisp org))
      ;; ---- Version control ----
      git

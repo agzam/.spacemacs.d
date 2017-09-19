@@ -22,4 +22,6 @@
 
 (defun ag-lang-tools/init-sdcv-mode ()
   (use-package sdcv-mode
-    :ensure t))
+    :ensure t
+    :config
+    (add-hook 'sdcv-mode-hook 'spacemacs/toggle-visual-line-navigation-on)))
