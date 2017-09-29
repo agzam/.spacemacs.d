@@ -17,10 +17,12 @@
                   "-message" message)))
 
 (defun hs-alert (message)
+  "shows Hammerspoon's hs.alert popup with a MESSAGE"
   (when (and message (eq system-type 'darwin))
     (call-process (executable-find "hs")
                   nil 0 nil
-                  (concat "-c" "hs.alert.show(\"" message "\", 1)"))))
+                  "-c"
+                  (concat "hs.alert.show(\"" message "\", 1)"))))
 
 (defun ag/atomic-edit-start ()
   (remove-hook 'markdown-mode-hook 'spacemacs/activate-mmm-mode)

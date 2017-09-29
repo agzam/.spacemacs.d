@@ -5,7 +5,8 @@
             (format-time-string "%Y-%m-%d"))))
 
 (defun pomodoro/create-menu-item (color)
-  "color can be \"red\" \"green\" or \"yellow\""
+  "creates Hammerspoon `hs.menubar` item
+COLOR can be \"red\" \"green\" or \"yellow\""
   (let* ((hs (executable-find "hs"))
          (task-name (symbol-value 'org-clock-current-task))
          (cmd (concat "if globalMenubarItem then globalMenubarItem:delete() end; "
@@ -16,7 +17,7 @@
                       "globalMenubarItem:setTitle(txt)")))
     (call-process hs
                   nil 0 nil
-                  (concat "-c" cmd))))
+                  "-c" cmd)))
 
 (defun pomodoro/modify-menu-item (color)
   (let* ((hs (executable-find "hs"))
@@ -28,15 +29,15 @@
     (message cmd)
     (call-process hs
                   nil 0 nil
-                  (concat "-c" cmd))))
+                  "-c" cmd)))
 
 (defun pomodoro/remove-menu-item ()
-  "removes currently set pomodoro menu item"
+  "removes previously set pomodoro item - `hs.menubar` item"
   (let* ((hs (executable-find "hs"))
          (cmd " globalMenubarItem:delete(); globalMenubarItem = nil"))
     (call-process hs
                   nil 0 nil
-                  (concat "-c" cmd))))
+                  "-c" cmd)))
 
 (defun pomodoro/on-finished-hook ()
   (when (eq system-type 'darwin)
@@ -62,11 +63,11 @@
 (defun ag/org-mode-hook ()
   (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
 
-(defun ag/add-days-to-ifttt-date (dt days)
-  "Takes datetime in IFTTT format e.g. `February 23, 2017 at 11:00AM`,
+(defun ag/add-days-to-ifttt-date (datetime days)
+  "Takes DATETIME in ifttt.com format e.g. `February 23, 2017 at 11:00AM`,
    turns it into emacs-lisp datetime
-   and adds given number of days"
-  (-some-> dt
+   and adds given number of DAYS"
+  (-some-> datetime
            (substring 0 -2)
            (split-string  " " nil ",")
            ((lambda (x) (cons (car (cdr x)) (cons (car x) (cdr (cdr x))))))
@@ -75,7 +76,8 @@
            (time-add (days-to-time days))))
 
 (defun ag/indent-org-entry ()
-  "Indents current org entry"
+  "Properly sets indentation for the current org entry"
+  (interactive)
   (outline-show-entry)
   (forward-line 1)
   (set-mark-command nil)

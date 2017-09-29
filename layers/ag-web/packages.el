@@ -16,7 +16,7 @@
         coffee-tab-width 4
         js-indent-level 2
         js2-basic-offset 2
-        )
+        js2-strict-trailing-comma-warning nil)
   (add-hook 'js2-mode-hook #'flyspell-prog-mode)
 
   ;; Flycheck JSCS
