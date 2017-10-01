@@ -38,44 +38,36 @@ This function should only modify configuration layer settings."
       :packages (not mmm-mode)
       :variables markdown-live-preview-engine 'vmd)
      (shell-scripts :packages (not fish-mode))
-     ;; python
-     ;; react
-     ;; (ruby :variables ruby-version-manager 'rvm)
+     ;; python ;; react ;; (ruby :variables ruby-version-manager 'rvm)
      ;; --- Editor  ----
      (auto-completion :variables
                       auto-completion-tab-key-behavior 'cycle
                       auto-completion-enable-snippets-in-popup t
                       auto-completion-enable-help-tooltip t
                       auto-completion-enable-sort-by-usage t)
-
      syntax-checking
      (spell-checking :variables
                      ispell-program-name "aspell")
      ;; ---- Tools ----
      helm fasd osx restclient emoji search-engine imenu-list docker pdf-tools
-     (shell :variables
-            shell-enable-smart-eshell t
-            ;; comint-scroll-show-maximum-output nil
-            ;; comint-move-point-for-output nil
-            )
+     (shell :packages (not eshell-prompt-extras eshell-z multi-term xterm-color)
+            :variables shell-default-shell 'eshell)
      ;; (semantic :disabled-for '(emacs-lisp org))
      ;; ---- Version control ----
-     git
-     (version-control :variables
-                      version-control-diff-tool 'diff-hl
-                      version-control-global-margin t)
+     git (version-control :variables
+                          version-control-diff-tool 'diff-hl
+                          version-control-global-margin t)
      (github :packages (not magit-gh-pulls)
              :variables
              ;; view your Gist using `browse-url` after it is created
              gist-view-gist t
              magithub-api-timeout 5)
      ;; --- My own layers ----
-     ag-dired ag-general ag-synonyms ag-clojure ag-web
+     ag-dired ag-general ag-synonyms ag-clojure ag-web ag-lang-tools
      (ag-org :variables
              org-enable-reveal-js-support t
              org-enable-bootstrap-support t
-             org-enable-github-support t)
-     ag-lang-tools)
+             org-enable-github-support t))
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
@@ -176,7 +168,7 @@ It should only modify the values of Spacemacs settings."
                                :size 14
                                :weight normal
                                :width normal
-                               :powerline-scale 0.5)
+                               :powerline-scale 1.1)
    ;; The leader key (default "SPC")
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands `M-x' (after pressing on the leader key).
@@ -440,6 +432,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    vc-follow-symlinks t
    diff-hl-side 'left
    use-dialog-box nil
+   eshell-aliases-file "~/.spacemacs.d/eshell.aliases"
 
    ;; don't quit on esc
    evil-escape-excluded-major-modes '(magit-status-mode

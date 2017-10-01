@@ -81,3 +81,40 @@
   ("l" dired-find-file-other-window-right :exit t)
   ("q" nil :exit t))
 
+(defun eshell-cwd ()
+  " Sets the eshell directory to the current buffer"
+  (interactive)
+  (let ((path (file-name-directory (or (buffer-file-name) default-directory))))
+    (with-current-buffer "*eshell*"
+      (cd path)
+      (eshell-reset))))
+
+(defun get-ls-filename ()
+  "Detects a filename in `ls' output in an arbitrary buffer.
+
+Correctly handles filenames with whitespaces"
+  (let ((start (save-excursion (re-search-backward "\s\s\\|^")))
+        (end (save-excursion (re-search-forward "\s\s\\|$"))))
+    (string-trim
+     (buffer-substring-no-properties start end))))
+
+(defun eshell-action-on-file-or-dir-at-point (arg)
+  "If thing-at-point is:
+- file -  opens it in a buffer (same buffer)
+- directory - `cd`s to it
+
+With prefix argument opens things in the other-window"
+  (interactive "P")
+  (let ((item (get-ls-filename)))
+    (if arg
+        (when (file-exists-p item) (find-file-other-window item))
+      (if (file-directory-p item)
+          (with-current-buffer (current-buffer)
+            (cd (expand-file-name item))
+            (eshell-reset))
+        (when (file-exists-p item) (find-file item))))))
+
+(defun eshell-action-on-file-or-dir-at-point-other-window ()
+  (interactive)
+  (let ((current-prefix-arg 4))
+    (call-interactively 'eshell-action-on-file-or-dir-at-point)))

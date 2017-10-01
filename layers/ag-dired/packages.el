@@ -24,7 +24,7 @@
 
     (defun direx:fit-window ()
       (interactive)
-      (when (derived-mode-p 'direx:direx-mode) 
+      (when (derived-mode-p 'direx:direx-mode)
         (let ((fit-window-to-buffer-horizontally t))
           (fit-window-to-buffer)
           (window-resize (selected-window) 4 0 nil))))

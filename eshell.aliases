@@ -1,1 +1,7 @@
 alias ff find-file $1
+alias g git $*
+alias gs git status
+alias gpur git pull --rebase
+alias gll git ll
+alias zz fasd-find-file 1 $1
+alias sudo *sudo $*
