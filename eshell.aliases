@@ -5,3 +5,4 @@ alias gpur git pull --rebase
 alias gll git ll
 alias zz fasd-find-file 1 $1
 alias sudo *sudo $*
+alias brewup brew update && brew upgrade && brew cleanup && brew doctor

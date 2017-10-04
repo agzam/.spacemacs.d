@@ -89,10 +89,10 @@
       (cd path)
       (eshell-reset))))
 
-(defun get-ls-filename ()
+(defun ffap-file-at-point-with-spaces ()
   "Detects a filename in `ls' output in an arbitrary buffer.
 
-Correctly handles filenames with whitespaces"
+Correctly handles filenames with whitespaces - something that `ffap-file-at-point' apparently cannot"
   (let ((start (save-excursion (re-search-backward "\s\s\\|^")))
         (end (save-excursion (re-search-forward "\s\s\\|$"))))
     (string-trim
@@ -105,7 +105,7 @@ Correctly handles filenames with whitespaces"
 
 With prefix argument opens things in the other-window"
   (interactive "P")
-  (let ((item (get-ls-filename)))
+  (let ((item (ffap-file-at-point-with-spaces)))
     (if arg
         (when (file-exists-p item) (find-file-other-window item))
       (if (file-directory-p item)

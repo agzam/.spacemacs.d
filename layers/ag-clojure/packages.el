@@ -50,4 +50,4 @@
   ;; annoying Java Cup icon - no longer will bother you
   (setenv "JAVA_TOOL_OPTIONS" "-Dapple.awt.UIElement=true"))
 
-(with-eval-after-load 'cider (setq cider-boot-parameters "dev"))
+;; (with-eval-after-load 'cider (setq cider-boot-parameters "dev"))

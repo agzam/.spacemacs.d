@@ -5,6 +5,11 @@
 (defun dotspacemacs/layers ()
   "Layer configuration:
 This function should only modify configuration layer settings."
+  (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
+  (add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
+  (add-to-list 'package-pinned-packages '(clj-refactor . "melpa-stable") t)
+  (add-to-list 'package-pinned-packages '(cljr-helm . "melpa-stable") t)
+  (add-to-list 'package-pinned-packages '(ac-cider . "melpa-stable") t)
   (setq-default
    ;; Base distribution to use. This is a layer contained in the directory
    ;; `+distribution'. For now available distributions are `spacemacs-base'
@@ -63,7 +68,7 @@ This function should only modify configuration layer settings."
              gist-view-gist t
              magithub-api-timeout 5)
      ;; --- My own layers ----
-     ag-dired ag-general ag-synonyms ag-clojure ag-web ag-lang-tools
+     ag-dired ag-general ag-synonyms ag-web ag-lang-tools ag-clojure
      (ag-org :variables
              org-enable-reveal-js-support t
              org-enable-bootstrap-support t
@@ -73,6 +78,9 @@ This function should only modify configuration layer settings."
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(copy-as-format
+                                      ;; (cider :location (recipe :fetcher github
+                                      ;;                        :repo "clojure-emacs/cider"
+                                      ;;                         :commit "8a9eab32646abcaaf31fe83b2d897c01971b98f1"))
                                       ;; dired+
                                       magithub
                                       helm-flycheck
@@ -389,10 +397,10 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   (setq
    ns-auto-hide-menu-bar nil
-   package-archives
-   '(("gnu" . "https://elpa.gnu.org/packages/")
-     ("marmalade" . "https://marmalade-repo.org/packages/")
-     ("melpa" . "https://melpa.org/packages/"))
+   package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+                      ("marmalade" . "https://marmalade-repo.org/packages/")
+                      ("melpa" . "https://melpa.org/packages/"))
+
    custom-file "~/.spacemacs.d/custom.el")
 
   (load custom-file))

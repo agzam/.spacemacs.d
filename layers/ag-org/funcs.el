@@ -120,3 +120,28 @@ COLOR can be \"red\" \"green\" or \"yellow\""
   "reveal content for helm-persistent-action used in an Org file with folded outline"
   (when (equalp major-mode 'org-mode)
     (org-reveal)))
+
+(defun ag/org-meta-return (&optional ignore)
+  "context respecting org-insert"
+  (interactive "P")
+  (if ignore
+      (org-return-indent)
+    (cond
+     ;; checkbox
+     ((org-at-item-checkbox-p) (org-insert-todo-heading nil))
+     ;; item
+     ((org-at-item-p) (org-insert-item))
+     ;; todo element
+     ((org-element-property :todo-keyword (org-element-context))
+      (org-insert-todo-heading 4))
+     ;; heading
+     ((org-at-heading-p) (org-insert-heading-respect-content))
+     ;; plain text item
+     ((string-or-null-p (org-context))
+      (progn
+        (let ((org-list-use-circular-motion t))
+          (org-beginning-of-item)
+          (end-of-line)
+          (ag/org-meta-return))))
+     ;; fall-through case
+     (t (org-return-indent)))))
