@@ -72,6 +72,9 @@
   "swg" 'ag/helm-google-suggest
   "ou" 'spacemacs/avy-open-url)
 
+(evil-define-key 'normal magit-diff-mode-map "l" #'evil-forward-char)
+(evil-define-key 'normal magit-diff-mode-map "h" #'evil-backward-char)
+
 ;; -----------
 ;; Inflections
 ;; -----------
