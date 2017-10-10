@@ -116,11 +116,6 @@ COLOR can be \"red\" \"green\" or \"yellow\""
       (when (file-exists-p (car el))
             (set-file-modes (car el) (cdr el))))))
 
-(defun ag/org-reveal-on-helm-peristent-action ()
-  "reveal content for helm-persistent-action used in an Org file with folded outline"
-  (when (equalp major-mode 'org-mode)
-    (org-reveal)))
-
 (defun ag/org-meta-return (&optional ignore)
   "context respecting org-insert"
   (interactive "P")
@@ -132,8 +127,8 @@ COLOR can be \"red\" \"green\" or \"yellow\""
      ;; item
      ((org-at-item-p) (org-insert-item))
      ;; todo element
-     ((org-element-property :todo-keyword (org-element-context))
-      (org-insert-todo-heading 4))
+     ;; ((org-element-property :todo-keyword (org-element-context))
+     ;;  (org-insert-todo-heading 4))
      ;; heading
      ((org-at-heading-p) (org-insert-heading-respect-content))
      ;; plain text item
@@ -145,3 +140,38 @@ COLOR can be \"red\" \"green\" or \"yellow\""
           (ag/org-meta-return))))
      ;; fall-through case
      (t (org-return-indent)))))
+
+;;;;
+;;;; System-wide org capture
+;;;;
+(defadvice org-switch-to-buffer-other-window
+    (after supress-window-splitting activate)
+  "Delete the extra window if we're in a capture frame"
+  (if (equal "capture" (frame-parameter nil 'name))
+      (delete-other-windows)))
+
+(defadvice org-capture-finalize
+    (after delete-capture-frame activate)
+  "Advise capture-finalize to close the frame"
+  (if (equal "capture" (frame-parameter nil 'name))
+      (delete-frame)))
+
+(defun activate-capture-frame (&optional keys)
+  "run org-capture in capture frame"
+  (select-frame-by-name "capture")
+  (set-frame-position nil 400 400)
+  (set-frame-size nil 1000 400 t)
+  (switch-to-buffer (get-buffer-create "*scratch*"))
+  (org-capture nil keys))
+
+(defadvice org-capture-finalize
+    (after delete-capture-frame activate)
+  "Advise capture-finalize to close the frame"
+  (when (and (equal "capture" (frame-parameter nil 'name))
+             (not (eq this-command 'org-capture-refile)))
+    (delete-frame)))
+
+(defadvice org-capture-refile
+    (after delete-capture-frame activate)
+  "Advise org-refile to close the frame"
+  (delete-frame))
