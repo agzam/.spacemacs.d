@@ -54,10 +54,10 @@ This function should only modify configuration layer settings."
      (spell-checking :variables
                      ispell-program-name "aspell")
      ;; ---- Tools ----
-     helm fasd osx restclient emoji search-engine imenu-list docker pdf-tools
+     helm fasd osx restclient emoji search-engine imenu-list docker pdf-tools treemacs
      (shell :packages (not eshell-prompt-extras eshell-z multi-term xterm-color)
             :variables shell-default-shell 'eshell)
-     ;; (semantic :disabled-for '(emacs-lisp org))
+     (semantic :disabled-for '(emacs-lisp org))
      ;; ---- Version control ----
      git (version-control :variables
                           version-control-diff-tool 'diff-hl
