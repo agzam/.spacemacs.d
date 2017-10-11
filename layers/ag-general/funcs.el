@@ -29,6 +29,7 @@
   (remove-hook 'markdown-mode-hook 'spacemacs//cleanup-org-tables-on-save))
 
 (defun ag/atomic-edit-done ()
+  (kill-new (buffer-string) t)
   (when (eq system-type 'darwin)
     (shell-command "open -a \"Google Chrome\"")))
 
