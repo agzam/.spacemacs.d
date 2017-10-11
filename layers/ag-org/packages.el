@@ -38,12 +38,12 @@
 
      ort/prefix-arg-directory "~/Dropbox/org"
      org-agenda-files "~/Dropbox/org/.agenda-files"
+     org-default-notes-file "~/Dropbox/org/notes.org"
 
      org-refile-targets '((nil :maxlevel . 3)
                           (org-agenda-files :maxlevel . 3))
      org-refile-allow-creating-parent-nodes 'confirm
 
-     org-default-notes-file "tasks.org"
      ;; I don't want to be prompted on every code block evaluation
      org-confirm-babel-evaluate nil
      org-todo-keywords (quote ((sequence "TODO" "ONGOING" "DONE")))
