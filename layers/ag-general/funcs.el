@@ -76,3 +76,9 @@
 (advice-add 'evil-delete-marks :after
             (lambda (&rest args)
               (evil-visual-mark-render)))
+
+(defun ag/switch-to-app (pid)
+  "Using third party tools tries to switch to the app with the given PID"
+  (when (and pid (eq system-type 'darwin))
+    (call-process (executable-find "hs") nil 0 nil "-c"
+                  (concat "require(\"emacs\").switchToApp (\"" pid "\")"))))
