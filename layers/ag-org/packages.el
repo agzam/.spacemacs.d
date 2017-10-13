@@ -19,7 +19,7 @@
   (with-eval-after-load 'org
     (setq org-capture-templates
      '(("t" "Todo" entry (file "~/Dropbox/org/tasks.org")
-        "* TODO %t  %?\n\t%i\n")
+        "* TODO %?\n  SCHEDULED: %^u")
        ("s" "Code Snippet" entry (file "~/Dropbox/org/yakety.org")
         ;; Prompt for tag and language
         "* %u  %?\n\t%f\n\t#+BEGIN_SRC %^{language}\n\t\t%i\n\t#+END_SRC")
