@@ -5,11 +5,11 @@
 (defun dotspacemacs/layers ()
   "Layer configuration:
 This function should only modify configuration layer settings."
-  (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
-  (add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
-  (add-to-list 'package-pinned-packages '(clj-refactor . "melpa-stable") t)
-  (add-to-list 'package-pinned-packages '(cljr-helm . "melpa-stable") t)
-  (add-to-list 'package-pinned-packages '(ac-cider . "melpa-stable") t)
+  ;; (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
+  ;; (add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
+  ;; (add-to-list 'package-pinned-packages '(clj-refactor . "melpa-stable") t)
+  ;; (add-to-list 'package-pinned-packages '(cljr-helm . "melpa-stable") t)
+  ;; (add-to-list 'package-pinned-packages '(ac-cider . "melpa-stable") t)
   (setq-default
    ;; Base distribution to use. This is a layer contained in the directory
    ;; `+distribution'. For now available distributions are `spacemacs-base'
@@ -57,7 +57,10 @@ This function should only modify configuration layer settings."
      helm fasd osx restclient emoji search-engine imenu-list docker pdf-tools treemacs
      (shell :packages (not eshell-prompt-extras eshell-z multi-term xterm-color)
             :variables shell-default-shell 'eshell)
-     (semantic :disabled-for '(emacs-lisp org))
+     ;; (semantic :config
+     ;;           (setq-mode-local emacs-lisp-mode
+     ;;                            semanticdb-find-default-throttle
+     ;;                            (default-value 'semanticdb-find-default-throttle)))
      ;; ---- Version control ----
      git (version-control :variables
                           version-control-diff-tool 'diff-hl
@@ -66,7 +69,8 @@ This function should only modify configuration layer settings."
              :variables
              ;; view your Gist using `browse-url` after it is created
              gist-view-gist t
-             magithub-api-timeout 5)
+             magithub-api-timeout 5
+             evil-want-C-u-scroll nil)
      ;; --- My own layers ----
      ag-dired ag-general ag-synonyms ag-web ag-lang-tools ag-clojure
      (ag-org :variables
@@ -86,6 +90,7 @@ This function should only modify configuration layer settings."
                                       helm-flycheck
                                       writeroom-mode
                                       (base16-ocean-dark :location local)
+                                      helpful
                                       ;; string-inflection
                                       ;; flycheck-package I'm not sure if I need this anymore
                                       ;; tern-auto-complete
@@ -212,7 +217,7 @@ It should only modify the values of Spacemacs settings."
    ;; (default nil)
    dotspacemacs-ex-substitute-global nil
    ;; Name of the default layout (default "Default")
-   dotspacemacs-default-layout-name "•"
+   dotspacemacs-default-layout-name "Home"
    ;; If non-nil the default layout name is displayed in the mode-line.
    ;; (default nil)
    dotspacemacs-display-default-layout nil
@@ -401,6 +406,8 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
                       ("marmalade" . "https://marmalade-repo.org/packages/")
                       ("melpa" . "https://melpa.org/packages/"))
 
+   exec-path-from-shell-variables '("PATH" "MANPATH" "NVM_DIR" "NODE_PATH" "HOMEBREW_GITHUB_API_TOKEN"
+                                    "NO_AUTH" "AUTH0_DOMAIN" "AUTH0_CLIENT_ID" "ARTIFACTORY_USER" "ARTIFACTORY_PASSWORD")
    custom-file "~/.spacemacs.d/custom.el")
 
   (load custom-file))

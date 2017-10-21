@@ -1,8 +1,8 @@
 (defconst ag-general-packages '(
-                            ;; editorconfig
-                            rainbow-mode
-                            atomic-chrome
-                            helm-pages))
+                                ;; editorconfig
+                                rainbow-mode
+                                atomic-chrome
+                                helm-pages))
 
 (defun ag-general/init-editorconfig ()
   (use-package editorconfig

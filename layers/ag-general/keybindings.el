@@ -3,6 +3,7 @@
 (global-set-key (kbd "s-n") nil)
 (global-set-key (kbd "s-p") nil)
 (global-set-key (kbd "s-q") nil)
+(global-set-key (kbd "H-q") nil)
 (global-set-key (kbd "C-x C-c") nil) ;; don't kill the frame unexpectedly
 (evil-define-key 'motion help-mode-map (kbd "<escape>") nil)
 (evil-define-key 'normal diff-mode-map "q" #'quit-window)

@@ -82,3 +82,32 @@
   (when (and pid (eq system-type 'darwin))
     (call-process (executable-find "hs") nil 0 nil "-c"
                   (concat "require(\"emacs\").switchToApp (\"" pid "\")"))))
+
+(defun -slide-item (l e dir)
+  "Slides item E in list L to the right or left position
+DIR - is positive or negative number (relative to the position of E). Item can't exceed boundaries of the list - e.g. if given DIR value larger than length of the list - item becomes the last.
+"
+  (let* ((c-pos (-elem-index e l)))
+    (if c-pos
+        (let* ((f (cond ((<= (- (length l) 1) dir) (- (length l) 1))
+                        (t dir)))
+               (new-p (+ c-pos f)))
+          (-insert-at new-p e (-remove-at c-pos l))) l)))
+
+(defun persp-slide (dir)
+  (setq persp-names-cache (-slide-item persp-names-cache (persp-name (get-current-persp)) dir))
+  (spacemacs/layouts-transient-state/body))
+
+(defun persp-slide-to-left ()
+  (interactive)
+  (persp-slide -1))
+
+(defun persp-slide-to-right ()
+  (interactive)
+  (persp-slide 1))
+
+(defun persp-add-keybindings ()
+  (define-key spacemacs/layouts-transient-state/keymap (kbd "<") #'persp-slide-to-left)
+  (define-key spacemacs/layouts-transient-state/keymap (kbd ">") #'persp-slide-to-right))
+
+(add-hook 'persp-mode-hook #'persp-add-keybindings)

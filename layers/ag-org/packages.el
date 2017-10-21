@@ -69,7 +69,6 @@
 
     (add-to-list 'auto-mode-alist '("\\Dropbox/org/.*\.txt\\'" . org-mode))
 
-
     ;; To save the clock history across Emacs sessions, use
     (org-clock-persistence-insinuate)
 
