@@ -77,9 +77,9 @@
     (add-hook 'org-mode-hook #'spacemacs/toggle-visual-line-navigation-on)
     (add-hook 'org-timer-done-hook (lambda () (hs-alert "-- timer done! --")))
 
-    (require 'ob-http)
-    (require 'ob-clojure)
-    (require 'ob-ruby)
+    ;; (require 'ob-http)
+    ;; (require 'ob-clojure)
+    ;; (require 'ob-ruby)
     (org-babel-do-load-languages
      'org-babel-load-languages
      '((emacs-lisp . t)
