@@ -407,7 +407,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
                       ("melpa" . "https://melpa.org/packages/"))
 
    exec-path-from-shell-variables '("PATH" "MANPATH" "NVM_DIR" "NODE_PATH" "HOMEBREW_GITHUB_API_TOKEN"
-                                    "NO_AUTH" "AUTH0_DOMAIN" "AUTH0_CLIENT_ID" "ARTIFACTORY_USER" "ARTIFACTORY_PASSWORD")
+                                    "NO_AUTH" "AUTH_DISABLED" "AUTH0_DOMAIN" "AUTH0_CLIENT_ID" "ARTIFACTORY_USER" "ARTIFACTORY_PASSWORD" "DEV")
    custom-file "~/.spacemacs.d/custom.el")
 
   (load custom-file))

@@ -9,4 +9,4 @@
       "h h" 'helm-clojuredocs-at-point
       "'" 'cider-switch-to-repl-buffer)))
 
-(evil-define-key 'normal clojurescript-mode-map "gd" 'evil-goto-definition)
+;; (evil-define-key 'normal clojurescript-mode-map "gd" 'evil-goto-definition)

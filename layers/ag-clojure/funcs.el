@@ -3,7 +3,7 @@
   (let* ((nrepl-buf (nrepl-make-buffer-name
                      nrepl-server-buffer-name-template
                      (clojure-project-dir (cider-current-dir)) nil nil -1)))
-    (when (not (equal (buffer-name) nrepl-buf)) 
+    (when (not (equal (buffer-name) nrepl-buf))
       (switch-to-buffer-other-window nrepl-buf))))
 
 (with-eval-after-load 'cider
@@ -33,11 +33,25 @@
               (t (beginning-of-thing 'sexp)))
         (insert "#_")))))
 
-(defun project-clj-hook ()
-  "for project.clj files"
-  (if (and (stringp buffer-file-name)
-           (string-match "\\project.clj|build.boot\\'" buffer-file-name))
-      (spacemacs/set-leader-keys-for-major-mode 'clojure-mode "c" 'ag/clojars-find)
-    (spacemacs/set-leader-keys-for-major-mode 'clojure-mode "c" nil)))
+(defun get-current-clj-fn ()
+  "gets fully-qualified name of the current function and copies it to the kill-ring"
+  (interactive)
+  (message (kill-new (concat (cider-current-ns) "/" (helm-cmd--get-current-function-name)))))
+
+(defun clj-find-var ()
+  "Attempts to jump-to-definition of the symbol-at-point. If CIDER fails, or not available, falls back to dumb-jump"
+  (interactive)
+  (let ((var (cider-symbol-at-point)))
+    (if (and (cider-connected-p) (cider-var-info var))
+        (unless (eq 'symbol (type-of (cider-find-var nil var)))
+          (dumb-jump-go))
+      (dumb-jump-go))))
+
+;; (defun project-clj-hook ()
+;;   "for project.clj files"
+;;   (if (and (stringp buffer-file-name)
+;;            (string-match "\\project.clj|build.boot\\'" buffer-file-name))
+;;       (spacemacs/set-leader-keys-for-major-mode 'clojure-mode "c" 'ag/clojars-find)
+;;     (spacemacs/set-leader-keys-for-major-mode 'clojure-mode "c" nil)))
 
 ;; (with-eval-after-load 'bind-map (add-hook 'find-file-hook 'project-clj-hook))
