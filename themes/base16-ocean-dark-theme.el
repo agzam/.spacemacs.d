@@ -25,7 +25,7 @@
       (base0F "#ab7967")
       (base10 "#7090af"))
 
-  (custom-theme-set-faces 
+  (custom-theme-set-faces
    'base16-ocean-dark
 
    ;; Built-in stuff (Emacs 23)
@@ -333,7 +333,7 @@
    `(org-footnote ((t (:foreground ,base0C))))
    `(org-formula ((t (:foreground ,base08))))
    `(org-hide ((t (:foreground ,base03))))
-   `(org-link ((t (:foreground ,base0D))))
+   `(org-link ((t (:foreground ,base0B :underline ,base0D))))
    `(org-scheduled ((t (:foreground ,base0B))))
    `(org-scheduled-previously ((t (:foreground ,base09))))
    `(org-scheduled-today ((t (:foreground ,base0B))))
@@ -583,7 +583,7 @@
    `(magit-diff-removed-highlight ((t (:foreground "#ef6160"))))
    `(magit-diff-added-highlight ((t (:foreground "#a3be70"))))
 
-   ;; avy 
+   ;; avy
    `(avy-lead-face ((t (:foreground "yellow" :background "PaleGreen4" :inverse-video nil)))))
 
   (custom-theme-set-variables
