@@ -41,6 +41,9 @@
         (spacemacs/toggle-fullscreen-frame-on))))
 
 (defun ag/move-frame-one-display (direction)
+  "Moves current frame to a monitor at given DIRECTION
+
+DIRECTION - can be North, South, West, East"
   (when (eq system-type 'darwin)
     (let* ((hs (executable-find "hs"))
            (cmd (concat "hs.window.focusedWindow():moveOneScreen" direction "()")))

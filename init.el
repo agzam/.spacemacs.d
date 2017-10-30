@@ -82,25 +82,10 @@ This function should only modify configuration layer settings."
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(copy-as-format
-                                      ;; (cider :location (recipe :fetcher github
-                                      ;;                        :repo "clojure-emacs/cider"
-                                      ;;                         :commit "8a9eab32646abcaaf31fe83b2d897c01971b98f1"))
-                                      ;; dired+
-                                      magithub
                                       helm-flycheck
                                       writeroom-mode
                                       (base16-ocean-dark :location local)
-                                      helpful
-                                      ;; string-inflection
-                                      ;; flycheck-package I'm not sure if I need this anymore
-                                      ;; tern-auto-complete
-                                      ;; temporary fix, until it gets fixed on MELPA
-                                      ;; (ghub+ :location (recipe
-                                      ;;                   :fetcher github
-                                      ;;                   :repo "vermiculus/ghub-plus"))
-                                      ;;(smartparens :location (recipe :fetcher github
-                                      ;;                               :repo "Fuco1/smartparens"))
-                                      )
+                                      helpful)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.

@@ -1,14 +1,25 @@
 (defconst ag-general-packages '(
-                                ;; editorconfig
+                                ;; adding magithub explicitly here, until this issue is fixed:
+                                ;; see: https://github.com/syl20bnr/spacemacs/issues/9288 and:
+                                ;; https://github.com/magit/magit/issues/3154#issuecomment-325648623
+                                ;; and wait when they enable this:
+                                ;; https://github.com/syl20bnr/spacemacs/blob/develop/layers/+source-control/github/packages.el#L19
+                                magithub
+
                                 rainbow-mode
                                 atomic-chrome
                                 helm-pages))
 
-(defun ag-general/init-editorconfig ()
-  (use-package editorconfig
+(defun ag-general/init-magithub ()
+  (use-package magithub
     :defer t
+    :after magit
     :init
-    (editorconfig-mode 1)))
+    (setq magithub-dir (concat spacemacs-cache-directory "magithub/"))
+    :config
+    (progn
+      (magithub-feature-autoinject t)
+      (define-key magit-status-mode-map "@" #'magithub-dispatch-popup))))
 
 (defun ag-general/init-rainbow-mode ()
   (use-package rainbow-mode
