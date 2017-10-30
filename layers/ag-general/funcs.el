@@ -44,9 +44,7 @@
   (when (eq system-type 'darwin)
     (let* ((hs (executable-find "hs"))
            (cmd (concat "hs.window.focusedWindow():moveOneScreen" direction "()")))
-      (call-process hs
-                    nil 0 nil
-                    (concat "-c" cmd))
+      (call-process hs nil 0 nil "-c" cmd)
       (ag/fix-frame))))
 
 (spacemacs|define-transient-state zoom-frm
