@@ -36,9 +36,8 @@
 (defun ag/fix-frame ()
   "Toggle fullscreen off and on. OS X workaround."
   (when (spacemacs/toggle-fullscreen-frame-p)
-      (progn
-        (spacemacs/toggle-fullscreen-frame-off)
-        (spacemacs/toggle-fullscreen-frame-on))))
+    (spacemacs/toggle-fullscreen-frame-off)
+    (spacemacs/toggle-fullscreen-frame-on)))
 
 (defun ag/move-frame-one-display (direction)
   "Moves current frame to a monitor at given DIRECTION

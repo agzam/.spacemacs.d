@@ -7,5 +7,7 @@
 
 (evil-define-key 'normal org-mode-map "H" 'org-shiftleft)
 (evil-define-key 'normal org-mode-map "L" 'org-shiftright)
-(evil-define-key 'normal org-mode-map "J" 'org-shiftdown)
-(evil-define-key 'normal org-mode-map "K" 'org-shiftup)
+
+(spacemacs/set-leader-keys-for-major-mode 'org-mode
+  "sa" 'org-toggle-archive-tag
+  "sA" 'org-archive-subtree)
