@@ -494,7 +494,8 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
         kept-new-versions 64
         kept-old-versions 0
         delete-old-versions nil)
-  (setq backup-directory-alist '(("." . ".bak"))))
+  (setq backup-directory-alist '(("." . ".bak")))
+  (savehist-mode -1))
 
 ;; Temporary fix - for magithub on Emacs 26
 ;; (with-eval-after-load 'magithub
