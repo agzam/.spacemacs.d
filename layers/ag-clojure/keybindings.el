@@ -9,4 +9,5 @@
       "h h" 'helm-clojuredocs-at-point
       "'" 'cider-switch-to-repl-buffer)))
 
-;; (evil-define-key 'normal clojurescript-mode-map "gd" 'evil-goto-definition)
+(spacemacs/set-leader-keys-for-major-mode 'clojure-mode
+  "C" 'clojars-find)

@@ -15,11 +15,10 @@
   ;;                                     (switch-to-buffer (cider-current-repl-buffer)))))
   )
 
-(defun ag/clojars-find ()
+(defun clojars-find ()
   "Lookup for symbol at point on clojars. Useful for updating packages in project.clj"
   (interactive)
-  (let ((s (symbol-at-point)))
-    (when s (clojars s))))
+  (clojars (symbol-at-point)))
 
 (defun cljr-toggle-ignore-form ()
   "clojure - ignore (comment) form"
@@ -46,12 +45,3 @@
         (unless (eq 'symbol (type-of (cider-find-var nil var)))
           (dumb-jump-go))
       (dumb-jump-go))))
-
-;; (defun project-clj-hook ()
-;;   "for project.clj files"
-;;   (if (and (stringp buffer-file-name)
-;;            (string-match "\\project.clj|build.boot\\'" buffer-file-name))
-;;       (spacemacs/set-leader-keys-for-major-mode 'clojure-mode "c" 'ag/clojars-find)
-;;     (spacemacs/set-leader-keys-for-major-mode 'clojure-mode "c" nil)))
-
-;; (with-eval-after-load 'bind-map (add-hook 'find-file-hook 'project-clj-hook))
