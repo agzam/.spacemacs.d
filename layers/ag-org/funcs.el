@@ -59,7 +59,7 @@ COLOR can be \"red\" \"green\" or \"yellow\""
     (hs-alert "- start churning -")
     (pomodoro/create-menu-item "red")))
 
-;; completion on Tab for `#+` stuff
+;;;; completion on Tab for `#+` stuff
 (defun ag/org-mode-hook ()
   (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
 
@@ -93,23 +93,31 @@ COLOR can be \"red\" \"green\" or \"yellow\""
     (save-mark-and-excursion)
     (let ((tags (-some-> (org-entry-get (point) "tag")
                          (split-string "," t "\s")))
-          (sched (org-entry-get (point) "DEADLINE"))
+          (deadline (org-entry-get (point) "DEADLINE"))
           (added-at (org-entry-get (point) "AddedAt"))
+          (fresh? (org-entry-get (point) "Fresh"))
           (should-save? (not (buffer-modified-p))))
-      (when tags
-        (dolist (i tags)
-          (when (not (member i (org-get-tags)))
-            (org-toggle-tag i 'on)
-            (org-set-tags (point) t))))
-      (when (and added-at (not sched))
-        (org--deadline-or-schedule nil 'deadline (ag/add-days-to-ifttt-date added-at 15)))
-      (ag/indent-org-entry)
-      (flush-lines "^$" nil nil t)
-      (when should-save?
-        (save-buffer)))))
+      ;; initially IFTTT appends an org heading with `Fresh: t' property
+      ;; then this function does its own work on the item (retrieves and sets the tags, sets the deadline, fixes the indentation)
+      ;; and then removes the `Fresh: t' property - so next time the entire org-heading would be skipped
+      (when fresh?
+        ;; set the tags of the heading based on 'Tag' property
+        (when tags
+          (dolist (i tags)
+            (when (not (member i (org-get-tags)))
+              (org-toggle-tag i 'on)
+              (org-set-tags (point) t))))
+       (when (and added-at (not deadline))
+         (org--deadline-or-schedule nil 'deadline (ag/add-days-to-ifttt-date added-a 30)))
+       (ag/indent-org-entry)
+       (org-delete-property "Fresh")
+       ;; remove all empty lines
+       (flush-lines "^$" nil nil t)
+       (when should-save?
+         (save-buffer))))))
 
 (defun ag/set-tangled-file-permissions ()
-  "set specific file permissions after files are tangled"
+  "set specific file permissions after `org-babel-tangle'"
   (let ((fs-lst '(("~/.ssh/config" . #o600)
                   ("~/.ec" . #o700))))
     (dolist (el fs-lst)
@@ -141,9 +149,7 @@ COLOR can be \"red\" \"green\" or \"yellow\""
      ;; fall-through case
      (t (org-return-indent)))))
 
-;;;;
 ;;;; System-wide org capture
-;;;;
 (defvar systemwide-capture-previous-app-pid nil
   "last app that invokes `activate-capture-frame'")
 
