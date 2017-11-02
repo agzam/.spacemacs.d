@@ -437,6 +437,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    diff-hl-side 'left
    use-dialog-box nil
    eshell-aliases-file "~/.spacemacs.d/eshell.aliases"
+   dumb-jump-force-searcher 'rg       ;; https://github.com/jacktasia/dumb-jump#emacs-options
 
    ;; don't quit on esc
    evil-escape-excluded-major-modes '(magit-status-mode
@@ -446,7 +447,8 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    ranger-override-dired nil
    delete-by-moving-to-trash nil
    magit-show-refs-arguments '("--sort=-committerdate")
-   magit-delete-by-moving-to-trash nil) ;; end setq
+   magit-delete-by-moving-to-trash nil)
+   ;;;; end setq
 
   (with-eval-after-load 'helm-ag (setq helm-ag-use-agignore t))
 
@@ -500,11 +502,3 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
         delete-old-versions nil)
   (setq backup-directory-alist '(("." . ".bak")))
   (savehist-mode -1))
-
-;; Temporary fix - for magithub on Emacs 26
-;; (with-eval-after-load 'magithub
-;;   (defun ghubp--post-process (object &optional preserve-objects) object))
-
-
-;; Do not write anything past this comment. This is where Emacs will
-;; auto-generate custom variable definitions.
