@@ -457,6 +457,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (add-hook 'prog-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
   (add-hook 'prog-mode-hook 'flycheck-mode)
   (add-hook 'before-save-hook 'whitespace-cleanup)
+  (spacemacs/toggle-mode-line-org-clock-on)
   (spacemacs/toggle-mode-line-version-control-off)
   (spacemacs/toggle-mode-line-minor-modes-off)
   (with-eval-after-load 'auto-complete (add-to-list 'ac-dictionary-directories "~/.spacemacs.d/ac-dict"))

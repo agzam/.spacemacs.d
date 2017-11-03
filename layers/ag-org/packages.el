@@ -20,13 +20,15 @@
     (setq org-capture-templates
      '(("t" "Todo" entry (file "~/Dropbox/org/tasks.org")
         "* TODO %?\n  SCHEDULED: %^u")
-       ("s" "Code Snippet" entry (file "~/Dropbox/org/yakety.org")
+       ("c" "Code Snippet" entry (file "~/Dropbox/org/tasks.org")
         ;; Prompt for tag and language
         "* %u  %?\n\t%f\n\t#+BEGIN_SRC %^{language}\n\t\t%i\n\t#+END_SRC")
+       ("y" "Yakety" entry (file "~/Dropbox/org/yakety.org")
+        "* TODO %?\n  SCHEDULED: %^u")
        ("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
         "* %u %?"
         :time-prompt t)
-       ("c" "Currently clocked-in" item (clock)
+       ("i" "Currently clocked-in" item (clock)
         "Note taken on %U \\\ \n%?"
         :prepend t)))
 
