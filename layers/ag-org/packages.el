@@ -91,6 +91,7 @@
        (ruby . t)))
 
     (add-hook 'org-babel-post-tangle-hook #'ag/set-tangled-file-permissions)
+    (add-hook 'org-mode-hook #'abbrev-mode)
 
     ;; lower-casing tab-expanded options e.g.: <s
     (mapc (lambda (arg) (setcdr arg (list (downcase (cadr arg)))))

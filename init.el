@@ -422,6 +422,8 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    google-translate-default-source-language "ru"
    google-translate-default-target-language "en"
    scroll-margin 0
+   abbrev-file-name "~/.spacemacs.d/abbrev_defs"
+   save-abbrevs t ;; save abbrevs upon exiting Emacs
    ;; spacemacs-default-jump-handlers 'dumb-jump-go
    ;; evil-search-module 'isearch
 
@@ -456,6 +458,8 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (spaceline-toggle-purpose-off)
   (add-hook 'prog-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
   (add-hook 'prog-mode-hook 'flycheck-mode)
+  (add-hook 'abbrev-mode-hook #'read-abbrev-file)
+  (remove-hook 'evil-insert-state-exit-hook 'expand-abbrev)
   (add-hook 'before-save-hook 'whitespace-cleanup)
   (spacemacs/toggle-mode-line-org-clock-on)
   (spacemacs/toggle-mode-line-version-control-off)

@@ -1,7 +1,9 @@
 (spacemacs/declare-prefix "xs" "synonyms")
 
 (spacemacs/set-leader-keys
-  "xlm" #'mw-thesaurus/lookup-at-point)
+  "xlm" #'mw-thesaurus/lookup-at-point
+  "xAg" #'add-global-abbrev
+  "xAl" #'add-mode-abbrev)
 
 (defun sdcv-search-at-point ()
   (interactive)
