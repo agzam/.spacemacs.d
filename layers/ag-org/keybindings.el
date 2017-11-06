@@ -10,4 +10,5 @@
 
 (spacemacs/set-leader-keys-for-major-mode 'org-mode
   "sa" 'org-toggle-archive-tag
-  "sA" 'org-archive-subtree)
+  "sA" 'org-archive-subtree
+  "sx" 'org-cut-subtree)
