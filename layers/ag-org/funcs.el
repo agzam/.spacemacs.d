@@ -73,7 +73,8 @@ COLOR can be \"red\" \"green\" or \"yellow\""
            ((lambda (x) (cons (car (cdr x)) (cons (car x) (cdr (cdr x))))))
            ((lambda (x) (mapconcat 'identity x " ")))
            (date-to-time)
-           (time-add (days-to-time days))))
+           (time-add (days-to-time days))
+           ((lambda (x) (format-time-string "%Y-%m-%d" x)))))
 
 (defun ag/indent-org-entry ()
   "Properly sets indentation for the current org entry"
@@ -84,37 +85,40 @@ COLOR can be \"red\" \"green\" or \"yellow\""
   (org-end-of-subtree)
   (backward-char)
   (indent-region (region-beginning) (region-end) 2)
+  (flush-lines "^$" nil nil t)
   (outline-hide-entry))
+
+(defun ag/org-toggle-tags (tags)
+  "Toggle TAGS on the current heading"
+  (let ((existing (org-get-tags-at nil t)))
+    (when tags
+      (dolist (i tags)
+        (when (not (member i existing))
+          (org-toggle-tag i 'on))))))
 
 (defun ag/set-tags-and-schedules-for-ifttt-items ()
   "For org items imported via IFTTT, sets the right tags and specific
    deadline (added-at + number of days)"
-  (progn
+  (let* ((should-save? (not (buffer-modified-p)))
+         (pnt (point)))
     (save-mark-and-excursion)
-    (let ((tags (-some-> (org-entry-get (point) "tag")
+    (when (not (org-entry-get pnt "AddedAt"))
+      (ag/indent-org-entry))
+    (let ((tags (-some-> (org-entry-get pnt "tag")
                          (split-string "," t "\s")))
-          (deadline (org-entry-get (point) "DEADLINE"))
-          (added-at (org-entry-get (point) "AddedAt"))
-          (fresh? (org-entry-get (point) "Fresh"))
-          (should-save? (not (buffer-modified-p))))
-      ;; initially IFTTT appends an org heading with `Fresh: t' property
+          (deadline (org-entry-get pnt "DEADLINE"))
+          (added-at (org-entry-get pnt "AddedAt"))
+          (fresh? (org-entry-get pnt "Fresh")))
+      ;; initially IFTTT appends an org headinon g with `Fresh: t' property
       ;; then this function does its own work on the item (retrieves and sets the tags, sets the deadline, fixes the indentation)
       ;; and then removes the `Fresh: t' property - so next time the entire org-heading would be skipped
       (when fresh?
         ;; set the tags of the heading based on 'Tag' property
-        (when tags
-          (dolist (i tags)
-            (when (not (member i (org-get-tags)))
-              (org-toggle-tag i 'on)
-              (org-set-tags (point) t))))
-       (when (and added-at (not deadline))
-         (org--deadline-or-schedule nil 'deadline (ag/add-days-to-ifttt-date added-a 30)))
-       (ag/indent-org-entry)
-       (org-delete-property "Fresh")
-       ;; remove all empty lines
-       (flush-lines "^$" nil nil t)
-       (when should-save?
-         (save-buffer))))))
+        (ag/org-toggle-tags tags)
+        (when (and added-at (not deadline))
+          (org--deadline-or-schedule nil 'deadline (ag/add-days-to-ifttt-date added-at 30)))
+        (org-delete-property "Fresh")
+        (when should-save? (save-buffer))))))
 
 (defun ag/set-tangled-file-permissions ()
   "set specific file permissions after `org-babel-tangle'"
