@@ -12,6 +12,8 @@
 
 (define-key evil-normal-state-map (kbd "C-u") 'universal-argument)
 
+(evil-lisp-state-enter-command sp-up-sexp)
+
 (spacemacs/set-leader-keys
   "qq" nil ;; no unexpected exits
   "qQ" 'spacemacs/prompt-kill-emacs
@@ -19,24 +21,25 @@
   "jj" 'avy-goto-char-timer
   "xx" 'ispell-word
   "ja" 'beginning-of-defun
-  "je" 'end-of-defun)
+  "je" 'end-of-defun
+  "kf" 'evil-lisp-state-sp-up-sexp)
 
 (define-key evil-normal-state-map "Q" 'bury-buffer)
 (define-key evil-normal-state-map (kbd "C-S-e") 'scroll-other-window)
 (define-key evil-normal-state-map (kbd "C-S-y") 'scroll-other-window-down)
 
-(define-key evil-insert-state-map (kbd "s-l") 'sp-forward-symbol)
-(define-key evil-insert-state-map (kbd "s-h") 'sp-backward-symbol)
-(define-key evil-normal-state-map (kbd "s-l") 'sp-forward-symbol)
-(define-key evil-normal-state-map (kbd "s-h") 'sp-backward-symbol)
-(define-key evil-insert-state-map (kbd "s-L") 'sp-forward-sexp)
-(define-key evil-insert-state-map (kbd "s-H") 'sp-backward-sexp)
-(define-key evil-normal-state-map (kbd "s-L") 'sp-forward-sexp)
-(define-key evil-normal-state-map (kbd "s-H") 'sp-backward-sexp)
-(define-key evil-insert-state-map (kbd "s-j") 'lisp-state-next-closing-paren)
-(define-key evil-insert-state-map (kbd "s-k") 'lisp-state-prev-opening-paren)
-(define-key evil-normal-state-map (kbd "s-j") 'lisp-state-next-closing-paren)
-(define-key evil-normal-state-map (kbd "s-k") 'lisp-state-prev-opening-paren)
+;; (define-key evil-insert-state-map (kbd "s-l") 'sp-forward-symbol)
+;; (define-key evil-insert-state-map (kbd "s-h") 'sp-backward-symbol)
+;; (define-key evil-normal-state-map (kbd "s-l") 'sp-forward-symbol)
+;; (define-key evil-normal-state-map (kbd "s-h") 'sp-backward-symbol)
+;; (define-key evil-insert-state-map (kbd "s-L") 'sp-forward-sexp)
+;; (define-key evil-insert-state-map (kbd "s-H") 'sp-backward-sexp)
+;; (define-key evil-normal-state-map (kbd "s-L") 'sp-forward-sexp)
+;; (define-key evil-normal-state-map (kbd "s-H") 'sp-backward-sexp)
+;; (define-key evil-insert-state-map (kbd "s-j") 'lisp-state-next-closing-paren)
+;; (define-key evil-insert-state-map (kbd "s-k") 'lisp-state-prev-opening-paren)
+;; (define-key evil-normal-state-map (kbd "s-j") 'lisp-state-next-closing-paren)
+;; (define-key evil-normal-state-map (kbd "s-k") 'lisp-state-prev-opening-paren)
 
 ;; Smartparens
 (dolist (map (list evil-insert-state-map))
