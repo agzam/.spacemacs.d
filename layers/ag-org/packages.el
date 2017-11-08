@@ -28,9 +28,8 @@
        ("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
         "* %u %?"
         :time-prompt t)
-       ("i" "Currently clocked-in" item (clock)
-        "Note taken on %U \\\ \n%?"
-        :prepend t)))
+       ("z" "Currently clocked-in" item (clock)
+        "Note taken on %U \\\ \n%?")))
 
     (setq
      org-directory "~/Dropbox/org"

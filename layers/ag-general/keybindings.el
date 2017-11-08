@@ -12,6 +12,8 @@
 
 (define-key evil-normal-state-map (kbd "C-u") 'universal-argument)
 
+(evil-lisp-state-enter-command sp-up-sexp)
+
 (spacemacs/set-leader-keys
   "qq" nil ;; no unexpected exits
   "qQ" 'spacemacs/prompt-kill-emacs
@@ -19,24 +21,25 @@
   "jj" 'avy-goto-char-timer
   "xx" 'ispell-word
   "ja" 'beginning-of-defun
-  "je" 'end-of-defun)
+  "je" 'end-of-defun
+  "kf" 'evil-lisp-state-sp-up-sexp)
 
 (define-key evil-normal-state-map "Q" 'bury-buffer)
 (define-key evil-normal-state-map (kbd "C-S-e") 'scroll-other-window)
 (define-key evil-normal-state-map (kbd "C-S-y") 'scroll-other-window-down)
 
-(define-key evil-insert-state-map (kbd "s-l") 'sp-forward-symbol)
-(define-key evil-insert-state-map (kbd "s-h") 'sp-backward-symbol)
-(define-key evil-normal-state-map (kbd "s-l") 'sp-forward-symbol)
-(define-key evil-normal-state-map (kbd "s-h") 'sp-backward-symbol)
-(define-key evil-insert-state-map (kbd "s-L") 'sp-forward-sexp)
-(define-key evil-insert-state-map (kbd "s-H") 'sp-backward-sexp)
-(define-key evil-normal-state-map (kbd "s-L") 'sp-forward-sexp)
-(define-key evil-normal-state-map (kbd "s-H") 'sp-backward-sexp)
-(define-key evil-insert-state-map (kbd "s-j") 'lisp-state-next-closing-paren)
-(define-key evil-insert-state-map (kbd "s-k") 'lisp-state-prev-opening-paren)
-(define-key evil-normal-state-map (kbd "s-j") 'lisp-state-next-closing-paren)
-(define-key evil-normal-state-map (kbd "s-k") 'lisp-state-prev-opening-paren)
+;; (define-key evil-insert-state-map (kbd "s-l") 'sp-forward-symbol)
+;; (define-key evil-insert-state-map (kbd "s-h") 'sp-backward-symbol)
+;; (define-key evil-normal-state-map (kbd "s-l") 'sp-forward-symbol)
+;; (define-key evil-normal-state-map (kbd "s-h") 'sp-backward-symbol)
+;; (define-key evil-insert-state-map (kbd "s-L") 'sp-forward-sexp)
+;; (define-key evil-insert-state-map (kbd "s-H") 'sp-backward-sexp)
+;; (define-key evil-normal-state-map (kbd "s-L") 'sp-forward-sexp)
+;; (define-key evil-normal-state-map (kbd "s-H") 'sp-backward-sexp)
+;; (define-key evil-insert-state-map (kbd "s-j") 'lisp-state-next-closing-paren)
+;; (define-key evil-insert-state-map (kbd "s-k") 'lisp-state-prev-opening-paren)
+;; (define-key evil-normal-state-map (kbd "s-j") 'lisp-state-next-closing-paren)
+;; (define-key evil-normal-state-map (kbd "s-k") 'lisp-state-prev-opening-paren)
 
 ;; Smartparens
 (dolist (map (list evil-insert-state-map))
@@ -45,19 +48,12 @@
   (define-key map "\M-L" 'sp-backward-slurp-sexp)
   (define-key map "\M-H" 'sp-backward-barf-sexp))
 
-;; ---------------
-;; web-mode
-;; ---------------
-(evil-define-key 'normal web-mode-map "zo" 'web-mode-fold-or-unfold)
-(evil-define-key 'normal web-mode-map "zc" 'web-mode-fold-or-unfold)
-(evil-leader/set-key-for-mode 'web-mode "mhh" 'web-mode-dom-xpath)
-(evil-define-key 'normal web-mode-map "K" 'web-mode-dom-xpath)
-
-;; ---------------
-;; css-mode
-;; ---------------
-(evil-leader/set-key-for-mode 'css-mode "mhh" 'helm-css-scss)
-(evil-define-key 'normal css-mode-map "K" 'helm-css-scss)
+;;;; l and h are for navigating. even in magit
+(with-eval-after-load 'magit
+  (evil-define-key evil-magit-state magit-mode-map "l" 'evil-forward-char)
+  (evil-define-key evil-magit-state magit-mode-map (kbd "M-l") 'magit-log-popup)
+  (evil-define-key evil-magit-state magit-mode-map "h" 'evil-backward-char)
+  (evil-define-key evil-magit-state magit-mode-map (kbd "M-h") 'magit-dispatch-popup))
 
 ;; ------------
 ;; Javascript mode
