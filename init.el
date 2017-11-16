@@ -441,10 +441,11 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    eshell-aliases-file "~/.spacemacs.d/eshell.aliases"
    dumb-jump-force-searcher 'rg       ;; https://github.com/jacktasia/dumb-jump#emacs-options
 
-   ;; don't quit on esc
+   ;; don't quit on esc or jk
    evil-escape-excluded-major-modes '(magit-status-mode
                                       magit-diff-mode
                                       magit-refs-mode
+                                      magit-revision-mode
                                       help-mode paradox-menu-mode)
    ranger-override-dired nil
    delete-by-moving-to-trash nil
