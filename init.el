@@ -64,7 +64,8 @@ This function should only modify configuration layer settings."
      ;; ---- Version control ----
      git (version-control :variables
                           version-control-diff-tool 'diff-hl
-                          version-control-global-margin t)
+                          version-control-global-margin t
+                          magit-repository-directories '("~/DevProjects" "~/Sandbox"))
      (github :packages (not magit-gh-pulls)
              :variables
              ;; view your Gist using `browse-url` after it is created
