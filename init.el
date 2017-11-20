@@ -73,6 +73,7 @@ This function should only modify configuration layer settings."
              evil-want-C-u-scroll nil)
      ;; --- My own layers ----
      ag-dired ag-general ag-synonyms ag-web ag-lang-tools ag-clojure
+     ag-gnus
      (ag-org :variables
              org-enable-reveal-js-support t
              org-enable-bootstrap-support t
