@@ -33,7 +33,7 @@
 (with-eval-after-load 'clojure-mode
   (setq clojure-enable-fancify-symbols nil
         clojure-indent-style :align-arguments
-        clojure-align-forms-automatically t
+        clojure-align-forms-automatically nil
         cider-overlays-use-font-lock nil
         cider-repl-use-clojure-font-lock nil
         cider-font-lock-dynamically nil
