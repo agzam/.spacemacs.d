@@ -397,10 +397,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   (setq
    ns-auto-hide-menu-bar nil
-   package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-                      ("marmalade" . "https://marmalade-repo.org/packages/")
-                      ("melpa" . "https://melpa.org/packages/"))
-
    exec-path-from-shell-variables '("PATH" "MANPATH" "NVM_DIR" "NODE_PATH" "HOMEBREW_GITHUB_API_TOKEN"
                                     "NO_AUTH" "AUTH_DISABLED" "AUTH0_DOMAIN" "AUTH0_CLIENT_ID" "ARTIFACTORY_USER" "ARTIFACTORY_PASSWORD" "DEV")
    custom-file "~/.spacemacs.d/custom.el")
