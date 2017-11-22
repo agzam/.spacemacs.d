@@ -24,6 +24,9 @@
   "je" 'end-of-defun
   "kf" 'evil-lisp-state-sp-up-sexp)
 
+(spacemacs/set-leader-keys-for-major-mode 'emacs-lisp-mode "h h" 'helpful-at-point)
+(evil-define-key 'normal helpful-mode-map "q" 'quit-window)
+
 (define-key evil-normal-state-map "Q" 'bury-buffer)
 (define-key evil-normal-state-map (kbd "C-S-e") 'scroll-other-window)
 (define-key evil-normal-state-map (kbd "C-S-y") 'scroll-other-window-down)
