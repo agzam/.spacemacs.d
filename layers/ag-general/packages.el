@@ -1,3 +1,14 @@
+;;; packages.el --- ag-general layer packages file for Spacemacs.
+;;
+;; Copyright (c) 2012-2016 Sylvain Benner & Contributors
+;;
+;; Author: Ag Ibragimov <agzam.ibragimov@gmail.com>
+;; URL: https://github.com/agzam/dot-spacemacs
+;;
+;; This file is not part of GNU Emacs.
+;;
+;;; License: GPLv3
+
 (defconst ag-general-packages '(
                                 ;; adding magithub explicitly here, until this issue is fixed:
                                 ;; see: https://github.com/syl20bnr/spacemacs/issues/9288 and:
@@ -68,3 +79,5 @@
 
   (define-key ibuffer-mode-map (kbd "/ u") #'ibuffer-filter-by-unsaved-file-buffers)
   (define-key ibuffer-mode-map (kbd "/ F") #'ibuffer-filter-by-file-buffers))
+
+;;; packages.el ends here

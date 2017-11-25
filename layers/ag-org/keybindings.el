@@ -1,3 +1,14 @@
+;;; keybindings.el --- ag-org layer keybindings
+;;
+;; Copyright (c) 2012-2016 Sylvain Benner & Contributors
+;;
+;; Author: Ag Ibragimov <agzam.ibragimov@gmail.com>
+;; URL: https://github.com/agzam/dot-spacemacs
+;;
+;; This file is not part of GNU Emacs.
+;;
+;;; License: GPLv3
+
 (global-set-key (kbd "C-x C-p") 'org-pomodoro)
 (global-set-key (kbd "C-x p") 'org-pomodoro)
 
@@ -12,3 +23,5 @@
   "sa" 'org-toggle-archive-tag
   "sA" 'org-archive-subtree
   "sx" 'org-cut-subtree)
+
+;;; keybindings.el ends here

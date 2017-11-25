@@ -1,3 +1,14 @@
+;;; funcs.el --- ag-dired layer functions file.
+;;
+;; Copyright (c) 2012-2016 Sylvain Benner & Contributors
+;;
+;; Author: Ag Ibragimov <agzam.ibragimov@gmail.com>
+;; URL: https://github.com/agzam/dot-spacemacs
+;;
+;; This file is not part of GNU Emacs.
+;;
+;;; License: GPLv3
+
 (defun ag/display-buffer-below (buffer alist)
   "internal function used by `dired-find-file-other-window`"
   (let ((window
@@ -118,3 +129,5 @@ With prefix argument opens things in the other-window"
   (interactive)
   (let ((current-prefix-arg 4))
     (call-interactively 'eshell-action-on-file-or-dir-at-point)))
+
+;;; funcs.el ends here

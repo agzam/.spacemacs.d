@@ -1,3 +1,14 @@
+;;; keybindings.el --- ag-clojure layer keybindings.
+;;
+;; Copyright (c) 2012-2016 Sylvain Benner & Contributors
+;;
+;; Author: Ag Ibragimov <agzam.ibragimov@gmail.com>
+;; URL: https://github.com/agzam/dot-spacemacs
+;;
+;; This file is not part of GNU Emacs.
+;;
+;;; License: GPLv3
+
 (with-eval-after-load 'cider
   (dolist (m '(clojure-mode
                clojurec-mode
@@ -11,3 +22,5 @@
 
 (spacemacs/set-leader-keys-for-major-mode 'clojure-mode
   "C" 'clojars-find)
+
+;;; keybindings.el ends here

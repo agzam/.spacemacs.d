@@ -1,3 +1,14 @@
+;;; keybindings.el --- ag-dired layer keybindings.
+;;
+;; Copyright (c) 2012-2016 Sylvain Benner & Contributors
+;;
+;; Author: Ag Ibragimov <agzam.ibragimov@gmail.com>
+;; URL: https://github.com/agzam/dot-spacemacs
+;;
+;; This file is not part of GNU Emacs.
+;;
+;;; License: GPLv3
+
 (spacemacs/set-leader-keys
   "ft" 'direx:jump-to-directory
   "pt" 'direx-project:jump-to-project-root)
@@ -17,3 +28,5 @@
   (evil-define-key 'insert eshell-mode-map (kbd "C-n") #'eshell-next-matching-input-from-input))
 
 (add-hook 'eshell-mode-hook #'eshell-keybindings-override t)
+
+;;; keybindings.el ends here

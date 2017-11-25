@@ -1,3 +1,14 @@
+;;; funcs.el --- ag-general layer functions file for Spacemacs.
+;;
+;; Copyright (c) 2012-2016 Sylvain Benner & Contributors
+;;
+;; Author: Ag Ibragimov <agzam.ibragimov@gmail.com>
+;; URL: https://github.com/agzam/dot-spacemacs
+;;
+;; This file is not part of GNU Emacs.
+;;
+;;; License: GPLv3
+
 (defun ag/region-or-word-at-point-str ()
   "Returns string of selected region or word at point"
   (let* ((bds (if (use-region-p)
@@ -18,8 +29,7 @@
 
 (defun hs-alert (message)
   "shows Hammerspoon's hs.alert popup with a MESSAGE"
-  (when (and message (eq system-type 'darwin))
-    (call-process (executable-find "hs")
+  (when (and message (eq system-type 'darwin)) (call-process (executable-find "hs")
                   nil 0 nil
                   "-c"
                   (concat "hs.alert.show(\"" message "\", 1)"))))
@@ -82,3 +92,5 @@ DIRECTION - can be North, South, West, East"
   (when (and pid (eq system-type 'darwin))
     (call-process (executable-find "hs") nil 0 nil "-c"
                   (concat "require(\"emacs\").switchToApp (\"" pid "\")"))))
+
+;;; funcs.el ends here
