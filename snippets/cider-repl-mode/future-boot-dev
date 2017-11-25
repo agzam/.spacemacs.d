@@ -1,0 +1,5 @@
+# -*- coding: utf-8 -*-
+# name: future-boot-dev
+# key: fbd
+# --
+(future (boot (dev)))$0

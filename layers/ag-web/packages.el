@@ -1,3 +1,14 @@
+;;; packages.el --- ag-web layer packages
+;;
+;; Copyright (c) 2012-2016 Sylvain Benner & Contributors
+;;
+;; Author: Ag Ibragimov <agzam.ibragimov@gmail.com>
+;; URL: https://github.com/agzam/dot-spacemacs
+;;
+;; This file is not part of GNU Emacs.
+;;
+;;; License: GPLv3
+
 (setq ag-web-packages '())
 
 (with-eval-after-load 'css-mode
@@ -53,3 +64,5 @@
   (add-to-list 'sp-sexp-suffix '(js2-mode regex "")))
 
 (setq flycheck-stylelintrc ".stylelintrc.yml")
+
+;;; packages.el ends here

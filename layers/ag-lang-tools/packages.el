@@ -1,7 +1,8 @@
 (defconst ag-lang-tools-packages
-  '((mw-thesaurus :location (recipe
-                             :fetcher github
-                             :repo "agzam/mw-thesaurus.el"))
+  '((mw-thesaurus
+     :location local
+                  ;; (recipe :fetcher github :repo "agzam/mw-thesaurus.el")
+                  )
 
     ;; sdcv-mode is for browsing Stardict format dictionaries in Emacs
     ;;

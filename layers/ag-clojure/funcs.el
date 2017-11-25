@@ -1,3 +1,14 @@
+;;; funcs.el --- ag-clojure layer functions file.
+;;
+;; Copyright (c) 2012-2016 Sylvain Benner & Contributors
+;;
+;; Author: Ag Ibragimov <agzam.ibragimov@gmail.com>
+;; URL: https://github.com/agzam/dot-spacemacs
+;;
+;; This file is not part of GNU Emacs.
+;;
+;;; License: GPLv3
+
 (defun switch-to-nrepl-window (&optional PROMT-PROJECT CLJS-TOO)
   (save-selected-window)
   (let* ((nrepl-buf (nrepl-make-buffer-name
@@ -45,3 +56,5 @@
         (unless (eq 'symbol (type-of (cider-find-var nil var)))
           (dumb-jump-go))
       (dumb-jump-go))))
+
+;;; funcs.el ends here

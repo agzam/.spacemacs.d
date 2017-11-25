@@ -73,7 +73,9 @@ This function should only modify configuration layer settings."
              magithub-api-timeout 5
              evil-want-C-u-scroll nil)
      ;; --- My own layers ----
-     ag-dired ag-general ag-synonyms ag-web ag-lang-tools ag-clojure
+     ag-dired ag-general
+     ;; ag-synonyms
+     ag-web ag-lang-tools ag-clojure
      ag-gnus
      (ag-org :variables
              org-enable-reveal-js-support t
@@ -277,7 +279,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (default nil) (Emacs 24.4+ only)
-   dotspacemacs-maximized-at-startup nil
+   dotspacemacs-maximized-at-startup t
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
@@ -379,6 +381,7 @@ It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   (add-to-list 'custom-theme-load-path "~/.spacemacs.d/themes")
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 
   (setq-default
    menu-bar-mode t

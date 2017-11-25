@@ -1,9 +1,9 @@
-;;; packages.el --- ag-clojure layer packages file for Spacemacs.
+;;; packages.el --- ag-clojure layer packages.
 ;;
 ;; Copyright (c) 2012-2016 Sylvain Benner & Contributors
 ;;
-;; Author: Ag Ibragimov <ag.ibragimov@C02MT2ZDFH05>
-;; URL: https://github.com/syl20bnr/spacemacs
+;; Author: Ag Ibragimov <agzam.ibragimov@gmail.com>
+;; URL: https://github.com/agzam/dot-spacemacs
 ;;
 ;; This file is not part of GNU Emacs.
 ;;
@@ -58,3 +58,5 @@
     (set x '(clj-find-var))))
 
 ;; (with-eval-after-load 'cider (setq cider-boot-parameters "dev"))
+
+;;; packages.el ends here

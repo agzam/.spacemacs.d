@@ -1,4 +1,4 @@
-;;; layers.el --- layers required by ag-org layer.
+;;; layers.el --- layers required by ag-slack layer.
 ;;
 ;; Copyright (c) 2012-2016 Sylvain Benner & Contributors
 ;;
@@ -9,6 +9,7 @@
 ;;
 ;;; License: GPLv3
 
-(configuration-layer/declare-layers '(org))
+(configuration-layer/declare-layers '(ibuffer))
+(configuration-layer/declare-layers '(slack))
 
 ;;; layers.el ends here
