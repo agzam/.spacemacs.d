@@ -9,11 +9,11 @@
 ;;
 ;;; License: GPLv3
 
-;; disable nonsensical keys
+;;;; disable nonsensical keys
 (dolist (key '("s-n" "s-p" "s-q" "H-q" "C-x C-c"))
   (unbind-key (kbd key)))
 
-;; don't quit helpful on Esc
+;;;; don't quit helpful on Esc
 (evil-define-key 'motion help-mode-map (kbd "<escape>") nil)
 
 (evil-define-key 'normal diff-mode-map "q" #'quit-window)
@@ -21,10 +21,10 @@
 (global-set-key (kbd "C-x b") 'spacemacs-layouts/non-restricted-buffer-list-helm)
 (global-set-key (kbd "C-x C-b") 'spacemacs-layouts/non-restricted-buffer-list-helm)
 
-;; restore vanilla universal argument binding
+;;;; restore vanilla universal argument binding
 (define-key evil-normal-state-map (kbd "C-u") 'universal-argument)
 
-;; wrap `sp-up-sexp` "Move forward out of one level of parentheses", so it can be used in evil-lispy
+;;;; wrap `sp-up-sexp` "Move forward out of one level of parentheses", so it can be used in evil-lispy
 (evil-lisp-state-enter-command sp-up-sexp)
 
 (spacemacs/set-leader-keys
@@ -35,7 +35,11 @@
   "xx" 'ispell-word
   "ja" 'beginning-of-defun
   "je" 'end-of-defun
-  "kf" 'evil-lisp-state-sp-up-sexp)
+  "kf" 'evil-lisp-state-sp-up-sexp
+  "swg" 'ag/helm-google-suggest
+  "ou" 'spacemacs/avy-open-url
+  ;;;; add a page-break
+  "ip" (kbd "i C-q C-l <RET><escape>"))
 
 (spacemacs/set-leader-keys-for-major-mode 'emacs-lisp-mode "h h" 'helpful-at-point)
 (evil-define-key 'normal helpful-mode-map "q" 'quit-window)
@@ -44,36 +48,27 @@
 (define-key evil-normal-state-map (kbd "C-S-e") 'scroll-other-window)
 (define-key evil-normal-state-map (kbd "C-S-y") 'scroll-other-window-down)
 
-;; Smartparens
+;;;; ---------------
+;;;; Smartparens
+;;;; ---------------
 (dolist (map (list evil-insert-state-map))
   (define-key map "\M-l" 'sp-slurp-hybrid-sexp)
   (define-key map "\M-h" 'sp-forward-barf-sexp)
   (define-key map "\M-L" 'sp-backward-slurp-sexp)
   (define-key map "\M-H" 'sp-backward-barf-sexp))
 
-;; ---------------
-;; Misc
-;; ---------------
-(spacemacs/set-leader-keys
-  "swg" 'ag/helm-google-suggest
-  "ou" 'spacemacs/avy-open-url)
-
-;; l and h are for navigating. even in magit
+;;;; l and h are for navigating. even in magit
 (evil-define-key 'normal magit-diff-mode-map "l" #'evil-forward-char)
 (evil-define-key 'normal magit-diff-mode-map "h" #'evil-backward-char)
 
-;; (evil-define-key 'normal info-mode-map "p" 'info-prev)
+(define-key Info-mode-map (kbd "H") 'Info-up)
 
-;; -----------
-;; Company
-;; -----------
+;;;; -----------
+;;;; Company
+;;;; -----------
 (with-eval-after-load 'company
   (define-key company-active-map (kbd "C-n") 'company-select-next)
   (define-key company-active-map (kbd "C-p") 'company-select-previous)
   (define-key company-active-map (kbd "C-f") 'company-search-candidates))
-
-;; add a page-break
-(spacemacs/set-leader-keys
-  "ip" (kbd "i C-q C-l <RET><escape>"))
 
 ;;; keybindings.el ends here
