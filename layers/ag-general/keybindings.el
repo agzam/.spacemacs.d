@@ -39,7 +39,7 @@
   "swg" 'ag/helm-google-suggest
   "ou" 'spacemacs/avy-open-url
   ;;;; add a page-break
-  "ip" (kbd "i C-q C-l <RET><escape>"))
+  "iP" (kbd "i C-q C-l <RET><escape>"))
 
 (spacemacs/set-leader-keys-for-major-mode 'emacs-lisp-mode "h h" 'helpful-at-point)
 (evil-define-key 'normal helpful-mode-map "q" 'quit-window)

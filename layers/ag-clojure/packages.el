@@ -40,6 +40,13 @@
         nrepl-log-messages nil
         clojure-align-binding-forms '("binding" "loop" "doseq" "for" "with-open" "with-local-vars" "with-redefs"))
 
+  (dolist (form '(re-frame.core/reg-sub
+                  re-frame.core/reg-fx
+                  re-frame.core/reg-sub
+                  re-frame.core/reg-event-fx
+                  re-frame.core/reg-event-db))
+    (put-clojure-indent form 1))
+
   ;; (add-hook 'clojure-mode #'flyspell-prog-mode)
 
   (add-hook 'clojure-mode-hook #'spacemacs//init-jump-handlers-clojure-mode)

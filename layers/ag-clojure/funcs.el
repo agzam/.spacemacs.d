@@ -57,4 +57,10 @@
           (dumb-jump-go))
       (dumb-jump-go))))
 
+(defun cider-fully-qualified-symbol-at-point (args)
+  (interactive "P")
+  (let ((s (cider-interactive-eval (concat "`(" (cider-symbol-at-point t) ")"))))
+    (kill-new s)
+    (message s)))
+
 ;;; funcs.el ends here
