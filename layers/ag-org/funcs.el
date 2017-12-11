@@ -13,8 +13,7 @@
 
 (defun insert-current-date (arg)
   "Insert today's date.
-Without universal ARG: 2017-11-08
-With universal ARG: 08.11.2017"
+Without universal ARG: 2017-11-08 With universal ARG: 08.11.2017"
   (interactive "P")
   (insert (if arg
               (format-time-string "%d.%m.%Y")
@@ -134,30 +133,57 @@ item COLOR can be \"red\" \"green\" or \"yellow\"."
               (replace-match " ")
               (ag/org-fix-heading-line-break))))))
 
-(defun ag/set-tags-and-schedules-for-ifttt-items ()
-  "For org items imported via IFTTT, sets the right tags and specific
-   deadline (added-at + number of days)"
-  (let* ((should-save? (not (buffer-modified-p)))
-         (pnt (point)))
-    (save-mark-and-excursion)
-    (when (not (org-entry-get pnt "AddedAt"))
-      (ag/org-fix-heading-line-break pnt)
-      (ag/indent-org-entry))
-    (let ((tags (-some-> (org-entry-get pnt "tag")
+(defun ag/--process-ifttt-pocket-entry ()
+  "Process individually a single entry in org 'pocket'"
+  (ag/org-fix-heading-line-break (point))
+  (ag/indent-org-entry)
+  (let* ((start (org-entry-beginning-position))
+         (end (org-entry-end-position)))
+    (let ((tags (-some-> (org-entry-get start "tag")
                          (split-string "," t "\s")))
-          (deadline (org-entry-get pnt "DEADLINE"))
-          (added-at (org-entry-get pnt "AddedAt"))
-          (fresh? (org-entry-get pnt "Fresh")))
-      ;; initially IFTTT appends an org headinon g with `Fresh: t' property
-      ;; then this function does its own work on the item (retrieves and sets the tags, sets the deadline, fixes the indentation)
-      ;; and then removes the `Fresh: t' property - so next time the entire org-heading would be skipped
-      (when fresh?
-        ;; set the tags of the heading based on 'Tag' property
-        (ag/org-toggle-tags tags)
-        (when (and added-at (not deadline))
-          (org--deadline-or-schedule nil 'deadline (ag/add-days-to-ifttt-date added-at 30)))
-        (org-delete-property "Fresh")
-        (when should-save? (save-buffer))))))
+          (deadline (org-entry-get start "DEADLINE"))
+          (added-at (org-entry-get start "AddedAt")))
+      ;; set the tags of the heading based on 'Tag' property
+      (ag/org-toggle-tags tags)
+      (when (and added-at (not deadline))
+        (org--deadline-or-schedule nil 'deadline (ag/add-days-to-ifttt-date added-at 30)))
+      (append-to-file start end "~/Dropbox/org/read-later.org")
+      (delete-region start end))))
+
+(defun ag/process-ifttt-pocket ()
+  "Process org 'pocket' - entries imported via IFTTT"
+  (let ((buf (find-file-noselect "~/Dropbox/org/pocket.txt")))
+    (set-buffer buf)
+    (save-mark-and-excursion)
+    (org-map-entries #'ag/--process-ifttt-pocket-entry nil 'file)
+    (save-buffer nil)
+    (kill-buffer)))
+
+;; (defun ag/set-tags-and-schedules-for-ifttt-items ()
+;;   "For org items imported via IFTTT, sets the right tags and specific
+;;    deadline (added-at + number of days)"
+;;   (let* ((should-save? (not (buffer-modified-p)))
+;;          (pnt (point)))
+;;     (save-mark-and-excursion)
+;;     (when (not (org-entry-get pnt "AddedAt"))
+;;       (ag/org-fix-heading-line-break pnt)
+;;       (ag/indent-org-entry))
+;;     (let ((tags (-some-> (org-entry-get pnt "tag")
+;;                          (split-string "," t "\s")))
+;;           (deadline (org-entry-get pnt "DEADLINE"))
+;;           (added-at (org-entry-get pnt "AddedAt"))
+;;           (fresh? (org-entry-get pnt "Fresh")))
+;;       ;; initially IFTTT appends an org headinon g with `Fresh: t' property
+;;       ;; then this function does its own work on the item (retrieves and sets the tags, sets the deadline, fixes the indentation)
+;;       ;; and then removes the `Fresh: t' property - so next time the entire org-heading would be skipped
+;;       (when fresh?
+;;         ;; set the tags of the heading based on 'Tag' property
+;;         (ag/org-toggle-tags tags)
+;;         (when (and added-at (not deadline))
+;;           (org--deadline-or-schedule nil 'deadline (ag/add-days-to-ifttt-date added-at 30)))
+;;         (org-delete-property "Fresh")
+;;         ;; (when should-save? (save-buffer))
+;;         ))))
 
 (defun ag/set-tangled-file-permissions ()
   "Set specific file permissions after `org-babel-tangle'."
