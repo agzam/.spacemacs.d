@@ -1,7 +1,7 @@
 ;; -*- mode: emacs-lisp -*-
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
-
+(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 (defun dotspacemacs/layers ()
   "Layer configuration:
 This function should only modify configuration layer settings."
@@ -65,7 +65,8 @@ This function should only modify configuration layer settings."
      git (version-control :variables
                           version-control-diff-tool 'diff-hl
                           version-control-global-margin t
-                          magit-repository-directories '("~/DevProjects" "~/Sandbox"))
+                          magit-repository-directories '("~/DevProjects" "~/Sandbox")
+                          magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
      (github :packages (not magit-gh-pulls)
              :variables
              ;; view your Gist using `browse-url` after it is created
@@ -370,8 +371,7 @@ It should only modify the values of Spacemacs settings."
    ;; Run `spacemacs/prettify-org-buffer' when
    ;; visiting README.org files of Spacemacs.
    ;; (default nil)
-   dotspacemacs-pretty-docs nil
-   ))
+   dotspacemacs-pretty-docs nil))
 
 (defun dotspacemacs/user-init ()
   "Initialization for user code:
@@ -381,7 +381,6 @@ It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   (add-to-list 'custom-theme-load-path "~/.spacemacs.d/themes")
-  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 
   (setq-default
    menu-bar-mode t
@@ -429,8 +428,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    scroll-margin 0
    abbrev-file-name "~/.spacemacs.d/abbrev_defs"
    save-abbrevs t ;; save abbrevs upon exiting Emacs
-   ;; spacemacs-default-jump-handlers 'dumb-jump-go
-   ;; evil-search-module 'isearch
 
    ;;;; Helm
    helm-echo-input-in-header-line nil
@@ -512,4 +509,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
         kept-old-versions 0
         delete-old-versions nil)
   (setq backup-directory-alist '(("." . ".bak")))
-  (savehist-mode -1))
+  (savehist-mode -1)
+  (spacemacs|define-custom-layout "@finops-admin"
+    :binding "f"
+    :body (find-file "~/DevProjects/finops-admin/project.clj")))
