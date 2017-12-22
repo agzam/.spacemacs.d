@@ -24,7 +24,6 @@
 
 (defun ag-general/init-magithub ()
   (use-package magithub
-    :defer t
     :after magit
     :init
     (setq magithub-dir (concat spacemacs-cache-directory "magithub/"))

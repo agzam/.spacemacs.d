@@ -58,8 +58,8 @@
   (define-key map "\M-H" 'sp-backward-barf-sexp))
 
 ;;;; l and h are for navigating. even in magit
-(evil-define-key 'normal magit-diff-mode-map "l" #'evil-forward-char)
-(evil-define-key 'normal magit-diff-mode-map "h" #'evil-backward-char)
+(evil-define-key evil-magit-state magit-mode-map "l" 'evil-forward-char)
+(evil-define-key evil-magit-state magit-mode-map "h" 'evil-backward-char)
 
 (define-key Info-mode-map (kbd "H") 'Info-up)
 
