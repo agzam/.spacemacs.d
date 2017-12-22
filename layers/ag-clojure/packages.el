@@ -28,8 +28,6 @@
 (defun ag-clojure/init-flycheck-joker ()
   (require 'flycheck-joker))
 
-;; (defun ag-clojure/add-jump-to (l) (add-to-list l '(dumb-jump-go)))
-
 (with-eval-after-load 'clojure-mode
   (setq clojure-enable-fancify-symbols nil
         clojure-indent-style :align-arguments
@@ -47,22 +45,8 @@
                   re-frame.core/reg-event-db))
     (put-clojure-indent form 1))
 
-  ;; (add-hook 'clojure-mode #'flyspell-prog-mode)
-
-  (add-hook 'clojure-mode-hook #'spacemacs//init-jump-handlers-clojure-mode)
-  (add-hook 'clojurescript-mode-hook #'spacemacs//init-jump-handlers-clojurescript-mode)
-  (add-hook 'clojurec-mode-hook #'spacemacs//init-jump-handlers-clojurec-mode)
-  (add-hook 'cider-repl-mode-hook #'spacemacs//init-jump-handlers-cider-repl-mode)
-
   ;; annoying Java Cup icon - no longer will bother you
-  (setenv "JAVA_TOOL_OPTIONS" "-Dapple.awt.UIElement=true")
-
-  (dolist (x '(spacemacs-jump-handlers-clojure-mode
-               spacemacs-jump-handlers-clojurec-mode
-               spacemacs-jump-handlers-clojurescript-mode
-               spacemacs-jump-handlers-clojurex-mode
-               spacemacs-jump-handlers-cider-repl-mode))
-    (set x '(clj-find-var))))
+  (setenv "JAVA_TOOL_OPTIONS" "-Dapple.awt.UIElement=true"))
 
 ;; (with-eval-after-load 'cider (setq cider-boot-parameters "dev"))
 
