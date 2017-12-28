@@ -85,7 +85,8 @@
 (defun ag-general/init-evil-mc ()
   (use-package evil-mc
     :config
-    (global-evil-mc-mode  1)
+    (add-hook 'prog-mode-hook 'turn-on-evil-mc-mode)
+    (add-hook 'text-mode-hook 'turn-on-evil-mc-mode)
 
     (defun evil--mc-make-cursor-at-col (startcol _endcol orig-line)
       (move-to-column startcol)
