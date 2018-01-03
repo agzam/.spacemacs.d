@@ -60,6 +60,7 @@
 ;;;; l and h are for navigating. even in magit
 (evil-define-key evil-magit-state magit-mode-map "l" 'evil-forward-char)
 (evil-define-key evil-magit-state magit-mode-map "h" 'evil-backward-char)
+(evil-define-key evil-magit-state magit-mode-map (kbd "C-l") 'magit-log-popup)
 
 (define-key Info-mode-map (kbd "H") 'Info-up)
 

@@ -105,7 +105,7 @@
     (add-hook 'org-mode-hook #'ag/org-mode-hook)
     (add-hook 'org-mode-hook #'spacemacs/toggle-visual-line-navigation-on)
     (add-hook 'org-timer-done-hook (lambda () (hs-alert "-- timer done! --")))
-
+    (remove-hook 'org-mode-hook 'spacemacs/delay-emoji-cheat-sheet-hook)
     ;; (require 'ob-http)
     ;; (require 'ob-clojure)
     ;; (require 'ob-ruby)

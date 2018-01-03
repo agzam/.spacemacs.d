@@ -427,33 +427,36 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    google-translate-default-target-language "en"
    scroll-margin 0
    abbrev-file-name "~/.spacemacs.d/abbrev_defs"
-   save-abbrevs t ;; save abbrevs upon exiting Emacs
+   ;; save abbrevs upon exiting Emacs
+   save-abbrevs t)
 
    ;;;; Helm
+  (setq
    helm-echo-input-in-header-line nil
    helm-ff--deleting-char-backward t
    helm-follow-mode-persistent t
-   helm-buffer-details-flag t        ;; Always show details in buffer list when non--nil.
+   helm-buffer-details-flag t
+   ;; Always show details in buffer list when non--nil.
    apropos-sort-by-scores t
+   ranger-override-dired nil
+   delete-by-moving-to-trash nil)
 
    ;;;; Misc
-   vc-follow-symlinks t
-   diff-hl-side 'left
-   use-dialog-box nil
-   eshell-aliases-file "~/.spacemacs.d/eshell.aliases"
-   dumb-jump-force-searcher 'rg       ;; https://github.com/jacktasia/dumb-jump#emacs-options
+  (setq vc-follow-symlinks t
+        diff-hl-side 'left
+        use-dialog-box nil
+        eshell-aliases-file "~/.spacemacs.d/eshell.aliases"
+        ;; https://github.com/jacktasia/dumb-jump#emacs-options
+        dumb-jump-force-searcher 'rg
+        magit-show-refs-arguments '("--sort=-committerdate")
+        magit-delete-by-moving-to-trash nil)
 
-   ;; don't quit on esc or jk
-   evil-escape-excluded-major-modes '(magit-status-mode
-                                      magit-diff-mode
-                                      magit-refs-mode
-                                      magit-revision-mode
-                                      help-mode paradox-menu-mode)
-   ranger-override-dired nil
-   delete-by-moving-to-trash nil
-   magit-show-refs-arguments '("--sort=-committerdate")
-   magit-delete-by-moving-to-trash nil)
-   ;;;; end setq
+
+  ;; don't quit on esc or jk
+  (setq evil-escape-excluded-major-modes '(magit-status-mode
+                                           magit-diff-mode magit-refs-mode
+                                           magit-revision-mode magit-log-mode
+                                           help-mode paradox-menu-mode))
 
   (with-eval-after-load 'helm-ag (setq helm-ag-use-agignore t))
 
