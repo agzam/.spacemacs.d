@@ -82,6 +82,7 @@
    `(isearch-fail ((t (:background ,base01 :inherit font-lock-warning-face :inverse-video t))))
    `(evil-search-highlight-persist-highlight-face ((t (:background ,base01 :inherit font-lock-warning-face :inverse-video t))))
    `(evil-visual-mark-face ((t (:background "DarkOliveGreen" :foreground ,base0A))))
+   `(evil-ex-lazy-highlight ((t (:background ,base01 :inverse-video t))))
 
    ;; Popups
    `(popup-face ((t (:foreground ,base05 :background ,base02))))
