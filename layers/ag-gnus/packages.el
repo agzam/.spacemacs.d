@@ -12,6 +12,9 @@
 ;;; Code:
 (defconst ag-gnus-packages '())
 
-
+;; (defun ag-gnus/init-w3m ()
+;;   (use-package w3m
+;;     :config
+;;     (setq mm-text-html-renderer gnus-w3m)))
 
 ;;; packages.el ends here
