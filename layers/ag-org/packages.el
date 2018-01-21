@@ -33,7 +33,7 @@
         "* TODO  %?\n  :LOGBOOK:\n  - State \"TODO\"       from              %U\n  :END:")
        ("c" "Code Snippet" entry (file "~/Dropbox/org/tasks.org")
         ;;;; Prompt for tag and language
-        "* %u  %?\n\t%f\n\t#+BEGIN_SRC %^{language}\n\t\t%i\n\t#+END_SRC")
+        "* %u  %?\n\t%F\n\t#+BEGIN_SRC %^{language}\n\t\t%i\n\t#+END_SRC")
        ("y" "Yakety" entry (file "~/Dropbox/org/yakety.org")
         "* TODO  %?\n  :LOGBOOK:\n  - State \"TODO\"       from              %U\n  :END:")
        ("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
