@@ -30,7 +30,7 @@
     :config
     (progn
       (magithub-feature-autoinject t)
-      (define-key magit-status-mode-map "@" #'magithub-dispatch-popup))))
+      (define-key magit-status-mode-map "H" #'magithub-dispatch-popup))))
 
 (defun ag-general/init-rainbow-mode ()
   (use-package rainbow-mode
@@ -102,5 +102,15 @@
       (move-to-column (evil-mc-column-number (if (> end beg)
                                                  beg
                                                end))))))
+
+;; Add `git log ORIG_HEAD..HEAD` to magit
+;; that lets you log only changes since the last pull
+(with-eval-after-load 'magit
+  (defun magit-log-orig_head--head (&optional args files)
+    (interactive (magit-log-arguments))
+    (magit-log (list "ORIG_HEAD..HEAD") args files))
+
+  (magit-define-popup-action 'magit-log-popup
+    ?p "orig_head..head" 'magit-log-orig_head--head))
 
 ;;; packages.el ends here
