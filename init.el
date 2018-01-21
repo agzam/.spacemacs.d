@@ -512,4 +512,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (savehist-mode -1)
   (spacemacs|define-custom-layout "@finops-admin"
     :binding "f"
-    :body (find-file "~/DevProjects/finops-admin/project.clj")))
+    :body (find-file "~/DevProjects/finops-admin/project.clj"))
+  (with-eval-after-load 'helm
+    (setq helm-display-function 'helm-default-display-buffer)))
