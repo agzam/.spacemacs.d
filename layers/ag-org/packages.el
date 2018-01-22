@@ -30,7 +30,9 @@
   (with-eval-after-load 'org
     (setq org-capture-templates
      '(("t" "Todo" entry (file "~/Dropbox/org/tasks.org")
-        "* TODO  %?\n  :LOGBOOK:\n  - State \"TODO\"       from              %U\n  :END:")
+        "* TODO  %? %^u")
+       ("i" "Immediate" entry (file "~/Dropbox/org/tasks.org")
+        "* ONGOING %? %U" :clock-in t :clock-resume t :clock-keep t)
        ("c" "Code Snippet" entry (file "~/Dropbox/org/tasks.org")
         ;;;; Prompt for tag and language
         "* %u  %?\n\t%F\n\t#+BEGIN_SRC %^{language}\n\t\t%i\n\t#+END_SRC")
@@ -47,54 +49,67 @@
      ort/prefix-arg-directory "~/Dropbox/org"
      org-default-notes-file "~/Dropbox/org/notes.org"
      org-show-notification-handler 'message
-     org-id-locations-file (concat org-directory "/.org-id-locations")
+     org-id-locations-file (concat org-directory "/.org-id-locations"))
 
      ;;;; ---- headings ----
+    (setq
      org-goto-interface 'outline-path-completion        ;; org-goto C-c C-j like in org-refile
      org-startup-folded t
      org-blank-before-new-entry nil
      org-ellipsis " ↴"
      org-M-RET-may-split-line '((headline))
      org-ctrl-k-protect-subtree t
-     org-catch-invisible-edits 'smart
+     org-catch-invisible-edits 'smart)
 
      ;;;; ---- lists ----
+    (setq
      org-list-demote-modify-bullet '(("+" . "-") ("-" . "+") ("*" . "+"))
-     org-list-allow-alphabetical t
+     org-list-allow-alphabetical t)
 
      ;;;; ---- agenda ----
+    (setq
      org-agenda-files "~/Dropbox/org/.agenda-files"
      org-agenda-span 3
      org-agenda-skip-scheduled-if-done t
      org-agenda-skip-deadline-if-done t
+     org-agenda-clockreport-parameter-plist '(:link t :maxlevel 5 :fileskip0 t :compact t :narrow 80))
+
 
      ;;;; ---- todo ----
+    (setq
      org-confirm-babel-evaluate nil
      org-todo-keywords (quote ((sequence "TODO" "ONGOING" "DONE")))
      org-todo-keyword-faces '(("ONGOING" . "orange"))
      org-enforce-todo-dependencies t
-     org-enforce-todo-checkbox-dependencies t
+     org-enforce-todo-checkbox-dependencies t)
 
      ;;;; ---- tags ----
-     org-fast-tag-selection-single-key t
+    (setq org-fast-tag-selection-single-key t)
 
      ;;;; ---- src blocks ----
+    (setq
      org-src-fontify-natively nil                     ;; https://github.com/syl20bnr/spacemacs/issues/8455
      org-src-window-setup 'current-window
      org-src-ask-before-returning-to-edit-buffer nil
      ;; org-src-preserve-indentation t
+     )
 
+    (setq
      org-refile-targets '((nil :maxlevel . 3)
                           (org-agenda-files :maxlevel . 3))
      org-refile-allow-creating-parent-nodes 'confirm
 
      org-log-states-order-reversed nil
      org-reverse-note-order t
-     org-log-into-drawer t
+     org-log-into-drawer t)
+
+     ;;;; ----- clocking ----
+    (setq
      org-clock-persist t
      org-clock-in-switch-to-state "ONGOING"
      org-clock-persist-query-resume nil
-     org-clock-report-include-clocking-task t)
+     org-clock-report-include-clocking-task t
+     org-clock-out-remove-zero-time-clocks t)
 
     (add-to-list 'auto-mode-alist '("\\Dropbox/org/.*\.txt\\'" . org-mode))
 
@@ -108,14 +123,19 @@
 
     ;; (require 'ob-http)
     ;; (require 'ob-clojure)
-    ;; (require 'ob-ruby)
+    (require 'ob-ditaa)
     (org-babel-do-load-languages
      'org-babel-load-languages
      '((emacs-lisp . t)
        (shell . t)
        (js . t)
        (clojure . t)
+       (shell . t)
+       (ditaa . t)
        (ruby . t)))
+
+    (cond ((eq system-type 'darwin)
+           (setq org-ditaa-jar-path "/usr/local/Cellar/ditaa/0.11.0/libexec/ditaa-0.11.0-standalone.jar")))
 
     (add-hook 'org-babel-post-tangle-hook #'ag/set-tangled-file-permissions)
     (add-hook 'org-mode-hook #'abbrev-mode)
