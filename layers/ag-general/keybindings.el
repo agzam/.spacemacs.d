@@ -64,7 +64,12 @@
   (evil-define-key evil-magit-state magit-mode-map "h" 'evil-backward-char)
   (evil-define-key evil-magit-state magit-mode-map (kbd "M-h") 'magit-dispatch-popup))
 
+;;;; making Info-mode keys more suitable for Evil
 (define-key Info-mode-map (kbd "H") 'Info-up)
+(define-key Info-mode-map (kbd "C-o") 'Info-prev)
+(define-key Info-mode-map (kbd "C-i") 'Info-next)
+(unbind-key "n" Info-mode-map)
+(unbind-key "p" Info-mode-map)
 
 ;;;; -----------
 ;;;; Company

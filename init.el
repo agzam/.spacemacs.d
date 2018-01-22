@@ -395,7 +395,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    ;; Shell
    ;; system-uses-terminfo nil
    ;; shell-default-shell 'shell
-   eyebrowse-keymap-prefix (kbd "C-x C-w"))
+   eyebrowse-keymap-prefix (kbd "C-x C-x"))
 
   (setq
    ns-auto-hide-menu-bar nil
@@ -464,9 +464,13 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (add-hook 'abbrev-mode-hook #'read-abbrev-file)
   (remove-hook 'evil-insert-state-exit-hook 'expand-abbrev)
   (add-hook 'before-save-hook 'whitespace-cleanup)
+
   (spacemacs/toggle-mode-line-org-clock-on)
   (spacemacs/toggle-mode-line-version-control-off)
   (spacemacs/toggle-mode-line-minor-modes-off)
+  (spacemacs/toggle-mode-line-responsive-off)
+  (spaceline-toggle-persp-name-off)
+
   (with-eval-after-load 'auto-complete (add-to-list 'ac-dictionary-directories "~/.spacemacs.d/ac-dict"))
 
   ;; ---------------
