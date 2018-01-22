@@ -159,4 +159,17 @@
     (progn
       (setq org-reveal-title-slide nil))))
 
+(with-eval-after-load 'artist
+  ;;; artist mode doesn't work properly in evil-mode
+  ;;; see: https://github.com/syl20bnr/spacemacs/issues/4926
+  (defun artist-mode-toggle-emacs-state ()
+    (if artist-mode
+        (evil-emacs-state)
+      (evil-exit-emacs-state)))
+  (unless (eq dotspacemacs-editing-style 'emacs)
+    (add-hook 'artist-mode-hook #'artist-mode-toggle-emacs-state))
+
+  ;;; right-click bound to middle click in artist mode
+  (define-key artist-mode-map [(down-mouse-3)] 'artist-mouse-choose-operation))
+
 ;;; packages.el ends here
