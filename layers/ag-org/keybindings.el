@@ -19,9 +19,6 @@
 (evil-define-key 'normal org-mode-map "H" 'org-shiftleft)
 (evil-define-key 'normal org-mode-map "L" 'org-shiftright)
 
-;; evilified state rebinds C-u
-(evil-define-key 'evilified org-agenda-mode-map "\C-u" 'universal-argument)
-
 (spacemacs/set-leader-keys-for-major-mode 'org-mode
   "sa" 'org-toggle-archive-tag
   "sA" 'org-archive-subtree

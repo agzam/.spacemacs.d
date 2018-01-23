@@ -72,8 +72,13 @@
      org-agenda-span 3
      org-agenda-skip-scheduled-if-done t
      org-agenda-skip-deadline-if-done t
-     org-agenda-clockreport-parameter-plist '(:link t :maxlevel 5 :fileskip0 t :compact t :narrow 80))
+     org-agenda-clockreport-parameter-plist '(:link t :maxlevel 5 :fileskip0 t :compact t :narrow 80)
+     org-agenda-diary-file "~/Dropbox/org/journal.org")
 
+    ;; evilified state rebinds C-u in agenda
+    (defun override-evilified-keys ()
+      (evil-define-key 'evilified org-agenda-mode-map "\C-u" 'universal-argument))
+    (add-hook 'org-agenda-mode-hook 'override-evilified-keys)
 
      ;;;; ---- todo ----
     (setq
@@ -142,7 +147,9 @@
 
     ;;;; lower-casing tab-expanded options e.g.: <s
     (mapc (lambda (arg) (setcdr arg (list (downcase (cadr arg)))))
-          org-structure-template-alist)))
+          org-structure-template-alist))
+
+  )
 
 (defun ag-org/post-init-org-pomodoro ()
   (with-eval-after-load 'org-pomodoro

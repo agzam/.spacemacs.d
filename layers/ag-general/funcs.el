@@ -45,7 +45,7 @@
 
 (defun ag/fix-frame ()
   "Toggle fullscreen off and on. OS X workaround."
-  (when (spacemacs/toggle-fullscreen-frame-p)
+  (when (spacemacs/toggle-fullscreen-frame-status)
     (spacemacs/toggle-fullscreen-frame-off)
     (spacemacs/toggle-fullscreen-frame-on)))
 
