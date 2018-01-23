@@ -72,7 +72,7 @@
      org-agenda-span 3
      org-agenda-skip-scheduled-if-done t
      org-agenda-skip-deadline-if-done t
-     org-agenda-clockreport-parameter-plist '(:link t :maxlevel 5 :fileskip0 t :compact t :narrow 80)
+     org-agenda-clockreport-parameter-plist '(:link t :maxlevel 5 :fileskip0 t :compact t :narrow 60)
      org-agenda-diary-file "~/Dropbox/org/journal.org")
 
     ;; evilified state rebinds C-u in agenda
@@ -139,8 +139,11 @@
        (ditaa . t)
        (ruby . t)))
 
-    (cond ((eq system-type 'darwin)
-           (setq org-ditaa-jar-path "/usr/local/Cellar/ditaa/0.11.0/libexec/ditaa-0.11.0-standalone.jar")))
+    ;; I don't know any better way of determining path to ditaa, other than running `find / -name "ditaa*.jar" 2>/dev/null`
+    (setq org-ditaa-jar-path
+     (pcase system-type
+       ('gnu/linux "/usr/share/java/ditaa/ditaa-0_10.jar")
+       ('darwin  "/usr/local/Cellar/ditaa/0.11.0/libexec/ditaa-0.11.0-standalone.jar")))
 
     (add-hook 'org-babel-post-tangle-hook #'ag/set-tangled-file-permissions)
     (add-hook 'org-mode-hook #'abbrev-mode)
