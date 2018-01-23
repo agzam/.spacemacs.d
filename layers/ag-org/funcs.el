@@ -137,8 +137,7 @@ item COLOR can be \"red\" \"green\" or \"yellow\"."
   "Process individually a single entry in org 'pocket'"
   (ag/org-fix-heading-line-break (point))
   (ag/indent-org-entry)
-  (let* ((start (org-entry-beginning-position))
-         (end (org-entry-end-position)))
+  (let* ((start (org-entry-beginning-position)))
     (let ((tags (-some-> (org-entry-get start "tag")
                          (split-string "," t "\s")))
           (deadline (org-entry-get start "DEADLINE"))
@@ -147,43 +146,20 @@ item COLOR can be \"red\" \"green\" or \"yellow\"."
       (ag/org-toggle-tags tags)
       (when (and added-at (not deadline))
         (org--deadline-or-schedule nil 'deadline (ag/add-days-to-ifttt-date added-at 30)))
-      (append-to-file start end "~/Dropbox/org/read-later.org")
-      (delete-region start end))))
+      (append-to-file (org-entry-beginning-position) (org-entry-end-position) "~/Dropbox/org/read-later.org")
+      (delete-region (org-entry-beginning-position) (org-entry-end-position)))))
 
 (defun ag/process-ifttt-pocket ()
   "Process org 'pocket' - entries imported via IFTTT"
   (let ((buf (find-file-noselect "~/Dropbox/org/pocket.txt")))
     (set-buffer buf)
-    (save-mark-and-excursion)
-    (org-map-entries #'ag/--process-ifttt-pocket-entry nil 'file)
-    (save-buffer nil)
+    (org-map-entries (lambda ()
+                       (ag/--process-ifttt-pocket-entry)
+                       (setq org-map-continue-from (outline-previous-heading))) nil 'file)
+    ;;; for whatever stupid reason, it would not process the last entry, I couldn't figure out how to fix that, so ended up scanning the list twice
+    (org-map-entries 'ag/--process-ifttt-pocket-entry nil 'file)
+    (save-buffer)
     (kill-buffer)))
-
-;; (defun ag/set-tags-and-schedules-for-ifttt-items ()
-;;   "For org items imported via IFTTT, sets the right tags and specific
-;;    deadline (added-at + number of days)"
-;;   (let* ((should-save? (not (buffer-modified-p)))
-;;          (pnt (point)))
-;;     (save-mark-and-excursion)
-;;     (when (not (org-entry-get pnt "AddedAt"))
-;;       (ag/org-fix-heading-line-break pnt)
-;;       (ag/indent-org-entry))
-;;     (let ((tags (-some-> (org-entry-get pnt "tag")
-;;                          (split-string "," t "\s")))
-;;           (deadline (org-entry-get pnt "DEADLINE"))
-;;           (added-at (org-entry-get pnt "AddedAt"))
-;;           (fresh? (org-entry-get pnt "Fresh")))
-;;       ;; initially IFTTT appends an org headinon g with `Fresh: t' property
-;;       ;; then this function does its own work on the item (retrieves and sets the tags, sets the deadline, fixes the indentation)
-;;       ;; and then removes the `Fresh: t' property - so next time the entire org-heading would be skipped
-;;       (when fresh?
-;;         ;; set the tags of the heading based on 'Tag' property
-;;         (ag/org-toggle-tags tags)
-;;         (when (and added-at (not deadline))
-;;           (org--deadline-or-schedule nil 'deadline (ag/add-days-to-ifttt-date added-at 30)))
-;;         (org-delete-property "Fresh")
-;;         ;; (when should-save? (save-buffer))
-;;         ))))
 
 (defun ag/set-tangled-file-permissions ()
   "Set specific file permissions after `org-babel-tangle'."
