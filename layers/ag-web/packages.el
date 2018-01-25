@@ -65,4 +65,16 @@
 
 (setq flycheck-stylelintrc ".stylelintrc.yml")
 
+(with-eval-after-load 'scss
+  (add-hook 'scss-mode-hook
+            (lambda ()
+              (set (make-local-variable 'compile-command)
+                   (concat "stylelint --fix " buffer-file-name))))
+
+  ;;;; Overriding scss-mode.el implementation
+  (defun scss-compile()
+    "Compiles the directory belonging to the current buffer, using the --update option"
+    (interactive)
+    (compile (concat "stylelint --fix " buffer-file-name))))
+
 ;;; packages.el ends here
