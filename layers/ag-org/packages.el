@@ -100,6 +100,8 @@
      )
 
     (setq
+     org-refile-use-outline-path 'file
+     org-outline-path-complete-in-steps nil
      org-refile-targets '((nil :maxlevel . 3)
                           (org-agenda-files :maxlevel . 3))
      org-refile-allow-creating-parent-nodes 'confirm
