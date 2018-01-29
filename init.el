@@ -514,8 +514,13 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
         delete-old-versions nil)
   (setq backup-directory-alist '(("." . ".bak")))
   (savehist-mode -1)
+
   (spacemacs|define-custom-layout "@finops-admin"
     :binding "f"
     :body (find-file "~/DevProjects/finops-admin/project.clj"))
+  (spacemacs|define-custom-layout "@dotfile"
+    :binding "d"
+    :body (find-file "~/dotfile-org/dotfile.org"))
+
   (with-eval-after-load 'helm
     (setq helm-display-function 'helm-default-display-buffer)))
