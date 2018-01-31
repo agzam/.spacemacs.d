@@ -206,22 +206,27 @@
    `(diff-hunk-header ((t (:background ,base01 :foreground ,base0E))))
 
    ;; ediff
-   `(ediff-current-diff-A ((t (:foreground ,base00 :background ,base0E))))
+   ;; `(ediff-current-diff-A ((t (:foreground ,base00 :background ,base0E))))
    `(ediff-current-diff-Ancestor ((t (:foreground ,base05 :background ,base0F))))
-   `(ediff-current-diff-B ((t (:foreground ,base00 :background ,base0C))))
+   ;; `(ediff-current-diff-B ((t (:foreground ,base00 :background ,base0C))))
    `(ediff-current-diff-C ((t (:foreground ,base00 :background ,base0C))))
    `(ediff-even-diff-A ((t (:foreground nil :background ,base01 :inverse-video nil))))
    `(ediff-even-diff-Ancestor ((t (:background ,base01))))
    `(ediff-even-diff-B ((t (:foreground nil :background ,base01 :inverse-video nil))))
    `(ediff-even-diff-C ((t (:background ,base01))))
-   `(ediff-fine-diff-A ((t (:foreground ,base01 :background ,base0F :weight bold))))
+   ;; `(ediff-fine-diff-A ((t (:foreground ,base01 :background ,base0F :weight bold))))
    `(ediff-fine-diff-Ancestor ((t (:foreground ,base05 :background ,base0E weight bold))))
-   `(ediff-fine-diff-B ((t (:foreground ,base01 :background ,base03 :weight bold))))
+   ;; `(ediff-fine-diff-B ((t (:foreground ,base01 :background ,base03 :weight bold))))
    `(ediff-fine-diff-C ((t (:foreground ,base01 :background ,base03 :weight bold ))))
    `(ediff-odd-diff-A  ((t (:foreground ,base04 :background ,base01 :inverse-video nil))))
    `(ediff-odd-diff-Ancestor ((t (:background ,base02))))
    `(ediff-odd-diff-B  ((t (:foreground ,base04 :background ,base01 :inverse-video nil))))
    `(ediff-odd-diff-C ((t (:background ,base02))))
+
+   `(ediff-current-diff-A ((t (:foreground "#dd828b" :background "#443238"))))
+   `(ediff-fine-diff-A ((t (:foreground "#db5e6c" :background "#603238"))))
+   `(ediff-current-diff-B ((t (:foreground ,base0B :background "#2a3a2c"))))
+   `(ediff-fine-diff-B ((t (:foreground "#aadd7e" :background "#2e4431"))))
 
    ;; diff-hl
    `(diff-hl-change ((t (:foreground ,base03 :background ,base0D))))
