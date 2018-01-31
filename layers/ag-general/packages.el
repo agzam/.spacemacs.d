@@ -113,4 +113,23 @@
   (magit-define-popup-action 'magit-log-popup
     ?p "orig_head..head" 'magit-log-orig_head--head))
 
+(with-eval-after-load 'spacemacs-light-theme
+  (custom-theme-set-faces
+   'spacemacs-light
+   `(magit-diff-hunk-heading ((t (:background "#efeae9"))))
+   `(magit-diff-hunk-heading-highlight ((t (:background "#efeae9"))))
+   `(magit-diff-context-highlight ((t (:background "#fbf8ef"))))
+   `(magit-diff-added ((t (:foreground "#67963d" :background "#e6ffed"))))
+   `(magit-diff-added-highlight ((t (:foreground "#325e0b" :background "#e6ffed"))))
+   `(magit-diff-removed ((t (:foreground "#ef6160" :background "#ffeef0"))))
+   `(magit-diff-removed-highlight ((t (:foreground "#d80d0d" :background "#ffeef0"))))
+   `(diff-refine-added ((t (:foreground "#325e0b" :background "#acf2bd"))))
+   `(diff-refine-removed ((t (:foreground "#d80d0d" :background "#fdb8c0"))))))
+
+(with-eval-after-load 'base16-ocean-dark-theme
+  (custom-theme-set-faces
+   'base16-ocean-dark
+   `(diff-refine-added ((t (:foreground "#a3be70" :background "#2b3b34"))))
+   `(diff-refine-removed ((t (:foreground "#ef6160" :background "#3b2c2b"))))))
+
 ;;; packages.el ends here
