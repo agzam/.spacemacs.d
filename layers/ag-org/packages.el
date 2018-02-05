@@ -137,6 +137,7 @@
        (shell . t)
        (js . t)
        (clojure . t)
+       (sql . t)
        (shell . t)
        (ditaa . t)
        (ruby . t)))

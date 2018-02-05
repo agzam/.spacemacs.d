@@ -35,6 +35,7 @@
         cider-overlays-use-font-lock nil
         cider-repl-use-clojure-font-lock nil
         cider-font-lock-dynamically nil
+        cider-repl-display-in-current-window t
         nrepl-log-messages nil
         clojure-align-binding-forms '("binding" "loop" "doseq" "for" "with-open" "with-local-vars" "with-redefs"))
 

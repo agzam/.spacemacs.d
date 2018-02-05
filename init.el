@@ -520,7 +520,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
     :body (find-file "~/DevProjects/finops-admin/project.clj"))
   (spacemacs|define-custom-layout "@dotfile"
     :binding "d"
-    :body (find-file "~/dotfile-org/dotfile.org"))
+    :body (find-file "~/dotfile.org/dotfile.org"))
 
   (with-eval-after-load 'helm
     (setq helm-display-function 'helm-default-display-buffer)))
