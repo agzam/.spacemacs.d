@@ -73,7 +73,10 @@
      org-agenda-skip-scheduled-if-done t
      org-agenda-skip-deadline-if-done t
      org-agenda-clockreport-parameter-plist '(:link t :maxlevel 5 :fileskip0 t :compact t :narrow 60)
-     org-agenda-diary-file "~/Dropbox/org/journal.org")
+     org-agenda-diary-file "~/Dropbox/org/journal.org"
+     org-agenda-start-with-follow-mode t
+     org-agenda-start-with-log-mode t
+     org-agenda-start-with-clockreport-mode t)
 
     ;; evilified state rebinds C-u in agenda
     (defun override-evilified-keys ()
