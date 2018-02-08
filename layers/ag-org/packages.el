@@ -78,11 +78,6 @@
      org-agenda-start-with-log-mode t
      org-agenda-start-with-clockreport-mode t)
 
-    ;; evilified state rebinds C-u in agenda
-    (defun override-evilified-keys ()
-      (evil-define-key 'evilified org-agenda-mode-map "\C-u" 'universal-argument))
-    (add-hook 'org-agenda-mode-hook 'override-evilified-keys)
-
      ;;;; ---- todo ----
     (setq
      org-confirm-babel-evaluate nil
@@ -102,6 +97,15 @@
      ;; org-src-preserve-indentation t
      )
 
+     ;;;; ----- clocking ----
+    (setq
+     org-clock-persist t
+     org-clock-in-switch-to-state "ONGOING"
+     org-clock-persist-query-resume nil
+     org-clock-report-include-clocking-task t
+     org-clock-out-remove-zero-time-clocks t)
+
+    ;;;; ----- misc -------
     (setq
      org-refile-use-outline-path 'file
      org-outline-path-complete-in-steps nil
@@ -111,17 +115,15 @@
 
      org-log-states-order-reversed nil
      org-reverse-note-order t
-     org-log-into-drawer t)
-
-     ;;;; ----- clocking ----
-    (setq
-     org-clock-persist t
-     org-clock-in-switch-to-state "ONGOING"
-     org-clock-persist-query-resume nil
-     org-clock-report-include-clocking-task t
-     org-clock-out-remove-zero-time-clocks t)
+     org-log-into-drawer t
+     org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
     (add-to-list 'auto-mode-alist '("\\Dropbox/org/.*\.txt\\'" . org-mode))
+
+    ;;;; evilified state rebinds C-u in agenda
+    (defun override-evilified-keys ()
+      (evil-define-key 'evilified org-agenda-mode-map "\C-u" 'universal-argument))
+    (add-hook 'org-agenda-mode-hook 'override-evilified-keys)
 
     ;;;; To save the clock history across Emacs sessions, use
     (org-clock-persistence-insinuate)
