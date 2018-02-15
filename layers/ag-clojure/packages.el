@@ -14,7 +14,6 @@
     clojure-mode-extra-font-locking
     helm-clojuredocs
     clojars
-    clojure-cheatsheet
     helm-cider
     flycheck-joker))
 
@@ -22,7 +21,6 @@
 (defun ag-clojure/init-clojure-mode-extra-font-locking ())
 (defun ag-clojure/init-helm-clojuredocs ())
 (defun ag-clojure/init-clojars ())
-(defun ag-clojure/init-clojure-cheatsheet ())
 (defun ag-clojure/init-helm-cider ())
 (defun ag-clojure/init-cider-hydra ())
 (defun ag-clojure/init-flycheck-joker ()
@@ -35,7 +33,7 @@
         cider-overlays-use-font-lock nil
         cider-repl-use-clojure-font-lock nil
         cider-font-lock-dynamically nil
-        cider-repl-display-in-current-window t
+        cider-repl-display-in-current-window nil
         nrepl-log-messages nil
         clojure-align-binding-forms '("binding" "loop" "doseq" "for" "with-open" "with-local-vars" "with-redefs"))
 
@@ -43,7 +41,8 @@
                   re-frame.core/reg-fx
                   re-frame.core/reg-sub
                   re-frame.core/reg-event-fx
-                  re-frame.core/reg-event-db))
+                  re-frame.core/reg-event-db
+                  prop/for-all))
     (put-clojure-indent form 1))
 
   ;; annoying Java Cup icon - no longer will bother you

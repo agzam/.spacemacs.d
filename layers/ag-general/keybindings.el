@@ -40,7 +40,7 @@
   "ou" 'spacemacs/avy-open-url
   ;;;; add a page-break
   "iP" (kbd "i C-q C-l <RET><escape>")
-  "tn" 'global-display-line-numbers-mode)
+  "tn" 'display-line-numbers-mode)
 
 (spacemacs/set-leader-keys-for-major-mode 'emacs-lisp-mode "h h" 'helpful-at-point)
 (evil-define-key 'normal helpful-mode-map "q" 'quit-window)

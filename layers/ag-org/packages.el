@@ -32,7 +32,7 @@
      '(("t" "Todo" entry (file "~/Dropbox/org/tasks.org")
         "* TODO  %? %^u")
        ("i" "Immediate" entry (file "~/Dropbox/org/tasks.org")
-        "* ONGOING %? %U" :clock-in t :clock-resume t :clock-keep t)
+        "* ONGOING %?" :clock-in t :clock-resume t :clock-keep t)
        ("c" "Code Snippet" entry (file "~/Dropbox/org/tasks.org")
         ;;;; Prompt for tag and language
         "* %u  %?\n\t%F\n\t#+BEGIN_SRC %^{language}\n\t\t%i\n\t#+END_SRC")

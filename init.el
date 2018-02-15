@@ -54,7 +54,8 @@ This function should only modify configuration layer settings."
      (spell-checking :variables
                      ispell-program-name "aspell")
      ;; ---- Tools ----
-     helm fasd osx restclient emoji search-engine imenu-list docker pdf-tools treemacs
+
+     docker emoji fasd helm imenu-list osx pdf-tools restclient search-engine treemacs
      (shell :packages (not eshell-prompt-extras eshell-z multi-term xterm-color)
             :variables shell-default-shell 'eshell)
      ;; (semantic :config
@@ -178,8 +179,7 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-default-font '("Source Code Pro"
                                :size 14
                                :weight normal
-                               :width normal
-                               :powerline-scale 1.1)
+                               :width normal)
    ;; The leader key (default "SPC")
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands `M-x' (after pressing on the leader key).
@@ -364,7 +364,7 @@ It should only modify the values of Spacemacs settings."
    ;; `trailing' to delete only the whitespace at end of lines, `changed' to
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
-   dotspacemacs-whitespace-cleanup nil
+   dotspacemacs-whitespace-cleanup 'trailing
    ;; Either nil or a number of seconds. If non-nil zone out after the specified
    ;; number of seconds. (default nil)
    dotspacemacs-zone-out-when-idle nil
@@ -416,7 +416,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    aw-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9)                       ;;;; ace-windows instead of characters shows number
    linum-format "%3d\u2502"                                    ;;;; nicer line-numbers
    fill-column 120
-   spacemacs-show-trailing-whitespace nil
+   ;; spacemacs-show-trailing-whitespace nil
    tab-width 4
    mouse-wheel-scroll-amount '(0.02)
    mouse-wheel-progressive-speed nil
@@ -463,7 +463,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (add-hook 'prog-mode-hook 'flycheck-mode)
   (add-hook 'abbrev-mode-hook #'read-abbrev-file)
   (remove-hook 'evil-insert-state-exit-hook 'expand-abbrev)
-  (add-hook 'before-save-hook 'whitespace-cleanup)
 
   (spacemacs/toggle-mode-line-org-clock-on)
   (spacemacs/toggle-mode-line-version-control-off)
@@ -523,4 +522,11 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
     :body (find-file "~/dotfile.org/dotfile.org"))
 
   (with-eval-after-load 'helm
-    (setq helm-display-function 'helm-default-display-buffer)))
+    ;; experimenting with helm in a separate frame
+    ;; (setq helm-display-function 'helm-display-buffer-in-own-frame
+    ;;       helm-display-buffer-reuse-frame t
+    ;;       helm-use-undecorated-frame-option t
+    ;;       helm-display-buffer-width 120
+    ;;       helm-display-buffer-height 20)
+    (setq helm-display-function 'helm-default-display-buffer)
+    ))

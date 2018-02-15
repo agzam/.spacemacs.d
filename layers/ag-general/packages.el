@@ -36,7 +36,9 @@
   (use-package rainbow-mode
     :defer t
     :init
-    (add-hook 'css-mode-hook 'rainbow-mode)))
+    (add-hook 'css-mode-hook 'rainbow-mode)
+    ;; remove rectangles from around the colors
+    (setq css-fontify-colors nil)))
 
 (defun ag-general/init-atomic-chrome ()
   (use-package atomic-chrome
@@ -116,6 +118,18 @@
 (with-eval-after-load 'spacemacs-light-theme
   (custom-theme-set-faces
    'spacemacs-light
+
+   `(powerline ((t (:height 0.9))))
+   `(powerline-active0 ((t (:height 0.9))))
+   `(powerline-active1 ((t (:height 0.9))))
+   `(powerline-active2 ((t (:height 0.9))))
+   `(powerline-inactive0 ((t (:height 0.9))))
+   `(powerline-inactive1 ((t (:height 0.9))))
+   `(powerline-inactive2 ((t (:height 0.9))))
+   `(mode-line ((t (:height 0.9))))
+   `(mode-line-inactive ((t (:height 0.9))))
+   `(mode-line-buffer-id ((t (:height 0.9))))
+
    `(magit-diff-hunk-heading ((t (:background "#efeae9"))))
    `(magit-diff-hunk-heading-highlight ((t (:background "#efeae9"))))
    `(magit-diff-context-highlight ((t (:background "#fbf8ef"))))
@@ -124,11 +138,24 @@
    `(magit-diff-removed ((t (:foreground "#ef6160" :background "#ffeef0"))))
    `(magit-diff-removed-highlight ((t (:foreground "#d80d0d" :background "#ffeef0"))))
    `(diff-refine-added ((t (:foreground "#325e0b" :background "#acf2bd"))))
-   `(diff-refine-removed ((t (:foreground "#d80d0d" :background "#fdb8c0"))))))
+   `(diff-refine-removed ((t (:foreground "#d80d0d" :background "#fdb8c0"))))
+   `(ahs-plugin-whole-buffer-face ((t (:foreground "#a9a9a9" :background "#e5e1e0"))))))
 
 (with-eval-after-load 'base16-ocean-dark-theme
   (custom-theme-set-faces
    'base16-ocean-dark
+
+   `(powerline ((t (:height 0.9))))
+   `(powerline-active0 ((t (:height 0.9))))
+   `(powerline-active1 ((t (:height 0.9))))
+   `(powerline-active2 ((t (:height 0.9))))
+   `(powerline-inactive0 ((t (:height 0.9))))
+   `(powerline-inactive1 ((t (:height 0.9))))
+   `(powerline-inactive2 ((t (:height 0.9))))
+   `(mode-line ((t (:height 0.9))))
+   `(mode-line-inactive ((t (:height 0.9))))
+   `(mode-line-buffer-id ((t (:height 0.9))))
+
    `(diff-refine-added ((t (:foreground "#a3be70" :background "#2b3b34"))))
    `(diff-refine-removed ((t (:foreground "#ef6160" :background "#3b2c2b"))))))
 
