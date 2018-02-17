@@ -5,11 +5,6 @@
 (defun dotspacemacs/layers ()
   "Layer configuration:
 This function should only modify configuration layer settings."
-  ;; (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
-  ;; (add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
-  ;; (add-to-list 'package-pinned-packages '(clj-refactor . "melpa-stable") t)
-  ;; (add-to-list 'package-pinned-packages '(cljr-helm . "melpa-stable") t)
-  ;; (add-to-list 'package-pinned-packages '(ac-cider . "melpa-stable") t)
   (setq-default
    ;; Base distribution to use. This is a layer contained in the directory
    ;; `+distribution'. For now available distributions are `spacemacs-base'
