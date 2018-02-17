@@ -38,7 +38,6 @@ This function should only modify configuration layer settings."
       :packages (not mmm-mode)
       :variables markdown-live-preview-engine 'vmd)
      (shell-scripts :packages (not fish-mode))
-     ;; python ;; react ;; (ruby :variables ruby-version-manager 'rvm)
      ;; --- Editor  ----
      (auto-completion :variables
                       auto-completion-tab-key-behavior 'cycle
@@ -46,17 +45,14 @@ This function should only modify configuration layer settings."
                       auto-completion-enable-help-tooltip t
                       auto-completion-enable-sort-by-usage t)
      syntax-checking
-     (spell-checking :variables
-                     ispell-program-name "aspell")
+     (spell-checking :variables ispell-program-name "aspell")
      ;; ---- Tools ----
-
      docker emoji fasd helm imenu-list osx pdf-tools restclient search-engine treemacs
+     (dash :variables
+           (helm-dash-docset-path
+            (cond ((eq system-type 'darwin) "~/Library/Application\ Support/Dash/DocSets"))))
      (shell :packages (not eshell-prompt-extras eshell-z multi-term xterm-color)
             :variables shell-default-shell 'eshell)
-     ;; (semantic :config
-     ;;           (setq-mode-local emacs-lisp-mode
-     ;;                            semanticdb-find-default-throttle
-     ;;                            (default-value 'semanticdb-find-default-throttle)))
      ;; ---- Version control ----
      git (version-control :variables
                           version-control-diff-tool 'diff-hl
@@ -65,19 +61,10 @@ This function should only modify configuration layer settings."
                           magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
      (github :packages (not magit-gh-pulls)
              :variables
-             ;; view your Gist using `browse-url` after it is created
-             gist-view-gist t
-             magithub-api-timeout 5
-             evil-want-C-u-scroll nil)
+             gist-view-gist t        ;; view your Gist using `browse-url` after it is created
+             magithub-api-timeout 5)
      ;; --- My own layers ----
-     ag-dired ag-general
-     ;; ag-synonyms
-     ag-web ag-lang-tools ag-clojure
-     ag-gnus
-     (ag-org :variables
-             org-enable-reveal-js-support t
-             org-enable-bootstrap-support t
-             org-enable-github-support t))
+     ag-dired ag-general ag-web ag-lang-tools ag-clojure ag-gnus ag-org)
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
@@ -85,8 +72,8 @@ This function should only modify configuration layer settings."
    dotspacemacs-additional-packages '(copy-as-format
                                       helm-flycheck
                                       writeroom-mode
-                                      (base16-ocean-dark :location local)
-                                      helpful)
+                                      ;; (base16-ocean-dark :location local)
+                                      )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -393,6 +380,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    eyebrowse-keymap-prefix (kbd "C-x C-x"))
 
   (setq
+   evil-want-C-u-scroll nil
    ns-auto-hide-menu-bar nil
    exec-path-from-shell-variables '("PATH" "MANPATH" "NVM_DIR" "NODE_PATH" "HOMEBREW_GITHUB_API_TOKEN"
                                     "NO_AUTH" "AUTH_DISABLED" "AUTH0_DOMAIN" "AUTH0_CLIENT_ID" "ARTIFACTORY_USER" "ARTIFACTORY_PASSWORD" "DEV")

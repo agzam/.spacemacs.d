@@ -16,7 +16,7 @@
                                 ;; and wait when they enable this:
                                 ;; https://github.com/syl20bnr/spacemacs/blob/develop/layers/+source-control/github/packages.el#L19
                                 magithub
-
+                                helpful
                                 rainbow-mode
                                 atomic-chrome
                                 helm-pages
@@ -31,6 +31,10 @@
     (progn
       (magithub-feature-autoinject t)
       (define-key magit-status-mode-map "H" #'magithub-dispatch-popup))))
+
+(defun ag-general/init-helpful ()
+  (use-package helpful
+    :defer t))
 
 (defun ag-general/init-rainbow-mode ()
   (use-package rainbow-mode

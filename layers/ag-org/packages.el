@@ -74,7 +74,7 @@
      org-agenda-skip-deadline-if-done t
      org-agenda-clockreport-parameter-plist '(:link t :maxlevel 5 :fileskip0 t :compact t :narrow 60)
      org-agenda-diary-file "~/Dropbox/org/journal.org"
-     org-agenda-start-with-follow-mode t
+     org-agenda-start-with-follow-mode nil
      org-agenda-start-with-log-mode t
      org-agenda-start-with-clockreport-mode t)
 
@@ -116,6 +116,8 @@
      org-log-states-order-reversed nil
      org-reverse-note-order t
      org-log-into-drawer t
+     org-enable-github-support t
+     org-enable-bootstrap-support t
      org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
     (add-to-list 'auto-mode-alist '("\\Dropbox/org/.*\.txt\\'" . org-mode))
@@ -175,7 +177,9 @@
     :defer t
     :config
     (progn
-      (setq org-reveal-title-slide nil))))
+      (setq
+       org-enable-reveal-js-support t
+       org-reveal-title-slide nil))))
 
 (with-eval-after-load 'artist
   ;;; artist mode doesn't work properly in evil-mode
