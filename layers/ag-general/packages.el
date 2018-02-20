@@ -118,21 +118,13 @@
 
   (magit-define-popup-action 'magit-log-popup
     ?p "orig_head..head" 'magit-log-orig_head--head))
+(with-eval-after-load 'core-themes-support
+ (add-hook 'spacemacs-post-theme-change-hook 'ag/decrease-powerline-fonts t))
 
 (with-eval-after-load 'spacemacs-light-theme
   (custom-theme-set-faces
    'spacemacs-light
 
-   `(powerline ((t (:height 0.9))))
-   `(powerline-active0 ((t (:height 0.9))))
-   `(powerline-active1 ((t (:height 0.9))))
-   `(powerline-active2 ((t (:height 0.9))))
-   `(powerline-inactive0 ((t (:height 0.9))))
-   `(powerline-inactive1 ((t (:height 0.9))))
-   `(powerline-inactive2 ((t (:height 0.9))))
-   `(mode-line ((t (:height 0.9))))
-   `(mode-line-inactive ((t (:height 0.9))))
-   `(mode-line-buffer-id ((t (:height 0.9))))
 
    `(magit-diff-hunk-heading ((t (:background "#efeae9"))))
    `(magit-diff-hunk-heading-highlight ((t (:background "#efeae9"))))
@@ -149,17 +141,9 @@
   (custom-theme-set-faces
    'base16-ocean-dark
 
-   `(powerline ((t (:height 0.9))))
-   `(powerline-active0 ((t (:height 0.9))))
-   `(powerline-active1 ((t (:height 0.9))))
-   `(powerline-active2 ((t (:height 0.9))))
-   `(powerline-inactive0 ((t (:height 0.9))))
-   `(powerline-inactive1 ((t (:height 0.9))))
-   `(powerline-inactive2 ((t (:height 0.9))))
-   `(mode-line ((t (:height 0.9))))
-   `(mode-line-inactive ((t (:height 0.9))))
-   `(mode-line-buffer-id ((t (:height 0.9))))
-
+   `(magit-section-highlight ((t (:background "#2f343f"))))
+   `(magit-diff-hunk-heading ((t (:background "#2f343f"))))
+   `(magit-diff-hunk-heading-highlight ((t (:background "#2f363f"))))
    `(diff-refine-added ((t (:foreground "#a3be70" :background "#2b3b34"))))
    `(diff-refine-removed ((t (:foreground "#ef6160" :background "#3b2c2b"))))))
 

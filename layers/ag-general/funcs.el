@@ -93,4 +93,34 @@ DIRECTION - can be North, South, West, East"
     (call-process (executable-find "hs") nil 0 nil "-c"
                   (concat "require(\"emacs\").switchToApp (\"" pid "\")"))))
 
+(defun ag/decrease-powerline-fonts ()
+  (message "hook worked")
+  (dolist (buf '(" *Minibuf-0*" " *Minibuf-1*" " *Echo Area 0*" " *Echo Area 1*" " *which-key*"))
+    (with-current-buffer (get-buffer buf)
+      (setq-local face-remapping-alist '((default (:height 0.8) fixed-pitch)))))
+
+  (dolist (theme dotspacemacs-themes)
+    (custom-theme-set-faces
+     theme
+     `(powerline ((t (:height 0.9))))
+     `(powerline-active0 ((t (:height 0.9))))
+     `(powerline-active1 ((t (:height 0.9))))
+     `(powerline-active2 ((t (:height 0.9))))
+     `(powerline-inactive0 ((t (:height 0.9))))
+     `(powerline-inactive1 ((t (:height 0.9))))
+     `(powerline-inactive2 ((t (:height 0.9))))
+     `(mode-line ((t (:height 0.9))))
+     `(mode-line-inactive ((t (:height 0.9))))
+     `(mode-line-highlight ((t (:height 0.9))))
+     `(mode-line-buffer-id ((t (:height 0.9))))
+     `(mode-line-buffer-id-inactive ((t (:height 0.9))))
+     `(mode-line-emphasis ((t (:height 0.9))))
+
+     `(spacemacs-micro-state-header-face ((t (:height 0.9))))
+     `(spacemacs-micro-state-binding-face ((t (:height 0.9))))
+     `(spacemacs-transient-state-title-face ((t (:height 0.9))))
+
+     `(persp-face-lighter-buffer-not-in-persp ((t (:height 0.9))))
+     `(persp-face-lighter-default ((t (:height 0.9))))
+     `(persp-face-lighter-nil-persp ((t (:height 0.9)))))))
 ;;; funcs.el ends here
