@@ -83,9 +83,7 @@ DIRECTION - can be North, South, West, East"
   ("q" nil :exit t))
 
 ;; remove visual marks overlay after marks are deleted
-(advice-add 'evil-delete-marks :after
-            (lambda (&rest args)
-              (evil-visual-mark-render)))
+(advice-add 'evil-delete-marks :after (lambda (&rest args) (evil-visual-mark-render)))
 
 (defun ag/switch-to-app (pid)
   "Using third party tools tries to switch to the app with the given PID"
@@ -123,9 +121,11 @@ DIRECTION - can be North, South, West, East"
      `(persp-face-lighter-buffer-not-in-persp ((t (:height 0.9))))
      `(persp-face-lighter-default ((t (:height 0.9))))
      `(persp-face-lighter-nil-persp ((t (:height 0.9)))))))
+
 (defun get-branch-at-point ()
   (interactive)
   (let ((b (magit-branch-at-point)))
     (kill-new b)
     (message b)))
+
 ;;; funcs.el ends here

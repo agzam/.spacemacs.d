@@ -11,5 +11,8 @@
 ;;
 ;;; Code:
 
+(with-eval-after-load 'gnus
+  (unbind-key (kbd "\ek") gnus-group-mode-map)
+  (unbind-key (kbd "\ek") gnus-summary-mode-map))
 
 ;;; keybindings.el ends here

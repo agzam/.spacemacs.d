@@ -18,11 +18,9 @@
                           :repo "gucong/emacs-sdcv"))))
 
 (defun ag-lang-tools/init-mw-thesaurus ()
-  (use-package mw-thesaurus
-    :ensure t))
+  (use-package mw-thesaurus))
 
 (defun ag-lang-tools/init-sdcv-mode ()
   (use-package sdcv-mode
-    :ensure t
     :config
     (add-hook 'sdcv-mode-hook 'spacemacs/toggle-visual-line-navigation-on)))

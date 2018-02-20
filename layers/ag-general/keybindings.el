@@ -20,7 +20,8 @@
 
 (global-set-key (kbd "C-x b") 'spacemacs-layouts/non-restricted-buffer-list-helm)
 (global-set-key (kbd "C-x C-b") 'spacemacs-layouts/non-restricted-buffer-list-helm)
-
+(with-eval-after-load 'helm
+  (define-key helm-map (kbd "C-c M-i") 'helm-copy-to-buffer))
 ;;;; restore vanilla universal argument binding
 (define-key evil-normal-state-map (kbd "C-u") 'universal-argument)
 
