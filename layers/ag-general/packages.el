@@ -113,19 +113,37 @@
 ;; that lets you log only changes since the last pull
 (with-eval-after-load 'magit
   (defun magit-log-orig_head--head (&optional args files)
+    "Compare log since the last pull. i.e.: show only commits between last pull and head"
     (interactive (magit-log-arguments))
     (magit-log (list "ORIG_HEAD..HEAD") args files))
 
   (magit-define-popup-action 'magit-log-popup
-    ?p "orig_head..head" 'magit-log-orig_head--head))
+    ?p "orig_head..head" 'magit-log-orig_head--head)
+
+  (defun magit-log-other--current (revision)
+    "Compare log between branches à la GitHub style.
+i.e.: show only commits that differ between selected (other branch) and current branch"
+    (interactive (list (magit-read-other-branch-or-commit "Log compare")))
+    (magit-log (list (concat revision ".." (magit-get-current-branch)))))
+
+  (magit-define-popup-action 'magit-log-popup
+    ?d "other..current" 'magit-log-other--current)
+
+  (defun magit-diff-range-reversed (rev-or-range &optional args files)
+    "Diff between two branches. Unlike `diff-range` works in opposite order i.e.: `base..current`"
+    (interactive (list (magit-read-other-branch-or-commit "Diff range")))
+    (magit-diff (concat rev-or-range ".." (magit-get-current-branch)) args files))
+
+  (magit-define-popup-action 'magit-diff-popup
+    ?R "Diff range (reversed)" 'magit-diff-range-reversed))
+
+
 (with-eval-after-load 'core-themes-support
  (add-hook 'spacemacs-post-theme-change-hook 'ag/decrease-powerline-fonts t))
 
 (with-eval-after-load 'spacemacs-light-theme
   (custom-theme-set-faces
    'spacemacs-light
-
-
    `(magit-diff-hunk-heading ((t (:background "#efeae9"))))
    `(magit-diff-hunk-heading-highlight ((t (:background "#efeae9"))))
    `(magit-diff-context-highlight ((t (:background "#fbf8ef"))))
@@ -140,7 +158,6 @@
 (with-eval-after-load 'base16-ocean-dark-theme
   (custom-theme-set-faces
    'base16-ocean-dark
-
    `(magit-section-highlight ((t (:background "#2f343f"))))
    `(magit-diff-hunk-heading ((t (:background "#2f343f"))))
    `(magit-diff-hunk-heading-highlight ((t (:background "#2f363f"))))

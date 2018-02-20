@@ -123,4 +123,9 @@ DIRECTION - can be North, South, West, East"
      `(persp-face-lighter-buffer-not-in-persp ((t (:height 0.9))))
      `(persp-face-lighter-default ((t (:height 0.9))))
      `(persp-face-lighter-nil-persp ((t (:height 0.9)))))))
+(defun get-branch-at-point ()
+  (interactive)
+  (let ((b (magit-branch-at-point)))
+    (kill-new b)
+    (message b)))
 ;;; funcs.el ends here
