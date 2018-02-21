@@ -455,7 +455,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (spaceline-toggle-buffer-encoding-abbrev-off)
   (spaceline-toggle-purpose-off)
   (add-hook 'prog-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
-  (add-hook 'prog-mode-hook 'flycheck-mode)
   (add-hook 'abbrev-mode-hook #'read-abbrev-file)
   (remove-hook 'evil-insert-state-exit-hook 'expand-abbrev)
 

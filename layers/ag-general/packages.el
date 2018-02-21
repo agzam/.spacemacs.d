@@ -60,8 +60,11 @@
   (use-package helm-pages
     :defer t))
 
-(defun flycheck-mode-off () (flycheck-mode -1))
-(add-hook 'emacs-lisp-mode-hook #'flycheck-mode-off)
+(with-eval-after-load 'flycheck
+  (progn
+    (add-hook 'prog-mode-hook 'flycheck-mode)
+    (defun flycheck-mode-off () (flycheck-mode -1))
+    (add-hook 'emacs-lisp-mode-hook #'flycheck-mode-off)))
 
 (with-eval-after-load 'ibuf-ext
   (setq
@@ -137,11 +140,42 @@ i.e.: show only commits that differ between selected (other branch) and current 
   (magit-define-popup-action 'magit-diff-popup
     ?R "Diff range (reversed)" 'magit-diff-range-reversed))
 
+(defun ag/decrease-powerline-fonts (&optional theme)
+  "Slightly decrease elements of the powerline, which-key and minibuffer"
+  (custom-theme-set-faces
+   (or theme spacemacs--cur-theme)
+   `(powerline ((t (:height 0.9))))
+   `(powerline-active0 ((t (:height 0.9))))
+   `(powerline-active1 ((t (:height 0.9))))
+   `(powerline-active2 ((t (:height 0.9))))
+   `(powerline-inactive0 ((t (:height 0.9))))
+   `(powerline-inactive1 ((t (:height 0.9))))
+   `(powerline-inactive2 ((t (:height 0.9))))
+   `(mode-line ((t (:height 0.9))))
+   `(mode-line-inactive ((t (:height 0.9))))
+   `(mode-line-highlight ((t (:height 0.9))))
+   `(mode-line-buffer-id ((t (:height 0.9))))
+   `(mode-line-buffer-id-inactive ((t (:height 0.9))))
+   `(mode-line-emphasis ((t (:height 0.9))))
+
+   `(spacemacs-micro-state-header-face ((t (:height 0.9))))
+   `(spacemacs-micro-state-binding-face ((t (:height 0.9))))
+   `(spacemacs-transient-state-title-face ((t (:height 0.9))))
+
+   `(persp-face-lighter-buffer-not-in-persp ((t (:height 0.9))))
+   `(persp-face-lighter-default ((t (:height 0.9))))
+   `(persp-face-lighter-nil-persp ((t (:height 0.9)))))
+
+  (dolist (buf (list " *Minibuf-0*" " *Minibuf-1*" " *Echo Area 0*" " *Echo Area 1*" " *which-key*"))
+    (when (get-buffer buf)
+      (with-current-buffer buf
+        (setq-local face-remapping-alist '((default (:height 0.9))))))))
 
 (with-eval-after-load 'core-themes-support
- (add-hook 'spacemacs-post-theme-change-hook 'ag/decrease-powerline-fonts t))
+  (add-hook 'spacemacs-post-theme-change-hook 'ag/decrease-powerline-fonts t))
 
 (with-eval-after-load 'spacemacs-light-theme
+  (ag/decrease-powerline-fonts 'spacemacs-light)
   (custom-theme-set-faces
    'spacemacs-light
    `(magit-diff-hunk-heading ((t (:background "#efeae9"))))
@@ -156,6 +190,7 @@ i.e.: show only commits that differ between selected (other branch) and current 
    `(ahs-plugin-whole-buffer-face ((t (:foreground "#a9a9a9" :background "#e5e1e0"))))))
 
 (with-eval-after-load 'base16-ocean-dark-theme
+  (ag/decrease-powerline-fonts 'base16-ocean-dark)
   (custom-theme-set-faces
    'base16-ocean-dark
    `(magit-section-highlight ((t (:background "#2f343f"))))
