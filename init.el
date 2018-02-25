@@ -48,8 +48,8 @@ This function should only modify configuration layer settings."
      ;; ---- Tools ----
      docker emoji fasd helm imenu-list osx pdf-tools restclient search-engine treemacs
      (dash :variables
-           (helm-dash-docset-path
-            (cond ((eq system-type 'darwin) "~/Library/Application\ Support/Dash/DocSets"))))
+           helm-dash-docset-path
+           (cond ((eq system-type 'darwin) "~/Library/Application\ Support/Dash/DocSets")))
      (shell :packages (not eshell-prompt-extras eshell-z multi-term xterm-color)
             :variables shell-default-shell 'eshell)
      ;; ---- Version control ----
@@ -325,7 +325,7 @@ It should only modify the values of Spacemacs settings."
    ;; List of search tool executable names. Spacemacs uses the first installed
    ;; tool of the list. Supported tools are `rg', `ag', `pt', `ack' and `grep'.
    ;; (default '("rg" "ag" "pt" "ack" "grep"))
-   dotspacemacs-search-tools '("rg" "ag" "pt" "ack" "grep")
+   dotspacemacs-search-tools '("ag" "rg" "pt" "ack" "grep")
    ;; The default package repository used if no explicit repository has been
    ;; specified with an installed package.
    ;; Not used for now. (default nil)

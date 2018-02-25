@@ -130,7 +130,7 @@ i.e.: show only commits that differ between selected (other branch) and current 
     (magit-log (list (concat revision ".." (magit-get-current-branch)))))
 
   (magit-define-popup-action 'magit-log-popup
-    ?d "other..current" 'magit-log-other--current)
+    ?R "other..current" 'magit-log-other--current)
 
   (defun magit-diff-range-reversed (rev-or-range &optional args files)
     "Diff between two branches. Unlike `diff-range` works in opposite order i.e.: `base..current`"
@@ -169,7 +169,7 @@ i.e.: show only commits that differ between selected (other branch) and current 
   (dolist (buf (list " *Minibuf-0*" " *Minibuf-1*" " *Echo Area 0*" " *Echo Area 1*" " *which-key*"))
     (when (get-buffer buf)
       (with-current-buffer buf
-        (setq-local face-remapping-alist '((default (:height 0.9))))))))
+        (setq-local face-remapping-alist '((default (:height 0.8))))))))
 
 (with-eval-after-load 'core-themes-support
   (add-hook 'spacemacs-post-theme-change-hook 'ag/decrease-powerline-fonts t))
