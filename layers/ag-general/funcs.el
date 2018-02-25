@@ -97,4 +97,56 @@ DIRECTION - can be North, South, West, East"
     (kill-new b)
     (message b)))
 
+(defvar ag/edit-with-emacs-mode-map
+  (let ((map (make-keymap)))
+    (define-key map (kbd "C-c C-c") 'ag/finish-edit-with-emacs)
+    (define-key map (kbd "C-c k") 'ag/cancel-edit-with-emacs)
+    map))
+
+(define-minor-mode ag/edit-with-emacs-mode
+  "Minor mode enabled on buffers opened by ag/edit-by-emacs"
+  :init-value nil
+  :lighter " editwithemacs"
+  :keymap ag/edit-with-emacs-mode-map)
+
+(defvar systemwide-edit-previous-app-pid nil
+  "Last app that invokes `ag/edit-with-emacs'.")
+
+(defun ag/edit-with-emacs (&optional pid title)
+  "
+PID is a pid of the app (the caller is responsible to set that right)
+TITLE is a title of the window (the caller is responsible to set that right) "
+  (setq systemwide-edit-previous-app-pid pid)
+  (select-frame-by-name "edit")
+  (set-frame-position nil 400 400)
+  (set-frame-size nil 600 300 t)
+  (let ((buffer (get-buffer-create (concat "*edit-with-emacs " title " *"))))
+    (set-buffer-major-mode buffer)
+    (with-current-buffer buffer
+      (spacemacs/copy-clipboard-to-whole-buffer)
+      (spacemacs/evil-search-clear-highlight)
+      (delete-other-windows)
+      (text-mode)
+      (spacemacs/toggle-visual-line-navigation-on)
+      (ag/edit-with-emacs-mode 1)
+      (evil-insert 1))
+    (switch-to-buffer buffer)))
+
+(defun ag/finish-edit-with-emacs ()
+  (interactive)
+  (spacemacs/copy-whole-buffer-to-clipboard)
+  (kill-buffer)
+  (delete-frame)
+  (call-process (executable-find "hs") nil 0 nil "-c"
+                (concat "require(\"emacs\").switchToAppAndPasteFromClipboard (\"" systemwide-edit-previous-app-pid "\")"))
+  (setq systemwide-edit-previous-app-pid nil))
+
+(defun ag/cancel-edit-with-emacs ()
+  (interactive)
+  (kill-buffer)
+  (delete-frame)
+  (ag/switch-to-app systemwide-edit-previous-app-pid)
+  (setq systemwide-edit-previous-app-pid nil)
+  )
+
 ;;; funcs.el ends here
