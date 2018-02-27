@@ -146,7 +146,6 @@ TITLE is a title of the window (the caller is responsible to set that right) "
   (kill-buffer)
   (delete-frame)
   (ag/switch-to-app systemwide-edit-previous-app-pid)
-  (setq systemwide-edit-previous-app-pid nil)
-  )
+  (setq systemwide-edit-previous-app-pid nil))
 
 ;;; funcs.el ends here

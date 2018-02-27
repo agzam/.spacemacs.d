@@ -175,7 +175,6 @@ i.e.: show only commits that differ between selected (other branch) and current 
   (add-hook 'spacemacs-post-theme-change-hook 'ag/decrease-powerline-fonts t))
 
 (with-eval-after-load 'spacemacs-light-theme
-  (ag/decrease-powerline-fonts 'spacemacs-light)
   (custom-theme-set-faces
    'spacemacs-light
    `(magit-diff-hunk-heading ((t (:background "#efeae9"))))
@@ -187,16 +186,17 @@ i.e.: show only commits that differ between selected (other branch) and current 
    `(magit-diff-removed-highlight ((t (:foreground "#d80d0d" :background "#ffeef0"))))
    `(diff-refine-added ((t (:foreground "#325e0b" :background "#acf2bd"))))
    `(diff-refine-removed ((t (:foreground "#d80d0d" :background "#fdb8c0"))))
-   `(ahs-plugin-whole-buffer-face ((t (:foreground "#a9a9a9" :background "#e5e1e0"))))))
+   `(ahs-plugin-whole-buffer-face ((t (:background "#e5e1e0")))))
+  (ag/decrease-powerline-fonts 'spacemacs-light))
 
 (with-eval-after-load 'base16-ocean-dark-theme
-  (ag/decrease-powerline-fonts 'base16-ocean-dark)
   (custom-theme-set-faces
    'base16-ocean-dark
    `(magit-section-highlight ((t (:background "#2f343f"))))
    `(magit-diff-hunk-heading ((t (:background "#2f343f"))))
    `(magit-diff-hunk-heading-highlight ((t (:background "#2f363f"))))
    `(diff-refine-added ((t (:foreground "#a3be70" :background "#2b3b34"))))
-   `(diff-refine-removed ((t (:foreground "#ef6160" :background "#3b2c2b"))))))
+   `(diff-refine-removed ((t (:foreground "#ef6160" :background "#3b2c2b")))))
+  (ag/decrease-powerline-fonts 'base16-ocean-dark))
 
 ;;; packages.el ends here
