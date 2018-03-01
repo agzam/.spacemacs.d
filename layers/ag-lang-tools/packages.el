@@ -18,7 +18,7 @@
                           :repo "gucong/emacs-sdcv"))))
 
 (defun ag-lang-tools/init-mw-thesaurus ()
-  (use-package mw-thesaurus))
+  (use-package mw-thesaurus :demand t))
 
 (defun ag-lang-tools/init-sdcv-mode ()
   (use-package sdcv-mode

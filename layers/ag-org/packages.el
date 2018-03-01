@@ -12,6 +12,7 @@
 (defconst ag-org-packages '(org
                             org-pomodoro
                             ;; ox-reveal
+                            (latex-fragments :location local)
                             (org-present :excluded t)
                             (org-journal :excluded t)
                             (org-brain :excluded t)))
@@ -180,6 +181,12 @@
       (setq
        org-enable-reveal-js-support t
        org-reveal-title-slide nil))))
+
+(defun ag-org/init-latex-fragments ()
+  (use-package latex-fragments
+    :demand t
+    :config
+    (add-hook 'post-command-hook 'kk/org-latex-fragment-toggle t)))
 
 (with-eval-after-load 'artist
   ;;; artist mode doesn't work properly in evil-mode
