@@ -115,7 +115,7 @@
      org-refile-allow-creating-parent-nodes 'confirm
 
      org-log-states-order-reversed nil
-     org-reverse-note-order t
+     org-reverse-note-order nil
      org-log-into-drawer t
      org-enable-github-support t
      org-enable-bootstrap-support t

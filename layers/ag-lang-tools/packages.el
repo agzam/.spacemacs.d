@@ -18,9 +18,28 @@
                           :repo "gucong/emacs-sdcv"))))
 
 (defun ag-lang-tools/init-mw-thesaurus ()
-  (use-package mw-thesaurus :demand t))
+  (use-package mw-thesaurus
+    :demand t
+    :config
+    (spacemacs/set-leader-keys
+      "xlm" #'mw-thesaurus/lookup-at-point
+      "xAg" #'add-global-abbrev
+      "xAl" #'add-mode-abbrev)))
 
 (defun ag-lang-tools/init-sdcv-mode ()
   (use-package sdcv-mode
+    :demand t
     :config
-    (add-hook 'sdcv-mode-hook 'spacemacs/toggle-visual-line-navigation-on)))
+    (add-hook 'sdcv-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
+
+    (defun sdcv-search-at-point ()
+      (interactive)
+      (sdcv-search (ag/region-or-word-at-point-str) nil nil t))
+
+    (spacemacs/set-leader-keys "xll" #'sdcv-search-at-point)
+
+    (evil-define-key 'normal sdcv-mode-map "q" #'sdcv-return-from-sdcv)
+    (evil-define-key 'normal sdcv-mode-map "n" #'sdcv-next-entry)
+    (evil-define-key 'normal sdcv-mode-map "p" #'sdcv-previous-entry)
+    (evil-define-key 'normal sdcv-mode-map (kbd "RET") #'sdcv-search-at-point)
+    (evil-define-key 'normal sdcv-mode-map "a" #'sdcv-search-at-point)))
