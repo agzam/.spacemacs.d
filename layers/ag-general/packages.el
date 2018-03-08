@@ -171,32 +171,37 @@ i.e.: show only commits that differ between selected (other branch) and current 
       (with-current-buffer buf
         (setq-local face-remapping-alist '((default (:height 0.8))))))))
 
+(defun ag/adjust-themes ()
+  (pcase spacemacs--cur-theme
+    ('spacemacs-light
+     (progn
+       (custom-theme-set-faces
+        'spacemacs-light
+        `(magit-diff-hunk-heading ((t (:background "#efeae9"))))
+        `(magit-diff-hunk-heading-highlight ((t (:background "#efeae9"))))
+        `(magit-diff-context-highlight ((t (:background "#fbf8ef"))))
+        `(magit-diff-added ((t (:foreground "#67963d" :background "#e6ffed"))))
+        `(magit-diff-added-highlight ((t (:foreground "#325e0b" :background "#e6ffed"))))
+        `(magit-diff-removed ((t (:foreground "#ef6160" :background "#ffeef0"))))
+        `(magit-diff-removed-highlight ((t (:foreground "#d80d0d" :background "#ffeef0"))))
+        `(diff-refine-added ((t (:foreground "#325e0b" :background "#acf2bd"))))
+        `(diff-refine-removed ((t (:foreground "#d80d0d" :background "#fdb8c0"))))
+        `(ahs-plugin-whole-buffer-face ((t (:background "#e5e1e0")))))
+       (ag/decrease-powerline-fonts 'spacemacs-light)))
+
+    ('base16-ocean-dark
+     (progn
+       (custom-theme-set-faces
+        'base16-ocean-dark
+        `(magit-section-highlight ((t (:background "#2f343f"))))
+        `(magit-diff-hunk-heading ((t (:background "#2f343f"))))
+        `(magit-diff-hunk-heading-highlight ((t (:background "#2f363f"))))
+        `(diff-refine-added ((t (:foreground "#a3be70" :background "#2b3b34"))))
+        `(diff-refine-removed ((t (:foreground "#ef6160" :background "#3b2c2b")))))
+       (ag/decrease-powerline-fonts 'base16-ocean-dark)))))
+
 (with-eval-after-load 'core-themes-support
-  (add-hook 'spacemacs-post-theme-change-hook 'ag/decrease-powerline-fonts t))
-
-(with-eval-after-load 'spacemacs-light-theme
-  (custom-theme-set-faces
-   'spacemacs-light
-   `(magit-diff-hunk-heading ((t (:background "#efeae9"))))
-   `(magit-diff-hunk-heading-highlight ((t (:background "#efeae9"))))
-   `(magit-diff-context-highlight ((t (:background "#fbf8ef"))))
-   `(magit-diff-added ((t (:foreground "#67963d" :background "#e6ffed"))))
-   `(magit-diff-added-highlight ((t (:foreground "#325e0b" :background "#e6ffed"))))
-   `(magit-diff-removed ((t (:foreground "#ef6160" :background "#ffeef0"))))
-   `(magit-diff-removed-highlight ((t (:foreground "#d80d0d" :background "#ffeef0"))))
-   `(diff-refine-added ((t (:foreground "#325e0b" :background "#acf2bd"))))
-   `(diff-refine-removed ((t (:foreground "#d80d0d" :background "#fdb8c0"))))
-   `(ahs-plugin-whole-buffer-face ((t (:background "#e5e1e0")))))
-  (ag/decrease-powerline-fonts 'spacemacs-light))
-
-(with-eval-after-load 'base16-ocean-dark-theme
-  (custom-theme-set-faces
-   'base16-ocean-dark
-   `(magit-section-highlight ((t (:background "#2f343f"))))
-   `(magit-diff-hunk-heading ((t (:background "#2f343f"))))
-   `(magit-diff-hunk-heading-highlight ((t (:background "#2f363f"))))
-   `(diff-refine-added ((t (:foreground "#a3be70" :background "#2b3b34"))))
-   `(diff-refine-removed ((t (:foreground "#ef6160" :background "#3b2c2b")))))
-  (ag/decrease-powerline-fonts 'base16-ocean-dark))
+  (ag/adjust-themes)
+  (add-hook 'spacemacs-post-theme-change-hook 'ag/adjust-themes t))
 
 ;;; packages.el ends here
