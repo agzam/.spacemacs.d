@@ -591,14 +591,4 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
     :body (find-file "~/DevProjects/finops-admin/project.clj"))
   (spacemacs|define-custom-layout "@dotfile"
     :binding "d"
-    :body (find-file "~/dotfile.org/dotfile.org"))
-
-  (with-eval-after-load 'helm
-    ;; experimenting with helm in a separate frame
-    ;; (setq helm-display-function 'helm-display-buffer-in-own-frame
-    ;;       helm-display-buffer-reuse-frame t
-    ;;       helm-use-undecorated-frame-option t
-    ;;       helm-display-buffer-width 120
-    ;;       helm-display-buffer-height 20)
-    (setq helm-display-function 'helm-default-display-buffer)
-    ))
+    :body (find-file "~/dotfile.org/dotfile.org")))

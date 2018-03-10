@@ -169,7 +169,7 @@ i.e.: show only commits that differ between selected (other branch) and current 
   (dolist (buf (list " *Minibuf-0*" " *Minibuf-1*" " *Echo Area 0*" " *Echo Area 1*" " *which-key*"))
     (when (get-buffer buf)
       (with-current-buffer buf
-        (setq-local face-remapping-alist '((default (:height 0.8))))))))
+        (setq-local face-remapping-alist '((default (:height 0.9))))))))
 
 (defun ag/adjust-themes ()
   (pcase spacemacs--cur-theme
@@ -186,6 +186,7 @@ i.e.: show only commits that differ between selected (other branch) and current 
         `(magit-diff-removed-highlight ((t (:foreground "#d80d0d" :background "#ffeef0"))))
         `(diff-refine-added ((t (:foreground "#325e0b" :background "#acf2bd"))))
         `(diff-refine-removed ((t (:foreground "#d80d0d" :background "#fdb8c0"))))
+        `(trailing-whitespace ((t (:background "#e5e1e0"))))
         `(ahs-plugin-whole-buffer-face ((t (:background "#e5e1e0")))))
        (ag/decrease-powerline-fonts 'spacemacs-light)))
 

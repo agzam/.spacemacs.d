@@ -70,7 +70,7 @@
      ;;;; ---- agenda ----
     (setq
      org-agenda-files "~/Dropbox/org/.agenda-files"
-     org-agenda-span 3
+     org-agenda-span 1
      org-agenda-skip-scheduled-if-done t
      org-agenda-skip-deadline-if-done t
      org-agenda-clockreport-parameter-plist '(:link t :maxlevel 5 :fileskip0 t :compact t :narrow 60)
