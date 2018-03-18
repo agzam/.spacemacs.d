@@ -67,7 +67,7 @@ This function should only modify configuration layer settings."
              gist-view-gist t        ;; view your Gist using `browse-url` after it is created
              magithub-api-timeout 5)
      ;; --- My own layers ----
-     ag-dired ag-general ag-web ag-lang-tools ag-clojure ag-gnus ag-org)
+     ag-colors ag-dired ag-general ag-web ag-lang-tools ag-clojure ag-gnus ag-org)
 
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -183,7 +183,7 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(base16-ocean-dark spacemacs-light)
+   dotspacemacs-themes '(base16-ocean spacemacs-light)
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
    ;; `all-the-icons', `custom', `vim-powerline' and `vanilla'. The first three
@@ -450,7 +450,6 @@ configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
-  (add-to-list 'custom-theme-load-path "~/.spacemacs.d/themes")
   (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 
   (setq-default
@@ -460,7 +459,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    line-spacing 6
    left-fringe-width 5
    right-fringe-width 0
-   evil-escape-key-sequence "hl"
+   evil-escape-key-sequence "kl"
    evil-escape-delay 0.1
    frame-background-mode 'dark
    ;; Shell

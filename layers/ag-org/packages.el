@@ -92,7 +92,7 @@
 
      ;;;; ---- src blocks ----
     (setq
-     org-src-fontify-natively nil                     ;; https://github.com/syl20bnr/spacemacs/issues/8455
+     ;; org-src-fontify-natively nil                     ;; https://github.com/syl20bnr/spacemacs/issues/8455
      org-src-window-setup 'current-window
      org-src-ask-before-returning-to-edit-buffer nil
      ;; org-src-preserve-indentation t
@@ -119,7 +119,11 @@
      org-log-into-drawer t
      org-enable-github-support t
      org-enable-bootstrap-support t
-     org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+     org-format-latex-options (plist-put org-format-latex-options :scale 2)
+     org-format-latex-options (plist-put org-format-latex-options :background nil)
+     )
+
+    (dolist (p ()))
 
     (add-to-list 'auto-mode-alist '("\\Dropbox/org/.*\.txt\\'" . org-mode))
 
