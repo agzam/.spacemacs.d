@@ -249,6 +249,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil, inverse the meaning of `g' in `:substitute' Evil ex-command.
    ;; (default nil)
    dotspacemacs-ex-substitute-global nil
+
    ;; Name of the default layout (default "Default")
    dotspacemacs-default-layout-name "Home"
 
@@ -402,7 +403,7 @@ It should only modify the values of Spacemacs settings."
    ;; List of search tool executable names. Spacemacs uses the first installed
    ;; tool of the list. Supported tools are `rg', `ag', `pt', `ack' and `grep'.
    ;; (default '("rg" "ag" "pt" "ack" "grep"))
-   dotspacemacs-search-tools '("ag" "rg" "pt" "ack" "grep")
+   dotspacemacs-search-tools '("rg" "ag" "pt" "ack" "grep")
 
    ;; Format specification for setting the frame title.
    ;; %a - the `abbreviated-file-name', or `buffer-name'
@@ -459,13 +460,14 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    line-spacing 6
    left-fringe-width 5
    right-fringe-width 0
-   evil-escape-key-sequence "kl"
+   evil-escape-key-sequence "lk"
    evil-escape-delay 0.1
    frame-background-mode 'dark
    ;; Shell
    ;; system-uses-terminfo nil
    ;; shell-default-shell 'shell
-   eyebrowse-keymap-prefix (kbd "C-x C-x"))
+   eyebrowse-keymap-prefix (kbd "C-x C-x")
+   abbrev-mode t)
 
   (setq
    ns-use-srgb-colorspace nil
@@ -483,7 +485,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    ;;;; Editor
    frame-resize-pixelwise t       ;; make sure `(maximize-frame)` leaves no borders
    powerline-default-separator nil
-   powerline-center-theme t
+   powerline-center-theme nil
    avy-timeout-seconds 0.4
    aw-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9)                       ;;;; ace-windows instead of characters shows number
    linum-format "%3d\u2502"                                    ;;;; nicer line-numbers
@@ -500,6 +502,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    scroll-margin 0
    abbrev-file-name "~/.spacemacs.d/abbrev_defs"
    save-abbrevs t ;; save abbrevs upon exiting Emacs
+   uniquify-buffer-name-style 'forward
 
    ;;;; Helm
    helm-echo-input-in-header-line nil

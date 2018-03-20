@@ -32,6 +32,11 @@
    `(mode-line-buffer-id-inactive ((t (:height 0.9))))
    `(mode-line-emphasis ((t (:height 0.9))))
 
+   `(which-key-docstring-face ((t (:height 0.9))))
+   `(which-key-group-description-face ((t (:height 0.9))))
+   `(which-key-command-description-face ((t (:height 0.9))))
+   `(which-key-local-map-description-face ((t (:height 0.9))))
+
    `(spacemacs-micro-state-header-face ((t (:height 0.9))))
    `(spacemacs-micro-state-binding-face ((t (:height 0.9))))
    `(spacemacs-transient-state-title-face ((t (:height 0.9))))
@@ -86,7 +91,6 @@
              (base10 "#7090af"))
          (custom-theme-set-faces
           'base16-ocean
-          `(hl-line ((t (:background "#2f3440"))))
 
           ;; magit
           `(magit-popup-disabled-argument ((t (:foreground ,base02))))
@@ -115,15 +119,42 @@
           `(diff-hl-insert ((t (:foreground ,base03 :background ,base0B))))
           `(diff-hl-unknown ((t (:foreground ,base03 :background ,base0A))))
 
-          `(trailing-whitespace ((t (:background ,base01))))
-          `(default ((t (:background ,base00 :foreground ,base05))))
           `(ahs-plugin-whole-buffer-face ((t (:foreground ,base0B :background ,base00))))
           `(ahs-face ((t (:foreground ,base0A :background ,base02))))
 
+          ;; avy
           `(aw-leading-char-face ((t (:height 5.0 :foreground "Orange"))))
+          `(avy-lead-face ((t (:height 1.3 :foreground ,base0A))))
+          `(avy-lead-face-0 ((t (:height 1.3 :foreground ,base09))))
+          `(avy-lead-face-1 ((t (:height 1.3 :foreground ,base0C))))
+          `(avy-lead-face-2 ((t (:height 1.3 :foreground ,base10))))
 
+          ;; helm
           `(helm-swoop-target-line-face ((t (:foreground ,base04 :background ,base02))))
-          `(helm-swoop-target-word-face ((t (:foreground ,base0A :background ,base02 :weight bold))))))
+          `(helm-swoop-target-word-face ((t (:foreground ,base0A :background ,base02 :weight bold))))
+          `(helm-swoop-target-line-block-face ((t (:background ,base0B :foreground ,base01))))
+
+          ;; org-mode
+          `(org-todo ((t (:weight bold :foreground ,base0A))))
+          `(org-done ((t (:strike-through ,base0D))))
+          `(org-block-begin-line ((t (:underline ,base02 :foreground ,base04 :height 0.8 :weight ultra-light))))
+          `(org-block-end-line ((t (:overline ,base02 :foreground ,base04 :height 0.8 :weight ultra-light))))
+          `(org-level-1 ((t (:foreground ,base0D :bold t :height 1.3))))
+          `(org-level-2 ((t (:foreground ,base09 :bold t :height 1.2))))
+          `(org-level-3 ((t (:foreground ,base0B :height 1.1))))
+          `(org-level-4 ((t (:foreground ,base10 :height 1.0))))
+          `(org-level-5 ((t (:foreground ,base0E :height 1.0))))
+          `(org-level-6 ((t (:foreground ,base0C :height 1.0))))
+          `(org-level-7 ((t (:foreground ,base07 :height 1.0))))
+          `(org-level-8 ((t (:foreground ,base0D :height 1.0))))
+
+          ;; code
+          `(font-lock-doc-face ((t (:foreground ,base02))))
+
+          ;; misc
+          `(hl-line ((t (:background "#2f3440"))))
+          `(trailing-whitespace ((t (:background ,base01))))
+          `(default ((t (:background ,base00 :foreground ,base05))))) )
        (ag/decrease-powerline-fonts 'base16-ocean)))))
 
 (with-eval-after-load 'core-themes-support

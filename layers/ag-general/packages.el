@@ -138,7 +138,10 @@ i.e.: show only commits that differ between selected (other branch) and current 
     (magit-diff (concat rev-or-range ".." (magit-get-current-branch)) args files))
 
   (magit-define-popup-action 'magit-diff-popup
-    ?R "Diff range (reversed)" 'magit-diff-range-reversed))
+    ?R "Diff range (reversed)" 'magit-diff-range-reversed)
+
+  ;; who cares about tags to be displayed in magit-refs buffer?
+  (remove-hook 'magit-refs-sections-hook 'magit-insert-tags))
 
 
 ;;; packages.el ends here
