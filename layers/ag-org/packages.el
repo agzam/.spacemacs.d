@@ -69,20 +69,22 @@
 
      ;;;; ---- agenda ----
     (setq
-     org-agenda-files "~/Dropbox/org/.agenda-files"
-     org-agenda-span 1
-     org-agenda-skip-scheduled-if-done t
-     org-agenda-skip-deadline-if-done t
      org-agenda-clockreport-parameter-plist '(:link t :maxlevel 5 :fileskip0 t :compact t :narrow 60)
      org-agenda-diary-file "~/Dropbox/org/journal.org"
+     org-agenda-files "~/Dropbox/org/.agenda-files"
+     org-agenda-follow-indirect t
+     org-agenda-persistent-marks t
+     org-agenda-skip-deadline-if-done t
+     org-agenda-skip-scheduled-if-done t
+     org-agenda-span 1
+     org-agenda-start-with-clockreport-mode t
      org-agenda-start-with-follow-mode nil
-     org-agenda-start-with-log-mode t
-     org-agenda-start-with-clockreport-mode t)
+     org-agenda-start-with-log-mode t)
 
      ;;;; ---- todo ----
     (setq
      org-confirm-babel-evaluate nil
-     org-todo-keywords (quote ((sequence "TODO" "ONGOING" "DONE")))
+     org-todo-keywords '((sequence "TODO" "ONGOING" "DONE"))
      org-todo-keyword-faces '(("ONGOING" . "orange"))
      org-enforce-todo-dependencies t
      org-enforce-todo-checkbox-dependencies t)

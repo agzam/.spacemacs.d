@@ -20,7 +20,8 @@
                                 rainbow-mode
                                 atomic-chrome
                                 helm-pages
-                                evil-mc))
+                                evil-mc
+                                edit-indirect))
 
 (defun ag-general/init-magithub ()
   (use-package magithub
@@ -34,7 +35,12 @@
 
 (defun ag-general/init-helpful ()
   (use-package helpful
-    :defer t))
+    :defer t
+    :config
+    (unbind-key "h" help-map)
+    (bind-key "k" 'helpful-key help-map)
+    (bind-key "hh" 'helpful-symbol help-map)
+    (bind-key "ha" 'helpful-at-point help-map)))
 
 (defun ag-general/init-rainbow-mode ()
   (use-package rainbow-mode
@@ -111,6 +117,14 @@
       (move-to-column (evil-mc-column-number (if (> end beg)
                                                  beg
                                                end))))))
+(defun ag-general/init-edit-indirect ()
+  (use-package edit-indirect
+    :config
+    (defun ag/edit-indirect-guess-mode (parent-buffer beg end)
+      (let ((major (with-current-buffer parent-buffer major-mode)))
+        (cond ((eq major 'clojurescript-mode) (org-mode))
+              (t (funcall major)))))
+    (setq edit-indirect-guess-mode-function 'ag/edit-indirect-guess-mode)))
 
 ;; Add `git log ORIG_HEAD..HEAD` to magit
 ;; that lets you log only changes since the last pull

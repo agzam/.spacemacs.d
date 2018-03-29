@@ -135,6 +135,7 @@
           `(helm-swoop-target-line-block-face ((t (:background ,base0B :foreground ,base01))))
 
           ;; org-mode
+          `(org-link ((t (:underline t :foreground ,base0B))))
           `(org-todo ((t (:weight bold :foreground ,base0A))))
           `(org-done ((t (:strike-through ,base0D))))
           `(org-block-begin-line ((t (:underline ,base02 :foreground ,base04 :height 0.8 :weight ultra-light))))
@@ -154,7 +155,7 @@
           ;; misc
           `(hl-line ((t (:background "#2f3440"))))
           `(trailing-whitespace ((t (:background ,base01))))
-          `(default ((t (:background ,base00 :foreground ,base05))))) )
+          `(default ((t (:background ,base00 :foreground ,base05))))))
        (ag/decrease-powerline-fonts 'base16-ocean)))))
 
 (with-eval-after-load 'core-themes-support

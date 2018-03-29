@@ -79,8 +79,7 @@ This function should only modify configuration layer settings."
    dotspacemacs-additional-packages '(copy-as-format
                                       helm-flycheck
                                       writeroom-mode
-                                      ;; (base16-ocean-dark :location local)
-                                      )
+                                      pickle)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
 
@@ -466,8 +465,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    ;; Shell
    ;; system-uses-terminfo nil
    ;; shell-default-shell 'shell
-   eyebrowse-keymap-prefix (kbd "C-x C-x")
-   abbrev-mode t)
+   eyebrowse-keymap-prefix (kbd "C-x C-x"))
 
   (setq
    ns-use-srgb-colorspace nil
@@ -512,6 +510,8 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    apropos-sort-by-scores t
 
    ;;;; Misc
+   eldoc-echo-area-use-multiline-p 'always
+   eldoc-idle-delay 0.25
    vc-follow-symlinks t
    diff-hl-side 'left
    use-dialog-box nil
