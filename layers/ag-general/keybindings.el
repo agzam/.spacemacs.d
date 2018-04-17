@@ -25,8 +25,17 @@
 ;;;; restore vanilla universal argument binding
 (define-key evil-normal-state-map (kbd "C-u") 'universal-argument)
 
+
 ;;;; wrap `sp-up-sexp` "Move forward out of one level of parentheses", so it can be used in evil-lispy
 (evil-lisp-state-enter-command sp-up-sexp)
+
+(defun sp-reindent ()
+  (interactive)
+  (save-excursion
+    (er/expand-region 2)
+    (evil-indent (region-beginning) (region-end))))
+
+(evil-lisp-state-enter-command sp-reindent)
 
 (spacemacs/set-leader-keys
   "qq" nil                           ;; no unexpected exits
@@ -37,6 +46,7 @@
   "ja" 'beginning-of-defun
   "je" 'end-of-defun
   "kf" 'evil-lisp-state-sp-up-sexp
+  "k=" 'evil-lisp-state-sp-reindent
   "swg" 'ag/helm-google-suggest
   "ou" 'spacemacs/avy-open-url
   ;;;; add a page-break

@@ -35,10 +35,8 @@
 
 (defun ag-general/init-helpful ()
   (use-package helpful
-    :defer t
     :config
     (unbind-key "h" help-map)
-    (bind-key "k" 'helpful-key help-map)
     (bind-key "hh" 'helpful-symbol help-map)
     (bind-key "ha" 'helpful-at-point help-map)))
 
@@ -99,6 +97,8 @@
 ;; TODO: remove this when official method is implemented in Spacmacs
 (defun ag-general/init-evil-mc ()
   (use-package evil-mc
+    :init
+    (unbind-key "C-t" evil-mc-key-map)
     :config
     (add-hook 'prog-mode-hook 'turn-on-evil-mc-mode)
     (add-hook 'text-mode-hook 'turn-on-evil-mc-mode)
