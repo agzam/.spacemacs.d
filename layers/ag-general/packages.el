@@ -98,7 +98,7 @@
 (defun ag-general/init-evil-mc ()
   (use-package evil-mc
     :init
-    (unbind-key "C-t" evil-mc-key-map)
+    (unbind-key "C-t")
     :config
     (add-hook 'prog-mode-hook 'turn-on-evil-mc-mode)
     (add-hook 'text-mode-hook 'turn-on-evil-mc-mode)

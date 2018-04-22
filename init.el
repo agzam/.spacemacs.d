@@ -79,7 +79,7 @@ This function should only modify configuration layer settings."
    dotspacemacs-additional-packages '(copy-as-format
                                       helm-flycheck
                                       writeroom-mode
-                                      pickle)
+                                      feature-mode)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
 

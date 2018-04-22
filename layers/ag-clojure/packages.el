@@ -28,7 +28,7 @@
 
 (with-eval-after-load 'clojure-mode
   (setq clojure-enable-fancify-symbols nil
-        clojure-indent-style :align-arguments
+        ;; clojure-indent-style :always-indent
         clojure-align-forms-automatically nil
         cider-overlays-use-font-lock nil
         cider-repl-use-clojure-font-lock nil
@@ -37,13 +37,13 @@
         nrepl-log-messages nil
         clojure-align-binding-forms '("binding" "loop" "doseq" "for" "with-open" "with-local-vars" "with-redefs"))
 
-  (dolist (form '(re-frame.core/reg-sub
-                  re-frame.core/reg-fx
-                  re-frame.core/reg-sub
-                  re-frame.core/reg-event-fx
-                  re-frame.core/reg-event-db
-                  prop/for-all))
-    (put-clojure-indent form 1))
+  ;; (dolist (form '(re-frame.core/reg-sub
+  ;;                 re-frame.core/reg-fx
+  ;;                 re-frame.core/reg-sub
+  ;;                 re-frame.core/reg-event-fx
+  ;;                 re-frame.core/reg-event-db
+  ;;                 prop/for-all))
+  ;;   (put-clojure-indent form 0))
 
   ;; annoying Java Cup icon - no longer will bother you
   (setenv "JAVA_TOOL_OPTIONS" "-Dapple.awt.UIElement=true"))

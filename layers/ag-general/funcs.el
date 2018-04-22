@@ -100,7 +100,7 @@ DIRECTION - can be North, South, West, East"
 (defvar ag/edit-with-emacs-mode-map
   (let ((map (make-keymap)))
     (define-key map (kbd "C-c C-c") 'ag/finish-edit-with-emacs)
-    (define-key map (kbd "C-c k") 'ag/cancel-edit-with-emacs)
+    (define-key map (kbd "C-c C-k") 'ag/cancel-edit-with-emacs)
     map))
 
 (define-minor-mode ag/edit-with-emacs-mode
