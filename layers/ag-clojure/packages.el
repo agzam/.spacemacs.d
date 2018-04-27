@@ -28,7 +28,7 @@
 
 (with-eval-after-load 'clojure-mode
   (setq clojure-enable-fancify-symbols nil
-        ;; clojure-indent-style :always-indent
+        clojure-indent-style :align-arguments
         clojure-align-forms-automatically nil
         cider-overlays-use-font-lock nil
         cider-repl-use-clojure-font-lock nil
