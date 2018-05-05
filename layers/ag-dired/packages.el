@@ -12,7 +12,8 @@
 (setq ag-dired-packages '(
                           ;; dired-rainbow
                           ;; dired-filetype-face
-                          direx))
+                          direx
+                          dired-quick-sort))
 
 (setq dired-omit-files "^\\.?#\\|^\\.DS_Store$")
 (add-hook 'dired-mode-hook #'dired-hide-details-mode)
@@ -63,6 +64,11 @@
         (define-key map "|" 'direx:fit-window)
         (define-key map "o" 'spacemacs/dired-open-item-other-window-transient-state/body)
         map))))
+
+(defun ag-dired/init-dired-quick-sort ()
+  (use-package dired-quick-sort
+    :config
+    (dired-quick-sort-setup)))
 
 ;; (defun ag-dired/init-dired-filetype-face ()
 ;;   (use-package dired-filetype-face
