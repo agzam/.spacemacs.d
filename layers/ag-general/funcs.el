@@ -27,12 +27,31 @@
                   "-sender" "org.gnu.Emacs"
                   "-message" message)))
 
+(defun notify-send (summary &optional body options)
+  "Create notification using libnotify in Linux.
+
+can take notify-send's OPTIONS along with SUMMARY and BODY
+Example: `(notify-send \"org-pomodoro\" \"Break is over, get back to work\" '(category \"break-over\"))`
+OPTIONS can include '(urgency expire-time app-name icon category hint), refer to `notify-send --help' for details"
+  (cond
+   ((eq system-type 'gnu/linux)
+    (cl-flet ((get-prop (lambda (k)
+                          (let ((p (plist-get options k)))
+                            (when p (list (concat "--" (symbol-name k)) p))))))
+      (let* ((opts '(urgency expire-time app-name icon category hint))
+             (args (append (list
+                            (executable-find "notify-send")
+                            nil 0 nil
+                            summary (or body ""))
+                           (-flatten (mapcar #'get-prop opts)))))
+        (apply #'call-process args))))))
+
 (defun hs-alert (message)
   "shows Hammerspoon's hs.alert popup with a MESSAGE"
-  (when (and message (eq system-type 'darwin)) (call-process (executable-find "hs")
-                  nil 0 nil
-                  "-c"
-                  (concat "hs.alert.show(\"" message "\", 1)"))))
+  (when (and message (eq system-type 'darwin))
+    (call-process
+     (executable-find "hs")
+     nil 0 nil "-c" (concat "hs.alert.show(\"" message "\", 1)"))))
 
 (defun ag/atomic-edit-start ()
   (remove-hook 'markdown-mode-hook 'spacemacs/activate-mmm-mode)

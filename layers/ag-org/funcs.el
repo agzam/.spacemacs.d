@@ -58,27 +58,41 @@ item COLOR can be \"red\" \"green\" or \"yellow\"."
 
 (defun pomodoro/on-finished-hook ()
   "When pomodoro is done."
-  (when (eq system-type 'darwin)
-    (hs-alert "task done")
-    (pomodoro/modify-menu-item "green")))
+  (cond
+   ((eq system-type 'darwin)
+    (progn
+      (hs-alert "task done")
+      (pomodoro/modify-menu-item "green")))
+   ((eq system-type 'gnu/linux)
+    (notify-send "org-pomodoro" "Task is done, good job!" '(category "finished")))))
 
 (defun pomodoro/on-break-over-hook ()
   "When pomodoro break is over."
-  (when (eq system-type 'darwin)
-    (hs-alert "break over")
-    (pomodoro/remove-menu-item)))
+  (cond ((eq system-type 'darwin)
+         (progn (hs-alert "break over")
+                (pomodoro/remove-menu-item)))
+        ((eq system-type 'gnu/linux)
+         (notify-send "org-pomodoro" "Break is over, get back to work"
+                      '(category "break-over")))))
 
 (defun pomodoro/on-killed-hook ()
   "When you kill pomodoro."
-  (when (eq system-type 'darwin)
-    (hs-alert "killed")
-    (pomodoro/remove-menu-item)))
+  (cond ((eq system-type 'darwin)
+         (progn (hs-alert "killed")
+                (pomodoro/remove-menu-item)))
+        ((eq system-type 'gnu/linux)
+         (notify-send "org-pomodoro" "Pomodoro got killed"
+                      '(category "killed")))))
 
 (defun pomodoro/on-started-hook ()
   "When pomodoro starts."
-  (when (eq system-type 'darwin)
-    (hs-alert "- start churning -")
-    (pomodoro/create-menu-item "red")))
+  (cond
+   ((eq system-type 'darwin)
+    (progn
+      (hs-alert "- start churning -")
+      (pomodoro/create-menu-item "red")))
+   ((eq system-type 'gnu/linux)
+    (notify-send "org-pomodoro" "Let's get to it" '(category "started")))))
 
 ;;;; completion on Tab for `#+` stuff
 (defun ag/org-mode-hook ()
