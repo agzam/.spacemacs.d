@@ -186,7 +186,13 @@ Can show completions at point for COMMAND using helm or ido"
     ;; (exwm-input-set-key (kbd "s-]") #'spacemacs/exwm-workspace-next)
     ;; (exwm-input-set-key (kbd "s-[") #'spacemacs/exwm-workspace-prev)
 
-    ;; TODO: sort out the randr settings
+    (require 'exwm-randr)
+    (setq exwm-randr-workspace-output-plist '(1 "DP1" 2 "eDP1"))
+    (add-hook 'exwm-randr-screen-change-hook
+              (lambda ()
+                (start-process-shell-command
+                 "xrandr" nil "xrandr --output DP1 --mode 2560x1440 --right-of eDP1")))
+    (exwm-randr-enable)
     ;; (require 'exwm-randr)
     ;; (setq exwm-randr-workspace-output-plist '(0 "VGA1"))
     ;; (exwm-randr-enable)
