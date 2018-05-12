@@ -109,7 +109,6 @@
   '(
     ("im" "I'm" nil 0)
     ("iam" "I am" nil 0)
-    ("its" "it's" nil 0)
     ("ive" "I've" nil 0)
     ("sd" "should" nil 0)
     ("cd" "could" nil 0)

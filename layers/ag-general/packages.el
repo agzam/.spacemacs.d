@@ -15,7 +15,7 @@
                                 ;; https://github.com/magit/magit/issues/3154#issuecomment-325648623
                                 ;; and wait when they enable this:
                                 ;; https://github.com/syl20bnr/spacemacs/blob/develop/layers/+source-control/github/packages.el#L19
-                                magithub
+                                ;; magithub
                                 helpful
                                 rainbow-mode
                                 atomic-chrome
@@ -23,15 +23,15 @@
                                 evil-mc
                                 edit-indirect))
 
-(defun ag-general/init-magithub ()
-  (use-package magithub
-    :after magit
-    :init
-    (setq magithub-dir (concat spacemacs-cache-directory "magithub/"))
-    :config
-    (progn
-      (magithub-feature-autoinject t)
-      (define-key magit-status-mode-map "H" #'magithub-dispatch-popup))))
+;; (defun ag-general/init-magithub ()
+;;   (use-package magithub
+;;     :after magit
+;;     :init
+;;     (setq magithub-dir (concat spacemacs-cache-directory "magithub/"))
+;;     :config
+;;     (progn
+;;       (magithub-feature-autoinject t)
+;;       (define-key magit-status-mode-map "H" #'magithub-dispatch-popup))))
 
 (defun ag-general/init-helpful ()
   (use-package helpful

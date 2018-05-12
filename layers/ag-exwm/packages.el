@@ -32,6 +32,7 @@
     ;; Disable dialog boxes since they are unusable in EXWM
     (setq use-dialog-box nil)
     (setq exwm-workspace-number 1)
+    (setq winum-scope 'frame-local)
     :config
     (defun spacemacs/exwm-bind-command (key command &rest bindings)
       (while key
@@ -187,12 +188,16 @@ Can show completions at point for COMMAND using helm or ido"
     ;; (exwm-input-set-key (kbd "s-[") #'spacemacs/exwm-workspace-prev)
 
     (require 'exwm-randr)
-    (setq exwm-randr-workspace-output-plist '(1 "DP1" 2 "eDP1"))
+    (setq exwm-randr-workspace-output-plist '(1 "DP-1" 2 "eDP-1"))
     (add-hook 'exwm-randr-screen-change-hook
               (lambda ()
                 (start-process-shell-command
-                 "xrandr" nil "xrandr --output DP1 --mode 2560x1440 --right-of eDP1")))
+                 "xrandr" nil "xrandr --output DP-1 --mode 2560x1440 --right-of eDP-1")))
     (exwm-randr-enable)
+
+    (setq window-divider-default-right-width 1)
+    (window-divider-mode)
+
     ;; (require 'exwm-randr)
     ;; (setq exwm-randr-workspace-output-plist '(0 "VGA1"))
     ;; (exwm-randr-enable)
