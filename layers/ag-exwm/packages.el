@@ -9,15 +9,17 @@
 ;;
 ;;; License: GPLv3
 
-(setq ag-exwm-packages
-      '(cl-generic
-        (xelb :location (recipe :fetcher github
-                                :repo "ch11ng/xelb")
-              :step pre)
-        (exwm :location (recipe :fetcher github
-                                :repo "ch11ng/exwm")
-              :step pre)
-        helm-exwm))
+(defconst ag-exwm-packages
+  '(cl-generic
+    (xelb :location (recipe :fetcher github
+                            :repo "ch11ng/xelb")
+          :step pre)
+    (exwm :location (recipe :fetcher github
+                            :repo "ch11ng/exwm")
+          :step pre)
+    helm-exwm
+    pinentry
+    gpastel))
 
 (defun ag-exwm/init-cl-generic ()
   (use-package cl-generic
@@ -93,6 +95,7 @@ Can show completions at point for COMMAND using helm or ido"
     ;; any case). Following are a few examples.
     ;; + We always need a way to go back to line-mode from char-mode
     (exwm-input-set-key (kbd "s-r") 'exwm-reset)
+    (delete ?\s-r exwm-input-prefix-keys)
 
     (exwm-input-set-key (kbd "s-f") #'spacemacs/exwm-layout-toggle-fullscreen)
 
@@ -214,13 +217,34 @@ Can show completions at point for COMMAND using helm or ido"
     ;;    ([?\C-n] . down)
     ;;    ([?\M-v] . prior)
     ;;    ))
-
-    ;; Do not forget to enable EXWM. It will start by itself when things are ready.
-    (exwm-enable)))
+    ))
 
 (defun ag-exwm/init-helm-exwm ()
   (use-package helm-exwm
     :config
     (exwm-input-set-key (kbd "M-s-b") #'helm-exwm)))
+
+(defun ag-exwm/init-pinentry ()
+  (use-package pinentry
+    :config
+    (setq epa-pinentry-mode 'loopback)
+    (pinentry-start)))
+
+(defun ag-exwm/init-gpastel ()
+  (use-package gpastel
+    :ensure t
+    :config
+    (add-hook 'exwm-init-hook 'gpastel-start-listening)
+
+    (exwm-input-set-key (kbd "M-y") #'helm-show-kill-ring)
+
+    (define-advice helm-kill-ring-action-yank (:around (old-function str) exwm-paste)
+      "Paste the selection appropriately in exwm mode buffers"
+      (if (derived-mode-p 'exwm-mode)
+          (progn
+            (kill-new str)
+            (exwm-reset)
+            (exwm-input--fake-key ?\C-v))
+        (funcall old-function str)))))
 
 ;;; packages.el ends here
