@@ -1,8 +1,8 @@
 (defvar exwm--terminal-command "gnome-terminal"
   "Terminal command to run.")
 
-(defvar exwm--locking-command "/usr/bin/suspend"
-  "Command to run when locking session")
+(defvar exwm--suspend-command "/usr/bin/suspend"
+  "command to run to suspend")
 
 (defvar exwm-app-launcher--prompt "$ "
   "Prompt for the EXWM application launcher")

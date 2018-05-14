@@ -31,10 +31,10 @@
 (defun ag-exwm/init-exwm ()
   (use-package exwm
     :init
-    ;; Disable dialog boxes since they are unusable in EXWM
-    (setq use-dialog-box nil)
+    (setq use-dialog-box nil) ;; Disable dialog boxes since they are unusable in EXWM
     (setq exwm-workspace-number 1)
-    (setq winum-scope 'frame-local)
+    (setq winum-scope 'frame-local) ;; otherwise it jumps accros frames on a multi-monitor setup
+    (setq persp-init-frame-behaviour nil) ;; otherwise spacemacs layouts would mess floating windows
     :config
     (defun spacemacs/exwm-bind-command (key command &rest bindings)
       (while key
@@ -61,6 +61,7 @@
     ;;   Its class name may be more suitable for such case.
     ;; In the following example, we use class names for all windows expect for
     ;; Java applications and GIMP.
+
     (add-hook 'exwm-update-class-hook
               (lambda ()
                 (unless (or (string-prefix-p "sun-awt-X11-" exwm-instance-name)
@@ -73,8 +74,13 @@
                           (string= "gimp" exwm-instance-name))
                   (exwm-workspace-rename-buffer exwm-title))))
 
-    ;; (defvar exwm-workspace-switch-wrap t
-    ;;   "Whether `spacemacs/exwm-workspace-next' and `spacemacs/exwm-workspace-prev' should wrap.")
+    ;; strange bug that sometimes loses keyboard in exwm app buffer after switching to it
+    ;; (define-advice exwm-layout--set-client-list-stacking (:around (old-function) exwm-grab-kbd-after-set-client)
+    ;;   "grab keyboard after exwm-layout--set-client-list-stacking"
+    ;;   (if (derived-mode-p 'exwm-mode)
+    ;;       (progn
+    ;;         (funcall old-function)
+    ;;         (exwm-input-grab-keyboard))))
 
     (defun spacemacs/exwm-layout-toggle-fullscreen ()
       "Togggles full screen for Emacs and X windows"
@@ -94,43 +100,18 @@ Can show completions at point for COMMAND using helm or ido"
     ;; `exwm-input-set-key' allows you to set a global key binding (available in
     ;; any case). Following are a few examples.
     ;; + We always need a way to go back to line-mode from char-mode
-    (exwm-input-set-key (kbd "s-r") 'exwm-reset)
+    ;; (exwm-input-set-key (kbd "s-r") 'exwm-reset)
     (delete ?\s-r exwm-input-prefix-keys)
 
     (exwm-input-set-key (kbd "s-f") #'spacemacs/exwm-layout-toggle-fullscreen)
+    (exwm-input-set-key (kbd "s-r") #'spacemacs/exwm-app-launcher)
 
-    ;; + Bind a key to switch workspace interactively
-    ;; (exwm-input-set-key (kbd "s-w") 'exwm-workspace-switch)
-    ;; ;; + Set shortcuts to switch to a certain workspace.
-    ;; (exwm-input-set-key (kbd "s-1")
-    ;;                     (lambda () (interactive) (exwm-workspace-switch 0)))
-    ;; (exwm-input-set-key (kbd "s-2")
-    ;;                     (lambda () (interactive) (exwm-workspace-switch 1)))
-    ;; (exwm-input-set-key (kbd "s-3")
-    ;;                     (lambda () (interactive) (exwm-workspace-switch 2)))
-    ;; (exwm-input-set-key (kbd "s-4")
-    ;;                     (lambda () (interactive) (exwm-workspace-switch 3)))
-    ;; (exwm-input-set-key (kbd "s-5")
-    ;;                     (lambda () (interactive) (exwm-workspace-switch 4)))
-    ;; (exwm-input-set-key (kbd "s-6")
-    ;;                     (lambda () (interactive) (exwm-workspace-switch 5)))
-    ;; (exwm-input-set-key (kbd "s-7")
-    ;;                     (lambda () (interactive) (exwm-workspace-switch 6)))
-    ;; (exwm-input-set-key (kbd "s-8")
-    ;;                     (lambda () (interactive) (exwm-workspace-switch 7)))
-    ;; (exwm-input-set-key (kbd "s-9")
-    ;;                     (lambda () (interactive) (exwm-workspace-switch 8)))
-    ;; (exwm-input-set-key (kbd "s-0")
-    ;;                     (lambda () (interactive) (exwm-workspace-switch 9)))
+    (exwm-input-set-key (kbd "<C-s-escape>") (lambda () (interactive) (start-process "" nil exwm--suspend-command)))
 
-    ;; + Application launcher ('M-&' also works if the output buffer does not
-    ;;   bother you). Note that there is no need for processes to be created by
-    ;;   Emacs.
-    (exwm-input-set-key (kbd "s-SPC") #'spacemacs/exwm-app-launcher)
-    ;; + 'slock' is a simple X display locker provided by suckless tools. 'i3lock'
-    ;;   is a more feature-rich alternative.
-    (exwm-input-set-key (kbd "<C-s-escape>")
-                        (lambda () (interactive) (start-process "" nil exwm--locking-command)))
+    ;; switching monitors on and off
+    (exwm-input-set-key (kbd "C-s-1") (lambda () (interactive)
+                                          (start-process-shell-command "" nil "xrandr --output eDP-1 --auto")))
+    (exwm-input-set-key (kbd "C-s-2") (lambda () (interactive) (start-process-shell-command "" nil "xrandr --output eDP-1 --off --output DP-1 --mode 2560x1440")))
 
     ;; The following example demonstrates how to set a key binding only available
     ;; in line mode. It's simply done by first push the prefix key to
@@ -138,9 +119,8 @@ Can show completions at point for COMMAND using helm or ido"
     ;; The example shorten 'C-c q' to 'C-q'.
     (push ?\C-q exwm-input-prefix-keys)
     (define-key exwm-mode-map [?\C-q] 'exwm-input-send-next-key)
-
     ;; M-m leader, sorry Space Folks
-    (push ?\M-m exwm-input-prefix-keys)
+    (push ?\s-\  exwm-input-prefix-keys)
     ;; Universal Get-me-outta-here
     (push ?\C-g exwm-input-prefix-keys)
     ;; Universal Arguments
@@ -171,11 +151,15 @@ Can show completions at point for COMMAND using helm or ido"
     (exwm-input-set-key (kbd "S-s-U") #'winner-redo)
     ;; Change buffers
     (exwm-input-set-key (kbd "s-b") #'spacemacs-layouts/non-restricted-buffer-list-helm)
+
+    ;; (push [s-tab] exwm-input-prefix-keys)
+    (exwm-input-set-key (kbd "<s-tab>") #'previous-buffer)
+
     ;; Focusing windows
-    (exwm-input-set-key (kbd "s-h") #'evil-window-left)
-    (exwm-input-set-key (kbd "s-j") #'evil-window-down)
-    (exwm-input-set-key (kbd "s-k") #'evil-window-up)
-    (exwm-input-set-key (kbd "s-l") #'evil-window-right)
+    ;; (exwm-input-set-key (kbd "s-h") #'evil-window-left)
+    ;; (exwm-input-set-key (kbd "s-j") #'evil-window-down)
+    ;; (exwm-input-set-key (kbd "s-k") #'evil-window-up)
+    ;; (exwm-input-set-key (kbd "s-l") #'evil-window-right)
     ;; Moving Windows
     ;; (exwm-input-set-key (kbd "s-H") #'evil-window-move-far-left)
     ;; (exwm-input-set-key (kbd "s-J") #'evil-window-move-very-bottom)
@@ -189,35 +173,37 @@ Can show completions at point for COMMAND using helm or ido"
     ;; Workspaces
     ;; (exwm-input-set-key (kbd "s-]") #'spacemacs/exwm-workspace-next)
     ;; (exwm-input-set-key (kbd "s-[") #'spacemacs/exwm-workspace-prev)
+    (add-to-list 'undo-tree-incompatible-major-modes 'exwm-mode)
+    (evil-set-initial-state 'exwm-mode 'emacs) ;; otherwise simulation keys won't work
+    (setq exwm-input-simulation-keys
+          '(([?\C-b] . [left])
+            ([?\C-f] . [right])
+            ([?\C-p] . [up])
+            ([?\C-n] . [down])
+            ([?\C-a] . [home])
+            ([?\C-e] . [end])
+            ([?\C-s] . [\C-f])
+            ([?\M-h] . [left])
+            ([?\M-l] . [right])
+            ([?\M-j] . [down])
+            ([?\M-k] . [up])
+            ([?\s-l] . [\C-tab])
+            ([?\s-h] . [\C-S-tab])))
+
+    ;; (evil-define-key 'normal 'exwm-mode-map (kbd "C-p") nil)
+    ;; (evil-define-key 'normal 'exwm-mode-map (kbd "C-n") nil)
+    ;; (setq exwm-input-line-mode-passthrough nil)
 
     (require 'exwm-randr)
-    (setq exwm-randr-workspace-output-plist '(1 "DP-1" 2 "eDP-1"))
-    (add-hook 'exwm-randr-screen-change-hook
-              (lambda ()
-                (start-process-shell-command
-                 "xrandr" nil "xrandr --output DP-1 --mode 2560x1440 --right-of eDP-1")))
+    ;; (setq exwm-randr-workspace-output-plist '(1 "DP-1" 2 "eDP-1"))
+    ;; (add-hook 'exwm-randr-screen-change-hook
+    ;;           (lambda ()
+    ;;             (start-process-shell-command
+    ;;              "xrandr" nil "xrandr --output DP-1 --mode 2560x1440 --right-of eDP-1")))
     (exwm-randr-enable)
 
     (setq window-divider-default-right-width 1)
-    (window-divider-mode)
-
-    ;; (require 'exwm-randr)
-    ;; (setq exwm-randr-workspace-output-plist '(0 "VGA1"))
-    ;; (exwm-randr-enable)
-    ;; The following example demonstrates how to use simulation keys to mimic the
-    ;; behavior of Emacs. The argument to `exwm-input-set-simulation-keys' is a
-    ;; list of cons cells (SRC . DEST), where SRC is the key sequence you press and
-    ;; DEST is what EXWM actually sends to application. Note that SRC must be a key
-    ;; sequence (of type vector or string), while DEST can also be a single key.
-
-    ;; (exwm-input-set-simulation-keys
-    ;;  '(([?\C-b] . left)
-    ;;    ([?\C-f] . right)
-    ;;    ([?\C-p] . up)
-    ;;    ([?\C-n] . down)
-    ;;    ([?\M-v] . prior)
-    ;;    ))
-    ))
+    (window-divider-mode)))
 
 (defun ag-exwm/init-helm-exwm ()
   (use-package helm-exwm
