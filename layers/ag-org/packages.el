@@ -31,14 +31,14 @@
   (with-eval-after-load 'org
     (setq org-capture-templates
      '(("t" "Todo" entry (file "~/Dropbox/org/tasks.org")
-        "* TODO  %? %^u")
+        "* TODO  %?\n SCHEDULED: %^u")
        ("i" "Immediate" entry (file "~/Dropbox/org/tasks.org")
         "* ONGOING %?" :clock-in t :clock-resume t :clock-keep t)
        ("c" "Code Snippet" entry (file "~/Dropbox/org/tasks.org")
         ;;;; Prompt for tag and language
         "* %u  %?\n\t%F\n\t#+BEGIN_SRC %^{language}\n\t\t%i\n\t#+END_SRC")
        ("y" "Yakety" entry (file "~/Dropbox/org/yakety.org")
-        "* TODO  %?\n  :LOGBOOK:\n  - State \"TODO\"       from              %U\n  :END:")
+        "* TODO  %?\n SCHEDULED: %^u\n :LOGBOOK:\n  - State \"TODO\"       from              %U\n  :END:")
        ("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
         "* %u %?"
         :time-prompt t)

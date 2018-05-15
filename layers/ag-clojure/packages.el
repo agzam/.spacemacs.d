@@ -37,13 +37,18 @@
         nrepl-log-messages nil
         clojure-align-binding-forms '("binding" "loop" "doseq" "for" "with-open" "with-local-vars" "with-redefs"))
 
-  ;; (dolist (form '(re-frame.core/reg-sub
-  ;;                 re-frame.core/reg-fx
-  ;;                 re-frame.core/reg-sub
-  ;;                 re-frame.core/reg-event-fx
-  ;;                 re-frame.core/reg-event-db
-  ;;                 prop/for-all))
-  ;;   (put-clojure-indent form 0))
+  (dolist (form '(re-frame.core/reg-sub
+                  re-frame.core/reg-fx
+                  re-frame.core/reg-sub
+                  re-frame.core/reg-event-fx
+                  re-frame.core/reg-event-db
+                  rf/reg-sub
+                  rf/reg-event-fx
+                  rf/reg-event-db
+                  clojure.spec.alpha/fdef
+                  cljs.spec.alpha/fdef
+                  prop/for-all))
+    (put-clojure-indent form 1))
 
   ;; annoying Java Cup icon - no longer will bother you
   (setenv "JAVA_TOOL_OPTIONS" "-Dapple.awt.UIElement=true"))
