@@ -9,6 +9,4 @@
 ;;
 ;;; License: GPLv3
 
-
-
 ;;; funcs.el ends here

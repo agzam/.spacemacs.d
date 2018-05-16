@@ -67,6 +67,7 @@ This function should only modify configuration layer settings."
              gist-view-gist t        ;; view your Gist using `browse-url` after it is created
              magithub-api-timeout 5)
      ;; --- My own layers ----
+     ag-exwm
      ag-colors ag-dired ag-general ag-web ag-lang-tools ag-clojure ag-gnus ag-org)
 
    ;; List of additional packages that will be installed without being
@@ -216,7 +217,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; The leader key accessible in `emacs state' and `insert state'
    ;; (default "M-m")
-   dotspacemacs-emacs-leader-key "M-m"
+   dotspacemacs-emacs-leader-key "s-SPC"
 
    ;; Major mode leader key is a shortcut key which is the equivalent of
    ;; pressing `<leader> m`. Set it to `nil` to disable it. (default ",")
@@ -587,6 +588,18 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
         delete-old-versions nil)
   (setq backup-directory-alist '(("." . ".bak")))
   (savehist-mode -1)
+
+  (with-eval-after-load 'helm
+    ;; experimenting with helm in a separate frame
+    ;; (setq helm-display-function 'helm-display-buffer-in-own-frame
+    ;;       helm-display-buffer-reuse-frame t
+    ;;       helm-use-undecorated-frame-option t
+    ;;       helm-display-buffer-width 120
+    ;;       helm-display-buffer-height 20)
+    (setq helm-display-function 'helm-default-display-buffer)
+    (setq which-key-sort-order 'which-key-prefix-then-key-order)
+    ;; (setq which-key-popup-type 'side-window)
+    )
 
   (spacemacs|define-custom-layout "@finops-admin"
     :binding "f"

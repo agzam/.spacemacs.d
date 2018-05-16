@@ -19,7 +19,8 @@
           :step pre)
     helm-exwm
     pinentry
-    gpastel))
+    gpastel
+    (exwm-edit :location local)))
 
 (defun ag-exwm/init-cl-generic ()
   (use-package cl-generic
@@ -125,16 +126,16 @@ Can show completions at point for COMMAND using helm or ido"
     (push ?\C-g exwm-input-prefix-keys)
     ;; Universal Arguments
     (push ?\C-u exwm-input-prefix-keys)
-    (push ?\C-0 exwm-input-prefix-keys)
-    (push ?\C-1 exwm-input-prefix-keys)
-    (push ?\C-2 exwm-input-prefix-keys)
-    (push ?\C-3 exwm-input-prefix-keys)
-    (push ?\C-4 exwm-input-prefix-keys)
-    (push ?\C-5 exwm-input-prefix-keys)
-    (push ?\C-6 exwm-input-prefix-keys)
-    (push ?\C-7 exwm-input-prefix-keys)
-    (push ?\C-8 exwm-input-prefix-keys)
-    (push ?\C-9 exwm-input-prefix-keys)
+    ;; (push ?\C-0 exwm-input-prefix-keys)
+    ;; (push ?\C-1 exwm-input-prefix-keys)
+    ;; (push ?\C-2 exwm-input-prefix-keys)
+    ;; (push ?\C-3 exwm-input-prefix-keys)
+    ;; (push ?\C-4 exwm-input-prefix-keys)
+    ;; (push ?\C-5 exwm-input-prefix-keys)
+    ;; (push ?\C-6 exwm-input-prefix-keys)
+    ;; (push ?\C-7 exwm-input-prefix-keys)
+    ;; (push ?\C-8 exwm-input-prefix-keys)
+    ;; (push ?\C-9 exwm-input-prefix-keys)
     ;; C-c, C-x are needed for copying and pasting
     (delete ?\C-x exwm-input-prefix-keys)
     (delete ?\C-c exwm-input-prefix-keys)
@@ -142,7 +143,7 @@ Can show completions at point for COMMAND using helm or ido"
     (delete ?\C-h exwm-input-prefix-keys)
 
     ;; Preserve the habit
-    (exwm-input-set-key (kbd "s-x") 'helm-M-x)
+    ;; (exwm-input-set-key (kbd "s-x") 'helm-M-x)
     ;; (exwm-input-set-key (kbd "s-;") 'evil-ex)
     ;; Shell (not a real one for the moment)
     (exwm-input-set-key (kbd "C-'") #'spacemacs/default-pop-shell)
@@ -176,19 +177,23 @@ Can show completions at point for COMMAND using helm or ido"
     (add-to-list 'undo-tree-incompatible-major-modes 'exwm-mode)
     (evil-set-initial-state 'exwm-mode 'emacs) ;; otherwise simulation keys won't work
     (setq exwm-input-simulation-keys
-          '(([?\C-b] . [left])
-            ([?\C-f] . [right])
-            ([?\C-p] . [up])
+          '(([?\C-p] . [up])
             ([?\C-n] . [down])
-            ([?\C-a] . [home])
-            ([?\C-e] . [end])
             ([?\C-s] . [\C-f])
             ([?\M-h] . [left])
             ([?\M-l] . [right])
             ([?\M-j] . [down])
             ([?\M-k] . [up])
             ([?\s-l] . [\C-tab])
-            ([?\s-h] . [\C-S-tab])))
+            ([?\s-h] . [\C-S-tab])
+            ([?\s-w] . [\C-f4])
+            ([?\s-t] . [\C-t])
+            ([?\s-a] . [\C-a])
+            ([?\s-x] . [\C-x])
+            ([?\s-c] . [\C-c])
+            ([?\s-v] . [\C-v])))
+
+    (exwm-input-set-simulation-keys exwm-input-simulation-keys)
 
     ;; (evil-define-key 'normal 'exwm-mode-map (kbd "C-p") nil)
     ;; (evil-define-key 'normal 'exwm-mode-map (kbd "C-n") nil)
@@ -218,7 +223,6 @@ Can show completions at point for COMMAND using helm or ido"
 
 (defun ag-exwm/init-gpastel ()
   (use-package gpastel
-    :ensure t
     :config
     (add-hook 'exwm-init-hook 'gpastel-start-listening)
 
@@ -232,5 +236,9 @@ Can show completions at point for COMMAND using helm or ido"
             (exwm-reset)
             (exwm-input--fake-key ?\C-v))
         (funcall old-function str)))))
+
+(defun ag-exwm/init-exwm-edit ()
+  (use-package exwm-edit
+    :demand t))
 
 ;;; packages.el ends here
