@@ -255,7 +255,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil the default layout name is displayed in the mode-line.
    ;; (default nil)
-   dotspacemacs-display-default-layout nil
+   dotspacemacs-display-default-layout t
 
    ;; If non-nil then the last auto saved layouts are resumed automatically upon
    ;; start. (default nil)
@@ -543,7 +543,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (spacemacs/toggle-mode-line-version-control-off)
   (spacemacs/toggle-mode-line-minor-modes-off)
   (spacemacs/toggle-mode-line-responsive-off)
-  (spaceline-toggle-persp-name-off)
 
   (with-eval-after-load 'auto-complete (add-to-list 'ac-dictionary-directories "~/.spacemacs.d/ac-dict"))
 
@@ -569,7 +568,8 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; Perspectives
   ;; ----------
   (setq-default perspective-enable-persp-projectile t
-                persp-auto-save-opt 0)
+                persp-auto-save-opt 0
+                persp-switch-wrap nil)
 
   ;; -----------
   ;; Yasnippet

@@ -19,7 +19,7 @@
           :step pre)
     helm-exwm
     pinentry
-    gpastel
+    desktop-environment
     (exwm-edit :location local)))
 
 (defun ag-exwm/init-cl-generic ()
@@ -36,16 +36,12 @@
     (setq exwm-workspace-number 1)
     (setq winum-scope 'frame-local) ;; otherwise it jumps accros frames on a multi-monitor setup
     (setq persp-init-frame-behaviour nil) ;; otherwise spacemacs layouts would mess floating windows
+    (setq exwm-workspace-show-all-buffers t)
+    (setq exwm-layout-show-all-buffers t)
+    (spacemacs/set-leader-keys
+      "aG" 'exwm--switch-to-chrome
+      "aS" 'exwm--switch-to-slack)
     :config
-    (defun spacemacs/exwm-bind-command (key command &rest bindings)
-      (while key
-        (exwm-input-set-key (kbd key)
-                            `(lambda ()
-                               (interactive)
-                               (start-process-shell-command ,command nil ,command)))
-        (setq key     (pop bindings)
-              command (pop bindings))))
-
     ;; (spacemacs/exwm-bind-command "<s-return>"  exwm--terminal-command)
 
     ;; All buffers created in EXWM mode are named "*EXWM*". You may want to change
@@ -62,7 +58,6 @@
     ;;   Its class name may be more suitable for such case.
     ;; In the following example, we use class names for all windows expect for
     ;; Java applications and GIMP.
-
     (add-hook 'exwm-update-class-hook
               (lambda ()
                 (unless (or (string-prefix-p "sun-awt-X11-" exwm-instance-name)
@@ -75,44 +70,90 @@
                           (string= "gimp" exwm-instance-name))
                   (exwm-workspace-rename-buffer exwm-title))))
 
-    ;; strange bug that sometimes loses keyboard in exwm app buffer after switching to it
+    (setq window-divider-default-right-width 1)
+    (window-divider-mode)
+
+    ;; allow hydras to capture all key presses (in line-mode, at least)
+    (define-advice hydra-set-transient-map (:around (fun keymap on-exit &optional foreign-keys) exwm-passthrough)
+      (setq exwm-input-line-mode-passthrough t)
+      (let ((on-exit (lexical-let ((on-exit on-exit))
+                       (lambda ()
+                         (setq exwm-input-line-mode-passthrough nil)
+                         (when on-exit (funcall on-exit))))))
+        (funcall fun keymap on-exit foreign-keys)))
+
+    (spacemacs|define-custom-layout "@chrome"
+      :binding "g"
+      :body (exwm--switch-to-chrome))
+
+    (spacemacs|define-custom-layout "@slack"
+      :binding "s"
+      :body (exwm--switch-to-slack))
+
+    ;;;; strange bug that sometimes loses keyboard in exwm app buffer after switching to it
     ;; (define-advice exwm-layout--set-client-list-stacking (:around (old-function) exwm-grab-kbd-after-set-client)
     ;;   "grab keyboard after exwm-layout--set-client-list-stacking"
     ;;   (if (derived-mode-p 'exwm-mode)
     ;;       (progn
+    ;;         (exwm-input-grab-keyboard)
     ;;         (funcall old-function)
-    ;;         (exwm-input-grab-keyboard))))
-
-    (defun spacemacs/exwm-layout-toggle-fullscreen ()
-      "Togggles full screen for Emacs and X windows"
-      (interactive)
-      (if exwm--id
-          (if (exwm-layout--fullscreen-p)
-              (exwm-reset)
-            (exwm-layout-set-fullscreen))
-        (spacemacs/toggle-maximize-buffer)))
-
-    (defun spacemacs/exwm-app-launcher (command)
-      "Launches an application in your PATH.
-Can show completions at point for COMMAND using helm or ido"
-      (interactive (list (read-shell-command exwm-app-launcher--prompt)))
-      (start-process-shell-command command nil command))
+    ;;         )))
 
     ;; `exwm-input-set-key' allows you to set a global key binding (available in
     ;; any case). Following are a few examples.
     ;; + We always need a way to go back to line-mode from char-mode
-    ;; (exwm-input-set-key (kbd "s-r") 'exwm-reset)
-    (delete ?\s-r exwm-input-prefix-keys)
+    (delete ?\C-r exwm-input-prefix-keys)
+    (exwm-input-set-key (kbd "s-R") #'spacemacs/exwm-app-launcher)
 
+    ;; exwm-buffer-transient-state
+    (exwm-input-set-key (kbd "C-C z") (lambda ()
+                                        (interactive)
+                                        (when (derived-mode-p 'exwm-mode)
+                                          (spacemacs/exwm-buffer-transient-state/body))))
+    (delete ?\s-f exwm-input-prefix-keys)
     (exwm-input-set-key (kbd "s-f") #'spacemacs/exwm-layout-toggle-fullscreen)
-    (exwm-input-set-key (kbd "s-r") #'spacemacs/exwm-app-launcher)
+
+    (push ?\s-\[ exwm-input-prefix-keys)
+    (exwm-input-set-key (kbd "s-[") #'spacemacs/layouts-transient-state/persp-prev)
+
+    (push ?\s-\] exwm-input-prefix-keys)
+    (exwm-input-set-key (kbd "s-]") #'spacemacs/layouts-transient-state/persp-next)
+
+    (push ?\s-\` exwm-input-prefix-keys)
+    (exwm-input-set-key (kbd "s-`") #'exwm--app-next-window)
+
+    ;;; if I don't do this sometimes immediately after switching layouts exwm app won't get the keyboard
+    ;; (defun grab-kbd-after-persp-switch ()
+    ;;   "Grab keyboard after persp switch"
+    ;;   (when (derived-mode-p 'exwm-mode)
+    ;;     (exwm-input--grab-keyboard)))
+    ;; (add-hook 'window-configuration-change-hook #'grab-kbd-after-persp-switch)
 
     (exwm-input-set-key (kbd "<C-s-escape>") (lambda () (interactive) (start-process "" nil exwm--suspend-command)))
 
+    (require 'exwm-randr)
+    (exwm-randr-enable)
+
     ;; switching monitors on and off
-    (exwm-input-set-key (kbd "C-s-1") (lambda () (interactive)
-                                          (start-process-shell-command "" nil "xrandr --output eDP-1 --auto")))
-    (exwm-input-set-key (kbd "C-s-2") (lambda () (interactive) (start-process-shell-command "" nil "xrandr --output eDP-1 --off --output DP-1 --mode 2560x1440")))
+    (exwm-input-set-key (kbd "C-s-1") (lambda () (interactive) (start-process-shell-command "" nil "xrandr --output eDP1 --auto")))
+    (exwm-input-set-key (kbd "C-s-2") (lambda () (interactive) (start-process-shell-command "" nil "xrandr --output eDP1 --off --output DP1 --mode 2560x1440")))
+    (exwm-input-set-key (kbd "C-s-3")
+                        (lambda ()
+                          (interactive)
+                          (setq exwm-workspace-number 2)
+                          (start-process-shell-command "" nil "~/.screenlayout/home-double-monitor.sh")
+                          ;; (start-process-shell-command "" nil "killall yabar & ~/.screenlayout/home-double-monitor.sh && yabar")
+                          ))
+
+    (setq exwm-randr-workspace-output-plist '(1 "DP1" 2 "eDP1"))
+
+    ;; (defun exwm--reset-bar ()
+    ;;   (start-process-shell-command "yabar" nil "killall yabar && yabar &> /dev/null")
+    ;;   ;; (start-process-shell-command
+    ;;   ;;  "xrandr" nil "xrandr --output DP1 --mode 2560x1440 --right-of eDP1")
+    ;;   )
+
+    ;; (add-hook 'exwm-randr-screen-change-hook #'exwm--reset-bar)
 
     ;; The following example demonstrates how to set a key binding only available
     ;; in line mode. It's simply done by first push the prefix key to
@@ -120,36 +161,29 @@ Can show completions at point for COMMAND using helm or ido"
     ;; The example shorten 'C-c q' to 'C-q'.
     (push ?\C-q exwm-input-prefix-keys)
     (define-key exwm-mode-map [?\C-q] 'exwm-input-send-next-key)
-    ;; M-m leader, sorry Space Folks
+    ;; cmd+space - Spacemacs leader
     (push ?\s-\  exwm-input-prefix-keys)
-    ;; Universal Get-me-outta-here
+    ;; universal Get-me-outta-here
     (push ?\C-g exwm-input-prefix-keys)
-    ;; Universal Arguments
+    ;; universal Arguments
     (push ?\C-u exwm-input-prefix-keys)
-    ;; (push ?\C-0 exwm-input-prefix-keys)
-    ;; (push ?\C-1 exwm-input-prefix-keys)
-    ;; (push ?\C-2 exwm-input-prefix-keys)
-    ;; (push ?\C-3 exwm-input-prefix-keys)
-    ;; (push ?\C-4 exwm-input-prefix-keys)
-    ;; (push ?\C-5 exwm-input-prefix-keys)
-    ;; (push ?\C-6 exwm-input-prefix-keys)
-    ;; (push ?\C-7 exwm-input-prefix-keys)
-    ;; (push ?\C-8 exwm-input-prefix-keys)
-    ;; (push ?\C-9 exwm-input-prefix-keys)
     ;; C-c, C-x are needed for copying and pasting
     (delete ?\C-x exwm-input-prefix-keys)
     (delete ?\C-c exwm-input-prefix-keys)
     ;; We can use `M-m h' to access help
     (delete ?\C-h exwm-input-prefix-keys)
 
-    ;; Preserve the habit
     ;; (exwm-input-set-key (kbd "s-x") 'helm-M-x)
     ;; (exwm-input-set-key (kbd "s-;") 'evil-ex)
-    ;; Shell (not a real one for the moment)
-    (exwm-input-set-key (kbd "C-'") #'spacemacs/default-pop-shell)
+
+    ;; layouts can be switched by S-return S-return
     (exwm-input-set-key (kbd "<s-return>") #'spacemacs/layouts-transient-state/body)
+    (spacemacs/transient-state-register-add-bindings 'layouts
+      '(("<s-return>" spacemacs/persp-perspectives :exit t)))
+
     (exwm-input-set-key (kbd "s-u") #'winner-undo)
     (exwm-input-set-key (kbd "S-s-U") #'winner-redo)
+    (exwm-input-set-key (kbd "C-c C-r") #'exwm-reset)
     ;; Change buffers
     (exwm-input-set-key (kbd "s-b") #'spacemacs-layouts/non-restricted-buffer-list-helm)
 
@@ -188,27 +222,37 @@ Can show completions at point for COMMAND using helm or ido"
             ([?\s-h] . [\C-S-tab])
             ([?\s-w] . [\C-f4])
             ([?\s-t] . [\C-t])
+            ([?\s-r] . [\C-r])
             ([?\s-a] . [\C-a])
             ([?\s-x] . [\C-x])
             ([?\s-c] . [\C-c])
             ([?\s-v] . [\C-v])))
 
-    (exwm-input-set-simulation-keys exwm-input-simulation-keys)
+    ;; (exwm-input-set-simulation-keys exwm-input-simulation-keys)
 
-    ;; (evil-define-key 'normal 'exwm-mode-map (kbd "C-p") nil)
-    ;; (evil-define-key 'normal 'exwm-mode-map (kbd "C-n") nil)
-    ;; (setq exwm-input-line-mode-passthrough nil)
+    (defun exwm--set-local-simulation-keys ()
+      (when (derived-mode-p 'exwm-mode)
+        (let ((local-keys (append
+                           exwm-input-simulation-keys
+                           (pcase exwm-class-name
+                             ("Slack" '(([?\C-i] . [\M-right])
+                                        ([?\C-o] . [\M-left])))
+                             ("Google-chrome" '())))))
+          (exwm-input-set-local-simulation-keys local-keys))))
 
-    (require 'exwm-randr)
-    ;; (setq exwm-randr-workspace-output-plist '(1 "DP-1" 2 "eDP-1"))
-    ;; (add-hook 'exwm-randr-screen-change-hook
-    ;;           (lambda ()
-    ;;             (start-process-shell-command
-    ;;              "xrandr" nil "xrandr --output DP-1 --mode 2560x1440 --right-of eDP-1")))
-    (exwm-randr-enable)
+    (add-hook 'window-configuration-change-hook 'exwm--set-local-simulation-keys)
 
-    (setq window-divider-default-right-width 1)
-    (window-divider-mode)))
+    (exwm-input-set-key (kbd "M-y") #'helm-show-kill-ring)
+
+    (define-advice helm-kill-ring-action-yank (:around (old-function str) exwm-paste)
+      "Paste the selection appropriately in exwm mode buffers"
+      (if (derived-mode-p 'exwm-mode)
+          (progn
+            (kill-new str)
+            (exwm-reset)
+            (exwm-input--fake-key ?\C-v))
+        (funcall old-function str)))
+    ))
 
 (defun ag-exwm/init-helm-exwm ()
   (use-package helm-exwm
@@ -221,24 +265,14 @@ Can show completions at point for COMMAND using helm or ido"
     (setq epa-pinentry-mode 'loopback)
     (pinentry-start)))
 
-(defun ag-exwm/init-gpastel ()
-  (use-package gpastel
-    :config
-    (add-hook 'exwm-init-hook 'gpastel-start-listening)
-
-    (exwm-input-set-key (kbd "M-y") #'helm-show-kill-ring)
-
-    (define-advice helm-kill-ring-action-yank (:around (old-function str) exwm-paste)
-      "Paste the selection appropriately in exwm mode buffers"
-      (if (derived-mode-p 'exwm-mode)
-          (progn
-            (kill-new str)
-            (exwm-reset)
-            (exwm-input--fake-key ?\C-v))
-        (funcall old-function str)))))
-
 (defun ag-exwm/init-exwm-edit ()
   (use-package exwm-edit
     :demand t))
+
+(defun ag-exwm/init-desktop-environment ()
+  (use-package desktop-environment
+    :config
+    (spacemacs/set-leader-keys
+      "M" #'spacemacs/desktop-environment-transient-state/body)))
 
 ;;; packages.el ends here
