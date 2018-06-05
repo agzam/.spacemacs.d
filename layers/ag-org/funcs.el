@@ -240,7 +240,10 @@ Example: https://jira.fundingcircle.com/browse/FPT-001"
          (bounds (bounds-of-thing-at-point 'symbol))
          (link (concat "https://jira.fundingcircle.com/browse/" w)))
     (delete-region (car bounds) (cdr bounds))
-    (org-insert-link nil link w)))
+    (pcase major-mode
+      ('org-mode (org-insert-link nil link w))
+      ('markdown-mode (insert (concat "[" w "](" link ")")))
+      (_ (insert link)))))
 
 (defadvice org-capture-finalize
     (after delete-capture-frame activate)
