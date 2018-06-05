@@ -124,9 +124,29 @@ ZOOM-TYPE can be 'in 'out or 'reset"
 
 (defun switch-to-music-player-app ()
   (interactive)
-  (start-process-shell-command "" nil "/usr/bin/gpmdp")
+  (start-process-shell-command "" nil "/usr/bin/gpmdp"))
 
-  )
+(defun spacemacs/exwm-workspace-next ()
+  "Switch to next exwm-workspaceective (to the right)."
+  (interactive)
+  (let* ((only-workspace? (equal exwm-workspace-number 1))
+         (overflow? (= exwm-workspace-current-index
+                       (1- exwm-workspace-number))))
+    (cond
+     (only-workspace? nil)
+     (overflow?
+      (exwm-workspace-switch 0))
+     (t (exwm-workspace-switch  (+ 1 exwm-workspace-current-index))))))
+
+(defun spacemacs/exwm-workspace-prev ()
+  "Switch to next exwm-workspaceective (to the right)."
+  (interactive)
+  (let* ((only-workspace? (equal exwm-workspace-number 1))
+         (overflow? (= exwm-workspace-current-index 0)))
+    (cond
+     (only-workspace? nil)
+     (overflow? (exwm-workspace-switch (1- exwm-workspace-number)))
+     (t (exwm-workspace-switch  (1- exwm-workspace-current-index))))))
 
 (spacemacs|define-transient-state desktop-environment
   :title "dektop-environment transient group"

@@ -36,7 +36,7 @@
     (setq exwm-workspace-number 1)
     (setq winum-scope 'frame-local) ;; otherwise it jumps accros frames on a multi-monitor setup
     (setq persp-init-frame-behaviour nil) ;; otherwise spacemacs layouts would mess floating windows
-    (setq exwm-workspace-show-all-buffers t)
+    (setq exwm-workspace-show-all-buffers nil)
     (setq exwm-layout-show-all-buffers t)
     (spacemacs/set-leader-keys
       "aG" 'exwm--switch-to-chrome
@@ -112,13 +112,14 @@
                                           (spacemacs/exwm-buffer-transient-state/body))))
     (delete ?\s-f exwm-input-prefix-keys)
     (exwm-input-set-key (kbd "s-f") #'spacemacs/exwm-layout-toggle-fullscreen)
-
     (push ?\s-\[ exwm-input-prefix-keys)
     (exwm-input-set-key (kbd "s-[") #'spacemacs/layouts-transient-state/persp-prev)
-
     (push ?\s-\] exwm-input-prefix-keys)
     (exwm-input-set-key (kbd "s-]") #'spacemacs/layouts-transient-state/persp-next)
-
+    (push ?\s-{ exwm-input-prefix-keys)
+    (exwm-input-set-key (kbd "s-{") #'spacemacs/exwm-workspace-prev)
+    (push ?\s-} exwm-input-prefix-keys)
+    (exwm-input-set-key (kbd "s-}") #'spacemacs/exwm-workspace-next)
     (push ?\s-\` exwm-input-prefix-keys)
     (exwm-input-set-key (kbd "s-`") #'exwm--app-next-window)
 
