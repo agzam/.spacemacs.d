@@ -50,7 +50,7 @@ This function should only modify configuration layer settings."
      syntax-checking
      (spell-checking :variables ispell-program-name "aspell")
      ;; ---- Tools ----
-     docker emoji fasd helm imenu-list osx pdf-tools restclient search-engine treemacs
+     docker emoji fasd helm imenu-list osx pdf restclient search-engine treemacs
      (dash :variables
            helm-dash-docset-path
            (cond ((eq system-type 'darwin) "~/Library/Application\ Support/Dash/DocSets")))
@@ -597,9 +597,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
     ;;       helm-display-buffer-width 120
     ;;       helm-display-buffer-height 20)
     (setq helm-display-function 'helm-default-display-buffer)
-    (setq which-key-sort-order 'which-key-prefix-then-key-order)
-    ;; (setq which-key-popup-type 'side-window)
-    )
+    (setq which-key-sort-order 'which-key-prefix-then-key-order))
 
   (spacemacs|define-custom-layout "@finops-admin"
     :binding "f"
