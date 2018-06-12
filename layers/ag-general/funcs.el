@@ -78,28 +78,14 @@ DIRECTION - can be North, South, West, East"
       (call-process hs nil 0 nil "-c" cmd)
       (ag/fix-frame))))
 
-(spacemacs|define-transient-state zoom-frm
-  :title "Zoom Frame Transient State"
-  :doc "
- Zoom^^^^^^              Move^^^^^              Other^^
- ────^^^^^^───────────── ────^^^^^^───────────── ─────^^──────────
- [_+_/_=_/_j_] in        [_p_] prev. display [_f_]^^^ fullscreen
- [_-_/_k_]^^   out       [_n_] next display  [_m_]^^^ max-frame
- [_0_]^^^^   reset                         [_q_]^^^ quit
-"
-
-  :bindings
-  ("+" zoom-frm-in)
-  ("=" zoom-frm-in)
-  ("j" zoom-frm-in)
-  ("-" zoom-frm-out)
-  ("k" zoom-frm-out)
-  ("0" zoom-frm-unzoom)
-  ("f" (spacemacs/toggle-frame-fullscreen-non-native))
-  ("m" (spacemacs/toggle-maximize-frame))
-  ("n" (ag/move-frame-one-display "North"))
-  ("p" (ag/move-frame-one-display "South"))
-  ("q" nil :exit t))
+(spacemacs/transient-state-register-add-bindings 'zoom-frm
+  '(("j" zoom-frm-in)
+    ("k" zoom-frm-out)
+    ("r" zoom-frm-unzoom)
+    ("f" spacemacs/toggle-frame-fullscreen-non-native)
+    ("m" spacemacs/toggle-maximize-frame)
+    ("n" (ag/move-frame-one-display "North"))
+    ("p" (ag/move-frame-one-display "South"))))
 
 ;; remove visual marks overlay after marks are deleted
 (advice-add 'evil-delete-marks :after (lambda (&rest args) (evil-visual-mark-render)))
@@ -139,6 +125,7 @@ TITLE is a title of the window (the caller is responsible to set that right) "
   (select-frame-by-name "edit")
   (set-frame-position nil 400 400)
   (set-frame-size nil 600 300 t)
+  (set-frame-size nil 600 600 t)
   (let ((buffer (get-buffer-create (concat "*edit-with-emacs " title " *"))))
     (set-buffer-major-mode buffer)
     (with-current-buffer buffer
