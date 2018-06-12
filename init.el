@@ -104,6 +104,25 @@ It should only modify the values of Spacemacs settings."
   ;; This setq-default sexp is an exhaustive list of all the supported
   ;; spacemacs settings.
   (setq-default
+   ;; If non-nil then enable support for the portable dumper. You'll need
+   ;; to compile Emacs 27 from source following the instructions in file
+   ;; EXPERIMENTAL.org at to root of the git repository.
+   ;; (default nil)
+   dotspacemacs-enable-emacs-pdumper nil
+
+   ;; File path pointing to emacs 27.1 executable compiled with support
+   ;; for the portable dumper (this is currently the branch pdumper).
+   ;; (default "emacs-27.0.50")
+   dotspacemacs-emacs-pdumper-executable-file "emacs-27.0.50"
+
+   ;; Name of the Spacemacs dump file. This is the file will be created by the
+   ;; portable dumper in the cache directory under dumps sub-directory.
+   ;; To load it when starting Emacs add the parameter `--dump-file'
+   ;; when invoking Emacs 27.1 executable on the command line, for instance:
+   ;;   ./emacs --dump-file=~/.emacs.d/.cache/dumps/spacemacs.pdmp
+   ;; (default spacemacs.pdmp)
+   dotspacemacs-emacs-dumper-dump-file "spacemacs.pdmp"
+
    ;; If non-nil ELPA repositories are contacted via HTTPS whenever it's
    ;; possible. Set it to nil if you have no way to use HTTPS in your
    ;; environment, otherwise it is strongly recommended to let it set to t.
@@ -235,21 +254,6 @@ It should only modify the values of Spacemacs settings."
    ;; works in the GUI. (default nil)
    dotspacemacs-distinguish-gui-tab t
 
-   ;; If non-nil `Y' is remapped to `y$' in Evil states. (default nil)
-   dotspacemacs-remap-Y-to-y$ nil
-
-   ;; If non-nil, the shift mappings `<' and `>' retain visual state if used
-   ;; there. (default t)
-   dotspacemacs-retain-visual-state-on-shift t
-
-   ;; If non-nil, `J' and `K' move lines up and down when in visual mode.
-   ;; (default nil)
-   dotspacemacs-visual-line-move-text t
-
-   ;; If non-nil, inverse the meaning of `g' in `:substitute' Evil ex-command.
-   ;; (default nil)
-   dotspacemacs-ex-substitute-global nil
-
    ;; Name of the default layout (default "Default")
    dotspacemacs-default-layout-name "Home"
 
@@ -352,7 +356,9 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil show the color guide hint for transient state keys. (default t)
    dotspacemacs-show-transient-state-color-guide nil
 
-   ;; If non-nil unicode symbols are displayed in the mode line. (default t)
+   ;; If non-nil unicode symbols are displayed in the mode line.
+   ;; If you use Emacs as a daemon and wants unicode characters only in GUI set
+   ;; the value to quoted `display-graphic-p'. (default t)
    dotspacemacs-mode-line-unicode-symbols nil
 
    ;; If non-nil smooth scrolling (native-scrolling) is enabled. Smooth
@@ -533,16 +539,19 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   (with-eval-after-load 'helm-ag (setq helm-ag-use-agignore t))
 
-  (spaceline-toggle-buffer-encoding-abbrev-off)
-  (spaceline-toggle-purpose-off)
+  (with-eval-after-load 'spaceline-segments
+    (spaceline-toggle-buffer-encoding-abbrev-off)
+    (spaceline-toggle-purpose-off))
+
+  (with-eval-after-load 'spaceline-config
+    (spacemacs/toggle-mode-line-org-clock-on)
+    (spacemacs/toggle-mode-line-version-control-off)
+    (spacemacs/toggle-mode-line-minor-modes-off)
+    (spacemacs/toggle-mode-line-responsive-off))
+
   (add-hook 'prog-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
   (add-hook 'abbrev-mode-hook #'read-abbrev-file)
   (remove-hook 'evil-insert-state-exit-hook 'expand-abbrev)
-
-  (spacemacs/toggle-mode-line-org-clock-on)
-  (spacemacs/toggle-mode-line-version-control-off)
-  (spacemacs/toggle-mode-line-minor-modes-off)
-  (spacemacs/toggle-mode-line-responsive-off)
 
   (with-eval-after-load 'auto-complete (add-to-list 'ac-dictionary-directories "~/.spacemacs.d/ac-dict"))
 
