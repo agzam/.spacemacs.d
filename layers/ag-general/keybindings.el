@@ -27,15 +27,19 @@
 
 
 ;;;; wrap `sp-up-sexp` "Move forward out of one level of parentheses", so it can be used in evil-lispy
-(evil-lisp-state-enter-command sp-up-sexp)
+(with-eval-after-load 'evil-lisp-state
+  (evil-lisp-state-enter-command sp-up-sexp)
 
-(defun sp-reindent ()
-  (interactive)
-  (save-excursion
-    (er/expand-region 2)
-    (evil-indent (region-beginning) (region-end))))
+  (defun sp-reindent ()
+    (interactive)
+    (save-excursion
+      (er/expand-region 2)
+      (evil-indent (region-beginning) (region-end))))
 
-(evil-lisp-state-enter-command sp-reindent)
+  (evil-lisp-state-enter-command sp-reindent)
+  (spacemacs/set-leader-keys
+    "kf" 'evil-lisp-state-sp-up-sexp
+    "k=" 'evil-lisp-state-sp-reindent))
 
 (spacemacs/set-leader-keys
   "qq" nil                           ;; no unexpected exits
@@ -50,8 +54,7 @@
   "swg" 'ag/helm-google-suggest
   "ou" 'spacemacs/avy-open-url
   ;;;; add a page-break
-  "iP" (kbd "i C-q C-l <RET><escape>")
-  "tn" 'display-line-numbers-mode)
+  "iP" (kbd "i C-q C-l <RET><escape>"))
 
 (spacemacs/set-leader-keys-for-major-mode 'emacs-lisp-mode "h h" 'helpful-at-point)
 (evil-define-key 'normal helpful-mode-map "q" 'quit-window)
@@ -60,6 +63,10 @@
 (define-key evil-normal-state-map "Q" 'bury-buffer)
 (define-key evil-normal-state-map (kbd "C-S-e") 'scroll-other-window)
 (define-key evil-normal-state-map (kbd "C-S-y") 'scroll-other-window-down)
+
+(when (eq system-type 'darwin)
+  (global-set-key (kbd "H-[") #'spacemacs/layouts-transient-state/persp-prev)
+  (global-set-key (kbd "H-]") #'spacemacs/layouts-transient-state/persp-next))
 
 ;;;; ---------------
 ;;;; Smartparens
