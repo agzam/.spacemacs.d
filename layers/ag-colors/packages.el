@@ -107,6 +107,8 @@
           `(magit-diff-hunk-heading-highlight ((t (:background "#2f363f"))))
           `(diff-refine-added ((t (:foreground "#a3be70" :background "#2b3b34"))))
           `(diff-refine-removed ((t (:foreground "#ef6160" :background "#3b2c2b"))))
+          `(smerge-refined-added ((t (:foreground "#a3be70" :background "#2b3b34"))))
+          `(smerge-refined-removed ((t (:foreground "#ef6160" :background "#3b2c2b"))))
 
           `(ediff-current-diff-A ((t (:foreground "#dd828b" :background "#443238"))))
           `(ediff-fine-diff-A ((t (:foreground "#db5e6c" :background "#603238"))))
