@@ -154,4 +154,8 @@ TITLE is a title of the window (the caller is responsible to set that right) "
   (ag/switch-to-app systemwide-edit-previous-app-pid)
   (setq systemwide-edit-previous-app-pid nil))
 
+(defun shruggie ()
+  (interactive)
+  (insert "¯\\_(ツ)_/¯"))
+
 ;;; funcs.el ends here
