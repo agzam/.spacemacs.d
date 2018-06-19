@@ -58,6 +58,7 @@
     ;;   Its class name may be more suitable for such case.
     ;; In the following example, we use class names for all windows expect for
     ;; Java applications and GIMP.
+
     (add-hook 'exwm-update-class-hook
               (lambda ()
                 (unless (or (string-prefix-p "sun-awt-X11-" exwm-instance-name)
@@ -70,8 +71,8 @@
                           (string= "gimp" exwm-instance-name))
                   (exwm-workspace-rename-buffer exwm-title))))
 
-    (setq window-divider-default-right-width 1)
-    (window-divider-mode)
+    ;; (setq window-divider-default-right-width 1)
+    ;; (window-divider-mode)
 
     ;; allow hydras to capture all key presses (in line-mode, at least)
     (define-advice hydra-set-transient-map (:around (fun keymap on-exit &optional foreign-keys) exwm-passthrough)
@@ -122,13 +123,6 @@
     (exwm-input-set-key (kbd "s-}") #'spacemacs/exwm-workspace-next)
     (push ?\s-\` exwm-input-prefix-keys)
     (exwm-input-set-key (kbd "s-`") #'exwm--app-next-window)
-
-    ;;; if I don't do this sometimes immediately after switching layouts exwm app won't get the keyboard
-    ;; (defun grab-kbd-after-persp-switch ()
-    ;;   "Grab keyboard after persp switch"
-    ;;   (when (derived-mode-p 'exwm-mode)
-    ;;     (exwm-input--grab-keyboard)))
-    ;; (add-hook 'window-configuration-change-hook #'grab-kbd-after-persp-switch)
 
     (exwm-input-set-key (kbd "<C-s-escape>") (lambda () (interactive) (start-process "" nil exwm--suspend-command)))
 
@@ -268,7 +262,12 @@
 
 (defun ag-exwm/init-exwm-edit ()
   (use-package exwm-edit
-    :demand t))
+    :demand t
+    :config
+    (defun ag-exwm/on-exwm-edit-compose ()
+      (spacemacs/toggle-visual-line-navigation-on)
+      (funcall 'markdown-mode))
+    (add-hook 'exwm-edit-compose-hook 'ag-exwm/on-exwm-edit-compose)))
 
 (defun ag-exwm/init-desktop-environment ()
   (use-package desktop-environment

@@ -18,7 +18,7 @@
                                 ;; magithub
                                 helpful
                                 rainbow-mode
-                                atomic-chrome
+                                ;; atomic-chrome
                                 helm-pages
                                 evil-mc
                                 edit-indirect))

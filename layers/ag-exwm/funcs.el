@@ -71,7 +71,7 @@ With universal argument shows list of windows"
   (interactive)
   (if-let ((buf (exwm--find-app-buffer "Google-chrome")))
       (switch-to-buffer buf)
-    (spacemacs/exwm-app-launcher "google-chrome")))
+    (spacemacs/exwm-app-launcher "google-chrome-stable")))
 
 (defun exwm--switch-to-slack ()
   (interactive)
@@ -116,7 +116,7 @@ ZOOM-TYPE can be 'in 'out or 'reset"
 
 (defun lock-screen ()
   (interactive)
-  (start-process-shell-command "" nil "xlock"))
+  (start-process-shell-command "" nil "xscreensaver-command -lock"))
 
 (defun xdotool-key (key)
   (interactive)
@@ -159,15 +159,13 @@ ZOOM-TYPE can be 'in 'out or 'reset"
  ^^            [_a_] music app
 "
   :bindings
-  ("j" #'desktop-environment-volume-decrement)
-  ("k" #'desktop-environment-volume-increment)
-  ("J" #'desktop-environment-volume-decrement-slowly)
-  ("K" #'desktop-environment-volume-increment-slowly)
+  ("j" (xdotool-key "XF86AudioLowerVolume"))
+  ("k" (xdotool-key "XF86AudioRaiseVolume"))
   ("p" (xdotool-key "XF86AudioPlay"))
   ("h" (xdotool-key "XF86AudioPrev"))
   ("l" (xdotool-key "XF86AudioNext"))
   ("a" nil)
-  ("m" #'desktop-environment-toggle-mute :exit t)
+  ("m" (xdotool-key "XF86AudioMute") :exit t)
   ("M" #'desktop-environment-toggle-microphone-mute)
   ("s" #'desktop-environment-screenshot :exit t)
   ("S" #'desktop-environment-screenshot-part :exit t)

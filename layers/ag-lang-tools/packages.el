@@ -21,6 +21,7 @@
   (use-package mw-thesaurus
     :demand t
     :config
+    (define-key mw-thesaurus-mode-map [remap evil-record-macro] #'mw-thesaurus--quit)
     (spacemacs/set-leader-keys
       "xlm" #'mw-thesaurus--lookup-at-point
       "xAg" #'add-global-abbrev

@@ -157,7 +157,8 @@
           ;; misc
           `(hl-line ((t (:background "#2f3440"))))
           `(trailing-whitespace ((t (:background ,base01))))
-          `(default ((t (:background ,base00 :foreground ,base05))))))
+          `(default ((t (:background ,base00 :foreground ,base05)))))
+         (setq pdf-view-midnight-colors `(,base04 . ,base00)))
        (ag/decrease-powerline-fonts 'base16-ocean)))))
 
 (with-eval-after-load 'core-themes-support
