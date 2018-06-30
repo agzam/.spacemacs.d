@@ -71,8 +71,8 @@
                           (string= "gimp" exwm-instance-name))
                   (exwm-workspace-rename-buffer exwm-title))))
 
-    ;; (setq window-divider-default-right-width 1)
-    ;; (window-divider-mode)
+    (setq window-divider-default-right-width 2)
+    (window-divider-mode)
 
     ;; allow hydras to capture all key presses (in line-mode, at least)
     (define-advice hydra-set-transient-map (:around (fun keymap on-exit &optional foreign-keys) exwm-passthrough)
