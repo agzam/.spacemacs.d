@@ -50,7 +50,7 @@ This function should only modify configuration layer settings."
      syntax-checking
      (spell-checking :variables ispell-program-name "aspell")
      ;; ---- Tools ----
-     docker emoji fasd helm imenu-list osx pdf restclient search-engine treemacs
+     docker emoji fasd helm imenu-list  pdf restclient search-engine treemacs
      (dash :variables
            helm-dash-docset-path
            (cond ((eq system-type 'darwin) "~/Library/Application\ Support/Dash/DocSets")))
@@ -66,8 +66,9 @@ This function should only modify configuration layer settings."
              :variables
              gist-view-gist t        ;; view your Gist using `browse-url` after it is created
              magithub-api-timeout 5)
+     (when (eq system-type 'darwin) osx)
      ;; --- My own layers ----
-     ag-exwm
+     (when (eq system-type 'gnu/linux) ag-exwm)
      ag-colors ag-dired ag-general ag-web ag-lang-tools ag-clojure ag-gnus ag-org)
 
    ;; List of additional packages that will be installed without being
@@ -85,7 +86,7 @@ This function should only modify configuration layer settings."
    dotspacemacs-frozen-packages '()
 
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages '(evil-ediff)
 
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.

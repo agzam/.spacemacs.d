@@ -20,9 +20,12 @@
 
 (global-set-key (kbd "C-x b") 'spacemacs-layouts/non-restricted-buffer-list-helm)
 (global-set-key (kbd "C-x C-b") 'spacemacs-layouts/non-restricted-buffer-list-helm)
+
 (when (eq system-type 'darwin)
-  (global-set-key (kbd "H-B") 'lazy-helm/helm-mini)
-  (global-set-key (kbd "H-b") 'spacemacs-layouts/non-restricted-buffer-list-helm))
+  (global-set-key (kbd "s-B") 'lazy-helm/helm-mini)
+  (global-set-key (kbd "s-b") 'spacemacs-layouts/non-restricted-buffer-list-helm)
+  (global-set-key (kbd "s-[") #'spacemacs/layouts-transient-state/persp-prev)
+  (global-set-key (kbd "s-]") #'spacemacs/layouts-transient-state/persp-next))
 
 (with-eval-after-load 'helm
   (define-key helm-map (kbd "C-c M-i") 'helm-copy-to-buffer))
@@ -68,9 +71,6 @@
 (define-key evil-normal-state-map (kbd "C-S-e") 'scroll-other-window)
 (define-key evil-normal-state-map (kbd "C-S-y") 'scroll-other-window-down)
 
-(when (eq system-type 'darwin)
-  (global-set-key (kbd "H-[") #'spacemacs/layouts-transient-state/persp-prev)
-  (global-set-key (kbd "H-]") #'spacemacs/layouts-transient-state/persp-next))
 
 ;;;; ---------------
 ;;;; Smartparens

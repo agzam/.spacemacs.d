@@ -13,7 +13,8 @@
                           ;; dired-rainbow
                           ;; dired-filetype-face
                           direx
-                          dired-quick-sort))
+                          ;; dired-quick-sort
+                          ))
 
 (setq dired-omit-files "^\\.?#\\|^\\.DS_Store$")
 (add-hook 'dired-mode-hook #'dired-hide-details-mode)
