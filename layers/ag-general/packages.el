@@ -156,7 +156,12 @@ i.e.: show only commits that differ between selected (other branch) and current 
 
   (add-hook 'magit-hook 'turn-off-evil-mc-mode)
   ;; who cares about tags to be displayed in magit-refs buffer?
-  (remove-hook 'magit-refs-sections-hook 'magit-insert-tags))
+  (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
+
+  (custom-set-variables
+   '(magit-commit-arguments (quote ("--gpg-sign=CFE12444AF47BD1D")))
+   '(magit-fetch-arguments (quote ("--prune")))
+   '(magit-log-arguments (quote ("-n250" "--graph" "--color")))))
 
 
 ;;; packages.el ends here

@@ -60,7 +60,8 @@
      org-ellipsis " ↴"
      org-M-RET-may-split-line '((headline))
      org-ctrl-k-protect-subtree t
-     org-catch-invisible-edits 'smart)
+     org-catch-invisible-edits 'smart
+     org-use-property-inheritance t)
 
      ;;;; ---- lists ----
     (setq
