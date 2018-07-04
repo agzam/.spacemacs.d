@@ -96,7 +96,7 @@
      ;;;; ---- src blocks ----
     (setq
      ;; org-src-fontify-natively nil                     ;; https://github.com/syl20bnr/spacemacs/issues/8455
-     org-src-window-setup 'current-window
+     org-src-window-setup 'other-window
      org-src-ask-before-returning-to-edit-buffer nil
      ;; org-src-preserve-indentation t
      )
