@@ -146,6 +146,14 @@ i.e.: show only commits that differ between selected (other branch) and current 
   (magit-define-popup-action 'magit-log-popup
     ?R "other..current" 'magit-log-other--current)
 
+  (defun magit-log--origin-master ()
+    "Compare log between branches à la GitHub style between current branch and origin/master"
+    (interactive)
+    (magit-log (list (concat  "origin/master.." (magit-get-current-branch)))))
+
+  (magit-define-popup-action 'magit-log-popup
+    ?m "origin/master..current" 'magit-log--origin-master)
+
   (defun magit-diff-range-reversed (rev-or-range &optional args files)
     "Diff between two branches. Unlike `diff-range` works in opposite order i.e.: `base..current`"
     (interactive (list (magit-read-other-branch-or-commit "Diff range")))
@@ -154,9 +162,19 @@ i.e.: show only commits that differ between selected (other branch) and current 
   (magit-define-popup-action 'magit-diff-popup
     ?R "Diff range (reversed)" 'magit-diff-range-reversed)
 
+  (defun magit-diff--origin-master ()
+    "Compare log between branches à la GitHub style between current branch and origin/master"
+    (interactive)
+    (magit-diff (concat "origin/master.." (magit-get-current-branch))))
+
+  (magit-define-popup-action 'magit-diff-popup
+    ?m "origin/master..current" 'magit-diff--origin-master)
+
   (add-hook 'magit-hook 'turn-off-evil-mc-mode)
   ;; who cares about tags to be displayed in magit-refs buffer?
   (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
+
+  (setq magit-branch-rename-push-target nil) ;; do not push renamed/deleted branch to remote automatically
 
   (custom-set-variables
    '(magit-commit-arguments (quote ("--gpg-sign=CFE12444AF47BD1D")))
