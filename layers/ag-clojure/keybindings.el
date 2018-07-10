@@ -18,7 +18,8 @@
     (spacemacs/set-leader-keys-for-major-mode m
       ";" 'cljr-toggle-ignore-form
       "h h" 'helm-clojuredocs-at-point
-      "'" 'cider-switch-to-repl-buffer))
+      "'" 'cider-switch-to-repl-buffer
+      "e p" 'cider-pprint-eval-last-sexp-to-comment))
 
   (spacemacs/set-leader-keys-for-major-mode 'clojurescript-mode
     "g f" #'re-frame-jump-to-reg))
