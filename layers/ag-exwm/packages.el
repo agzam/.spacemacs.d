@@ -40,11 +40,17 @@
     (setq persp-init-frame-behaviour nil) ;; otherwise spacemacs layouts would mess floating windows
     (setq exwm-workspace-show-all-buffers nil)
     (setq exwm-layout-show-all-buffers t)
+
+    :config
+    ;; (spacemacs/exwm-bind-command "<s-return>"  exwm--terminal-command)
+
     (spacemacs/set-leader-keys
       "aG" 'exwm--switch-to-chrome
       "aS" 'exwm--switch-to-slack)
-    :config
-    ;; (spacemacs/exwm-bind-command "<s-return>"  exwm--terminal-command)
+
+    (with-eval-after-load 'spaceline-segments
+      (display-time-mode t)
+      (spacemacs/toggle-mode-line-battery-on))
 
     ;; All buffers created in EXWM mode are named "*EXWM*". You may want to change
     ;; it in `exwm-update-class-hook' and `exwm-update-title-hook', which are run
@@ -60,7 +66,6 @@
     ;;   Its class name may be more suitable for such case.
     ;; In the following example, we use class names for all windows expect for
     ;; Java applications and GIMP.
-
     (add-hook 'exwm-update-class-hook
               (lambda ()
                 (unless (or (string-prefix-p "sun-awt-X11-" exwm-instance-name)
@@ -119,6 +124,10 @@
     (exwm-input-set-key (kbd "s-[") #'spacemacs/layouts-transient-state/persp-prev)
     (push ?\s-\] exwm-input-prefix-keys)
     (exwm-input-set-key (kbd "s-]") #'spacemacs/layouts-transient-state/persp-next)
+    (push ?\s-\C-\[ exwm-input-prefix-keys)
+    (exwm-input-set-key (kbd "s-C-[") #'spacemacs/exwm-workspace-prev)
+    (push ?\s-\C-\] exwm-input-prefix-keys)
+    (exwm-input-set-key (kbd "s-C-]") #'spacemacs/exwm-workspace-next)
     (push ?\s-{ exwm-input-prefix-keys)
     (exwm-input-set-key (kbd "s-{") #'spacemacs/exwm-workspace-prev)
     (push ?\s-} exwm-input-prefix-keys)
