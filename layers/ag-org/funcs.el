@@ -245,6 +245,15 @@ Example: https://jira.fundingcircle.com/browse/FPT-001"
       ('markdown-mode (insert (concat "[" w "](" link ")")))
       (_ (insert link)))))
 
+(defun convert-markdown-link-to-org ()
+  (interactive)
+  (when (markdown-link-p)
+    (let* ((l (markdown-link-at-pos (point)))
+           (desc (nth 2 l))
+           (url (nth 3 l)))
+      (markdown-kill-thing-at-point)
+      (org-insert-link nil url desc))))
+
 (defadvice org-capture-finalize
     (after delete-capture-frame activate)
   "Advise capture-finalize to close the frame."
