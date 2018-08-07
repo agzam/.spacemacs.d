@@ -72,7 +72,7 @@
 
     ('base16-ocean
      (progn
-       (let ((base00 "#2b303b")
+       (let ((base00 "#252933")
              (base01 "#343d46")
              (base02 "#4f5b66")
              (base03 "#65737e")
