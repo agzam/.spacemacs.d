@@ -159,3 +159,15 @@ ZOOM-TYPE can be 'in 'out or 'reset"
   ("S" #'desktop-environment-screenshot-part :exit t)
   ("L" #'lock-screen :exit t)
   ("q" nil :exit t))
+
+(defun fix-exwm-kill-buffer ()
+  "fix the bug when EXWM won't switch to the app buffer when one of its windows gets closed"
+  (when (derived-mode-p 'exwm-mode)
+    (let* ((buf (buffer-name (current-buffer)))
+           (suffix (replace-regexp-in-string "<\\([0-9]+\\)>" "" buf)) ; name of the buffer would be something like: Google-chrome<2>
+           (fnd (car (car (-filter (lambda (x)
+                                     (let ((b (buffer-name (first x))))
+                                       (and (cl-search suffix b)
+                                            (not (string= buf b)))))
+                                   (window-prev-buffers))))))
+      (when fnd (switch-to-buffer fnd)))))

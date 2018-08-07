@@ -13,11 +13,13 @@
   '(cl-generic
     (xelb :location (recipe :fetcher github
                             :repo "ch11ng/xelb"
-                            :commit "fe1b643e98ea4a87a3eed41b0bbaf6c12dfcfbec")
+                            ;; :commit "fe1b643e98ea4a87a3eed41b0bbaf6c12dfcfbec"
+                            )
           :step pre)
     (exwm :location (recipe :fetcher github
                             :repo "ch11ng/exwm"
-                            :commit "b75c89cae2a1c4c70044f885c44a95fd2f9950dd")
+                            ;; :commit "b75c89cae2a1c4c70044f885c44a95fd2f9950dd"
+                            )
           :step pre)
     helm-exwm
     pinentry
@@ -171,16 +173,18 @@
     (push ?\s-\  exwm-input-prefix-keys)
     ;; universal Get-me-outta-here
     (push ?\C-g exwm-input-prefix-keys)
+    (exwm-input-set-key (kbd "C-g") #'keyboard-quit)
     ;; universal Arguments
     (push ?\C-u exwm-input-prefix-keys)
+    (exwm-input-set-key (kbd "C-u") #'universal-argument)
     ;; C-c, C-x are needed for copying and pasting
     (delete ?\C-x exwm-input-prefix-keys)
     (delete ?\C-c exwm-input-prefix-keys)
     ;; We can use `M-m h' to access help
     (delete ?\C-h exwm-input-prefix-keys)
 
-    ;; (exwm-input-set-key (kbd "s-x") 'helm-M-x)
-    ;; (exwm-input-set-key (kbd "s-;") 'evil-ex)
+    (exwm-input-set-key (kbd "M-x") #'helm-M-x)
+    (exwm-input-set-key (kbd "M-:") #'eval-expression)
 
     ;; layouts can be switched by S-return S-return
     (exwm-input-set-key (kbd "<s-return>") #'spacemacs/layouts-transient-state/body)
@@ -234,7 +238,7 @@
             ([?\s-c] . [\C-c])
             ([?\s-v] . [\C-v])))
 
-    ;; (exwm-input-set-simulation-keys exwm-input-simulation-keys)
+    (exwm-input-set-simulation-keys exwm-input-simulation-keys)
 
     (defun exwm--set-local-simulation-keys ()
       (when (derived-mode-p 'exwm-mode)
@@ -258,7 +262,8 @@
             (exwm-reset)
             (exwm-input--fake-key ?\C-v))
         (funcall old-function str)))
-    ))
+
+    (add-hook #'kill-buffer-hook #'fix-exwm-kill-buffer)))
 
 (defun ag-exwm/init-helm-exwm ()
   (use-package helm-exwm
