@@ -68,8 +68,8 @@ This function should only modify configuration layer settings."
              magithub-api-timeout 5)
      (when (eq system-type 'darwin) osx)
      ;; --- My own layers ----
-     (when (eq system-type 'gnu/linux) ag-exwm)
-     ag-colors ag-dired ag-general ag-web ag-lang-tools ag-clojure ag-gnus ag-org)
+     ag-exwm
+     ag-colors ag-dired ag-general ag-web ag-lang-tools ag-clojure ag-org ag-mail)
 
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -509,6 +509,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    abbrev-file-name "~/.spacemacs.d/abbrev_defs"
    save-abbrevs t ;; save abbrevs upon exiting Emacs
    uniquify-buffer-name-style 'forward
+   company-idle-delay 0
 
    ;;;; Helm
    helm-echo-input-in-header-line nil

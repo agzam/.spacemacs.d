@@ -30,20 +30,23 @@
 
   (with-eval-after-load 'org
     (setq org-capture-templates
-     '(("t" "Todo" entry (file "~/Dropbox/org/tasks.org")
-        "* TODO  %?\n SCHEDULED: %^u")
-       ("i" "Immediate" entry (file "~/Dropbox/org/tasks.org")
-        "* ONGOING %?" :clock-in t :clock-resume t :clock-keep t)
-       ("c" "Code Snippet" entry (file "~/Dropbox/org/tasks.org")
+          '(
+            ;; ("t" "Todo" entry (file "~/Dropbox/org/tasks.org")
+            ;;  "* TODO  %?\n SCHEDULED: %^u")
+            ("t" "todo" entry (file+headline "~/Dropbox/org/tasks.org" "Tasks")
+             "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")
+            ("i" "Immediate" entry (file "~/Dropbox/org/tasks.org")
+             "* ONGOING %?" :clock-in t :clock-resume t :clock-keep t)
+            ("c" "Code Snippet" entry (file "~/Dropbox/org/tasks.org")
         ;;;; Prompt for tag and language
-        "* %u  %?\n\t%F\n\t#+BEGIN_SRC %^{language}\n\t\t%i\n\t#+END_SRC")
-       ("y" "Yakety" entry (file "~/Dropbox/org/yakety.org")
-        "* TODO  %?\n SCHEDULED: %^u\n :LOGBOOK:\n  - State \"TODO\"       from              %U\n  :END:")
-       ("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
-        "* %u %?"
-        :time-prompt t)
-       ("z" "Currently clocked-in" item (clock)
-        "Note taken on %U \\\ \n%?")))
+             "* %u  %?\n\t%F\n\t#+BEGIN_SRC %^{language}\n\t\t%i\n\t#+END_SRC")
+            ("y" "Yakety" entry (file "~/Dropbox/org/yakety.org")
+             "* TODO  %?\n SCHEDULED: %^u\n :LOGBOOK:\n  - State \"TODO\"       from              %U\n  :END:")
+            ("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
+             "* %u %?"
+             :time-prompt t)
+            ("z" "Currently clocked-in" item (clock)
+             "Note taken on %U \\\ \n%?")))
 
     (setq
      org-directory "~/Dropbox/org"
@@ -61,7 +64,7 @@
      org-M-RET-may-split-line '((headline))
      org-ctrl-k-protect-subtree t
      org-catch-invisible-edits 'smart
-     org-use-property-inheritance t)
+     org-use-property-inheritance nil)
 
      ;;;; ---- lists ----
     (setq
@@ -88,14 +91,23 @@
      org-todo-keywords '((sequence "TODO" "ONGOING" "DONE"))
      org-todo-keyword-faces '(("ONGOING" . "orange"))
      org-enforce-todo-dependencies t
-     org-enforce-todo-checkbox-dependencies t)
+     org-enforce-todo-checkbox-dependencies t
+     org-hierarchical-todo-statistics t
+     )
+
+    (defun org-summary-todo (n-done n-not-done)
+      "Switch entry to DONE when all subentries are done, to TODO otherwise."
+      (let (org-log-done org-log-states) ; turn off logging
+        (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+
+    (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
 
      ;;;; ---- tags ----
     (setq org-fast-tag-selection-single-key t)
 
      ;;;; ---- src blocks ----
     (setq
-     ;; org-src-fontify-natively nil                     ;; https://github.com/syl20bnr/spacemacs/issues/8455
+     ;; org-src-fontify-natively nil                     ; https://github.com/syl20bnr/spacemacs/issues/8455
      org-src-window-setup 'other-window
      org-src-ask-before-returning-to-edit-buffer nil
      ;; org-src-preserve-indentation t
@@ -108,6 +120,11 @@
      org-clock-persist-query-resume nil
      org-clock-report-include-clocking-task t
      org-clock-out-remove-zero-time-clocks t)
+
+     ;;;; ----- export ----
+    (setq
+     org-export-with-toc nil
+     org-export-with-section-numbers nil)
 
     ;;;; ----- misc -------
     (setq
@@ -123,8 +140,7 @@
      org-enable-github-support t
      org-enable-bootstrap-support t
      org-format-latex-options (plist-put org-format-latex-options :scale 2)
-     org-format-latex-options (plist-put org-format-latex-options :background nil)
-     )
+     org-format-latex-options (plist-put org-format-latex-options :background nil))
 
     (dolist (p ()))
 
@@ -159,9 +175,9 @@
 
     ;; I don't know any better way of determining path to ditaa, other than running `find / -name "ditaa*.jar" 2>/dev/null`
     (setq org-ditaa-jar-path
-     (pcase system-type
-       ('gnu/linux "/usr/share/java/ditaa/ditaa-0_10.jar")
-       ('darwin  "/usr/local/Cellar/ditaa/0.11.0/libexec/ditaa-0.11.0-standalone.jar")))
+          (pcase system-type
+            ('gnu/linux "/usr/share/java/ditaa/ditaa-0_10.jar")
+            ('darwin  "/usr/local/Cellar/ditaa/0.11.0/libexec/ditaa-0.11.0-standalone.jar")))
 
     (add-hook 'org-babel-post-tangle-hook #'ag/set-tangled-file-permissions)
     (add-hook 'org-mode-hook #'abbrev-mode)
