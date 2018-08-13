@@ -12,15 +12,21 @@
 ;;; Code:
 (defconst ag-mail-packages '())
 
+(with-eval-after-load 'mu4e-alert
+  ;; Enable Desktop notifications
+  (mu4e-alert-set-default-style 'notifications))
+
 (with-eval-after-load 'mu4e
   (setq mu4e-maildir "~/.mail"
         mu4e-trash-folder "/Trash"
         mu4e-refile-folder "/Archive"
-        mu4e-get-mail-command "mbsync -a"
+        mu4e-get-mail-command "mbsync -a --verbose"
         mu4e-update-interval 600
         mu4e-compose-signature-auto-include t
         mu4e-view-show-images t
         mu4e-view-show-addresses t
+        mu4e-enable-notifications nil
+        mu4e-enable-mode-line t
 
         ;; rename files when moving, needed for mbsync
         mu4e-change-filenames-when-moving t
@@ -28,9 +34,10 @@
         mu4e-compose-dont-reply-to-self t
         mu4e-compose-format-flowed nil
         fill-flowed-encode-column 280
-        mu4e-user-mail-address-list '("agzam.ibragimov@gmail.com" "to.plotnick@gmail.com")
+        mu4e-user-mail-address-list '("agzam.ibragimov@gmail.com" "to.plotnick@gmail.com" "ag@mayvenn.com")
         mu4e-compose-complete-only-personal t
         mu4e-enable-async-operations t
+        mu4e-compose-signature-auto-include nil
         org-mu4e-link-query-in-headers-mode nil
         org-mu4e-convert-to-html t
 
@@ -60,25 +67,31 @@
                         (mu4e-message-contact-field-matches msg :to "agzam.ibragimov@gmail.com")))
         :vars '((user-mail-address . "agzam.ibragimov@gmail.com")
                 (user-full-name . "Ag Ibragimov")
+                (mu4e-compose-signature . (concat "Thanks,\n" "Ag\n"))))
+
+      ,(make-mu4e-context
+        :name "work"
+        :enter-func (lambda ()
+                      (mu4e-message "Switch to ag@mayvenn.com"))
+        ;; leave-func not defined
+        :match-func (lambda (msg)
+                      (when msg
+                        (mu4e-message-contact-field-matches msg :to "ag@mayvenn.com")))
+        :vars '((user-mail-address . "ag@mayvenn.com")
+                (user-full-name . "Ag Ibragimov")
                 (mu4e-compose-signature . (concat "Thanks,\n" "Ag\n")))))
-   mu4e-compose-context-policy 'ask-if-none)
+
+   mu4e-compose-context-policy 'always-ask)
 
   (add-hook 'mu4e-compose-mode-hook #'turn-off-auto-fill)
   (add-hook 'mu4e-compose-mode-hook #'spacemacs/toggle-visual-line-navigation-on)
-
-  (spacemacs/set-leader-keys-for-major-mode 'mu4e-compose-mode
-    dotspacemacs-major-mode-leader-key 'message-send-and-exit
-    "c" 'message-send-and-exit
-    "k" 'mu4-message-kill-buffer
-    "d" 'message-dont-send         ; saves as draft
-    "a" 'mml-attach-file
-    "o" 'org-mu4e-compose-org-mode)
 
   (setq mu4e-view-actions
         '(("capture message" . mu4e-action-capture-message)
           ("view in browser" . mu4e-action-view-in-browser)
           ("show this thread" . mu4e-action-show-thread)
           ("View as pdf" . mu4e-action-view-as-pdf)))
-  )
+
+  (mu4e-maildirs-extension))
 
 ;;; packages.el ends here
