@@ -50,7 +50,7 @@ This function should only modify configuration layer settings."
      syntax-checking
      (spell-checking :variables ispell-program-name "aspell")
      ;; ---- Tools ----
-     docker emoji fasd helm imenu-list  pdf restclient search-engine treemacs
+     docker emoji fasd helm imenu-list restclient search-engine treemacs
      (dash :variables
            helm-dash-docset-path
            (cond ((eq system-type 'darwin) "~/Library/Application\ Support/Dash/DocSets")))
