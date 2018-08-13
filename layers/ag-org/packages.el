@@ -34,7 +34,7 @@
             ;; ("t" "Todo" entry (file "~/Dropbox/org/tasks.org")
             ;;  "* TODO  %?\n SCHEDULED: %^u")
             ("t" "todo" entry (file+headline "~/Dropbox/org/tasks.org" "Tasks")
-             "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")
+             "* TODO %?%a\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n\t%a\n")
             ("i" "Immediate" entry (file "~/Dropbox/org/tasks.org")
              "* ONGOING %?" :clock-in t :clock-resume t :clock-keep t)
             ("c" "Code Snippet" entry (file "~/Dropbox/org/tasks.org")
@@ -42,7 +42,7 @@
              "* %u  %?\n\t%F\n\t#+BEGIN_SRC %^{language}\n\t\t%i\n\t#+END_SRC")
             ("y" "Yakety" entry (file "~/Dropbox/org/yakety.org")
              "* TODO  %?\n SCHEDULED: %^u\n :LOGBOOK:\n  - State \"TODO\"       from              %U\n  :END:")
-            ("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
+            ("j" "Journal" entry (file+olp+datetree "~/Dropbox/org/journal.org")
              "* %u %?"
              :time-prompt t)
             ("z" "Currently clocked-in" item (clock)
@@ -119,7 +119,11 @@
      org-clock-in-switch-to-state "ONGOING"
      org-clock-persist-query-resume nil
      org-clock-report-include-clocking-task t
-     org-clock-out-remove-zero-time-clocks t)
+     org-clock-out-remove-zero-time-clocks t
+     org-clock-idle-time 10)
+
+    ;;;; To save the clock history across Emacs sessions, use
+    (org-clock-persistence-insinuate)
 
      ;;;; ----- export ----
     (setq
@@ -142,8 +146,6 @@
      org-format-latex-options (plist-put org-format-latex-options :scale 2)
      org-format-latex-options (plist-put org-format-latex-options :background nil))
 
-    (dolist (p ()))
-
     (add-to-list 'auto-mode-alist '("\\Dropbox/org/.*\.txt\\'" . org-mode))
 
     ;;;; evilified state rebinds C-u in agenda
@@ -151,13 +153,10 @@
       (evil-define-key 'evilified org-agenda-mode-map "\C-u" 'universal-argument))
     (add-hook 'org-agenda-mode-hook 'override-evilified-keys)
 
-    ;;;; To save the clock history across Emacs sessions, use
-    (org-clock-persistence-insinuate)
-
     ;; (add-hook 'org-mode-hook 'flyspell-mode)
     (add-hook 'org-mode-hook #'ag/org-mode-hook)
     (add-hook 'org-mode-hook #'spacemacs/toggle-visual-line-navigation-on)
-    (add-hook 'org-timer-done-hook (lambda () (hs-alert "-- timer done! --")))
+    ;; (add-hook 'org-timer-done-hook (lambda () (hs-alert "-- timer done! --")))
 
     ;; (require 'ob-http)
     ;; (require 'ob-clojure)
