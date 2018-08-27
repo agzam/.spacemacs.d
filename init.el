@@ -610,9 +610,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
     (setq helm-display-function 'helm-default-display-buffer)
     (setq which-key-sort-order 'which-key-prefix-then-key-order))
 
-  (spacemacs|define-custom-layout "@finops-admin"
-    :binding "f"
-    :body (find-file "~/DevProjects/finops-admin/project.clj"))
   ;; temp. fix for fasd keybindings
   ;; see: https://github.com/syl20bnr/spacemacs/issues/11209
   (with-eval-after-load 'fasd
