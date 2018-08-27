@@ -613,6 +613,13 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (spacemacs|define-custom-layout "@finops-admin"
     :binding "f"
     :body (find-file "~/DevProjects/finops-admin/project.clj"))
+  ;; temp. fix for fasd keybindings
+  ;; see: https://github.com/syl20bnr/spacemacs/issues/11209
+  (with-eval-after-load 'fasd
+    (spacemacs/declare-prefix "af" "fasd-find")
+    (spacemacs/set-leader-keys "aff" 'fasd-find-file)
+    (spacemacs/set-leader-keys "afd" 'fasd-find-directory-only))
+
   (spacemacs|define-custom-layout "@dotfile"
     :binding "d"
     :body (find-file "~/dotfile.org/dotfile.org")))
