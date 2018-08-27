@@ -158,4 +158,15 @@ TITLE is a title of the window (the caller is responsible to set that right) "
   (interactive)
   (insert "¯\\_(ツ)_/¯"))
 
+(defun spacemacs/persp-go-prev ()
+  "Switch to previous Spacemacs layout by briefly flashing layouts panel - so user can see where they're going"
+  (interactive)
+  (spacemacs/layouts-transient-state/persp-prev)
+  (run-at-time "1 sec" nil #'spacemacs/layouts-transient-state/nil))
+
+(defun spacemacs/persp-go-next ()
+  "Switch to next Spacemacs layout by briefly flashing layouts panel - so user can see where they're going"
+  (interactive)
+  (spacemacs/layouts-transient-state/persp-next)
+  (run-at-time "1 sec" nil #'spacemacs/layouts-transient-state/nil))
 ;;; funcs.el ends here
