@@ -231,20 +231,6 @@ KEYS is a string associated with a template (will be passed to `org-capture')"
   (switch-to-buffer (get-buffer-create "*scratch*"))
   (org-capture nil keys))
 
-(defun turn-into-jira-link ()
-  "Attempt turning thing at point to a legit jira link
-
-Example: https://jira.fundingcircle.com/browse/FPT-001"
-  (interactive)
-  (let* ((w (thing-at-point 'symbol t))
-         (bounds (bounds-of-thing-at-point 'symbol))
-         (link (concat "https://jira.fundingcircle.com/browse/" w)))
-    (delete-region (car bounds) (cdr bounds))
-    (pcase major-mode
-      ('org-mode (org-insert-link nil link w))
-      ('markdown-mode (insert (concat "[" w "](" link ")")))
-      (_ (insert link)))))
-
 (defun convert-markdown-link-to-org ()
   (interactive)
   (when (markdown-link-p)
