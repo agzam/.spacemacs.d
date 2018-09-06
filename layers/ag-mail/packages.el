@@ -27,7 +27,7 @@
         mu4e-enable-mode-line t
         mu4e-headers-skip-duplicates t
         ;; rename files when moving, needed for mbsync
-        mu4e-index-update-in-background t
+        mu4e-index-update-in-background nil
         mu4e-change-filenames-when-moving t
         mu4e-headers-has-child-prefix '("."  . "◼ ")
         mu4e-headers-default-prefix '(" "  . "│ ")
@@ -52,27 +52,20 @@
         message-send-mail-function 'smtpmail-send-it
         mu4e-sent-messages-behavior 'delete
         mail-envelope-from 'header
-        mail-user-agent 'mu4e-user-agent
-        smtpmail-debug-info t
-        smtpmail-debug-verb t)
+        mail-user-agent 'mu4e-user-agent)
 
   (defun mu4e-message-maildir-matches (msg rx)
     (string-match rx (mu4e-message-field msg :maildir)))
 
   (setq
    mu4e-context-policy 'pick-first
-   mu4e-compose-context-policy 'always-ask
+   mu4e-compose-context-policy 'pick-first
    mu4e-contexts
    `(,(make-mu4e-context
        :name "home"
-       :enter-func (lambda ()
-                     (mu4e-message "Switch to agzam.ibragimov@gmail.com"))
+       :enter-func (lambda () (mu4e-message "Switch to agzam.ibragimov@gmail.com"))
        ;; leave-func not defined
-       :match-func (lambda (msg)
-                     (when msg
-                       (mu4e-message-maildir-matches msg "^/home/")
-                       ;; (mu4e-message-contact-field-matches msg :to "agzam.ibragimov@gmail.com")
-                       ))
+       :match-func (lambda (msg) (when msg (mu4e-message-maildir-matches msg "^/home/")))
        :vars '((mu4e-sent-folder . "/home/[Gmail]/Sent Mail")
                (mu4e-trash-folder . "/home/[Gmail]/Trash")
                (mu4e-refile-folder . "/home/[Gmail]/All Mail")
@@ -83,14 +76,9 @@
                (mu4e-compose-signature . (concat "Thanks,\n" "Ag\n"))))
      ,(make-mu4e-context
        :name "work"
-       :enter-func (lambda ()
-                     (mu4e-message "Switch to ag@mayvenn.com"))
+       :enter-func (lambda () (mu4e-message "Switch to ag@mayvenn.com"))
        ;; leave-func not defined
-       :match-func (lambda (msg)
-                     (when msg
-                       (mu4e-message-maildir-matches msg "^/work/")
-                       ;; (mu4e-message-contact-field-matches msg :to "@mayvenn.com")
-                       ))
+       :match-func (lambda (msg) (when msg (mu4e-message-maildir-matches msg "^/work/")))
        :vars '((mu4e-sent-folder . "/work/[Gmail]/Sent Mail")
                (mu4e-trash-folder . "/work/[Gmail]/Trash")
                (mu4e-refile-folder . "/work/[Gmail]/All Mail")
