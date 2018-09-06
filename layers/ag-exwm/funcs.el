@@ -153,7 +153,9 @@ ZOOM-TYPE can be 'in 'out or 'reset"
   ("h" (xdotool-key "XF86AudioPrev"))
   ("l" (xdotool-key "XF86AudioNext"))
   ("a" nil)
-  ("m" (xdotool-key "XF86AudioMute") :exit t)
+  ("m" (progn
+         (xdotool-key "XF86AudioMute")
+         (start-process-shell-command "fix-mute" nil "amixer -D pulse sset Master toggle")))
   ("M" #'desktop-environment-toggle-microphone-mute)
   ("s" #'desktop-environment-screenshot :exit t)
   ("S" #'desktop-environment-screenshot-part :exit t)

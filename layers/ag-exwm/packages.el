@@ -13,11 +13,13 @@
   '(cl-generic
     (xelb :location (recipe :fetcher github
                             :repo "ch11ng/xelb"
-                            :commit "fe1b643e98ea4a87a3eed41b0bbaf6c12dfcfbec")
+                            ;; :commit "fe1b643e98ea4a87a3eed41b0bbaf6c12dfcfbec"
+                            )
           :step pre)
     (exwm :location (recipe :fetcher github
                             :repo "ch11ng/exwm"
-                            :commit "b75c89cae2a1c4c70044f885c44a95fd2f9950dd")
+                            ;; :commit "b75c89cae2a1c4c70044f885c44a95fd2f9950dd"
+                            )
           :step pre)
     helm-exwm
     pinentry
@@ -121,9 +123,9 @@
     (delete ?\s-f exwm-input-prefix-keys)
     (exwm-input-set-key (kbd "s-f") #'spacemacs/exwm-layout-toggle-fullscreen)
     (push ?\s-\[ exwm-input-prefix-keys)
-    (exwm-input-set-key (kbd "s-[") #'spacemacs/layouts-transient-state/persp-prev)
+    (exwm-input-set-key (kbd "s-[") #'spacemacs/persp-go-prev)
     (push ?\s-\] exwm-input-prefix-keys)
-    (exwm-input-set-key (kbd "s-]") #'spacemacs/layouts-transient-state/persp-next)
+    (exwm-input-set-key (kbd "s-]") #'spacemacs/persp-go-next)
     (push ?\s-\C-\[ exwm-input-prefix-keys)
     (exwm-input-set-key (kbd "s-C-[") #'spacemacs/exwm-workspace-prev)
     (push ?\s-\C-\] exwm-input-prefix-keys)
@@ -142,7 +144,11 @@
 
     ;; switching monitors on and off
     (exwm-input-set-key (kbd "C-s-1") (lambda () (interactive) (start-process-shell-command "" nil "xrandr --output eDP1 --auto")))
-    (exwm-input-set-key (kbd "C-s-2") (lambda () (interactive) (start-process-shell-command "" nil "xrandr --output eDP1 --off --output DP1 --mode 2560x1440")))
+    (exwm-input-set-key (kbd "C-s-2")
+                        (lambda ()
+                          (interactive)
+                          (start-process-shell-command "" nil "xset r rate 200 60")
+                          (start-process-shell-command "" nil "xrandr --output eDP1 --off --output DP1 --mode 2560x1440")))
     (exwm-input-set-key (kbd "C-s-3")
                         (lambda ()
                           (interactive)
@@ -226,8 +232,8 @@
             ([?\M-l] . [right])
             ([?\M-j] . [down])
             ([?\M-k] . [up])
-            ([?\s-l] . [\C-tab])
-            ([?\s-h] . [\C-S-tab])
+            ([?\s-j] . [\C-tab])
+            ([?\s-k] . [\C-S-tab])
             ([?\s-w] . [\C-f4])
             ([?\s-t] . [\C-t])
             ([?\s-r] . [\C-r])
@@ -245,7 +251,7 @@
                            (pcase exwm-class-name
                              ("Slack" '(([?\C-i] . [\M-right])
                                         ([?\C-o] . [\M-left])))
-                             ("Google-chrome" '())))))
+                             ("Google-chrome" '(([?\s-w] . [\C-w])))))))
           (exwm-input-set-local-simulation-keys local-keys))))
 
     (add-hook 'window-configuration-change-hook 'exwm--set-local-simulation-keys)
