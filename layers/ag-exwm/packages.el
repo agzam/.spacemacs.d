@@ -139,6 +139,10 @@
 
     (exwm-input-set-key (kbd "<C-s-escape>") (lambda () (interactive) (start-process "" nil exwm--suspend-command)))
 
+    ;; M-1 to M-6 for window quick switching
+    (dolist (char (list ?\M-1 ?\M-2 ?\M-3 ?\M-4 ?\M-5 ?\M-6))
+      (push char exwm-input-prefix-keys))
+
     (require 'exwm-randr)
     (exwm-randr-enable)
 
