@@ -47,8 +47,6 @@ This function should only modify configuration layer settings."
                       auto-completion-enable-snippets-in-popup t
                       auto-completion-enable-help-tooltip t
                       auto-completion-enable-sort-by-usage t)
-     syntax-checking
-     (spell-checking :variables ispell-program-name "aspell")
      ;; ---- Tools ----
      docker emoji fasd helm imenu-list restclient search-engine treemacs
      (dash :variables

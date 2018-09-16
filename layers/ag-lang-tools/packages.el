@@ -44,3 +44,5 @@
     (evil-define-key 'normal sdcv-mode-map "p" #'sdcv-previous-entry)
     (evil-define-key 'normal sdcv-mode-map (kbd "RET") #'sdcv-search-at-point)
     (evil-define-key 'normal sdcv-mode-map "a" #'sdcv-search-at-point)))
+
+(setq ispell-program-name "aspell")
