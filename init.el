@@ -34,8 +34,7 @@ This function should only modify configuration layer settings."
    dotspacemacs-configuration-layers
    '(
      ;; ---- Languages -----
-     csv yaml emacs-lisp lua javascript
-     (haskell :variables haskell-process-type 'stack-ghci)
+     csv yaml emacs-lisp lua javascript ag-haskell ag-clojure
      (html :packages (not pug-mode slim-mode))
      (markdown
       :packages (not mmm-mode)
@@ -49,9 +48,9 @@ This function should only modify configuration layer settings."
                       auto-completion-enable-sort-by-usage t)
      ;; ---- Tools ----
      docker emoji fasd helm imenu-list restclient search-engine treemacs
-     (dash :variables
-           helm-dash-docset-path
-           (cond ((eq system-type 'darwin) "~/Library/Application\ Support/Dash/DocSets")))
+     ;; (dash :variables
+     ;;       helm-dash-docset-path
+     ;;       (cond ((eq system-type 'darwin) "~/Library/Application\ Support/Dash/DocSets")))
      (shell :packages (not eshell-prompt-extras eshell-z multi-term xterm-color)
             :variables shell-default-shell 'eshell)
      ;; ---- Version control ----
@@ -66,8 +65,7 @@ This function should only modify configuration layer settings."
              magithub-api-timeout 5)
      (when (eq system-type 'darwin) osx)
      ;; --- My own layers ----
-     ag-exwm
-     ag-colors ag-dired ag-general ag-web ag-lang-tools ag-clojure ag-org ag-mail)
+     ag-colors ag-dired ag-exwm ag-general ag-web ag-lang-tools ag-org ag-mail)
 
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
