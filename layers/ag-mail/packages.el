@@ -33,10 +33,10 @@
         mu4e-headers-default-prefix '(" "  . "│ ")
         mu4e-compose-dont-reply-to-self t
         mu4e-compose-format-flowed nil
-        fill-flowed-encode-column 280
+        fill-flowed-encode-column 5000
         mu4e-user-mail-address-list '("agzam.ibragimov@gmail.com" "to.plotnick@gmail.com" "ag@mayvenn.com")
         mu4e-compose-complete-only-personal t
-        mu4e-enable-async-operations t
+        mu4e-enable-async-operations nil
         org-mu4e-link-query-in-headers-mode nil
         org-mu4e-convert-to-html t
         ;; customize the reply-quote-string
@@ -50,7 +50,7 @@
         smtpmail-queue-dir "~/.mail/queue/cur"
         send-mail-function 'smtpmail-send-it
         message-send-mail-function 'smtpmail-send-it
-        mu4e-sent-messages-behavior 'delete
+        mu4e-sent-messages-behavior 'trash
         mail-envelope-from 'header
         mail-user-agent 'mu4e-user-agent)
 
