@@ -550,7 +550,12 @@ dump."
     (spacemacs/toggle-mode-line-org-clock-on)
     (spacemacs/toggle-mode-line-version-control-off)
     (spacemacs/toggle-mode-line-minor-modes-off)
-    (spacemacs/toggle-mode-line-responsive-off))
+    (spacemacs/toggle-mode-line-responsive-off)
+
+    (spaceline-define-segment buffer-id
+      (if (buffer-file-name)
+          (abbreviate-file-name (buffer-file-name))
+        (powerline-buffer-id))))
 
   (add-hook 'prog-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
   (add-hook 'abbrev-mode-hook #'read-abbrev-file)
