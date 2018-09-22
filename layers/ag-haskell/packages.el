@@ -19,7 +19,7 @@
     :binding "h"
     :body (progn
             (spacemacs/window-split-double-columns t)
-            (call-interactively #'spacemacs/haskell-interactive-bring)
+            (call-interactively #'haskell-interactive-bring)
             (spacemacs//open-in-external-app "/home/ag/SyncMobile/Books/Haskell/Haskell_Programming_(EARLY_ACCESS)/haskell-programming-1.0RC2-ereader.pdf")
             (run-at-time "0.5 sec" nil (lambda ()
                                          (set-window-buffer (nth 0 (window-list-sorted)) "*haskell*")
