@@ -16,8 +16,10 @@
                           ;; dired-quick-sort
                           ))
 
-(setq dired-listing-switches "-alh --group-directories-first"
-      dired-omit-files "^\\.?#\\|^\\.DS_Store$")
+(if (eq system-type 'darwin)
+    (setq dired-listing-switches "-alh"
+          dired-omit-files "^\\.?#\\|^\\.DS_Store$")
+  (setq dired-listing-switches "-alh --group-directories-first"))
 
 (add-hook 'dired-mode-hook #'dired-hide-details-mode)
 (add-hook 'dired-mode-hook #'dired-omit-mode)
