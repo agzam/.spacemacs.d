@@ -27,7 +27,7 @@
         mu4e-enable-mode-line t
         mu4e-headers-skip-duplicates t
         ;; rename files when moving, needed for mbsync
-        mu4e-index-update-in-background nil
+        mu4e-index-update-in-background t
         mu4e-change-filenames-when-moving t
         mu4e-headers-has-child-prefix '("."  . "◼ ")
         mu4e-headers-default-prefix '(" "  . "│ ")
