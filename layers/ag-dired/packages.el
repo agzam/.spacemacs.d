@@ -16,7 +16,9 @@
                           ;; dired-quick-sort
                           ))
 
-(setq dired-omit-files "^\\.?#\\|^\\.DS_Store$")
+(setq dired-listing-switches "-alh --group-directories-first"
+      dired-omit-files "^\\.?#\\|^\\.DS_Store$")
+
 (add-hook 'dired-mode-hook #'dired-hide-details-mode)
 (add-hook 'dired-mode-hook #'dired-omit-mode)
 
