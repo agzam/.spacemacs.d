@@ -35,14 +35,16 @@ Can show completions at point for COMMAND using helm or ido"
         (exwm-layout-set-fullscreen))
     (spacemacs/toggle-maximize-buffer)))
 
-(defun exwm--find-app-buffer (class-name)
-  "Return exwm buffer with given `CLASS-NAME', nil if none found"
+(defun exwm--find-app-buffer (class-or-instance-name)
+  "Return exwm buffer with given `CLASS-OR-INSTANCE-NAME', nil if none found"
   (cdr
    (first
     (-filter
      (lambda (x)
-       (equal (buffer-local-value 'exwm-class-name (cdr x))
-              class-name))
+       (or (equal (buffer-local-value 'exwm-class-name (cdr x))
+                  class-or-instance-name)
+           (equal (buffer-local-value 'exwm-instance-name (cdr x))
+               class-or-instance-name)))
      exwm--id-buffer-alist))))
 
 (defun exwm--app-next-window (&optional show-list)
@@ -173,3 +175,9 @@ ZOOM-TYPE can be 'in 'out or 'reset"
                                             (not (string= buf b)))))
                                    (window-prev-buffers))))))
       (when fnd (switch-to-buffer fnd)))))
+
+(defun exwm-switch-to-terminal ()
+  (interactive)
+  (if-let (b (exwm--find-app-buffer "xfce4-terminal"))
+      (switch-to-buffer b)
+    (start-process "" nil exwm--terminal-command)))

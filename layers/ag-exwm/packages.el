@@ -44,12 +44,6 @@
     (setq exwm-layout-show-all-buffers t)
 
     :config
-    ;; (spacemacs/exwm-bind-command "<s-return>"  exwm--terminal-command)
-
-    (spacemacs/set-leader-keys
-      "aG" 'exwm--switch-to-chrome
-      "aS" 'exwm--switch-to-slack)
-
     (with-eval-after-load 'spaceline-segments
       (display-time-mode t)
       (spacemacs/toggle-mode-line-battery-on))
@@ -92,6 +86,11 @@
                          (when on-exit (funcall on-exit))))))
         (funcall fun keymap on-exit foreign-keys)))
 
+    ;;;; Slack and Chrome
+    (spacemacs/set-leader-keys
+      "aG" 'exwm--switch-to-chrome
+      "aS" 'exwm--switch-to-slack)
+
     (spacemacs|define-custom-layout "@google-chrome"
       :binding "g"
       :body (exwm--switch-to-chrome))
@@ -100,20 +99,19 @@
       :binding "s"
       :body (exwm--switch-to-slack))
 
-    ;;;; strange bug that sometimes loses keyboard in exwm app buffer after switching to it
-    ;; (define-advice exwm-layout--set-client-list-stacking (:around (old-function) exwm-grab-kbd-after-set-client)
-    ;;   "grab keyboard after exwm-layout--set-client-list-stacking"
-    ;;   (if (derived-mode-p 'exwm-mode)
-    ;;       (progn
-    ;;         (exwm-input-grab-keyboard)
-    ;;         (funcall old-function)
-    ;;         )))
-
     ;; `exwm-input-set-key' allows you to set a global key binding (available in
     ;; any case). Following are a few examples.
     ;; + We always need a way to go back to line-mode from char-mode
-    (delete ?\C-r exwm-input-prefix-keys)
+    ;; (delete ?\C-r exwm-input-prefix-keys)
     (exwm-input-set-key (kbd "s-R") #'spacemacs/exwm-app-launcher)
+
+    (exwm-input-set-key
+     (kbd "C-S-R")
+     (lambda ()
+       (interactive)
+       (start-process "" nil "dbus-launch" "xfce4-appfinder")))
+
+    (exwm-input-set-key (kbd "s-T") #'exwm-switch-to-terminal)
 
     ;; exwm-buffer-transient-state
     (exwm-input-set-key (kbd "C-C z") (lambda ()
@@ -137,7 +135,9 @@
     (push ?\s-\` exwm-input-prefix-keys)
     (exwm-input-set-key (kbd "s-`") #'exwm--app-next-window)
 
-    (exwm-input-set-key (kbd "<C-s-escape>") (lambda () (interactive) (start-process "" nil exwm--suspend-command)))
+    (exwm-input-set-key
+     (kbd "<C-s-escape>")
+     (lambda () (interactive) (apply 'start-process exwm--suspend-command-args)))
 
     ;; M-1 to M-6 for window quick switching
     (dolist (char (list ?\M-1 ?\M-2 ?\M-3 ?\M-4 ?\M-5 ?\M-6))
@@ -162,14 +162,6 @@
                           ))
 
     (setq exwm-randr-workspace-output-plist '(1 "DP1" 2 "eDP1"))
-
-    ;; (defun exwm--reset-bar ()
-    ;;   (start-process-shell-command "yabar" nil "killall yabar && yabar &> /dev/null")
-    ;;   ;; (start-process-shell-command
-    ;;   ;;  "xrandr" nil "xrandr --output DP1 --mode 2560x1440 --right-of eDP1")
-    ;;   )
-
-    ;; (add-hook 'exwm-randr-screen-change-hook #'exwm--reset-bar)
 
     ;; The following example demonstrates how to set a key binding only available
     ;; in line mode. It's simply done by first push the prefix key to
@@ -208,24 +200,6 @@
     ;; (push [s-tab] exwm-input-prefix-keys)
     (exwm-input-set-key (kbd "<s-tab>") #'previous-buffer)
 
-    ;; Focusing windows
-    ;; (exwm-input-set-key (kbd "s-h") #'evil-window-left)
-    ;; (exwm-input-set-key (kbd "s-j") #'evil-window-down)
-    ;; (exwm-input-set-key (kbd "s-k") #'evil-window-up)
-    ;; (exwm-input-set-key (kbd "s-l") #'evil-window-right)
-    ;; Moving Windows
-    ;; (exwm-input-set-key (kbd "s-H") #'evil-window-move-far-left)
-    ;; (exwm-input-set-key (kbd "s-J") #'evil-window-move-very-bottom)
-    ;; (exwm-input-set-key (kbd "s-K") #'evil-window-move-very-top)
-    ;; (exwm-input-set-key (kbd "s-L") #'evil-window-move-far-right)
-    ;; ;; Resize
-    ;; (exwm-input-set-key (kbd "M-s-h") #'spacemacs/shrink-window-horizontally)
-    ;; (exwm-input-set-key (kbd "M-s-j") #'spacemacs/shrink-window)
-    ;; (exwm-input-set-key (kbd "M-s-k") #'spacemacs/enlarge-window)
-    ;; (exwm-input-set-key (kbd "M-s-l") #'spacemacs/enlarge-window-horizontally)
-    ;; Workspaces
-    ;; (exwm-input-set-key (kbd "s-]") #'spacemacs/exwm-workspace-next)
-    ;; (exwm-input-set-key (kbd "s-[") #'spacemacs/exwm-workspace-prev)
     (add-to-list 'undo-tree-incompatible-major-modes 'exwm-mode)
     (evil-set-initial-state 'exwm-mode 'emacs) ;; otherwise simulation keys won't work
     (setq exwm-input-simulation-keys
