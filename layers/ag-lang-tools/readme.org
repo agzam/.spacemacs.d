@@ -1,0 +1,31 @@
+* sdcv
+** install the app
+   #+begin_src sh
+     # Linux
+     sudo pacman -S sdcv
+
+     # OSX
+     brew install sdcv
+   #+end_src
+** download and extract selected dictionaries
+   #+begin_src sh
+     DICTS="http://download.huzheng.org/dict.org/stardict-dictd_www.dict.org_gcide-2.4.2.tar.bz2
+            http://download.huzheng.org/dict.org/stardict-dictd-moby-thesaurus-2.4.2.tar.bz2
+            http://download.huzheng.org/dict.org/stardict-EnglishEtymology-2.4.2.tar.bz2"
+
+     mkdir -p ~/.stardict/dic
+     mkdir -p ~/Downloads/dictionary/extracted
+     cd ~/Downloads/dictionary
+
+     for dic in $DICTS; do
+       curl -o ~/Downloads/dictionary/dict.tar.bz2 $dic
+       mkdir -p ./extracted
+       tar -xvf ./dict.tar.bz2 -C ./extracted --strip-components=1
+       cp ~/Downloads/dictionary/extracted/* ~/.stardict/dic/
+       rm -rf ./extracted
+     done
+
+     cd ~
+     rm -rf ~/Downloads/dictionary
+
+   #+end_src
