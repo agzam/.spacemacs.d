@@ -9,7 +9,15 @@
 ;;
 ;;; License: GPLv3
 
-(defconst ag-haskell-packages '())
+(defconst ag-haskell-packages '(company-ghci))
+
+(defun ag-haskell/post-init-company-ghci ()
+  (use-package company-ghci
+    :ensure t
+    :config
+    (push 'company-ghci company-backends)
+    (add-hook 'haskell-mode-hook 'company-mode)
+    (add-hook 'haskell-interactive-mode-hook 'company-mode)))
 
 (setq haskell-process-type 'stack-ghci
       haskell-process-log t)
