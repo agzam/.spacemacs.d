@@ -18,6 +18,7 @@
           :step pre)
     (exwm :location (recipe :fetcher github
                             :repo "ch11ng/exwm"
+                            :commit "5903080b6efba91f6809c2a505a1069e46d8c277"
                             ;; :commit "b75c89cae2a1c4c70044f885c44a95fd2f9950dd"
                             )
           :step pre)
@@ -86,14 +87,14 @@
                          (when on-exit (funcall on-exit))))))
         (funcall fun keymap on-exit foreign-keys)))
 
-    ;;;; Slack and Chrome
+    ;;;; Browser and Slack App
     (spacemacs/set-leader-keys
-      "aG" 'exwm--switch-to-chrome
+      "aG" 'exwm--switch-to-browser
       "aS" 'exwm--switch-to-slack)
 
-    (spacemacs|define-custom-layout "@google-chrome"
+    (spacemacs|define-custom-layout "@browser"
       :binding "g"
-      :body (exwm--switch-to-chrome))
+      :body (exwm--switch-to-browser))
 
     (spacemacs|define-custom-layout "@slack"
       :binding "s"
@@ -229,7 +230,8 @@
                            (pcase exwm-class-name
                              ("Slack" '(([?\C-i] . [\M-right])
                                         ([?\C-o] . [\M-left])))
-                             ("Google-chrome" '(([?\s-w] . [\C-w])))))))
+                             ("Google-chrome" '(([?\s-w] . [\C-w])))
+                             ("firefox" '(([?\s-w] . [\C-w])))))))
           (exwm-input-set-local-simulation-keys local-keys))))
 
     (add-hook 'window-configuration-change-hook 'exwm--set-local-simulation-keys)

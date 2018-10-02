@@ -1,6 +1,9 @@
 (defvar exwm--terminal-command "xfce4-terminal"
   "Terminal command to run.")
 
+(defvar exwm--default-browser-command "google-chrome-unstable"
+  "Command to run default browser")
+
 (defvar exwm--suspend-command-args '("" nil "systemctl" "suspend")
   "command to run to suspend")
 

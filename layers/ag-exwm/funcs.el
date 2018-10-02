@@ -69,11 +69,11 @@ With universal argument shows list of windows"
           (switch-to-buffer (car (last bs)))
         (switch-to-buffer (car (last bs*)))))))
 
-(defun exwm--switch-to-chrome ()
+(defun exwm--switch-to-browser ()
   (interactive)
-  (if-let ((buf (exwm--find-app-buffer "Google-chrome")))
+  (if-let ((buf (exwm--find-app-buffer exwm--default-browser-command)))
       (switch-to-buffer buf)
-    (spacemacs/exwm-app-launcher "google-chrome-stable")))
+    (spacemacs/exwm-app-launcher exwm--default-browser-command)))
 
 (defun exwm--switch-to-slack ()
   (interactive)
