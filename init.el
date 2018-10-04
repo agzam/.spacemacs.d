@@ -282,7 +282,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil, the paste transient-state is enabled. While enabled, after you
    ;; paste something, pressing `C-j' and `C-k' several times cycles through the
    ;; elements in the `kill-ring'. (default nil)
-   dotspacemacs-enable-paste-transient-state nil
+   dotspacemacs-enable-paste-transient-state t
 
    ;; Which-key delay in seconds. The which-key buffer is the popup listing
    ;; the commands bound to the current keystroke sequence. (default 0.4)
@@ -362,7 +362,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
-   dotspacemacs-folding-method 'origami
+   dotspacemacs-folding-method 'evil
 
    ;; If non-nil `smartparens-strict-mode' will be enabled in programming modes.
    ;; (default nil)
@@ -510,7 +510,7 @@ dump."
    abbrev-file-name "~/.spacemacs.d/abbrev_defs"
    save-abbrevs t ;; save abbrevs upon exiting Emacs
    uniquify-buffer-name-style 'forward
-   company-idle-delay 0
+   company-idle-delay 0.1
 
    ;;;; Helm
    helm-echo-input-in-header-line nil
