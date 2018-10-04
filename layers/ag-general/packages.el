@@ -174,7 +174,8 @@ i.e.: show only commits that differ between selected (other branch) and current 
   ;; who cares about tags to be displayed in magit-refs buffer?
   (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
 
-  (setq magit-branch-rename-push-target nil) ;; do not push renamed/deleted branch to remote automatically
+  (setq magit-branch-rename-push-target nil ; do not push renamed/deleted branch to remote automatically
+        magit-diff-refine-hunk 'all)
 
   (custom-set-variables
    '(magit-commit-arguments (quote ("--gpg-sign=CFE12444AF47BD1D")))
