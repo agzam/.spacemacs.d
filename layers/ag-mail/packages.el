@@ -169,6 +169,10 @@
         mu4e-use-fancy-chars nil
         mu4e-view-fields '(:from :to :cc :subject :flags :date :maildir :mailing-list :tags :useragent :attachments :signature :decryption))
 
-  (mu4e-maildirs-extension))
+  (add-hook 'mu4e-view-mode-hook #'spacemacs/toggle-visual-line-navigation-on)
+
+  (mu4e-maildirs-extension)
+
+  )
 
 ;;; packages.el ends here
