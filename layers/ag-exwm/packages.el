@@ -24,7 +24,6 @@
           :step pre)
     helm-exwm
     pinentry
-    desktop-environment
     (exwm-edit :location local)))
 
 (defun ag-exwm/init-cl-generic ()
@@ -269,10 +268,7 @@
       (funcall 'markdown-mode))
     (add-hook 'exwm-edit-compose-hook 'ag-exwm/on-exwm-edit-compose)))
 
-(defun ag-exwm/init-desktop-environment ()
-  (use-package desktop-environment
-    :config
-    (spacemacs/set-leader-keys
-      "M" #'spacemacs/desktop-environment-transient-state/body)))
+(spacemacs/set-leader-keys
+  "M" #'spacemacs/desktop-environment-transient-state/body)
 
 ;;; packages.el ends here
