@@ -36,7 +36,6 @@
 ;;;; restore vanilla universal argument binding
 (define-key evil-normal-state-map (kbd "C-u") 'universal-argument)
 
-
 ;;;; wrap `sp-up-sexp` "Move forward out of one level of parentheses", so it can be used in evil-lispy
 (with-eval-after-load 'evil-lisp-state
   (evil-lisp-state-enter-command sp-up-sexp)
@@ -49,21 +48,19 @@
 
   (evil-lisp-state-enter-command sp-reindent)
   (spacemacs/set-leader-keys
-    "kf" 'evil-lisp-state-sp-up-sexp
-    "k=" 'evil-lisp-state-sp-reindent))
+    "kf" #'evil-lisp-state-sp-up-sexp
+    "k=" #'evil-lisp-state-sp-reindent))
 
 (spacemacs/set-leader-keys
   "qq" nil                           ;; no unexpected exits
-  "qQ" 'spacemacs/prompt-kill-emacs
-  "s/" 'engine/search-google
-  "jj" 'avy-goto-char-timer
-  "xx" 'ispell-word
-  "ja" 'beginning-of-defun
-  "je" 'end-of-defun
-  "kf" 'evil-lisp-state-sp-up-sexp
-  "k=" 'evil-lisp-state-sp-reindent
-  "swg" 'ag/helm-google-suggest
-  "ou" 'spacemacs/avy-open-url
+  "qQ" #'spacemacs/prompt-kill-emacs
+  "s/" #'engine/search-google
+  "jj" #'avy-goto-char-timer
+  "xx" #'flyspell-correct-word-generic
+  "ja" #'beginning-of-defun
+  "je" #'end-of-defun
+  "swg" #'helm-google-suggest
+  ;; "ou" #'spacemacs/avy-open-url
   ;;;; add a page-break
   "iP" (kbd "i C-q C-l <RET><escape>"))
 
@@ -74,7 +71,6 @@
 (define-key evil-normal-state-map "Q" 'bury-buffer)
 (define-key evil-normal-state-map (kbd "C-S-e") 'scroll-other-window)
 (define-key evil-normal-state-map (kbd "C-S-y") 'scroll-other-window-down)
-
 
 ;;;; ---------------
 ;;;; Smartparens

@@ -79,8 +79,8 @@ DIRECTION - can be North, South, West, East"
       (ag/fix-frame))))
 
 (spacemacs/transient-state-register-add-bindings 'zoom-frm
-  '(("j" zoom-frm-in)
-    ("k" zoom-frm-out)
+  '(("k" zoom-frm-in)
+    ("j" zoom-frm-out)
     ("r" zoom-frm-unzoom)
     ("f" spacemacs/toggle-frame-fullscreen-non-native)
     ("m" spacemacs/toggle-maximize-frame)
