@@ -10,7 +10,27 @@
 ;;; License: GPLv3
 ;;
 ;;; Code:
-(defconst ag-mail-packages '())
+(defconst ag-mail-packages '(persp-mode))
+
+(defun ag-mail/post-init-persp-mode ()
+  (spacemacs|define-custom-layout mu4e-spacemacs-layout-name
+    :binding mu4e-spacemacs-layout-binding
+    :body
+    (progn
+      (call-interactively 'mu4e)
+      (call-interactively 'mu4e-update-index)
+
+      (define-advice mu4e~stop (:after nil kill-mu4e-layout-after-mu4e~stop)
+        (when mu4e-spacemacs-kill-layout-on-exit
+          (persp-kill mu4e-spacemacs-layout-name)))))
+  ;; TODO: remove when fix available for Spacemacs
+  ;; Temporarily disables mu4e layer future because it very often screws up window configuration
+  (dolist (h (mapcar #'derived-mode-hook-name
+                     '(mu4e-main-mode
+                       mu4e-headers-mode
+                       mu4e-view-mode
+                       mu4e-compose-mode)))
+    (remove-hook h #'spacemacs-layouts/add-mu4e-buffer-to-persp)))
 
 (with-eval-after-load 'mu4e-alert
   ;; Enable Desktop notifications
@@ -50,7 +70,7 @@
         smtpmail-queue-dir "~/.mail/queue/cur"
         send-mail-function 'smtpmail-send-it
         message-send-mail-function 'smtpmail-send-it
-        mu4e-sent-messages-behavior 'trash
+        mu4e-sent-messages-behavior 'sent
         mail-envelope-from 'header
         mail-user-agent 'mu4e-user-agent)
 
