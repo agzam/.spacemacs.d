@@ -13,8 +13,14 @@
 
 (with-eval-after-load 'mu4e
   (dolist (m '(mu4e-headers-mode-map mu4e-view-mode-map))
+    (evil-define-key 'evilified m (kbd "C-h") nil)
+    (define-key m (kbd "C-h") nil)
     (define-key m (kbd "C-=") 'mu4e-headers-split-view-grow)
     (define-key m (kbd "C--") 'mu4e-headers-split-view-shrink))
+
+  ;; prevent accidental closing of headers when you just need to collapse view buffer
+  (define-key mu4e-headers-mode-map "q" nil)
+  (define-key mu4e-headers-mode-map (kbd "C-q") #'mu4e~headers-quit-buffer)
 
   (evil-define-key 'evilified mu4e-main-mode-map "j" 'evil-next-visual-line)
 

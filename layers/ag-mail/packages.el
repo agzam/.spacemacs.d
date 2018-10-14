@@ -79,7 +79,7 @@
 
   (setq
    mu4e-context-policy 'pick-first
-   mu4e-compose-context-policy 'pick-first
+   mu4e-compose-context-policy 'ask
    mu4e-contexts
    `(,(make-mu4e-context
        :name "home"
