@@ -54,12 +54,17 @@
   ;; annoying Java Cup icon - no longer will bother you
   (setenv "JAVA_TOOL_OPTIONS" "-Dapple.awt.UIElement=true")
 
-  (defun forward-char-before-cider-eval (old-f &rest args)
-    (forward-char)
-    (apply old-f args))
+  (defun before-eval-print-advice (old-f &rest args)
+    (if (thing-at-point 'list)
+        (end-of-thing 'list)
+      (end-of-thing 'symbol))
+    (insert "\n")
+    (apply old-f args)
+    (run-at-time "0.05 sec" nil
+                 (lambda ()
+                   (backward-sexp)
+                   (cider-format-edn-last-sexp))))
 
-  (advice-add #'cider-pprint-eval-last-sexp-to-comment :around #'forward-char-before-cider-eval))
-
-;; (with-eval-after-load 'cider (setq cider-boot-parameters "dev"))
+  (advice-add 'cider-eval-print-last-sexp :around #'before-eval-print-advice))
 
 ;;; packages.el ends here
