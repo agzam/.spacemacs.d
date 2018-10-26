@@ -63,7 +63,6 @@ This function should only modify configuration layer settings."
              :variables
              gist-view-gist t        ;; view your Gist using `browse-url` after it is created
              magithub-api-timeout 5)
-     (when (eq system-type 'darwin) osx)
      ;; --- My own layers ----
      ag-colors ag-dired ag-exwm ag-general ag-web ag-lang-tools ag-org ag-mail)
 

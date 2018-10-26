@@ -73,7 +73,9 @@ With universal argument shows list of windows"
   (interactive)
   (if-let ((buf (exwm--find-app-buffer exwm--default-browser-command)))
       (switch-to-buffer buf)
-    (spacemacs/exwm-app-launcher exwm--default-browser-command)))
+    (start-process "browser" nil exwm--default-browser-command)
+    ;; (start-process "browser" nil "dbus-launch" exwm--default-browser-command)
+    ))
 
 (defun exwm--switch-to-slack ()
   (interactive)
@@ -94,17 +96,17 @@ ZOOM-TYPE can be 'in 'out or 'reset"
   :doc "
  Zoom^^^^^^              Window^^^^^              Other^^
  ────^^^^^^───────────── ──────^^^^^───────────── ─────^^──────────
- [_+_/_=_/_j_] in        [_h_] left              [_f_]^^^ fullscreen
- [_-_/_k_]^^   out       [_l_] right             [_F_]^^^ floating
+ [_+_/_=_/_k_] in        [_h_] left              [_f_]^^^ fullscreen
+ [_-_/_j_]^^   out       [_l_] right             [_F_]^^^ floating
  [_0_]^^^^   reset       [_m_] maximize          [_d_] kill app
       ^^^^               ^^^^                    [_q_]^^^ quit
 "
   :bindings
   ("+" (exwm-zoom 'in))
   ("=" (exwm-zoom 'in))
-  ("j" (exwm-zoom 'in))
+  ("k" (exwm-zoom 'in))
   ("-" (exwm-zoom 'out))
-  ("k" (exwm-zoom 'out))
+  ("j" (exwm-zoom 'out))
   ("0" (exwm-zoom 'reset) :exit t)
   ("f" #'spacemacs/exwm-layout-toggle-fullscreen :exit t)
   ("h" #'evil-window-left)
@@ -122,7 +124,10 @@ ZOOM-TYPE can be 'in 'out or 'reset"
 
 (defun xdotool-key (key)
   (interactive)
-  (start-process-shell-command "" nil (concat "xdotool key " key)))
+  (run-at-time "0.25 sec" nil
+               (lambda (k)
+                 (shell-command-to-string (concat "xdotool key --delay 1 " k))
+                 ) key))
 
 (defun switch-to-music-player-app ()
   (interactive)
@@ -141,28 +146,32 @@ ZOOM-TYPE can be 'in 'out or 'reset"
 (spacemacs|define-transient-state desktop-environment
   :title "dektop-environment transient group"
   :doc "
-  volume       music         mute       other
- ─────────── ───────────── ────────── ────────────────
- [_j_] lower   [_p_] pause      ^^[_m_] mute  [_s_] screenshot
- [_k_] higher  [_h_] prev.      ^^[_M_] mic   [_S_] part. screenshot
- ^^            [_l_] next       ^^^^          [_L_] lock screen
- ^^            [_a_] music app
+  volume      brightness     music        mute       other
+ ─────────── ──────────── ──────────── ────────── ────────────────
+ [_j_] lower   [_(_] darker   [_p_] pause    [_m_] mute   [_s_] screenshot
+ [_k_] higher  [_)_] brighter [_h_] prev.    [_M_] mic    [_S_] part. screenshot
+ ^^                         ^^[_l_] next  ^^              [_L_] lock screen
+ ^^                         ^^[_a_] music app
 "
   :bindings
   ("j" (xdotool-key "XF86AudioLowerVolume"))
   ("k" (xdotool-key "XF86AudioRaiseVolume"))
+  ("(" (xdotool-key "XF86MonBrightnessDown"))
+  (")" (xdotool-key "XF86MonBrightnessUp"))
   ("p" (xdotool-key "XF86AudioPlay"))
   ("h" (xdotool-key "XF86AudioPrev"))
   ("l" (xdotool-key "XF86AudioNext"))
   ("a" nil)
   ("m" (progn
+         ;; (start-process-shell-command "fix-mute" nil "amixer -D pulse sset Master toggle")
          (xdotool-key "XF86AudioMute")
-         (start-process-shell-command "fix-mute" nil "amixer -D pulse sset Master toggle")))
+         ))
   ("M" #'desktop-environment-toggle-microphone-mute)
   ("s" #'desktop-environment-screenshot :exit t)
   ("S" #'desktop-environment-screenshot-part :exit t)
   ("L" #'lock-screen :exit t)
-  ("q" nil :exit t))
+  ("q" nil :exit t)
+  )
 
 (defun fix-exwm-kill-buffer ()
   "fix the bug when EXWM won't switch to the app buffer when one of its windows gets closed"

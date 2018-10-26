@@ -13,13 +13,11 @@
   '(cl-generic
     (xelb :location (recipe :fetcher github
                             :repo "ch11ng/xelb"
-                            ;; :commit "fe1b643e98ea4a87a3eed41b0bbaf6c12dfcfbec"
                             )
           :step pre)
     (exwm :location (recipe :fetcher github
                             :repo "ch11ng/exwm"
-                            :commit "5903080b6efba91f6809c2a505a1069e46d8c277"
-                            ;; :commit "b75c89cae2a1c4c70044f885c44a95fd2f9950dd"
+                            ;; :commit "5903080b6efba91f6809c2a505a1069e46d8c277"
                             )
           :step pre)
     helm-exwm

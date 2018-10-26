@@ -13,7 +13,7 @@
   (save-selected-window)
   (let* ((nrepl-buf (nrepl-make-buffer-name
                      nrepl-server-buffer-name-template
-                     (clojure-project-dir (cider-current-dir)) nil nil -1)))
+                     (clojure-project-dir (cider-current-dir)))))
     (when (not (equal (buffer-name) nrepl-buf))
       (switch-to-buffer-other-window nrepl-buf))))
 

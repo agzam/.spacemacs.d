@@ -22,7 +22,7 @@
   (setq dired-listing-switches "-alh --group-directories-first"))
 
 (add-hook 'dired-mode-hook #'dired-hide-details-mode)
-(add-hook 'dired-mode-hook #'dired-omit-mode)
+;; (add-hook 'dired-mode-hook #'dired-omit-mode)
 
 (defun ag-dired/init-direx ()
   (use-package direx
