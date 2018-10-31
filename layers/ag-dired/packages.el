@@ -14,6 +14,7 @@
                           ;; dired-filetype-face
                           direx
                           ;; dired-quick-sort
+                          direx-grep
                           ))
 
 (if (eq system-type 'darwin)
@@ -69,6 +70,14 @@
         (define-key map "|" 'direx:fit-window)
         (define-key map "o" 'spacemacs/dired-open-item-other-window-transient-state/body)
         map))))
+
+(defun ag-dired/init-direx-grep ()
+  (use-package direx-grep
+    :config
+    (define-key direx:direx-mode-map (kbd "s") 'direx-grep:grep-item-from-root)
+    (define-key direx:direx-mode-map (kbd "S") 'direx-grep:grep-item)
+    (define-key direx:direx-mode-map (kbd "`") 'direx-grep:show-all-item-at-point)
+    (define-key direx:direx-mode-map (kbd "~") 'direx-grep:show-all-item)))
 
 (defun ag-dired/init-dired-quick-sort ()
   (use-package dired-quick-sort
