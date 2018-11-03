@@ -54,6 +54,7 @@
   (pcase spacemacs--cur-theme
     ('spacemacs-light
      (progn
+       (ag/decrease-powerline-fonts 'spacemacs-light)
        (custom-theme-set-faces
         'spacemacs-light
         `(magit-diff-hunk-heading ((t (:background "#efeae9"))))
@@ -67,11 +68,13 @@
         `(diff-refine-removed ((t (:foreground "#d80d0d" :background "#fdb8c0"))))
         `(trailing-whitespace ((t (:background "#e5e1e0"))))
         `(ahs-plugin-whole-buffer-face ((t (:background "#e5e1e0"))))
-        `(aw-leading-char-face ((t (:height 5.0)))))
-       (ag/decrease-powerline-fonts 'spacemacs-light)))
+        `(aw-leading-char-face ((t (:height 5.0))))
+        `(mode-line ((t (:underline (:color "#b2b2b2")))))
+        `(mode-line-inactive ((t (:underline (:color "#d3d3e7"))))))))
 
     ('base16-ocean
      (progn
+       (ag/decrease-powerline-fonts 'base16-ocean)
        (let ((base00 "#252933")
              (base01 "#343d46")
              (base02 "#4f5b66")
@@ -157,9 +160,10 @@
           ;; misc
           `(hl-line ((t (:background "#2f3440"))))
           `(trailing-whitespace ((t (:background ,base01))))
+          `(mode-line ((t (:underline (:color ,base01)))))
+          `(mode-line-inactive ((t (:underline (:color ,base01)))))
           `(default ((t (:background ,base00 :foreground ,base05)))))
-         (setq pdf-view-midnight-colors `(,base04 . ,base00)))
-       (ag/decrease-powerline-fonts 'base16-ocean)))))
+         (setq pdf-view-midnight-colors `(,base04 . ,base00)))))))
 
 (with-eval-after-load 'core-themes-support
   (ag/adjust-themes)
