@@ -34,7 +34,9 @@ This function should only modify configuration layer settings."
    dotspacemacs-configuration-layers
    '(
      ;; ---- Languages -----
-     csv yaml emacs-lisp lua javascript ag-haskell ag-clojure
+     csv yaml emacs-lisp lua javascript ag-haskell
+     (ag-clojure
+      :variables clojure-enable-clj-refactor t)
      (html :packages (not pug-mode slim-mode))
      (markdown
       :packages (not mmm-mode)

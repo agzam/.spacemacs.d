@@ -56,7 +56,6 @@
   "qQ" #'spacemacs/prompt-kill-emacs
   "s/" #'engine/search-google
   "jj" #'avy-goto-char-timer
-  "xx" #'flyspell-correct-wrapper
   "ja" #'beginning-of-defun
   "je" #'end-of-defun
   "swg" #'helm-google-suggest
