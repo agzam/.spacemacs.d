@@ -52,7 +52,7 @@
         mu4e-headers-has-child-prefix '("."  . "◼ ")
         mu4e-headers-default-prefix '(" "  . "│ ")
         mu4e-compose-dont-reply-to-self t
-        mu4e-compose-format-flowed nil
+        mu4e-compose-format-flowed t
         fill-flowed-encode-column 5000
         mu4e-user-mail-address-list '("agzam.ibragimov@gmail.com" "to.plotnick@gmail.com" "ag@mayvenn.com")
         mu4e-compose-complete-only-personal t
@@ -94,19 +94,20 @@
                (user-full-name . "Ag Ibragimov")
                (smtpmail-smtp-user . "to.plotnick@gmail.com")
                (mu4e-compose-signature . (concat "Thanks,\n" "Ag\n"))))
-     ,(make-mu4e-context
-       :name "work"
-       :enter-func (lambda () (mu4e-message "Switch to ag@mayvenn.com"))
-       ;; leave-func not defined
-       :match-func (lambda (msg) (when msg (mu4e-message-maildir-matches msg "^/work/")))
-       :vars '((mu4e-sent-folder . "/work/[Gmail]/Sent Mail")
-               (mu4e-trash-folder . "/work/[Gmail]/Trash")
-               (mu4e-refile-folder . "/work/[Gmail]/All Mail")
-               (mu4e-drafts-folder . "/work/[Gmail]/Drafts")
-               (user-mail-address . "ag@mayvenn.com")
-               (user-full-name . "Ag Ibragimov")
-               (smtpmail-smtp-user . "ag@mayvenn.com")
-               (mu4e-compose-signature . (concat "Thanks,\n" "Ag\n"))))))
+     ;; ,(make-mu4e-context
+     ;;   :name "work"
+     ;;   :enter-func (lambda () (mu4e-message "Switch to ag@mayvenn.com"))
+     ;;   ;; leave-func not defined
+     ;;   :match-func (lambda (msg) (when msg (mu4e-message-maildir-matches msg "^/work/")))
+     ;;   :vars '((mu4e-sent-folder . "/work/[Gmail]/Sent Mail")
+     ;;           (mu4e-trash-folder . "/work/[Gmail]/Trash")
+     ;;           (mu4e-refile-folder . "/work/[Gmail]/All Mail")
+     ;;           (mu4e-drafts-folder . "/work/[Gmail]/Drafts")
+     ;;           (user-mail-address . "ag@mayvenn.com")
+     ;;           (user-full-name . "Ag Ibragimov")
+     ;;           (smtpmail-smtp-user . "ag@mayvenn.com")
+     ;;           (mu4e-compose-signature . (concat "Thanks,\n" "Ag\n"))))
+     ))
 
   (add-hook 'mu4e-compose-mode-hook #'turn-off-auto-fill)
   (add-hook 'mu4e-compose-mode-hook #'spacemacs/toggle-visual-line-navigation-on)
