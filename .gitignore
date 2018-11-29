@@ -2,3 +2,4 @@ mthesaur.txt.cache
 .sync/
 custom.el
 eshell.aliases
+.spacemacs.env
