@@ -33,7 +33,9 @@
           '(
             ;; ("t" "Todo" entry (file "~/Dropbox/org/tasks.org")
             ;;  "* TODO  %?\n SCHEDULED: %^u")
-            ("t" "todo" entry (file+headline "~/Dropbox/org/tasks.org" "Tasks")
+            ("t" "simple todo" entry (file+headline "~/Dropbox/org/tasks.org" "Tasks")
+             "* TODO %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
+            ("T" "todo" entry (file+headline "~/Dropbox/org/tasks.org" "Tasks")
              "* TODO %?%a\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n\t%a\n")
             ("i" "Immediate" entry (file "~/Dropbox/org/tasks.org")
              "* ONGOING %?" :clock-in t :clock-resume t :clock-keep t)
