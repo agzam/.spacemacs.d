@@ -478,6 +478,9 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
                                     "NO_AUTH" "AUTH_DISABLED" "AUTH0_DOMAIN" "AUTH0_CLIENT_ID" "ARTIFACTORY_USER" "ARTIFACTORY_PASSWORD" "DEV")
    custom-file "~/.spacemacs.d/custom.el")
 
+  (with-eval-after-load 'auto-highlight-symbol
+   (spacemacs/toggle-automatic-symbol-highlight-on))
+
   (load custom-file))
 
 (defun dotspacemacs/user-load ()
@@ -606,6 +609,7 @@ dump."
         delete-old-versions nil)
   (setq backup-directory-alist '(("." . ".bak")))
   (savehist-mode -1)
+  (magit-wip-after-save-mode 1)
 
   (with-eval-after-load 'helm
     ;; experimenting with helm in a separate frame

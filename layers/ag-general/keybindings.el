@@ -10,7 +10,7 @@
 ;;; License: GPLv3
 
 ;;;; disable nonsensical keys
-(dolist (key '("s-n" "s-p" "s-q" "H-q" "C-x C-c"))
+(dolist (key '("s-n" "s-p" "s-q" "s-m" "H-q" "C-x C-c"))
   (unbind-key (kbd key)))
 
 ;;;; don't quit helpful on Esc
@@ -59,6 +59,7 @@
   "ja" #'beginning-of-defun
   "je" #'end-of-defun
   "swg" #'helm-google-suggest
+  "gft" #'magit-log-trace-definition
   ;; "ou" #'spacemacs/avy-open-url
   ;;;; add a page-break
   "iP" (kbd "i C-q C-l <RET><escape>"))

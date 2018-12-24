@@ -132,6 +132,11 @@
      org-export-with-toc nil
      org-export-with-section-numbers nil)
 
+    ;;;; ----- abo-abo/org-download -------
+    (setq-default org-download-image-dir (concat org-directory "/images")
+                  org-download-heading-lvl nil
+                  org-download-image-org-width 500)
+
     ;;;; ----- misc -------
     (setq
      org-refile-use-outline-path 'file
