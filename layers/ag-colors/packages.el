@@ -42,7 +42,7 @@
                  persp-face-lighter-nil-persp)))
     (dolist (f faces)
       (when (facep f)
-            (set-face-attribute f nil :height 0.85))))
+            (set-face-attribute f nil :height 0.9))))
 
   (dolist (buf (list " *Minibuf-0*" " *Minibuf-1*" " *Echo Area 0*" " *Echo Area 1*" " *which-key*"))
     (when (get-buffer buf)
@@ -60,6 +60,7 @@
         (apply 'set-face-attribute params)))))
 
 (defun ag/adjust-themes ()
+  (ag/decrease-powerline-fonts)
   (pcase spacemacs--cur-theme
     ('spacemacs-light
      (let ((faces `((magit-diff-hunk-heading . (:background "#efeae9"))
@@ -72,6 +73,7 @@
                     (diff-refine-added . (:foreground "#325e0b" :background "#acf2bd"))
                     (diff-refine-removed . (:foreground "#d80d0d" :background "#fdb8c0"))
                     (trailing-whitespace . (:background "#e5e1e0"))
+                    (ahs-definition-face . (:background "#e6ffed"))
                     (ahs-plugin-whole-buffer-face . (:background "#e5e1e0"))
                     (aw-leading-char-face . (:height 5.0))
                     (mode-line . (:underline (:color "#b2b2b2")))
@@ -165,8 +167,7 @@
                      (mode-line-inactive . (:underline (:color ,base01)))
                      (default . (:background ,base00 :foreground ,base05)))))
        (ag/set-faces-attributes faces)
-       (setq pdf-view-midnight-colors `(,base04 . ,base00)))))
-  (ag/decrease-powerline-fonts))
+       (setq pdf-view-midnight-colors `(,base04 . ,base00))))))
 
 (with-eval-after-load 'core-themes-support
   (ag/adjust-themes)
