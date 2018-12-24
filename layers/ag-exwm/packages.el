@@ -1,3 +1,4 @@
+;; -*- mode: emacs-lisp; lexical-binding: t -*-
 ;;; packages.el --- ag-exwm layer packages file for Spacemacs.
 ;;
 ;; Copyright (c) 2012-2016 Sylvain Benner & Contributors
@@ -22,7 +23,8 @@
           :step pre)
     helm-exwm
     pinentry
-    (exwm-edit :location local)))
+    (exwm-edit :location local)
+    (exwm-xrandr :location local)))
 
 (defun ag-exwm/init-cl-generic ()
   (use-package cl-generic
@@ -141,26 +143,6 @@
     (dolist (char (list ?\M-1 ?\M-2 ?\M-3 ?\M-4 ?\M-5 ?\M-6))
       (push char exwm-input-prefix-keys))
 
-    (require 'exwm-randr)
-    (exwm-randr-enable)
-
-    ;; switching monitors on and off
-    (exwm-input-set-key (kbd "C-s-1") (lambda () (interactive) (start-process-shell-command "" nil "xrandr --output eDP1 --auto")))
-    (exwm-input-set-key (kbd "C-s-2")
-                        (lambda ()
-                          (interactive)
-                          (start-process-shell-command "" nil "xset r rate 200 60")
-                          (start-process-shell-command "" nil "xrandr --output eDP1 --off --output DP1 --mode 2560x1440")))
-    (exwm-input-set-key (kbd "C-s-3")
-                        (lambda ()
-                          (interactive)
-                          (setq exwm-workspace-number 2)
-                          (start-process-shell-command "" nil "~/.screenlayout/home-double-monitor.sh")
-                          ;; (start-process-shell-command "" nil "killall yabar & ~/.screenlayout/home-double-monitor.sh && yabar")
-                          ))
-
-    (setq exwm-randr-workspace-output-plist '(1 "DP1" 2 "eDP1"))
-
     ;; The following example demonstrates how to set a key binding only available
     ;; in line mode. It's simply done by first push the prefix key to
     ;; `exwm-input-prefix-keys' and then add the key sequence to `exwm-mode-map'.
@@ -265,6 +247,13 @@
       (spacemacs/toggle-visual-line-navigation-on)
       (funcall 'markdown-mode))
     (add-hook 'exwm-edit-compose-hook 'ag-exwm/on-exwm-edit-compose)))
+
+(defun ag-exwm/init-exwm-xrandr ()
+  (use-package exwm-xrandr
+    :demand t
+    :after (exwm)
+    :config
+    (exwm-xrandr--set-keybindings)))
 
 (spacemacs/set-leader-keys
   "M" #'spacemacs/desktop-environment-transient-state/body)

@@ -159,9 +159,9 @@ ZOOM-TYPE can be 'in 'out or 'reset"
   ("(" (xdotool-key "XF86MonBrightnessDown"))
   (")" (xdotool-key "XF86MonBrightnessUp"))
   ("p" (xdotool-key "XF86AudioPlay"))
-  ("h" (xdotool-key "XF86AudioPrev"))
-  ("l" (xdotool-key "XF86AudioNext"))
-  ("a" nil)
+  ("h" (xdotool-key "XF86AudioPrev") :exit t)
+  ("l" (xdotool-key "XF86AudioNext") :exit t)
+  ("a" #'switch-to-music-player-app :exit t)
   ("m" (progn
          ;; (start-process-shell-command "fix-mute" nil "amixer -D pulse sset Master toggle")
          (xdotool-key "XF86AudioMute")
