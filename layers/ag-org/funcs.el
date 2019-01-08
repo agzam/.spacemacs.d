@@ -240,6 +240,23 @@ KEYS is a string associated with a template (will be passed to `org-capture')"
       (markdown-kill-thing-at-point)
       (org-insert-link nil url desc))))
 
+(defun convert-to-jira-link ()
+  "Converts a word (simple number or a JIRA ticket with prefix) into a JIRA link."
+  (interactive)
+  (let* ((jira-base-url "https://jira.dividendsolar.com")
+         (jira-project-prefix "SCRUM-")
+         (w (word-at-point))
+         (bounds (bounds-of-thing-at-point 'word))
+         (ticket (string-to-number w))
+         (res (concat
+               jira-base-url
+               "/browse/"
+               (if (eq ticket 0)
+                   w
+                 (concat jira-project-prefix (number-to-string ticket))))))
+    (delete-region (car bounds) (cdr bounds))
+    (insert res)))
+
 (defadvice org-capture-finalize
     (after delete-capture-frame activate)
   "Advise capture-finalize to close the frame."
