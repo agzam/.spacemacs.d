@@ -25,7 +25,12 @@
   (evil-define-key 'normal eshell-mode-map (kbd "RET") #'eshell-action-on-file-or-dir-at-point)
   (evil-define-key 'normal eshell-mode-map (kbd "o") #'eshell-action-on-file-or-dir-at-point-other-window)
   (evil-define-key 'insert eshell-mode-map (kbd "C-p") #'eshell-previous-matching-input-from-input)
-  (evil-define-key 'insert eshell-mode-map (kbd "C-n") #'eshell-next-matching-input-from-input))
+  (evil-define-key 'insert eshell-mode-map (kbd "C-n") #'eshell-next-maching-input-from-input)
+
+  ;; This has been bugging me - `<escape> k' gets translated into `M-k' which
+  ;; for whatever reason forces direx to jump all the way to the bottom of the tree
+  (define-key direx:direx-mode-map (kbd "M-k") #'direx:previous-item)
+  (define-key direx:direx-mode-map (kbd "ESC k") #'direx:previous-item))
 
 (add-hook 'eshell-mode-hook #'eshell-keybindings-override t)
 
