@@ -177,13 +177,10 @@ i.e.: show only commits that differ between selected (other branch) and current 
   (setq magit-branch-rename-push-target nil ; do not push renamed/deleted branch to remote automatically
         magit-diff-refine-hunk 'all)
 
-  ;; suppose to be using magit-which-function, but it's currently broken for Clojure
-  (setq magit-log-trace-definition-function 'which-function)
-
   (custom-set-variables
    '(magit-commit-arguments (quote ("--gpg-sign=CFE12444AF47BD1D")))
    '(magit-fetch-arguments (quote ("--prune")))
-   '(magit-log-arguments (quote ("-n250" "--graph" "--color")))))
+   '(magit-log-arguments (quote ("-n500" "--graph" "--color")))))
 
 
 ;;; packages.el ends here

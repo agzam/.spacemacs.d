@@ -189,10 +189,10 @@
     (add-hook 'org-mode-hook #'abbrev-mode)
 
     ;;;; lower-casing tab-expanded options e.g.: <s
-    (mapc (lambda (arg) (setcdr arg (list (downcase (cadr arg)))))
-          org-structure-template-alist)
+    ;; (mapc (lambda (arg) (setcdr arg (list (downcase (cadr arg)))))
+    ;;       org-structure-template-alist)
 
-    (add-to-list 'org-structure-template-alist '("sqlf" "#+begin_src sql :engine postgresql :cmdline \"-h localhost -U postgres -p 5434 -d finops_admin_development\"\n?\n#+end_src"))
+    ;; (add-to-list 'org-structure-template-alist '("sqlf" "#+begin_src sql :engine postgresql :cmdline \"-h localhost -U postgres -p 5434 -d finops_admin_development\"\n?\n#+end_src"))
     ))
 
 (defun ag-org/post-init-org-pomodoro ()

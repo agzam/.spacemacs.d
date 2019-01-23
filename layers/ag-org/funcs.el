@@ -181,7 +181,7 @@ item COLOR can be \"red\" \"green\" or \"yellow\"."
                   ("~/.ec" . #o700))))
     (dolist (el fs-lst)
       (when (file-exists-p (car el))
-            (set-file-modes (car el) (cdr el))))))
+        (set-file-modes (car el) (cdr el))))))
 
 (defun ag/org-meta-return (&optional ignore)
   "Context respecting org-insert."
