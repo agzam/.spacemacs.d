@@ -86,28 +86,31 @@
        :enter-func (lambda () (mu4e-message "Switch to agzam.ibragimov@gmail.com"))
        ;; leave-func not defined
        :match-func (lambda (msg) (when msg (mu4e-message-maildir-matches msg "^/home/")))
-       :vars '((mu4e-sent-folder . "/home/[Gmail]/Sent Mail")
+       :vars '((smtpmail-smtp-server . "smtp.gmail.com")
+               (mu4e-sent-folder . "/home/[Gmail]/Sent Mail")
                (mu4e-trash-folder . "/home/[Gmail]/Trash")
                (mu4e-refile-folder . "/home/[Gmail]/All Mail")
                (mu4e-drafts-folder . "/home/[Gmail]/Drafts")
                (user-mail-address . "agzam.ibragimov@gmail.com")
                (user-full-name . "Ag Ibragimov")
                (smtpmail-smtp-user . "to.plotnick@gmail.com")
+               (message-signature-file . "~/.mail/home/.signature")
                (mu4e-compose-signature . (concat "Thanks,\n" "Ag\n"))))
-     ;; ,(make-mu4e-context
-     ;;   :name "work"
-     ;;   :enter-func (lambda () (mu4e-message "Switch to ag@mayvenn.com"))
-     ;;   ;; leave-func not defined
-     ;;   :match-func (lambda (msg) (when msg (mu4e-message-maildir-matches msg "^/work/")))
-     ;;   :vars '((mu4e-sent-folder . "/work/[Gmail]/Sent Mail")
-     ;;           (mu4e-trash-folder . "/work/[Gmail]/Trash")
-     ;;           (mu4e-refile-folder . "/work/[Gmail]/All Mail")
-     ;;           (mu4e-drafts-folder . "/work/[Gmail]/Drafts")
-     ;;           (user-mail-address . "ag@mayvenn.com")
-     ;;           (user-full-name . "Ag Ibragimov")
-     ;;           (smtpmail-smtp-user . "ag@mayvenn.com")
-     ;;           (mu4e-compose-signature . (concat "Thanks,\n" "Ag\n"))))
-     ))
+     ,(make-mu4e-context
+       :name "work"
+       :enter-func (lambda () (mu4e-message "Switch to work"))
+       ;; leave-func not defined
+       :match-func (lambda (msg) (when msg (mu4e-message-maildir-matches msg "^/work/")))
+       :vars '((smtpmail-smtp-server . "smtp.office365.com")
+               (mu4e-sent-folder . "/work/Sent Items")
+               (mu4e-trash-folder . "/work/Deleted Items")
+               (mu4e-refile-folder . "/work/Archive")
+               (mu4e-drafts-folder . "/work/Drafts")
+               (user-mail-address . "ag@dividendfinance.com")
+               (user-full-name . "Ag Ibragimov")
+               (smtpmail-smtp-user . "ag.ibragimov@dividendfinance.com")
+               (message-signature-file . "~/.mail/work/.signature")
+               (mu4e-compose-signature . (concat "-----\nAg Ibragimov\nSoftware Developer | Dividend Finance\ndividendnow.com"))))))
 
   (add-hook 'mu4e-compose-mode-hook #'turn-off-auto-fill)
   (add-hook 'mu4e-compose-mode-hook #'spacemacs/toggle-visual-line-navigation-on)
