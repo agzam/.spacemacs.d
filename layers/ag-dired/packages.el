@@ -12,7 +12,8 @@
 (setq ag-dired-packages '(
                           ;; dired-rainbow
                           ;; dired-filetype-face
-                          direx
+                          (direx :location (recipe :fetcher github
+                                                   :repo "agzam/direx-el"))
                           ;; dired-quick-sort
                           direx-grep
                           ))
@@ -41,6 +42,7 @@
       (direx:move-to-item-name-part item))
 
     (defun direx:fit-window ()
+      "Shrinks direx window and pushes it to the margin"
       (interactive)
       (when (derived-mode-p 'direx:direx-mode)
         (let ((fit-window-to-buffer-horizontally t))
@@ -49,27 +51,36 @@
 
     (defvar direx:file-keymap
       (let ((map (make-sparse-keymap)))
-        (define-key map "R" 'direx:do-rename-file)
-        (define-key map "C" 'direx:do-copy-files)
-        (define-key map "D" 'direx:do-delete-files)
-        (define-key map "+" 'direx:create-directory)
-        (define-key map "T" 'direx:do-touch)
-        (define-key map "j" 'direx:next-item)
-        (define-key map "J" 'direx:next-sibling-item)
-        (define-key map "k" 'direx:previous-item)
-        (define-key map "K" 'direx:previous-sibling-item)
-        (define-key map "h" 'direx:collapse-item)
-        (define-key map "H" 'direx:collapse-item-recursively)
-        (define-key map "l" 'direx:expand-item)
-        (define-key map "L" 'direx:expand-item-recursively)
-        (define-key map (kbd "RET") 'direx:maybe-find-item)
-        (define-key map "a" 'direx:find-item)
-        (define-key map "q" 'kill-this-buffer)
-        (define-key map "r" 'direx:refresh-whole-tree)
-        (define-key map "O" 'direx:find-item-other-window)
-        (define-key map "|" 'direx:fit-window)
-        (define-key map "o" 'spacemacs/dired-open-item-other-window-transient-state/body)
-        map))))
+        (define-key map "R" #'direx:do-rename-file)
+        (define-key map "C" #'direx:do-copy-files)
+        (define-key map "D" #'direx:do-delete-files)
+        (define-key map "+" #'direx:create-directory)
+        (define-key map "T" #'direx:do-touch)
+        (define-key map "j" #'direx:next-item)
+        (define-key map "J" #'direx:next-sibling-item)
+        (define-key map "k" #'direx:previous-item)
+        (define-key map "K" #'direx:previous-sibling-item)
+        (define-key map "h" #'direx:collapse-item)
+        (define-key map "H" #'direx:collapse-item-recursively)
+        (define-key map "l" #'direx:expand-item)
+        (define-key map "L" #'direx:expand-item-recursively)
+        (define-key map (kbd "RET") #'direx:maybe-find-item)
+        (define-key map "a" #'direx:find-item)
+        (define-key map "q" #'kill-this-buffer)
+        (define-key map "r" #'direx:refresh-whole-tree)
+        (define-key map "O" #'direx:find-item-other-window)
+        (define-key map "|" #'direx:fit-window)
+        (define-key map (kbd "<C-return>") #'direx:set-root)
+        (define-key map "^" #'direx:expand-root-to-parent)
+        (define-key map "o" #'spacemacs/dired-open-item-other-window-transient-state/body)
+        map))
+
+    (spacemacs/set-leader-keys-for-major-mode 'direx:direx-mode
+      "o" #'direx:find-item-other-window
+      "r" #'direx:refresh-whole-tree
+      "\\" #'direx:fit-window
+      "RET" #'direx:set-root
+      "p" #'direx:expand-root-to-parent)))
 
 (defun ag-dired/init-direx-grep ()
   (use-package direx-grep
@@ -77,7 +88,9 @@
     (define-key direx:direx-mode-map (kbd "s") 'direx-grep:grep-item-from-root)
     (define-key direx:direx-mode-map (kbd "S") 'direx-grep:grep-item)
     (define-key direx:direx-mode-map (kbd "`") 'direx-grep:show-all-item-at-point)
-    (define-key direx:direx-mode-map (kbd "~") 'direx-grep:show-all-item)))
+    (define-key direx:direx-mode-map (kbd "~") 'direx-grep:show-all-item)
+    (spacemacs/set-leader-keys-for-major-mode 'direx:direx-mode
+      "gg" #'direx-grep:grep-item-from-root)))
 
 (defun ag-dired/init-dired-quick-sort ()
   (use-package dired-quick-sort
