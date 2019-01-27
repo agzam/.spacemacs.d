@@ -55,6 +55,7 @@
   "qq" nil                           ;; no unexpected exits
   "qQ" #'spacemacs/prompt-kill-emacs
   "s/" #'engine/search-google
+  "sG" #'engine/search-github
   "jj" #'avy-goto-char-timer
   "ja" #'beginning-of-defun
   "je" #'end-of-defun
