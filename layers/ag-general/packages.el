@@ -145,7 +145,7 @@
            (lang (cdr (assoc mode-name engine-mode/github-mode->lang)))
            (lang-term (if lang (concat "language:\"" lang "\" ") ""))
            (current-word (or (thing-at-point 'symbol) ""))
-           (search-term* (read-string "Search Github: " (concat lang-term current-word))))
+           (search-term (read-string "Search Github: " (concat lang-term current-word))))
       (engine/search-github search-term)))
 
   (spacemacs/set-leader-keys "g/" #'engine/search-github-with-lang))
