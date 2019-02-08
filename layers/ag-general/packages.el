@@ -21,7 +21,9 @@
                                 ;; atomic-chrome
                                 helm-pages
                                 evil-mc
-                                edit-indirect))
+                                edit-indirect
+                                engine-mode
+                                ))
 
 ;; (defun ag-general/init-magithub ()
 ;;   (use-package magithub
@@ -125,6 +127,28 @@
         (cond ((eq major 'clojurescript-mode) (org-mode))
               (t (funcall major)))))
     (setq edit-indirect-guess-mode-function 'ag/edit-indirect-guess-mode)))
+
+(defun ag-general/post-init-engine-mode ()
+  (defcustom engine-mode/github-mode->lang
+    '(("clojurescript" . "Clojure")
+      ("clojure" . "Clojure")
+      ("clojurec" . "Clojure")
+      ("emacs-lisp" . "Emacs Lisp"))
+    "Associates current mode with a language in Github terms"
+    :type 'alist
+    :group 'engine)
+
+  (defun engine/search-github-with-lang ()
+    "Search on Github with attempt of detecting language associated with current-buffer's mode"
+    (interactive)
+    (let* ((mode-name (replace-regexp-in-string "-mode$" "" (symbol-name major-mode)))
+           (lang (cdr (assoc mode-name engine-mode/github-mode->lang)))
+           (lang-term (if lang (concat "language:\"" lang "\" ") ""))
+           (current-word (or (thing-at-point 'symbol) ""))
+           (search-term* (read-string "Search Github: " (concat lang-term current-word))))
+      (engine/search-github search-term)))
+
+  (spacemacs/set-leader-keys "g/" #'engine/search-github-with-lang))
 
 ;; Add `git log ORIG_HEAD..HEAD` to magit
 ;; that lets you log only changes since the last pull
