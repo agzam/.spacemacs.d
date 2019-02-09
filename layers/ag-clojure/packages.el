@@ -67,4 +67,5 @@
 
   (advice-add 'cider-eval-print-last-sexp :around #'before-eval-print-advice))
 
+(add-hook 'clojurescript-mode-hook #'add-reframe-regs-to-imenu)
 ;;; packages.el ends here

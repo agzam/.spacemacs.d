@@ -81,4 +81,10 @@
     (progn (cider-find-ns "-" kw-ns)
            (search-forward-regexp (concat "reg-[a-zA-Z-]*[ \\\n]+" kw-to-find) nil 'noerror))))
 
+(defun add-reframe-regs-to-imenu ()
+  (add-to-list
+   'imenu-generic-expression
+   '("re-frame" "(*reg-\\(event-db\\|sub\\|sub-raw\\|fx\\|event-fx\\|event-ctx\\|cofx\\)[ \n]+\\([^\t \n]+\\)" 2)
+   t))
+
 ;;; funcs.el ends here
