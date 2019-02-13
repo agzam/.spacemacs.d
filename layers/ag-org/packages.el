@@ -188,11 +188,16 @@
     (add-hook 'org-babel-post-tangle-hook #'ag/set-tangled-file-permissions)
     (add-hook 'org-mode-hook #'abbrev-mode)
 
-    ;;;; lower-casing tab-expanded options e.g.: <s
-    ;; (mapc (lambda (arg) (setcdr arg (list (downcase (cadr arg)))))
-    ;;       org-structure-template-alist)
+    ;;; Save tasks.org file automatically
+    (defun autosave-tasks-org (persp-name window)
+      (when (string= persp-name "@Org")
+        (save-some-buffers
+         'no-confirm
+         (lambda ()
+           (string= (abbreviate-file-name buffer-file-name) "~/Dropbox/org/tasks.org")))))
+    (add-hook 'persp-before-switch-functions 'autosave-tasks-org)
 
-    ;; (add-to-list 'org-structure-template-alist '("sqlf" "#+begin_src sql :engine postgresql :cmdline \"-h localhost -U postgres -p 5434 -d finops_admin_development\"\n?\n#+end_src"))
+    (add-to-list 'org-modules 'org-tempo t)
     ))
 
 (defun ag-org/post-init-org-pomodoro ()
