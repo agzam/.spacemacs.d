@@ -55,7 +55,6 @@
   "qq" nil                           ;; no unexpected exits
   "qQ" #'spacemacs/prompt-kill-emacs
   "s/" #'engine/search-google
-  "sG" #'engine/search-github
   "jj" #'avy-goto-char-timer
   "ja" #'beginning-of-defun
   "je" #'end-of-defun
@@ -89,6 +88,13 @@
   (evil-define-key evil-magit-state magit-mode-map "h" 'evil-backward-char)
   (evil-define-key evil-magit-state magit-mode-map (kbd "M-h") 'magit-dispatch-popup))
 
+;; Some stupid "genius" decided to mess with F/p keys (pull/push), after adding Forge
+;; temp. fix till they make it right again. corresponding: https://github.com/emacs-evil/evil-magit/issues/60
+(with-eval-after-load 'forge
+  (evil-magit-define-key evil-magit-state 'magit-mode-map "F" 'magit-pull-popup)
+  (evil-magit-define-key evil-magit-state 'magit-mode-map "p" 'magit-push-popup)
+  (evil-magit-define-key evil-magit-state 'magit-mode-map "'" 'forge-dispatch))
+
 ;;;; making Info-mode keys more suitable for Evil
 (define-key Info-mode-map (kbd "H") 'Info-up)
 (define-key Info-mode-map (kbd "C-o") 'Info-prev)
@@ -103,5 +109,6 @@
   (define-key company-active-map (kbd "C-n") 'company-select-next)
   (define-key company-active-map (kbd "C-p") 'company-select-previous)
   (define-key company-active-map (kbd "C-f") 'company-search-candidates))
+
 
 ;;; keybindings.el ends here
