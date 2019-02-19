@@ -53,20 +53,16 @@ This function should only modify configuration layer settings."
      ;; (dash :variables
      ;;       helm-dash-docset-path
      ;;       (cond ((eq system-type 'darwin) "~/Library/Application\ Support/Dash/DocSets")))
-     (shell :packages (not eshell-prompt-extras eshell-z multi-term xterm-color)
-            :variables shell-default-shell 'eshell)
-     ;; ---- Version control ----
-     git (version-control :variables
-                          version-control-diff-tool 'diff-hl
-                          version-control-global-margin t
-                          magit-repository-directories '("~/DevProjects" "~/Sandbox")
-                          magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
-     (github :packages (not magit-gh-pulls)
-             :variables
-             gist-view-gist t        ;; view your Gist using `browse-url` after it is created
-             magithub-api-timeout 5)
+     (shell :variables shell-default-shell 'eshell)
      ;; --- My own layers ----
-     ag-colors ag-dired ag-exwm ag-general ag-web ag-lang-tools ag-org ag-mail)
+     ag-colors
+     ag-dired
+     ag-general
+     ag-lang-tools
+     ag-org ag-mail
+     ag-version-control
+     ag-web
+     )
 
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -77,7 +73,7 @@ This function should only modify configuration layer settings."
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages '(copy-as-format
                                       helm-flycheck
-                                      writeroom-mode)
+                                      quelpa-use-package)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
 
@@ -150,7 +146,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil then spacemacs will check for updates at startup
    ;; when the current branch is not `develop'. Note that checking for
    ;; new versions works via git commands, thus it calls GitHub services
-   ;; whenever you start Emacs. (default nil)
+   ;; whenever you start Emacs. default nil
    dotspacemacs-check-for-update nil
 
    ;; If non-nil, a form that evaluates to a package directory. For example, to
@@ -167,7 +163,7 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-editing-style 'vim
 
    ;; If non-nil output loading progress in `*Messages*' buffer. (default nil)
-   dotspacemacs-verbose-loading nil
+   dotspacemacs-verbose-loading t
 
    ;; Specify the startup banner. Default value is `official', it displays
    ;; the official spacemacs logo. An integer value is the index of text
@@ -264,7 +260,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil, auto-generate layout name when creating new layouts. Only has
    ;; effect when using the "jump to layout by number" commands. (default nil)
-   dotspacemacs-auto-generate-layout-names nil
+   dotspacemacs-auto-generate-layout-names t
 
    ;; Size (in MB) above which spacemacs will prompt to open the large file
    ;; literally to avoid performance issues. Opening a file literally means that
@@ -474,8 +470,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    ns-use-srgb-colorspace nil
    evil-want-C-u-scroll nil
    ns-auto-hide-menu-bar nil
-   exec-path-from-shell-variables '("PATH" "MANPATH" "NVM_DIR" "NODE_PATH" "HOMEBREW_GITHUB_API_TOKEN"
-                                    "NO_AUTH" "AUTH_DISABLED" "AUTH0_DOMAIN" "AUTH0_CLIENT_ID" "ARTIFACTORY_USER" "ARTIFACTORY_PASSWORD" "DEV")
+   exec-path-from-shell-variables '("PATH" "MANPATH" "NVM_DIR" "NODE_PATH" "HOMEBREW_GITHUB_API_TOKEN" "DEV")
    custom-file "~/.spacemacs.d/custom.el")
 
   (with-eval-after-load 'auto-highlight-symbol
@@ -488,6 +483,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 This function is called only while dumping Spacemacs configuration. You can
 `require' or `load' the libraries of your choice that will be included in the
 dump."
+  (ag/adjust-themes)
   )
 
 (defun dotspacemacs/user-config ()
@@ -526,8 +522,6 @@ dump."
    ;;;; Misc
    eldoc-echo-area-use-multiline-p 'always
    eldoc-idle-delay 0.25
-   vc-follow-symlinks t
-   diff-hl-side 'left
    use-dialog-box nil
    eshell-aliases-file "~/.spacemacs.d/eshell.aliases"
    dumb-jump-force-searcher 'rg       ;; https://github.com/jacktasia/dumb-jump#emacs-options
@@ -539,9 +533,7 @@ dump."
                                       magit-revision-mode
                                       help-mode paradox-menu-mode)
    ranger-override-dired nil
-   delete-by-moving-to-trash nil
-   magit-show-refs-arguments '("--sort=-committerdate")
-   magit-delete-by-moving-to-trash nil)
+   delete-by-moving-to-trash nil)
    ;;;; end setq
 
   (with-eval-after-load 'helm-ag (setq helm-ag-use-agignore t))
@@ -578,13 +570,6 @@ dump."
   (add-hook 'markdown-mode-hook #'flyspell-mode)
   (add-hook 'markdown-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
 
-  ;; ---------
-  ;; Magit
-  ;; ---------
-  ;; don't exit magit on escape-sequence and don't bury its buffer on Esc
-  (with-eval-after-load 'evil-magit
-    (evil-magit-define-key 'normal 'magit-mode-map "<escape>" nil))
-
   ;; -----------
   ;; Perspectives
   ;; ----------
@@ -609,7 +594,8 @@ dump."
         delete-old-versions nil)
   (setq backup-directory-alist '(("." . ".bak")))
   (savehist-mode -1)
-  (magit-wip-after-save-mode 1)
+
+  ;; (magit-wip-after-save-mode 1)
 
   (with-eval-after-load 'helm
     ;; experimenting with helm in a separate frame

@@ -1,4 +1,4 @@
-;;; layers.el --- layers required by ag-general layer.
+;;; layers.el --- layers required by ag-version-control layer.
 ;;
 ;; Copyright (c) 2012-2016 Sylvain Benner & Contributors
 ;;
@@ -9,6 +9,6 @@
 ;;
 ;;; License: GPLv3
 
-(configuration-layer/declare-layers '(ibuffer))
+(configuration-layer/declare-layers '(version-control git github))
 
 ;;; layers.el ends here

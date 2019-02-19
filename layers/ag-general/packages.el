@@ -40,7 +40,10 @@
     :config
     (unbind-key "h" help-map)
     (bind-key "hh" 'helpful-symbol help-map)
-    (bind-key "ha" 'helpful-at-point help-map)))
+    (bind-key "ha" 'helpful-at-point help-map)
+    (spacemacs/set-leader-keys "hdd" #'helpful-symbol)
+    (spacemacs/set-leader-keys-for-major-mode 'emacs-lisp-mode "h h" 'helpful-at-point)
+    (evil-define-key 'normal helpful-mode-map "q" 'quit-window)))
 
 (defun ag-general/init-rainbow-mode ()
   (use-package rainbow-mode
@@ -149,62 +152,5 @@
       (engine/search-github search-term)))
 
   (spacemacs/set-leader-keys "g/" #'engine/search-github-with-lang))
-
-;; Add `git log ORIG_HEAD..HEAD` to magit
-;; that lets you log only changes since the last pull
-(with-eval-after-load 'magit
-  (defun magit-log-orig_head--head (&optional args files)
-    "Compare log since the last pull. i.e.: show only commits between last pull and head"
-    (interactive (magit-log-arguments))
-    (magit-log (list "ORIG_HEAD..HEAD") args files))
-
-  (magit-define-popup-action 'magit-log-popup
-    ?p "orig_head..head" 'magit-log-orig_head--head)
-
-  (defun magit-log-other--current (revision)
-    "Compare log between branches à la GitHub style.
-i.e.: show only commits that differ between selected (other branch) and current branch"
-    (interactive (list (magit-read-other-branch-or-commit "Log compare")))
-    (magit-log (list (concat revision ".." (magit-get-current-branch)))))
-
-  (magit-define-popup-action 'magit-log-popup
-    ?R "other..current" 'magit-log-other--current)
-
-  (defun magit-log--origin-master ()
-    "Compare log between branches à la GitHub style between current branch and origin/master"
-    (interactive)
-    (magit-log (list (concat  "origin/master.." (magit-get-current-branch)))))
-
-  (magit-define-popup-action 'magit-log-popup
-    ?m "origin/master..current" 'magit-log--origin-master)
-
-  (defun magit-diff-range-reversed (rev-or-range &optional args files)
-    "Diff between two branches. Unlike `diff-range` works in opposite order i.e.: `base..current`"
-    (interactive (list (magit-read-other-branch-or-commit "Diff range")))
-    (magit-diff (concat rev-or-range ".." (magit-get-current-branch)) args files))
-
-  (magit-define-popup-action 'magit-diff-popup
-    ?R "Diff range (reversed)" 'magit-diff-range-reversed)
-
-  (defun magit-diff--origin-master ()
-    "Compare log between branches à la GitHub style between current branch and origin/master"
-    (interactive)
-    (magit-diff (concat "origin/master.." (magit-get-current-branch))))
-
-  (magit-define-popup-action 'magit-diff-popup
-    ?m "origin/master..current" 'magit-diff--origin-master)
-
-  (add-hook 'magit-hook 'turn-off-evil-mc-mode)
-  ;; who cares about tags to be displayed in magit-refs buffer?
-  (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
-
-  (setq magit-branch-rename-push-target nil ; do not push renamed/deleted branch to remote automatically
-        magit-diff-refine-hunk 'all)
-
-  (custom-set-variables
-   '(magit-commit-arguments (quote ("--gpg-sign=CFE12444AF47BD1D")))
-   '(magit-fetch-arguments (quote ("--prune")))
-   '(magit-log-arguments (quote ("-n500" "--graph" "--color")))))
-
 
 ;;; packages.el ends here

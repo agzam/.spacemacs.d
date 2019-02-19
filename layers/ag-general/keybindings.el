@@ -59,13 +59,9 @@
   "ja" #'beginning-of-defun
   "je" #'end-of-defun
   "swg" #'helm-google-suggest
-  "gft" #'magit-log-trace-definition
   ;; "ou" #'spacemacs/avy-open-url
   ;;;; add a page-break
   "iP" (kbd "i C-q C-l <RET><escape>"))
-
-(spacemacs/set-leader-keys-for-major-mode 'emacs-lisp-mode "h h" 'helpful-at-point)
-(evil-define-key 'normal helpful-mode-map "q" 'quit-window)
 
 (define-key evil-normal-state-map (kbd "s-a") #'mark-whole-buffer)
 (define-key evil-normal-state-map "Q" 'bury-buffer)
@@ -80,20 +76,6 @@
   (define-key map "\M-h" 'sp-forward-barf-sexp)
   (define-key map "\M-L" 'sp-backward-slurp-sexp)
   (define-key map "\M-H" 'sp-backward-barf-sexp))
-
-;;;; l and h are for navigating. even in magit
-(with-eval-after-load 'magit
-  (evil-define-key evil-magit-state magit-mode-map "l" 'evil-forward-char)
-  (evil-define-key evil-magit-state magit-mode-map (kbd "M-l") 'magit-log-popup)
-  (evil-define-key evil-magit-state magit-mode-map "h" 'evil-backward-char)
-  (evil-define-key evil-magit-state magit-mode-map (kbd "M-h") 'magit-dispatch-popup))
-
-;; Some stupid "genius" decided to mess with F/p keys (pull/push), after adding Forge
-;; temp. fix till they make it right again. corresponding: https://github.com/emacs-evil/evil-magit/issues/60
-(with-eval-after-load 'forge
-  (evil-magit-define-key evil-magit-state 'magit-mode-map "F" 'magit-pull-popup)
-  (evil-magit-define-key evil-magit-state 'magit-mode-map "p" 'magit-push-popup)
-  (evil-magit-define-key evil-magit-state 'magit-mode-map "'" 'forge-dispatch))
 
 ;;;; making Info-mode keys more suitable for Evil
 (define-key Info-mode-map (kbd "H") 'Info-up)
