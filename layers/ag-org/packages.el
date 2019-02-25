@@ -198,7 +198,7 @@
     (add-hook 'persp-before-switch-functions 'autosave-tasks-org)
 
     (add-to-list 'org-modules 'org-tempo t)
-    ))
+    (add-to-list 'org-structure-template-alist '("sqlf" . "src sql :engine postgresql :dbhost localhost :database cc :dbuser cc_user :dbpassword password"))))
 
 (defun ag-org/post-init-org-pomodoro ()
   (with-eval-after-load 'org-pomodoro
