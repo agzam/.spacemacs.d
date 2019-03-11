@@ -96,12 +96,6 @@ DIRECTION - can be North, South, West, East"
     (call-process (executable-find "hs") nil 0 nil "-c"
                   (concat "require(\"emacs\").switchToApp (\"" pid "\")"))))
 
-(defun get-branch-at-point ()
-  (interactive)
-  (let ((b (magit-branch-at-point)))
-    (kill-new b)
-    (message b)))
-
 (defvar ag/edit-with-emacs-mode-map
   (let ((map (make-keymap)))
     (define-key map (kbd "C-c C-c") 'ag/finish-edit-with-emacs)
@@ -114,20 +108,19 @@ DIRECTION - can be North, South, West, East"
   :lighter " editwithemacs"
   :keymap ag/edit-with-emacs-mode-map)
 
-(defvar systemwide-edit-previous-app-pid nil
-  "Last app that invokes `ag/edit-with-emacs'.")
-
 (defun ag/edit-with-emacs (&optional pid title)
-  "
+  "Edit anything with Emacs
+
 PID is a pid of the app (the caller is responsible to set that right)
-TITLE is a title of the window (the caller is responsible to set that right) "
+TITLE is a title of the window (the caller is responsible to set that right)"
   (setq systemwide-edit-previous-app-pid pid)
   (select-frame-by-name "edit")
   (set-frame-position nil 400 400)
-  (set-frame-size nil 600 300 t)
-  (set-frame-size nil 600 600 t)
+  (set-frame-size nil 800 600 t)
   (let ((buffer (get-buffer-create (concat "*edit-with-emacs " title " *"))))
     (set-buffer-major-mode buffer)
+    (unless (bound-and-true-p global-edit-with-emacs-mode)
+      (global-edit-with-emacs-mode 1))
     (with-current-buffer buffer
       (spacemacs/copy-clipboard-to-whole-buffer)
       (spacemacs/evil-search-clear-highlight)
@@ -137,6 +130,17 @@ TITLE is a title of the window (the caller is responsible to set that right) "
       (ag/edit-with-emacs-mode 1)
       (evil-insert 1))
     (switch-to-buffer buffer)))
+
+(defun ag/turn-on-edit-with-emacs-mode ()
+  "Turn on `ag/edit-with-emacs-mode' if the buffer derives from that mode"
+  (when (string-match-p "*edit-with-emacs" (buffer-name (current-buffer)))
+    (ag/edit-with-emacs-mode t)))
+
+(define-global-minor-mode global-edit-with-emacs-mode
+  ag/edit-with-emacs-mode ag/turn-on-edit-with-emacs-mode)
+
+(defvar systemwide-edit-previous-app-pid nil
+  "Last app that invokes `ag/edit-with-emacs'.")
 
 (defun ag/finish-edit-with-emacs ()
   (interactive)
