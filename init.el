@@ -575,7 +575,8 @@ dump."
   ;; ----------
   (setq-default perspective-enable-persp-projectile t
                 persp-auto-save-opt 0
-                persp-switch-wrap nil)
+                persp-switch-wrap nil
+                persp-kill-foreign-buffer-behaviour 'kill)
 
   ;; -----------
   ;; Yasnippet
