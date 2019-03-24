@@ -73,7 +73,9 @@ This function should only modify configuration layer settings."
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages '(copy-as-format
                                       helm-flycheck
-                                      quelpa-use-package)
+                                      quelpa-use-package
+                                      ;; helm-swoop-edit is broken, see: https://github.com/ShingoFukuyama/helm-swoop/issues/133
+                                      (helm-swoop :location (recipe :fetcher github :repo "andyg0808/helm-swoop")))
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
 
