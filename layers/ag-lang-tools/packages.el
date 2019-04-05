@@ -15,7 +15,10 @@
     ;; don't get the package from MELPA - it's been reported broken
     (sdcv-mode :location (recipe
                           :fetcher github
-                          :repo "gucong/emacs-sdcv"))))
+                          :repo "gucong/emacs-sdcv"))
+    (emacs-grammarly :location (recipe
+                                :fetcher github
+                                :repo "mmagnus/emacs-grammarly"))))
 
 (defun ag-lang-tools/init-mw-thesaurus ()
   (use-package mw-thesaurus
@@ -44,5 +47,11 @@
     (evil-define-key 'normal sdcv-mode-map "p" #'sdcv-previous-entry)
     (evil-define-key 'normal sdcv-mode-map (kbd "RET") #'sdcv-search-at-point)
     (evil-define-key 'normal sdcv-mode-map "a" #'sdcv-search-at-point)))
+
+(defun ag-lang-tools/init-emacs-grammarly ()
+  (use-package emacs-grammarly
+    :config
+    (spacemacs/set-leader-keys
+      "xlg" #'grammarly-save-region-and-run)))
 
 (setq ispell-program-name "aspell")
