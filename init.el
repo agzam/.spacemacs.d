@@ -148,7 +148,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil then spacemacs will check for updates at startup
    ;; when the current branch is not `develop'. Note that checking for
    ;; new versions works via git commands, thus it calls GitHub services
-   ;; whenever you start Emacs. default nil
+   ;; whenever you start Emacs. (default nil)
    dotspacemacs-check-for-update nil
 
    ;; If non-nil, a form that evaluates to a package directory. For example, to
@@ -458,7 +458,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    exec-path-from-shell-check-startup-files nil
    ;; Editor
    line-spacing 6
-   left-fringe-width 5
+   left-fringe-width 6
    right-fringe-width 0
    evil-escape-key-sequence "lk"
    evil-escape-delay 0.1
