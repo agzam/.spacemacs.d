@@ -31,22 +31,26 @@
   (with-eval-after-load 'org
     (setq org-capture-templates
           '(
-            ;; ("t" "Todo" entry (file "~/Dropbox/org/tasks.org")
-            ;;  "* TODO  %?\n SCHEDULED: %^u")
             ("t" "simple todo" entry (file+headline "~/Dropbox/org/tasks.org" "Tasks")
              "* TODO %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
-            ("T" "todo" entry (file+headline "~/Dropbox/org/tasks.org" "Tasks")
-             "* TODO %?%a\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n\t%a\n")
-            ("i" "Immediate" entry (file "~/Dropbox/org/tasks.org")
+
+            ("T" "todo" entry (file+olp+datetree "~/Dropbox/org/tasks.org")
+             "* TODO %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
+
+            ("i" "Immediate" entry (file+olp+datetree "~/Dropbox/org/tasks.org")
              "* ONGOING %?" :clock-in t :clock-resume t :clock-keep t)
-            ("c" "Code Snippet" entry (file "~/Dropbox/org/tasks.org")
+
+            ("c" "Code Snippet" entry (file+olp+datetree "~/Dropbox/org/tasks.org")
         ;;;; Prompt for tag and language
              "* %u  %?\n\t%F\n\t#+BEGIN_SRC %^{language}\n\t\t%i\n\t#+END_SRC")
+
             ("y" "Yakety" entry (file "~/Dropbox/org/yakety.org")
              "* TODO  %?\n SCHEDULED: %^u\n :LOGBOOK:\n  - State \"TODO\"       from              %U\n  :END:")
+
             ("j" "Journal" entry (file+olp+datetree "~/Dropbox/org/journal.org")
              "* %u %?"
              :time-prompt t)
+
             ("z" "Currently clocked-in" item (clock)
              "Note taken on %U \\\ \n%?")))
 

@@ -28,7 +28,7 @@
 
 (defun ag-dired/init-direx ()
   (use-package direx
-    :defer t
+    :ensure t
     :init
     (defun direx:item-collapse-recursively (item)
       (direx:item-collapse item)

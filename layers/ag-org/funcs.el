@@ -19,6 +19,47 @@ Without universal ARG: 2017-11-08 With universal ARG: 08.11.2017"
               (format-time-string "%d.%m.%Y")
             (format-time-string "%Y-%m-%d"))))
 
+
+(defun org-refile-to-datetree (&optional file)
+  "Refile a subtree to a datetree corresponding to it's timestamp.
+
+Will prompt for timestamp if the entry has no timestamp.
+If FILE is nil, refile in the current buffer."
+  (interactive)
+  (let* ((datetree-date (or (org-entry-get nil "TIMESTAMP" t)
+                            (org-read-date t nil)))
+         (date (org-date-to-gregorian datetree-date)))
+    (save-excursion
+      (with-current-buffer (current-buffer)
+        (org-cut-subtree)
+        (when file
+          (find-file file))
+        (org-datetree-find-date-create date)
+        (org-narrow-to-subtree)
+        (show-subtree)
+        (org-end-of-subtree t)
+        (newline)
+        (goto-char (point-max))
+        (org-paste-subtree 4)
+        (widen)))))
+
+
+(defun org-goto-last-heading (&optional maxlevel)
+  "Go to the last heading in the current subtree."
+  (interactive "P")
+  (if (listp maxlevel)
+      (setq maxlevel 4)
+    (unless maxlevel (setq maxlevel 3)))
+  (setq currlevel 1)
+  (while (<= currlevel maxlevel)
+    (org-next-visible-heading 1)
+    (if (not (org-at-heading-p))
+        (progn
+          (org-previous-visible-heading 1)
+          (org-cycle)
+          (setq currlevel (1+ currlevel))))))
+
+
 (defun pomodoro/create-menu-item (color)
   "Create Hammerspoon `hs.menubar`.
 

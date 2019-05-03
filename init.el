@@ -74,8 +74,17 @@ This function should only modify configuration layer settings."
    dotspacemacs-additional-packages '(copy-as-format
                                       helm-flycheck
                                       quelpa-use-package
+                                      fennel-mode
+
                                       ;; helm-swoop-edit is broken, see: https://github.com/ShingoFukuyama/helm-swoop/issues/133
-                                      (helm-swoop :location (recipe :fetcher github :repo "andyg0808/helm-swoop")))
+                                      (helm-swoop :location (recipe :fetcher github :repo "andyg0808/helm-swoop"))
+
+                                      ;; see: https://github.com/syl20bnr/spacemacs/issues/12110
+                                      (undo-tree :location (recipe
+                                                            :fetcher git
+                                                            :url "http://www.dr-qubit.org/git/undo-tree.git"
+                                                            :branch "master"))
+   )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
 
@@ -469,7 +478,9 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    eyebrowse-keymap-prefix (kbd "C-x C-x"))
 
   (setq
-   ns-use-srgb-colorspace nil
+   undo-tree-enable-undo-in-region nil
+   evil-want-fine-undo nil
+   ns-use-srgb-colorspace t
    evil-want-C-u-scroll nil
    ns-auto-hide-menu-bar nil
    exec-path-from-shell-variables '("PATH" "MANPATH" "NVM_DIR" "NODE_PATH" "HOMEBREW_GITHUB_API_TOKEN" "DEV")

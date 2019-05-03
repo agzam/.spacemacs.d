@@ -23,6 +23,7 @@
 (spacemacs/set-leader-keys-for-major-mode 'org-mode
   "sa" 'org-toggle-archive-tag
   "sA" 'org-archive-subtree
-  "sx" 'org-cut-subtree)
+  "sx" 'org-cut-subtree
+  "gl" 'org-goto-last-heading)
 
 ;;; keybindings.el ends here

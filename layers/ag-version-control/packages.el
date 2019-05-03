@@ -9,7 +9,12 @@
 ;;
 ;;; License: GPLv3
 
-(defconst ag-version-control-packages '(magit gist))
+(defconst ag-version-control-packages '(magit
+                                        gist
+                                        (github-review
+                                         :recipe (:fetcher github
+                                                           :repo "charignon/github-review"
+                                                           :files ("github-review.el")))))
 
 (setq
  vc-follow-symlinks t
@@ -24,8 +29,7 @@
    magit-show-refs-arguments '("--sort=-committerdate")
    magit-delete-by-moving-to-trash nil
    magit-branch-rename-push-target nil ; do not push renamed/deleted branch to remote automatically
-   magit-diff-refine-hunk 'all
-   )
+   magit-diff-refine-hunk 'all)
 
   (define-key transient-map "q" #'transient-quit-all)
 
@@ -90,4 +94,8 @@ i.e.: show only commits that differ between selected (other branch) and current 
   (setq
    gist-view-gist t ; view your Gist using `browse-url` after it is created
    ))
+
+(defun ag-version-control/init-github-review ()
+  (use-package github-review))
+
 ;;; packages.el ends here
