@@ -35,14 +35,13 @@ This function should only modify configuration layer settings."
    '(
      ;; ---- Languages -----
      csv yaml emacs-lisp lua javascript ag-haskell
-     (ag-clojure
-      :variables clojure-enable-clj-refactor t)
      (html :packages (not pug-mode slim-mode))
      (markdown
       :packages (not mmm-mode)
       :variables markdown-live-preview-engine 'vmd)
      (shell-scripts :packages (not fish-mode))
      ;; --- Editor  ----
+     semantic
      (auto-completion :variables
                       auto-completion-tab-key-behavior 'cycle
                       auto-completion-enable-snippets-in-popup t
@@ -55,6 +54,7 @@ This function should only modify configuration layer settings."
      ;;       (cond ((eq system-type 'darwin) "~/Library/Application\ Support/Dash/DocSets")))
      (shell :variables shell-default-shell 'eshell)
      ;; --- My own layers ----
+     (ag-clojure :variables clojure-enable-clj-refactor t)
      ag-colors
      ag-dired
      ag-general
@@ -325,7 +325,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (default nil) (Emacs 24.4+ only)
-   dotspacemacs-maximized-at-startup t
+   dotspacemacs-maximized-at-startup nil
 
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.

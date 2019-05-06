@@ -38,11 +38,18 @@ If FILE is nil, refile in the current buffer."
         (org-narrow-to-subtree)
         (show-subtree)
         (org-end-of-subtree t)
-        (newline)
         (goto-char (point-max))
         (org-paste-subtree 4)
         (widen)))))
 
+(defun org-goto-datetree-date (&optional date)
+  (interactive)
+  (save-restriction
+    (let* ((datetree-date (org-read-date))
+           (dt (org-date-to-gregorian datetree-date)))
+      (org-datetree-find-date-create dt t)
+      (org-show-hidden-entry)
+      (show-subtree))))
 
 (defun org-goto-last-heading (&optional maxlevel)
   "Go to the last heading in the current subtree."

@@ -24,6 +24,7 @@
   "sa" 'org-toggle-archive-tag
   "sA" 'org-archive-subtree
   "sx" 'org-cut-subtree
-  "gl" 'org-goto-last-heading)
+  "gl" 'org-goto-last-heading
+  "gd" 'org-goto-datetree-date)
 
 ;;; keybindings.el ends here
