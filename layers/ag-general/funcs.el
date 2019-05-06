@@ -97,7 +97,7 @@ DIRECTION - can be North, South, West, East"
                   (concat "require(\"emacs\").switchToApp (\"" pid "\")"))))
 
 (defvar ag/edit-with-emacs-mode-map
-  (let ((map (make-keymap)))
+  (let ((map (make-sparse-keymap)))
     (define-key map (kbd "C-c C-c") 'ag/finish-edit-with-emacs)
     (define-key map (kbd "C-c C-k") 'ag/cancel-edit-with-emacs)
     map))
@@ -108,12 +108,13 @@ DIRECTION - can be North, South, West, East"
   :lighter " editwithemacs"
   :keymap ag/edit-with-emacs-mode-map)
 
-(defun ag/edit-with-emacs (&optional pid title)
+(defun ag/edit-with-emacs (&optional pid title screen)
   "Edit anything with Emacs
 
 PID is a pid of the app (the caller is responsible to set that right)
 TITLE is a title of the window (the caller is responsible to set that right)"
   (setq systemwide-edit-previous-app-pid pid)
+
   (select-frame-by-name "edit")
   (set-frame-position nil 400 400)
   (set-frame-size nil 800 600 t)
@@ -129,7 +130,12 @@ TITLE is a title of the window (the caller is responsible to set that right)"
       (markdown-mode)
       (ag/edit-with-emacs-mode 1)
       (evil-insert 1))
-    (switch-to-buffer buffer)))
+    (switch-to-buffer buffer))
+  (when (and pid (eq system-type 'darwin))
+    (call-process
+     (executable-find "hs") nil 0 nil "-c"
+     (concat "require(\"emacs\").editWithEmacsCallback(\""
+             pid "\",\"" title "\",\"" screen "\")"))))
 
 (defun ag/turn-on-edit-with-emacs-mode ()
   "Turn on `ag/edit-with-emacs-mode' if the buffer derives from that mode"
