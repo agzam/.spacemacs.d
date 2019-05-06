@@ -1,4 +1,4 @@
-;;; funcs.el --- ag-mail layer functions
+;;; config.el --- ag-mail layer configuration vars
 ;;
 ;; Copyright (c) 2017 Ag Ibragimov
 ;;
@@ -11,8 +11,7 @@
 ;;
 ;;; Code:
 
-(defun mu4e-prepare-view ()
-  (when mu4e-centered-view-p
-    (spacemacs/toggle-centered-buffer)))
+(defvar mu4e-centered-view-p t
+  "If non-nil mu4e view will be displayed in a centered buffer")
 
 ;;; funcs.el ends here

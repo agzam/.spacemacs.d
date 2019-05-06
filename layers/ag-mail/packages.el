@@ -114,6 +114,7 @@
 
   (add-hook 'mu4e-compose-mode-hook #'turn-off-auto-fill)
   (add-hook 'mu4e-compose-mode-hook #'spacemacs/toggle-visual-line-navigation-on)
+  (add-hook 'mu4e-view-mode-hook 'mu4e-prepare-view)
 
   (setq mu4e-view-actions
         '(("capture message" . mu4e-action-capture-message)
