@@ -29,16 +29,19 @@
    magit-show-refs-arguments '("--sort=-committerdate")
    magit-delete-by-moving-to-trash nil
    magit-branch-rename-push-target nil ; do not push renamed/deleted branch to remote automatically
-   magit-diff-refine-hunk 'all)
+   magit-diff-refine-hunk 'all
+
+   ;; https://github.com/magit/ghub/issues/81
+   gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 
   (define-key transient-map "q" #'transient-quit-all)
 
   ;; Add `git log ORIG_HEAD..HEAD` to magit
   ;; that lets you log only changes since the last pull
   (defun magit-log-orig_head--head (args files)
-    "Compare log since the last pull. i.e.: show only commits between last pull and head"
-    (interactive (magit-log-arguments))
-    (magit-git-log (list "ORIG_HEAD..HEAD") args files))
+   "Compare log since the last pull. i.e.: show only commits between last pull and head"
+   (interactive (magit-log-arguments))
+   (magit-git-log (list "ORIG_HEAD..HEAD") args files))
 
   (transient-append-suffix 'magit-log "l"
     '("p" "orig_head..head" magit-log-orig_head--head))
@@ -81,14 +84,17 @@ i.e.: show only commits that differ between selected (other branch) and current 
   ;; who cares about tags to be displayed in magit-refs buffer?
   (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
 
-  (custom-set-variables
-   '(magit-commit-arguments (quote ("--gpg-sign=CFE12444AF47BD1D")))
-   '(magit-fetch-arguments (quote ("--prune")))
-   '(magit-log-arguments (quote ("-n500" "--graph" "--color")))))
+;; (custom-set-variables
+;;  '(magit-commit-arguments (quote ("--gpg-sign=CFE12444AF47BD1D")))
+;;  '(magit-fetch-arguments (quote ("--prune")))
+;;  '(magit-log-arguments (quote ("-n500" "--graph" "--color")))
+;;  '(magit-show-refs-arguments (quote ("--sort=-committerdate"))))
+
+)
 
 (with-eval-after-load 'evil-magit
   ;; don't exit magit on escape-sequence and don't bury its buffer on Esc
-  (evil-magit-define-key 'normal 'magit-mode-map "<escape>" nil))
+ (evil-magit-define-key 'normal 'magit-mode-map "<escape>" nil))
 
 (defun ag-version-control/post-init-gist ()
   (setq

@@ -77,14 +77,7 @@ This function should only modify configuration layer settings."
                                       fennel-mode
 
                                       ;; helm-swoop-edit is broken, see: https://github.com/ShingoFukuyama/helm-swoop/issues/133
-                                      (helm-swoop :location (recipe :fetcher github :repo "andyg0808/helm-swoop"))
-
-                                      ;; see: https://github.com/syl20bnr/spacemacs/issues/12110
-                                      (undo-tree :location (recipe
-                                                            :fetcher git
-                                                            :url "http://www.dr-qubit.org/git/undo-tree.git"
-                                                            :branch "master"))
-   )
+                                      (helm-swoop :location (recipe :fetcher github :repo "andyg0808/helm-swoop")))
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
 
@@ -489,7 +482,9 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (with-eval-after-load 'auto-highlight-symbol
    (spacemacs/toggle-automatic-symbol-highlight-on))
 
-  (load custom-file))
+  (load custom-file)
+  (with-eval-after-load 'undo-tree
+  (global-undo-tree-mode -1)))
 
 (defun dotspacemacs/user-load ()
   "Library to load while dumping.
