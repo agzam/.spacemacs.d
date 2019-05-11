@@ -114,7 +114,6 @@ DIRECTION - can be North, South, West, East"
 PID is a pid of the app (the caller is responsible to set that right)
 TITLE is a title of the window (the caller is responsible to set that right)"
   (setq systemwide-edit-previous-app-pid pid)
-
   (select-frame-by-name "edit")
   (set-frame-position nil 400 400)
   (set-frame-size nil 800 600 t)
