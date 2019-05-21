@@ -42,7 +42,7 @@
   (defun magit-log-orig_head--head (args files)
    "Compare log since the last pull. i.e.: show only commits between last pull and head"
    (interactive (magit-log-arguments))
-   (magit-git-log (list "ORIG_HEAD..HEAD") args files))
+   (magit-log-other (list "ORIG_HEAD..HEAD") args files))
 
   (transient-append-suffix 'magit-log "l"
     '("p" "orig_head..head" magit-log-orig_head--head))
@@ -51,7 +51,7 @@
     "Compare log between branches à la GitHub style.
 i.e.: show only commits that differ between selected (other branch) and current branch"
     (interactive (list (magit-read-other-branch-or-commit "Log compare")))
-    (magit-git-log (list (concat revision ".." (magit-get-current-branch))) nil nil))
+    (magit-log-other (list (concat revision ".." (magit-get-current-branch))) nil nil))
 
   (transient-append-suffix 'magit-log "l"
     '("R" "other..current" magit-log-other--current))
@@ -59,7 +59,7 @@ i.e.: show only commits that differ between selected (other branch) and current 
   (defun magit-log--origin-master ()
     "Compare log between branches à la GitHub style between current branch and origin/master"
     (interactive)
-    (magit-git-log (list (concat  "origin/master.." (magit-get-current-branch))) nil nil))
+    (magit-log-other (list (concat  "origin/master.." (magit-get-current-branch))) nil nil))
 
   (transient-append-suffix 'magit-log "l"
     '("m" "origin/master..current" magit-log--origin-master))

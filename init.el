@@ -59,7 +59,9 @@ This function should only modify configuration layer settings."
      ag-dired
      ag-general
      ag-lang-tools
-     ag-org ag-mail
+     (ag-org
+      :variables org-enable-github-support t)
+     ag-mail
      ag-version-control
      ag-web
      )

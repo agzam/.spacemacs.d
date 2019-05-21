@@ -1,1 +1,2 @@
-((magit-show-refs "--sort=-committerdate"))
+((magit-fetch "--prune")
+ (magit-show-refs "--sort=-committerdate"))
