@@ -172,13 +172,11 @@
   (use-package base16-theme))
 
 (with-eval-after-load 'core-themes-support
-  (add-hook 'spacemacs-post-theme-change-hook 'ag/adjust-themes t))
-
-(add-hook 'window-setup-hook 'ag/adjust-themes)
+  (add-hook 'spacemacs-post-theme-change-hook 'ag/adjust-themes t)
+  (add-hook 'before-make-frame-hook 'ag/adjust-themes))
 
 ;; Local Variables:
 ;; no-byte-compile: t
 ;; indent-tabs-mode: nil
 ;; eval: (when (require 'rainbow-mode nil t) (rainbow-mode 1))
 ;; End:
-;; (ag/decrease-powerline-fonts 'spacemacs-light)

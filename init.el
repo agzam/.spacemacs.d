@@ -486,15 +486,13 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   (load custom-file)
   (with-eval-after-load 'undo-tree
-  (global-undo-tree-mode -1)))
+    (global-undo-tree-mode -1)))
 
 (defun dotspacemacs/user-load ()
   "Library to load while dumping.
 This function is called only while dumping Spacemacs configuration. You can
 `require' or `load' the libraries of your choice that will be included in the
-dump."
-  (ag/adjust-themes)
-  )
+dump.")
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code. This function is called at the very end of Spacemacs initialization after layers configuration. You are free to put any user code."
@@ -627,4 +625,6 @@ dump."
 
   (spacemacs|define-custom-layout "@dotfile"
     :binding "d"
-    :body (find-file "~/dotfile.org/dotfile.org")))
+    :body (find-file "~/dotfile.org/dotfile.org"))
+
+  (run-at-time "1 sec" nil #'ag/adjust-themes))

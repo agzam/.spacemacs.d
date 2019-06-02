@@ -49,8 +49,6 @@
         ;; rename files when moving, needed for mbsync
         mu4e-index-update-in-background t
         mu4e-change-filenames-when-moving t
-        mu4e-headers-has-child-prefix '("."  . "◼ ")
-        mu4e-headers-default-prefix '(" "  . "│ ")
         mu4e-compose-dont-reply-to-self t
         mu4e-compose-format-flowed t
         fill-flowed-encode-column 5000
@@ -70,7 +68,7 @@
         smtpmail-queue-dir "~/.mail/queue/cur"
         send-mail-function 'smtpmail-send-it
         message-send-mail-function 'smtpmail-send-it
-        mu4e-sent-messages-behavior 'sent
+        mu4e-sent-messages-behavior 'delete
         mail-envelope-from 'header
         mail-user-agent 'mu4e-user-agent)
 
@@ -183,6 +181,8 @@
                                      :help "Mail client used by correspondant"
                                      :function ed/get-origin-mail-system-header)))
 
+  ;; headers view should be at 20 percent of frame height
+  (setq mu4e-headers-visible-lines (truncate (* (frame-height) 0.2)))
   (setq mu4e-headers-fields
         '((:flags . 5)
           (:human-date . 22)
@@ -190,16 +190,12 @@
           (:foldername . 25)
           (:from-or-to . 25)
           (:subject . nil))
-
+        mu4e-use-fancy-chars t
         mu4e-headers-date-format "%a %d %b %Y %H:%M"
         mu4e-headers-time-format "%H:%M"
-        mu4e-use-fancy-chars nil
         mu4e-view-fields '(:from :to :cc :subject :flags :date :maildir :mailing-list :tags :useragent :attachments :signature :decryption))
 
   (add-hook 'mu4e-view-mode-hook #'spacemacs/toggle-visual-line-navigation-on)
-
-  (mu4e-maildirs-extension)
-
-  )
+  (mu4e-maildirs-extension))
 
 ;;; packages.el ends here
