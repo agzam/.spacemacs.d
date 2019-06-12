@@ -26,11 +26,11 @@
    version-control-global-margin t
    magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1
    magit-repository-directories '("~/DevProjects" "~/Sandbox")
-   magit-show-refs-arguments '("--sort=-committerdate")
+   ;; magit-show-refs-arguments '("--sort=-committerdate")
    magit-delete-by-moving-to-trash nil
    magit-branch-rename-push-target nil ; do not push renamed/deleted branch to remote automatically
    magit-diff-refine-hunk 'all
-   transient-values-file "~/.spacemacs.d/magit_transient_values.el"
+   ;; transient-values-file "~/.spacemacs.d/magit_transient_values.el"
 
    ;; https://github.com/magit/ghub/issues/81
    gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")

@@ -190,6 +190,8 @@
           (:foldername . 25)
           (:from-or-to . 25)
           (:subject . nil))
+        mu4e-headers-show-thread nil
+        mu4e-headers-include-related nil
         mu4e-use-fancy-chars t
         mu4e-headers-date-format "%a %d %b %Y %H:%M"
         mu4e-headers-time-format "%H:%M"

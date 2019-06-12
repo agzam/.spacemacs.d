@@ -70,7 +70,8 @@
      org-M-RET-may-split-line '((headline))
      org-ctrl-k-protect-subtree t
      org-catch-invisible-edits 'smart
-     org-use-property-inheritance nil)
+     org-use-property-inheritance nil
+     org-hide-emphasis-markers t)
 
      ;;;; ---- lists ----
     (setq

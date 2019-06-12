@@ -41,7 +41,6 @@ This function should only modify configuration layer settings."
       :variables markdown-live-preview-engine 'vmd)
      (shell-scripts :packages (not fish-mode))
      ;; --- Editor  ----
-     semantic
      (auto-completion :variables
                       auto-completion-tab-key-behavior 'cycle
                       auto-completion-enable-snippets-in-popup t
@@ -474,6 +473,8 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   (setq
    undo-tree-enable-undo-in-region nil
+   undo-limit 200000
+   undo-strong-limit 250000
    evil-want-fine-undo nil
    ns-use-srgb-colorspace t
    evil-want-C-u-scroll nil
@@ -484,9 +485,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (with-eval-after-load 'auto-highlight-symbol
    (spacemacs/toggle-automatic-symbol-highlight-on))
 
-  (load custom-file)
-  (with-eval-after-load 'undo-tree
-    (global-undo-tree-mode -1)))
+  (load custom-file))
 
 (defun dotspacemacs/user-load ()
   "Library to load while dumping.

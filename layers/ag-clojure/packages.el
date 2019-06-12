@@ -35,7 +35,7 @@
         cider-repl-display-in-current-window nil
         nrepl-log-messages nil
         cider-comment-prefix  " \n;; => "
-        clojure-align-binding-forms '("binding" "loop" "doseq" "for" "with-open" "with-local-vars" "with-redefs")
+        ;; clojure-align-binding-forms '("binding" "loop" "doseq" "for" "with-open" "with-local-vars" "with-redefs")
 
         ;; make * operator (spacemacs/enter-ahs-forward) to recognize symbols like foo/bar
         ahs-include "^\\_<\\(?:\\s_\\|\\sw\\)+\\_>$"
