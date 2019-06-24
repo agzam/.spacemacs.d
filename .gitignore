@@ -3,3 +3,4 @@ mthesaur.txt.cache
 custom.el
 eshell.aliases
 .spacemacs.env
+layers/ag-lang-tools/local/mw-thesaurus

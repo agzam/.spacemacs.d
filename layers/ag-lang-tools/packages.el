@@ -26,7 +26,7 @@
     :config
     (define-key mw-thesaurus-mode-map [remap evil-record-macro] #'mw-thesaurus--quit)
     (spacemacs/set-leader-keys
-      "xlm" #'mw-thesaurus--lookup-at-point
+      "xlm" #'mw-thesaurus-lookup-at-point
       "xAg" #'add-global-abbrev
       "xAl" #'add-mode-abbrev)))
 
