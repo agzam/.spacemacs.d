@@ -19,7 +19,6 @@ Without universal ARG: 2017-11-08 With universal ARG: 08.11.2017"
               (format-time-string "%d.%m.%Y")
             (format-time-string "%Y-%m-%d"))))
 
-
 (defun org-refile-to-datetree (&optional file)
   "Refile a subtree to a datetree corresponding to it's timestamp.
 
@@ -66,7 +65,6 @@ If FILE is nil, refile in the current buffer."
           (org-cycle)
           (setq currlevel (1+ currlevel))))))
 
-
 (defun pomodoro/create-menu-item (color)
   "Create Hammerspoon `hs.menubar`.
 
@@ -109,7 +107,7 @@ item COLOR can be \"red\" \"green\" or \"yellow\"."
   (cond
    ((eq system-type 'darwin)
     (progn
-      (hs-alert "task done")
+      (spacehammer/alert "task done")
       (pomodoro/modify-menu-item "green")))
    ((eq system-type 'gnu/linux)
     (notify-send "org-pomodoro" "Task is done, good job!" '(category "finished")))))
@@ -117,7 +115,7 @@ item COLOR can be \"red\" \"green\" or \"yellow\"."
 (defun pomodoro/on-break-over-hook ()
   "When pomodoro break is over."
   (cond ((eq system-type 'darwin)
-         (progn (hs-alert "break over")
+         (progn (spacehammer/alert "break over")
                 (pomodoro/remove-menu-item)))
         ((eq system-type 'gnu/linux)
          (notify-send "org-pomodoro" "Break is over, get back to work"
@@ -126,7 +124,7 @@ item COLOR can be \"red\" \"green\" or \"yellow\"."
 (defun pomodoro/on-killed-hook ()
   "When you kill pomodoro."
   (cond ((eq system-type 'darwin)
-         (progn (hs-alert "killed")
+         (progn (spacehammer/alert "killed")
                 (pomodoro/remove-menu-item)))
         ((eq system-type 'gnu/linux)
          (notify-send "org-pomodoro" "Pomodoro got killed"
@@ -137,7 +135,7 @@ item COLOR can be \"red\" \"green\" or \"yellow\"."
   (cond
    ((eq system-type 'darwin)
     (progn
-      (hs-alert "- start churning -")
+      (spacehammer/alert "- start churning -")
       (pomodoro/create-menu-item "red")))
    ((eq system-type 'gnu/linux)
     (notify-send "org-pomodoro" "Let's get to it" '(category "started")))))
@@ -324,7 +322,7 @@ KEYS is a string associated with a template (will be passed to `org-capture')"
   "Advise capture-finalize to close the frame."
   (when (and (equal "capture" (frame-parameter nil 'name))
              (not (eq this-command 'org-capture-refile)))
-    (ag/switch-to-app systemwide-capture-previous-app-pid)
+    (spacehammer/switch-to-app systemwide-capture-previous-app-pid)
     (delete-frame)))
 
 (defadvice org-capture-refile
@@ -336,7 +334,7 @@ KEYS is a string associated with a template (will be passed to `org-capture')"
     (before before-user-error activate)
   "Advice"
   (when (eq (buffer-name) "*Org Select*")
-    (ag/switch-to-app systemwide-capture-previous-app-pid)))
+    (spacehammer/switch-to-app systemwide-capture-previous-app-pid)))
 
 (provide 'funcs)
 

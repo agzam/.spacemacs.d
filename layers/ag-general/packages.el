@@ -23,7 +23,9 @@
                                 evil-mc
                                 edit-indirect
                                 engine-mode
-                                ))
+                                (spacehammer :location
+                                             (recipe :fetcher file
+                                                     :path "~/.hammerspoon/spacehammer.el"))))
 
 ;; (defun ag-general/init-magithub ()
 ;;   (use-package magithub
@@ -152,5 +154,14 @@
       (engine/search-github search-term)))
 
   (spacemacs/set-leader-keys "g/" #'engine/search-github-with-lang))
+
+(defun ag-general/init-spacehammer ()
+  (use-package spacehammer
+    :demand t
+    :config
+    (progn
+      (spacemacs/transient-state-register-add-bindings 'zoom-frm
+        '(("n" (spacehammer/move-frame-one-display "North"))
+          ("p" (spacehammer/move-frame-one-display "South")))))))
 
 ;;; packages.el ends here

@@ -168,7 +168,7 @@
     ;; (add-hook 'org-mode-hook 'flyspell-mode)
     (add-hook 'org-mode-hook #'ag/org-mode-hook)
     (add-hook 'org-mode-hook #'spacemacs/toggle-visual-line-navigation-on)
-    ;; (add-hook 'org-timer-done-hook (lambda () (hs-alert "-- timer done! --")))
+    ;; (add-hook 'org-timer-done-hook (lambda () (spacemacs/alert "-- timer done! --")))
 
     ;; (require 'ob-http)
     ;; (require 'ob-clojure)
