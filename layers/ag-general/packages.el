@@ -23,9 +23,11 @@
                                 evil-mc
                                 edit-indirect
                                 engine-mode
+                                fennel-mode
                                 (spacehammer :location
                                              (recipe :fetcher file
-                                                     :path "~/.hammerspoon/spacehammer.el"))))
+                                                     :path "~/.hammerspoon/"
+                                                     ))))
 
 ;; (defun ag-general/init-magithub ()
 ;;   (use-package magithub
@@ -155,13 +157,25 @@
 
   (spacemacs/set-leader-keys "g/" #'engine/search-github-with-lang))
 
+(defun ag-general/init-fennel-mode ()
+  (use-package fennel-mode
+    :init
+    (autoload 'clojure-align "clojure-mode" nil t)
+    :config
+    (spacemacs/set-leader-keys-for-major-mode
+      'fennel-mode
+      "fl"
+      'clojure-align)))
+
 (defun ag-general/init-spacehammer ()
   (use-package spacehammer
     :demand t
     :config
     (progn
       (spacemacs/transient-state-register-add-bindings 'zoom-frm
-        '(("n" (spacehammer/move-frame-one-display "North"))
+        '(("h" (spacehammer/move-frame-one-display "West"))
+          ("l" (spacehammer/move-frame-one-display "East"))
+          ("n" (spacehammer/move-frame-one-display "North"))
           ("p" (spacehammer/move-frame-one-display "South")))))))
 
 ;;; packages.el ends here

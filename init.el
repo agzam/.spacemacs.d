@@ -75,7 +75,6 @@ This function should only modify configuration layer settings."
    dotspacemacs-additional-packages '(copy-as-format
                                       helm-flycheck
                                       quelpa-use-package
-                                      fennel-mode
 
                                       ;; helm-swoop-edit is broken, see: https://github.com/ShingoFukuyama/helm-swoop/issues/133
                                       (helm-swoop :location (recipe :fetcher github :repo "andyg0808/helm-swoop")))
@@ -234,7 +233,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; The leader key accessible in `emacs state' and `insert state'
    ;; (default "M-m")
-   dotspacemacs-emacs-leader-key "s-SPC"
+   dotspacemacs-emacs-leader-key "M-m"
 
    ;; Major mode leader key is a shortcut key which is the equivalent of
    ;; pressing `<leader> m`. Set it to `nil` to disable it. (default ",")
@@ -474,6 +473,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq
    undo-tree-enable-undo-in-region nil
    undo-limit 200000
+   undo-outer-limit 24000000
    undo-strong-limit 250000
    evil-want-fine-undo nil
    ns-use-srgb-colorspace t
@@ -522,7 +522,7 @@ dump.")
    ;;;; Helm
    helm-echo-input-in-header-line nil
    helm-ff--deleting-char-backward t
-   helm-follow-mode-persistent t
+   helm-follow-mode-persistent nil
    helm-buffer-details-flag t        ;; Always show details in buffer list when non--nil.
    apropos-sort-by-scores t
 
@@ -626,4 +626,4 @@ dump.")
     :binding "d"
     :body (find-file "~/dotfile.org/dotfile.org"))
 
-  (run-at-time "1 sec" nil #'ag/adjust-themes))
+  (run-at-time "2 sec" nil #'ag/adjust-themes))

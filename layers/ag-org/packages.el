@@ -71,7 +71,10 @@
      org-ctrl-k-protect-subtree t
      org-catch-invisible-edits 'smart
      org-use-property-inheritance nil
-     org-hide-emphasis-markers t)
+     org-hide-emphasis-markers t
+     org-special-ctrl-a/e t)
+
+    (add-hook 'org-reveal-start-hook 'end-of-visual-line)
 
      ;;;; ---- lists ----
     (setq

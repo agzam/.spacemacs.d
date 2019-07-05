@@ -171,9 +171,18 @@
 (defun ag-colors/init-base16-theme ()
   (use-package base16-theme))
 
+;; this is a workaround the bug where Emacs doesn't correctly use the current
+;; theme with new frames
+;; https://github.com/syl20bnr/spacemacs/issues/11916
+(defun ag/new-frame-init (frame)
+  (run-at-time "0.002 sec" nil
+               (lambda ()
+                 (enable-theme spacemacs--cur-theme)
+                 (ag/adjust-themes))))
+
 (with-eval-after-load 'core-themes-support
   (add-hook 'spacemacs-post-theme-change-hook 'ag/adjust-themes t)
-  (add-hook 'before-make-frame-hook 'ag/adjust-themes))
+  (add-hook 'after-make-frame-functions 'ag/new-frame-init))
 
 ;; Local Variables:
 ;; no-byte-compile: t

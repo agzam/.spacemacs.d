@@ -103,6 +103,11 @@ i.e.: show only commits that differ between selected (other branch) and current 
    ))
 
 (defun ag-version-control/init-github-review ()
-  (use-package github-review))
+  (use-package github-review
+    :commands magit-status-mode
+    :bind (:map magit-status-mode-map
+           ("M-r" . github-review-forge-pr-at-point))
+    :config
+    (setq github-review-fetch-top-level-and-review-comments t)))
 
 ;;; packages.el ends here
