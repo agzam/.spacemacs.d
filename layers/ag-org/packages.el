@@ -12,6 +12,7 @@
 (defconst ag-org-packages '(org
                             org-pomodoro
                             ;; ox-reveal
+                            org-noter
                             (latex-fragments :location local)
                             (org-present :excluded t)
                             (org-journal :excluded t)
@@ -215,6 +216,38 @@
     (add-hook 'org-pomodoro-break-finished-hook #'pomodoro/on-break-over-hook)
     (add-hook 'org-pomodoro-killed-hook #'pomodoro/on-killed-hook)
     (add-hook 'org-pomodoro-started-hook #'pomodoro/on-started-hook)))
+
+(defun ag-org/init-org-noter ()
+  (use-package org-noter
+    :config
+    (setq org-noter-always-create-frame nil
+          org-noter-insert-note-no-questions t
+          org-noter-separate-notes-from-heading t
+          org-noter-auto-save-last-location t
+          org-noter-kill-frame-at-session-end t
+          org-noter-notes-search-path '("~/Dropbox/org"
+                                        "~/SyncMobile/Books"
+                                        "~/SyncMobile/Books/Papers")
+          org-noter-default-notes-file-names '("notes.org"))
+
+    (defun org-noter-init-pdf-view ()
+      (pdf-view-fit-page-to-window)
+      (pdf-view-auto-slice-minor-mode)
+      (run-at-time "0.5 sec" nil #'org-noter))
+
+    (add-hook 'pdf-view-mode-hook 'org-noter-init-pdf-view)
+
+    (defun org-noter-kill-the-note-buffer (&rest _ignore)
+      (setq notes-fname (org-noter--session-notes-file-path org-noter--session))
+      (setq pdf-fname (buffer-file-name (org-noter--session-doc-buffer org-noter--session)))
+      (run-at-time "0.5 sec" nil (lambda ()
+                                   (kill-buffer (get-file-buffer pdf-fname))
+                                   (switch-to-buffer (get-file-buffer notes-fname))
+                                   (kill-buffer (get-file-buffer notes-fname))
+                                   (makunbound 'notes-fname)
+                                   (makunbound 'pdf-fname))))
+
+    (advice-add #'org-noter-kill-session :before 'org-noter-kill-the-note-buffer)))
 
 (defun ag-org/init-ox-reveal ()
   (use-package ox-reveal

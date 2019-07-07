@@ -85,12 +85,6 @@ i.e.: show only commits that differ between selected (other branch) and current 
   ;; who cares about tags to be displayed in magit-refs buffer?
   (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
 
-;; (custom-set-variables
-;;  '(magit-commit-arguments (quote ("--gpg-sign=CFE12444AF47BD1D")))
-;;  '(magit-fetch-arguments (quote ("--prune")))
-;;  '(magit-log-arguments (quote ("-n500" "--graph" "--color")))
-;;  '(magit-show-refs-arguments (quote ("--sort=-committerdate"))))
-
 )
 
 (with-eval-after-load 'evil-magit

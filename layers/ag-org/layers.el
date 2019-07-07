@@ -9,6 +9,6 @@
 ;;
 ;;; License: GPLv3
 
-(configuration-layer/declare-layers '(org))
+(configuration-layer/declare-layers '(org pdf))
 
 ;;; layers.el ends here
