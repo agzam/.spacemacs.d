@@ -22,7 +22,12 @@
 
       (define-advice mu4e~stop (:after nil kill-mu4e-layout-after-mu4e~stop)
         (when mu4e-spacemacs-kill-layout-on-exit
-          (persp-kill mu4e-spacemacs-layout-name)))))
+          (persp-kill mu4e-spacemacs-layout-name)))
+
+      (define-advice mu4e-headers-quit-buffer
+          (:after nil mu4e-update-mail-after-mu4e-headers-quit-buffer)
+        (mu4e-update-mail-and-index :run-in-the-background))))
+
   ;; TODO: remove when fix available for Spacemacs
   ;; Temporarily disables mu4e layer future because it very often screws up window configuration
   (dolist (h (mapcar #'derived-mode-hook-name

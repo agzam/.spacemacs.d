@@ -55,13 +55,6 @@ OPTIONS can include '(urgency expire-time app-name icon category hint), refer to
   (when (eq system-type 'darwin)
     (shell-command "open -a \"Google Chrome\"")))
 
-(spacemacs/transient-state-register-add-bindings 'zoom-frm
-  '(("k" zoom-frm-in)
-    ("j" zoom-frm-out)
-    ("r" zoom-frm-unzoom)
-    ("f" spacemacs/toggle-frame-fullscreen-non-native)
-    ("m" spacemacs/toggle-maximize-frame)))
-
 ;; remove visual marks overlay after marks are deleted
 (advice-add 'evil-delete-marks :after (lambda (&rest args) (evil-visual-mark-render)))
 

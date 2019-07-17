@@ -31,15 +31,15 @@
 
   (with-eval-after-load 'org
     (setq org-capture-templates
-          '(
-            ("t" "simple todo" entry (file+headline "~/Dropbox/org/tasks.org" "Tasks")
-             "* TODO %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
+          '(("t" "simple todo" entry (file+headline "~/Dropbox/org/tasks.org" "Tasks")
+             "* TODO %?\nSCHEDULED: %t\n")
 
             ("T" "todo" entry (file+olp+datetree "~/Dropbox/org/tasks.org")
-             "* TODO %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
+             "* TODO %i %?\nSCHEDULED: %t\n"
+             :time-prompt t)
 
             ("i" "Immediate" entry (file+olp+datetree "~/Dropbox/org/tasks.org")
-             "* ONGOING %?" :clock-in t :clock-resume t :clock-keep t)
+             "* ONGOING %i %?" :clock-in t :clock-resume t :clock-keep t)
 
             ("c" "Code Snippet" entry (file+olp+datetree "~/Dropbox/org/tasks.org")
         ;;;; Prompt for tag and language

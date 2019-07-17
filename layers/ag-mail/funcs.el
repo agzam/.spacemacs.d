@@ -12,7 +12,9 @@
 ;;; Code:
 
 (defun mu4e-prepare-view ()
-  (when mu4e-centered-view-p
+  (when (and
+         mu4e-centered-view-p
+         (spacemacs/toggle-fullscreen-frame-status))
     (spacemacs/toggle-centered-buffer)))
 
 ;;; funcs.el ends here

@@ -217,7 +217,7 @@ It should only modify the values of Spacemacs settings."
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Source Code Pro"
-                               :size 18
+                               :size 14
                                :weight normal
                                :width normal)
 
@@ -614,13 +614,6 @@ dump.")
     ;;       helm-display-buffer-height 20)
     (setq helm-display-function 'helm-default-display-buffer)
     (setq which-key-sort-order 'which-key-prefix-then-key-order))
-
-  ;; temp. fix for fasd keybindings
-  ;; see: https://github.com/syl20bnr/spacemacs/issues/11209
-  (with-eval-after-load 'fasd
-    (spacemacs/declare-prefix "af" "fasd-find")
-    (spacemacs/set-leader-keys "aff" 'fasd-find-file)
-    (spacemacs/set-leader-keys "afd" 'fasd-find-directory-only))
 
   (spacemacs|define-custom-layout "@dotfile"
     :binding "d"

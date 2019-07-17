@@ -176,6 +176,10 @@
         '(("h" (spacehammer/move-frame-one-display "West"))
           ("l" (spacehammer/move-frame-one-display "East"))
           ("n" (spacehammer/move-frame-one-display "North"))
-          ("p" (spacehammer/move-frame-one-display "South")))))))
+          ("p" (spacehammer/move-frame-one-display "South"))))
+
+      (define-advice spacemacs/zoom-frm-transient-state/nil
+          (:after () fix-frame-after-zoom-frm-transient-state)
+        (spacehammer/fix-frame)))))
 
 ;;; packages.el ends here
