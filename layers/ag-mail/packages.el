@@ -203,6 +203,23 @@
         mu4e-view-fields '(:from :to :cc :subject :flags :date :maildir :mailing-list :tags :useragent :attachments :signature :decryption))
 
   (add-hook 'mu4e-view-mode-hook #'spacemacs/toggle-visual-line-navigation-on)
-  (mu4e-maildirs-extension))
+  (mu4e-maildirs-extension)
+
+  (evilified-state-evilify-map
+    mu4e-headers-mode-map
+    :mode mu4e-headers-mode
+    :bindings
+    (kbd "J") (lambda ()
+                (interactive)
+                (mu4e-view-mark-thread '(unmark))))
+
+  (evilified-state-evilify-map
+    mu4e-view-mode-map
+    :mode mu4e-view-mode
+    :bindings
+    (kbd "J") (lambda ()
+                (interactive)
+                (mu4e-view-mark-thread '(unmark))))
+  )
 
 ;;; packages.el ends here

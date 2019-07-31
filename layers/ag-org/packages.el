@@ -31,15 +31,18 @@
 
   (with-eval-after-load 'org
     (setq org-capture-templates
-          '(("t" "simple todo" entry (file+headline "~/Dropbox/org/tasks.org" "Tasks")
-             "* TODO %?\nSCHEDULED: %t\n")
-
-            ("T" "todo" entry (file+olp+datetree "~/Dropbox/org/tasks.org")
+          '(("t" "todo" entry (file+olp+datetree "~/Dropbox/org/tasks.org")
              "* TODO %i %?\nSCHEDULED: %t\n"
              :time-prompt t)
 
+            ("T" "Today" entry (file+olp+datetree "~/Dropbox/org/tasks.org")
+             "* TODO %?\nSCHEDULED: %t\n")
+
             ("i" "Immediate" entry (file+olp+datetree "~/Dropbox/org/tasks.org")
              "* ONGOING %i %?" :clock-in t :clock-resume t :clock-keep t)
+
+            ("s" "Someday" entry (file+headline "~/Dropbox/org/tasks.org" "Tasks")
+             "* TODO %?\nDEADLINE: %^t\n")
 
             ("c" "Code Snippet" entry (file+olp+datetree "~/Dropbox/org/tasks.org")
         ;;;; Prompt for tag and language
@@ -64,6 +67,7 @@
 
      ;;;; ---- headings ----
     (setq
+     org-bullets-bullet-list '("⚫" "◉" "●" "•" "‣" "⋄" "∙")
      org-goto-interface 'outline-path-completion        ;; org-goto C-c C-j like in org-refile
      org-startup-folded t
      org-blank-before-new-entry nil
@@ -73,7 +77,9 @@
      org-catch-invisible-edits 'smart
      org-use-property-inheritance nil
      org-hide-emphasis-markers t
-     org-special-ctrl-a/e t)
+     org-special-ctrl-a/e t
+     org-tags-column -80)
+
 
     (add-hook 'org-reveal-start-hook 'end-of-visual-line)
 
@@ -157,6 +163,7 @@
      org-log-states-order-reversed nil
      org-reverse-note-order nil
      org-log-into-drawer t
+     org-log-note 'time
      org-enable-github-support t
      org-enable-bootstrap-support t
      org-format-latex-options (plist-put org-format-latex-options :scale 2)

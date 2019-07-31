@@ -85,6 +85,21 @@
   (remove-hook 'clojure-mode-hook #'clojure--hyphens-in-words)
   (remove-hook 'clojurescript-mode-hook #'clojure--hyphens-in-words)
   (remove-hook 'clojurec-mode-hook #'clojure--hyphens-in-words)
+
+  ;; compojure's fucked indentation
+  (define-clojure-indent
+    (defroutes 'defun)
+    (GET 2)
+    (POST 2)
+    (PUT 2)
+    (DELETE 2)
+    (HEAD 2)
+    (ANY 2)
+    (OPTIONS 2)
+    (PATCH 2)
+    (rfn 2)
+    (let-routes 1)
+    (context 2))
   )
 
 (add-hook 'clojurescript-mode-hook #'add-reframe-regs-to-imenu)
