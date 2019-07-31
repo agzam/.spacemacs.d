@@ -136,6 +136,16 @@
     (setq edit-indirect-guess-mode-function 'ag/edit-indirect-guess-mode)))
 
 (defun ag-general/post-init-engine-mode ()
+  (let ((custom-search-engines
+         '((maven :name "Maven Central"
+                  :url "https://search.maven.org/search?q=%s")
+           (npm :name "npmjs"
+                :url "https://www.npmjs.com/search?q=%s"))))
+    (dolist (se custom-search-engines)
+      (push se search-engine-alist)
+      (autoload (intern (format "engine/search-%S" (car se)))
+        "engine-mode" nil 'interactive)))
+
   (defcustom engine-mode/github-mode->lang
     '(("clojurescript" . "Clojure")
       ("clojure" . "Clojure")
