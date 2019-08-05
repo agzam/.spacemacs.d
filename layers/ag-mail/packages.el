@@ -205,21 +205,26 @@
   (add-hook 'mu4e-view-mode-hook #'spacemacs/toggle-visual-line-navigation-on)
   (mu4e-maildirs-extension)
 
-  (evilified-state-evilify-map
-    mu4e-headers-mode-map
-    :mode mu4e-headers-mode
-    :bindings
-    (kbd "J") (lambda ()
-                (interactive)
-                (mu4e-view-mark-thread '(unmark))))
+  (defun ag/set-mu4e-headers-mode-keys ()
+    (evilified-state-evilify-map
+      mu4e-headers-mode-map
+      :mode mu4e-headers-mode
+      :bindings
+      (kbd "J") (lambda ()
+                  (interactive)
+                  (mu4e-view-mark-thread '(unmark)))))
 
-  (evilified-state-evilify-map
-    mu4e-view-mode-map
-    :mode mu4e-view-mode
-    :bindings
-    (kbd "J") (lambda ()
-                (interactive)
-                (mu4e-view-mark-thread '(unmark))))
-  )
+  (add-hook 'mu4e-headers-mode-hook 'ag/set-mu4e-headers-mode-keys)
+
+  (defun ag/set-mu4e-view-mode-keys ()
+    (evilified-state-evilify-map
+      mu4e-view-mode-map
+      :mode mu4e-view-mode
+      :bindings
+      (kbd "J") (lambda ()
+                  (interactive)
+                  (mu4e-view-mark-thread '(unmark)))))
+
+  (add-hook 'mu4e-view-mode-hook 'ag/set-mu4e-view-mode-keys))
 
 ;;; packages.el ends here

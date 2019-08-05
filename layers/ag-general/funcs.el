@@ -58,9 +58,11 @@ OPTIONS can include '(urgency expire-time app-name icon category hint), refer to
 ;; remove visual marks overlay after marks are deleted
 (advice-add 'evil-delete-marks :after (lambda (&rest args) (evil-visual-mark-render)))
 
-(defun shruggie ()
-  (interactive)
-  (insert "¯\\_(ツ)_/¯"))
+(defun shruggie (&optional do-not-escape?)
+  (interactive "P")
+  (if do-not-escape?
+      (insert "¯\\_(ツ)_/¯")
+    (insert "¯\\\\\\_(ツ)_/¯")))
 
 (defun spacemacs/persp-go-prev ()
   "Switch to previous Spacemacs layout by briefly flashing layouts panel - so user can see where they're going"
