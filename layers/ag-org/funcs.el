@@ -286,37 +286,6 @@ KEYS is a string associated with a template (will be passed to `org-capture')"
       (markdown-kill-thing-at-point)
       (org-insert-link nil url desc))))
 
-(defun convert-to-jira-link ()
-  "Converts a word (simple number or a JIRA ticket with prefix) to a proper JIRA link."
-  (interactive)
-  (let* ((jira-base-url "https://jira.dividendsolar.com")
-         (w (symbol-at-point))
-         (bounds (bounds-of-thing-at-point 'symbol))
-         (ticket (string-to-number (replace-regexp-in-string "[^0-9]" ""
-                                                             (symbol-name w))))
-         (prefix (replace-regexp-in-string "[0-9]" "" (symbol-name w)))
-         (jira-project-prefix (if (string-empty-p prefix) "scrum-" prefix))
-         (uri (concat
-               jira-base-url
-               "/browse/"
-               (concat jira-project-prefix (number-to-string ticket))))
-         (label (string-trim
-                 (if (string-match-p jira-project-prefix (downcase (symbol-name w)))
-                     (upcase (symbol-name w))
-                   (upcase (concat jira-project-prefix (number-to-string ticket)))))))
-    (save-excursion)
-    (delete-region (car bounds) (cdr bounds))
-    (cond ((eq major-mode 'org-mode)
-           (insert (concat "[[" uri "][" label "]]")))
-
-          ((eq major-mode 'markdown-mode)
-           (insert (concat "[" label "](" uri ")")))
-
-          ((string-match-p "COMMIT_EDITMSG" (or buffer-file-name ""))
-           (insert (concat "[" label "]\n" uri)))
-
-          (t (insert uri)))))
-
 (defadvice org-capture-finalize
     (after delete-capture-frame activate)
   "Advise capture-finalize to close the frame."

@@ -26,8 +26,8 @@
                                 fennel-mode
                                 (spacehammer :location
                                              (recipe :fetcher file
-                                                     :path "~/.hammerspoon/"
-                                                     ))))
+                                                     :path "~/.hammerspoon/"))
+                                (jira :location local)))
 
 ;; (defun ag-general/init-magithub ()
 ;;   (use-package magithub
@@ -191,5 +191,12 @@
       (define-advice spacemacs/zoom-frm-transient-state/nil
           (:after () fix-frame-after-zoom-frm-transient-state)
         (spacehammer/fix-frame)))))
+
+(defun ag-general/init-jira ()
+  (use-package jira
+    :demand t
+    :config
+    (setq jira-base-url "https://jira.dividendsolar.com")
+    (global-set-key (kbd "M-o M-j") #'convert-to-jira-link)))
 
 ;;; packages.el ends here
