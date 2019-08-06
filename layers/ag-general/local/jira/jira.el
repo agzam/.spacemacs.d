@@ -32,6 +32,26 @@ non-existent ticket, etc."
       (alist-get 'fields)
       (alist-get 'summary)))
 
+;; https://emacs.stackexchange.com/questions/10707/in-org-mode-how-to-remove-a-link
+(defun org-kill-link ()
+  (interactive)
+  "Deletes whole link, if the thing-at-point is a proper Org-link"
+  (when (org-in-regexp org-bracket-link-regexp 1)
+    (let ((remove (list (match-beginning 0) (match-end 0)))
+          (description (if (match-end 3)
+                           (org-match-string-no-properties 3)
+                         (org-match-string-no-properties 1))))
+      (apply 'delete-region remove))))
+
+(defun markdown-kill-link ()
+  (interactive)
+  (when (org-in-regexp markdown-regex-link-inline 1)
+    (let ((remove (list (match-beginning 0) (match-end 0)))
+          (description (if (match-end 3)
+                           (org-match-string-no-properties 3)
+                         (org-match-string-no-properties 1))))
+      (apply 'delete-region remove))))
+
 (defun convert-to-jira-link ()
   "Converts a word (simple number or a JIRA ticket with prefix) to a proper JIRA link."
   (interactive)
@@ -53,18 +73,29 @@ non-existent ticket, etc."
                    (upcase (concat jira-project-prefix (number-to-string ticket))))))
          (summary (jira--get-ticket-summary label))
          (summary-lbl (when summary (concat ": " summary))))
-    (save-excursion)
-    (print summary)
-    (delete-region (car bounds) (cdr bounds))
+
     (cond ((eq major-mode 'org-mode)
-           (insert (concat "[[" uri "][" label summary-lbl "]]")))
+           (progn
+             (if (org-in-regexp org-bracket-link-regexp 1)
+                 (org-kill-link)
+               (delete-region (car bounds) (cdr bounds)))
+             (insert (concat "[[" uri "][" label summary-lbl "]]"))))
 
           ((eq major-mode 'markdown-mode)
-           (insert (concat "[" label summary-lbl "](" uri ")")))
+           (progn
+             (if (org-in-regexp markdown-regex-link-inline 1)
+                 (markdown-kill-link)
+               (delete-region (car bounds) (cdr bounds)))
+             (insert (concat "[" label summary-lbl "](" uri ")"))))
 
           ((string-match-p "COMMIT_EDITMSG" (or buffer-file-name ""))
-           (insert (concat "[" label summary-lbl "]\n" uri)))
+           (progn
+             (delete-region (car bounds) (cdr bounds))
+             (insert (concat "[" label summary-lbl "]\n" uri))))
 
-          (t (insert (concat uri "\n" summary))))))
+          (t
+           (progn
+             (delete-region (car bounds) (cdr bounds))
+             (insert (concat uri "\n" summary)))))))
 
 (provide 'jira)
