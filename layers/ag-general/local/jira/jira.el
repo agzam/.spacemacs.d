@@ -52,6 +52,14 @@ non-existent ticket, etc."
                          (org-match-string-no-properties 1))))
       (apply 'delete-region remove))))
 
+(defun jira--convert-number-to-ticket-key (ticket-number)
+  (let* ((ticket (string-to-number (replace-regexp-in-string "[^0-9]" "" ticket-number)))
+         (prefix (replace-regexp-in-string "[0-9]" "" ticket-number))
+         (jira-project-prefix (if (string-empty-p prefix)
+                                  jira-project
+                                prefix)))
+    (concat jira-project-prefix (number-to-string ticket))))
+
 (defun convert-to-jira-link ()
   "Converts a word (simple number or a JIRA ticket with prefix) to a proper JIRA link."
   (interactive)
@@ -97,5 +105,26 @@ non-existent ticket, etc."
            (progn
              (delete-region (car bounds) (cdr bounds))
              (insert (concat uri "\n" summary)))))))
+
+(defun jira-generate-branch-name (&optional ticket-number)
+  "Generates readable branch name base on given TICKET-NUMBER"
+  (interactive)
+  (let* ((w (symbol-name (symbol-at-point)))
+         (ticket-key (if (s-blank? (replace-regexp-in-string "[^0-9]" "" w))
+                         (jira--convert-number-to-ticket-key (read-string "Enter Jira ticket number: "))
+                       (jira--convert-number-to-ticket-key w)))
+
+         (summary (jira--get-ticket-summary ticket-key))
+         (norm-summary
+          (-some->>
+           summary
+           downcase
+           (replace-regexp-in-string " \\|\\-" "_" )
+           (replace-regexp-in-string
+            "\\.\\|\\,\\|\\#\\|\\?\\|\\!\\|\\*\\|\\\\\\|\\/\\|\\:\\|\\~\\|\\^\\|\\[\\|\\]\\|\\@\\|" "")))
+         (branch-name (concat norm-summary "--" ticket-key)))
+    (kill-new branch-name)
+    (message branch-name)
+    branch-name))
 
 (provide 'jira)
