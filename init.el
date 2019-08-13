@@ -74,10 +74,7 @@ This function should only modify configuration layer settings."
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages '(copy-as-format
                                       helm-flycheck
-                                      quelpa-use-package
-
-                                      ;; helm-swoop-edit is broken, see: https://github.com/ShingoFukuyama/helm-swoop/issues/133
-                                      (helm-swoop :location (recipe :fetcher github :repo "andyg0808/helm-swoop")))
+                                      quelpa-use-package)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
 
@@ -522,6 +519,7 @@ dump.")
    save-abbrevs t ;; save abbrevs upon exiting Emacs
    uniquify-buffer-name-style 'forward
    company-idle-delay 0.1
+   writeroom-width 120
 
    ;;;; Helm
    helm-echo-input-in-header-line nil
@@ -623,4 +621,15 @@ dump.")
     :binding "d"
     :body (find-file "~/dotfile.org/dotfile.org"))
 
-  (run-at-time "2 sec" nil #'ag/adjust-themes))
+  (run-at-time "2 sec" nil #'ag/adjust-themes)
+
+  ;; This commit changed existing behavior:
+  ;; https://github.com/syl20bnr/spacemacs/commit/0e2935b8d6b8473c92d3037a2f6c346b03e606a9
+  ;; until it is fixed, how to load winner manually
+  (winner-mode 1)
+
+  ;; TODO: remove when they fix https://github.com/emacsorphanage/helm-swoop/issues/77
+  (with-eval-after-load 'helm-swoop
+    (define-key helm-swoop-edit-map (kbd "C-c C-c") 'helm-swoop--edit-complete)
+    (define-key helm-swoop-edit-map (kbd "C-c C-k") 'helm-swoop--edit-cancel))
+  )
