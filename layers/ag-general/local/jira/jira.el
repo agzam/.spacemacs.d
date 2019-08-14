@@ -106,7 +106,7 @@ non-existent ticket, etc."
              (delete-region (car bounds) (cdr bounds))
              (insert (concat uri "\n" summary)))))))
 
-(defun jira-generate-branch-name (&optional ticket-number)
+(defun jira-generate-git-branch-name (&optional ticket-number)
   "Generates readable branch name base on given TICKET-NUMBER"
   (interactive)
   (let* ((w (symbol-name (symbol-at-point)))
