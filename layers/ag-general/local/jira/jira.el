@@ -180,14 +180,10 @@ non-existent ticket, etc."
            downcase
            string-trim
            (replace-regexp-in-string " \\|\\-" "_" )
-           (replace-regexp-in-string
-            "\\.\\|\\,\\|\\#\\|\\?\\|\\!\\|\\*\\|\\\\\\|\\/\\|\\:\\|\\~\\|\\^\\|\\[\\|\\]\\|\\(\\|\\)\\|\"\\|\\@\\|" "")))
+           (replace-regexp-in-string "[^a-zA-Z0-9_-]" "")))
          (branch-name (concat norm-summary "--" ticket-key)))
     (kill-new branch-name)
     (message branch-name)
     branch-name))
-
-
-
 
 (provide 'jira)
