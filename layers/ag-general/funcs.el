@@ -54,15 +54,6 @@ OPTIONS can include '(urgency expire-time app-name icon category hint), refer to
                            (-flatten (mapcar #'get-prop opts)))))
         (apply #'call-process args))))))
 
-(defun ag/atomic-edit-start ()
-  (remove-hook 'markdown-mode-hook 'spacemacs/activate-mmm-mode)
-  (remove-hook 'markdown-mode-hook 'spacemacs//cleanup-org-tables-on-save))
-
-(defun ag/atomic-edit-done ()
-  (kill-new (buffer-string) t)
-  (when (eq system-type 'darwin)
-    (shell-command "open -a \"Google Chrome\"")))
-
 ;; remove visual marks overlay after marks are deleted
 (advice-add 'evil-delete-marks :after (lambda (&rest args) (evil-visual-mark-render)))
 

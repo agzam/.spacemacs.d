@@ -9,16 +9,8 @@
 ;;
 ;;; License: GPLv3
 
-(defconst ag-general-packages '(
-                                ;; adding magithub explicitly here, until this issue is fixed:
-                                ;; see: https://github.com/syl20bnr/spacemacs/issues/9288 and:
-                                ;; https://github.com/magit/magit/issues/3154#issuecomment-325648623
-                                ;; and wait when they enable this:
-                                ;; https://github.com/syl20bnr/spacemacs/blob/develop/layers/+source-control/github/packages.el#L19
-                                ;; magithub
-                                helpful
+(defconst ag-general-packages '(helpful
                                 rainbow-mode
-                                ;; atomic-chrome
                                 helm-pages
                                 evil-mc
                                 edit-indirect
@@ -28,16 +20,6 @@
                                              (recipe :fetcher file
                                                      :path "~/.hammerspoon/"))
                                 (jira :location local)))
-
-;; (defun ag-general/init-magithub ()
-;;   (use-package magithub
-;;     :after magit
-;;     :init
-;;     (setq magithub-dir (concat spacemacs-cache-directory "magithub/"))
-;;     :config
-;;     (progn
-;;       (magithub-feature-autoinject t)
-;;       (define-key magit-status-mode-map "H" #'magithub-dispatch-popup))))
 
 (defun ag-general/init-helpful ()
   (use-package helpful
@@ -56,18 +38,6 @@
     (add-hook 'css-mode-hook 'rainbow-mode)
     ;; remove rectangles from around the colors
     (setq css-fontify-colors nil)))
-
-(defun ag-general/init-atomic-chrome ()
-  (use-package atomic-chrome
-    :init
-    (atomic-chrome-start-server)
-    (define-key atomic-chrome-edit-mode-map (kbd "C-c C-c") 'atomic-chrome-close-current-buffer)
-    :config
-    (setq atomic-chrome-default-major-mode 'markdown-mode
-          atomic-chrome-enable-bidirectional-edit t
-          atomic-chrome-extension-type-list '(atomic-chrome))
-    (add-hook 'atomic-chrome-edit-mode-hook #'ag/atomic-edit-start)
-    (add-hook 'atomic-chrome-edit-done-hook #'ag/atomic-edit-done)))
 
 (defun ag-general/init-helm-pages ()
   (use-package helm-pages
