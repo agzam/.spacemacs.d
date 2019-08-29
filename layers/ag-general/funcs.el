@@ -18,6 +18,14 @@
          (p2 (cdr bds)))
     (buffer-substring-no-properties p1 p2)))
 
+(defun aget-in (alist &rest keys)
+  "Recursively find KEYs in ALIST.
+
+Example: (aget-in books 'details 'author))."
+  (while keys
+    (setq alist (cdr (assoc (pop keys) alist))))
+  alist)
+
 (defun notify-osx (title message)
   (when (eq system-type 'darwin)
     (call-process (executable-find "terminal-notifier")
