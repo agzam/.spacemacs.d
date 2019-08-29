@@ -161,6 +161,8 @@
                     (trailing-whitespace . (:background "#e5e1e0"))
                     (ahs-definition-face . (:background "#e6ffed"))
                     (ahs-plugin-whole-buffer-face . (:background "#e5e1e0"))
+                    (evil-ex-lazy-highlight . (:background "#e5e1e0"))
+                    (evil-ex-search . (:background "DarkKhaki"))
                     (aw-leading-char-face . (:height 5.0))
                     (mode-line . (:underline (:color "#b2b2b2")))
                     (mode-line-inactive . (:underline (:color "#d3d3e7"))))))
