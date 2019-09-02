@@ -12,6 +12,7 @@
 (defconst ag-org-packages '(org
                             org-pomodoro
                             ;; ox-reveal
+                            clocker
                             org-noter
                             (latex-fragments :location local)
                             (org-present :excluded t)
@@ -78,7 +79,10 @@
      org-use-property-inheritance nil
      org-hide-emphasis-markers t
      org-special-ctrl-a/e t
-     org-tags-column -80)
+     org-tags-column -80
+     org-startup-indented t
+     org-fontify-whole-heading-line t
+     )
 
 
     (add-hook 'org-reveal-start-hook 'end-of-visual-line)
@@ -255,6 +259,17 @@
                                    (makunbound 'pdf-fname))))
 
     (advice-add #'org-noter-kill-session :before 'org-noter-kill-the-note-buffer)))
+(defadvice spacemacs/mode-line-prepare-left (around compile)
+  (setq ad-return-value (clocker-add-clock-in-to-mode-line ad-do-it)))
+
+(defun ag-org/init-clocker ()
+  (use-package clocker
+    :config
+    (progn
+      (setq clocker-keep-org-file-always-visible nil)
+      (add-to-list 'clocker-skip-after-save-hook-on-file-name '(recentf))
+      (ad-activate 'spacemacs/mode-line-prepare-left)
+      (clocker-mode 1))))
 
 (defun ag-org/init-ox-reveal ()
   (use-package ox-reveal

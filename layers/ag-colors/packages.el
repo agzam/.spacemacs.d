@@ -165,7 +165,19 @@
                     (evil-ex-search . (:background "DarkKhaki"))
                     (aw-leading-char-face . (:height 5.0))
                     (mode-line . (:underline (:color "#b2b2b2")))
-                    (mode-line-inactive . (:underline (:color "#d3d3e7"))))))
+                    (mode-line-inactive . (:underline (:color "#d3d3e7")))
+
+                    (variable-pitch . (:family "Karla" :weight normal :width expanded))
+
+                    ;; (org-level-1 . (:inherit variable-pitch :bold t :height 1.3))
+                    ;; (org-level-2 . (:inherit variable-pitch :bold t :height 1.2))
+                    ;; (org-level-3 . (:inherit variable-pitch :height 1.1))
+                    ;; (org-level-4 . (:inherit variable-pitch :height 1.0))
+                    ;; (org-level-5 . (:inherit variable-pitch :height 1.0))
+                    ;; (org-level-6 . (:inherit variable-pitch :height 1.0))
+                    ;; (org-level-7 . (:inherit variable-pitch :height 1.0))
+                    ;; (org-level-8 . (:inherit variable-pitch :height 1.0))
+                    )))
        (ag/set-faces-attributes faces)))
 
     ('base16-ocean (ag/adjust-base16-ocean-colors))))
