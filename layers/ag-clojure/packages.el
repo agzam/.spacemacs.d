@@ -39,7 +39,8 @@
 (with-eval-after-load 'clojure-mode
   (setq clojure-enable-fancify-symbols nil
         ;; clojure-indent-style :align-arguments
-        clojure-align-forms-automatically nil
+        clojure-align-forms-automatically t
+        cljr-favor-prefix-notation nil
         cider-overlays-use-font-lock nil
         cider-repl-use-clojure-font-lock nil
         cider-font-lock-dynamically nil
@@ -99,7 +100,10 @@
     (PATCH 2)
     (rfn 2)
     (let-routes 1)
-    (context 2))
+    (context 2)
+    (clojure.test/async 1)
+    (promesa.core/alet 1)
+    )
   )
 
 (add-hook 'clojurescript-mode-hook #'add-reframe-regs-to-imenu)

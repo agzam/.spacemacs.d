@@ -477,10 +477,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    eyebrowse-keymap-prefix (kbd "C-x C-x"))
 
   (setq
-   undo-tree-enable-undo-in-region nil
-   undo-limit 200000
-   undo-outer-limit 24000000
-   undo-strong-limit 250000
    evil-want-fine-undo nil
    ns-use-srgb-colorspace t
    evil-want-C-u-scroll nil

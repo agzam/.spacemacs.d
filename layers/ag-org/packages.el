@@ -80,10 +80,9 @@
      org-hide-emphasis-markers t
      org-special-ctrl-a/e t
      org-tags-column -80
-     org-startup-indented t
+     org-startup-indented nil
      org-fontify-whole-heading-line t
      )
-
 
     (add-hook 'org-reveal-start-hook 'end-of-visual-line)
 
