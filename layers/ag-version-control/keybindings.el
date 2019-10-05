@@ -14,7 +14,8 @@
   (evil-define-key evil-magit-state magit-mode-map "l" 'evil-forward-char)
   (evil-define-key evil-magit-state magit-mode-map (kbd "M-l") 'magit-log)
   (evil-define-key evil-magit-state magit-mode-map "h" 'evil-backward-char)
-  (evil-define-key evil-magit-state magit-mode-map (kbd "M-h") 'magit-dispatch))
+  (evil-define-key evil-magit-state magit-mode-map (kbd "M-h") 'magit-dispatch)
+  (evil-define-key evil-magit-state magit-revision-mode-map "q" 'magit-log-bury-buffer))
 
 ;; (with-eval-after-load 'forge
 ;; (evil-magit-define-key evil-magit-state 'magit-mode-map "'" 'forge-dispatch))
