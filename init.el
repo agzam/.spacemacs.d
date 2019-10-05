@@ -53,7 +53,9 @@ This function should only modify configuration layer settings."
      ;;       (cond ((eq system-type 'darwin) "~/Library/Application\ Support/Dash/DocSets")))
      (shell :variables shell-default-shell 'eshell)
      ;; --- My own layers ----
-     (ag-clojure :variables clojure-enable-clj-refactor t)
+     (ag-clojure :variables
+                 clojure-enable-clj-refactor t
+                 clojure-enable-linters 'clj-kondo)
      ag-colors
      ag-dired
      ag-general

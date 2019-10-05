@@ -15,7 +15,7 @@
     clojars
     helm-cider
     flycheck-joker
-    flycheck-clj-kondo))
+    ))
 
 (defun ag-clojure/init-ac-cider ())
 (defun ag-clojure/init-clojure-mode-extra-font-locking ())
@@ -23,20 +23,21 @@
 (defun ag-clojure/init-clojars ())
 (defun ag-clojure/init-helm-cider ())
 (defun ag-clojure/init-cider-hydra ())
-(defun ag-clojure/init-flycheck-joker ())
-
-(defun ag-clojure/init-flycheck-clj-kondo ()
+(defun ag-clojure/init-flycheck-joker ()
   (require 'flycheck-joker)
-  (require 'flycheck-clj-kondo)
-  (dolist (checker '(clj-kondo-clj clj-kondo-cljs clj-kondo-cljc clj-kondo-edn))
-    (setq flycheck-checkers (cons checker (delq checker flycheck-checkers))))
-  (dolist (checkers '((clj-kondo-clj . clojure-joker)
-                      (clj-kondo-cljs . clojurescript-joker)
-                      (clj-kondo-cljc . clojure-joker)
-                      (clj-kondo-edn . edn-joker)))
-    (flycheck-add-next-checker (car checkers) (cons 'error (cdr checkers)))))
+  (with-eval-after-load 'flycheck-clj-kondo
+    (dolist (checker '(clj-kondo-clj clj-kondo-cljs clj-kondo-cljc clj-kondo-edn))
+      (setq flycheck-checkers (cons checker (delq checker flycheck-checkers))))
+    (dolist (checkers '((clj-kondo-clj . clojure-joker)
+                        (clj-kondo-cljs . clojurescript-joker)
+                        (clj-kondo-cljc . clojure-joker)
+                        (clj-kondo-edn . edn-joker)))
+      (flycheck-add-next-checker (car checkers) (cons 'error (cdr checkers))))))
+
+;; (defun ag-clojure/init-flycheck-clj-kondo ())
 
 (with-eval-after-load 'clojure-mode
+
   (setq clojure-enable-fancify-symbols nil
         ;; clojure-indent-style :align-arguments
         clojure-align-forms-automatically t
@@ -82,10 +83,10 @@
 
   (advice-add 'cider-eval-print-last-sexp :around #'before-eval-print-advice)
 
-  (defun clojure--hyphens-in-words () (modify-syntax-entry ?- "w"))
-  (remove-hook 'clojure-mode-hook #'clojure--hyphens-in-words)
-  (remove-hook 'clojurescript-mode-hook #'clojure--hyphens-in-words)
-  (remove-hook 'clojurec-mode-hook #'clojure--hyphens-in-words)
+  (with-eval-after-load 'clojure-mode
+    (dolist (c (string-to-list ":_-?!*"))
+      (modify-syntax-entry c "w" clojure-mode-syntax-table)
+      (modify-syntax-entry c "w" clojurescript-mode-syntax-table)))
 
   ;; compojure's fucked indentation
   (define-clojure-indent
