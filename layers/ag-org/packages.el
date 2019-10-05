@@ -37,20 +37,20 @@
              :time-prompt t)
 
             ("T" "Today" entry (file+olp+datetree "~/Dropbox/org/tasks.org")
-             "* TODO %?\nSCHEDULED: %t\n")
+             "* TODO %?\nSCHEDULED: %(progn (setq org-popup-calendar-for-date-prompt nil) (org-read-date t))\n")
 
             ("i" "Immediate" entry (file+olp+datetree "~/Dropbox/org/tasks.org")
              "* ONGOING %i %?" :clock-in t :clock-resume t :clock-keep t)
 
             ("s" "Someday" entry (file+headline "~/Dropbox/org/tasks.org" "Tasks")
-             "* TODO %?\nDEADLINE: %^t\n")
+             "* TODO %?\nSCHEDULED: %(org-read-date nil nil nil nil nil \"+1m\")\n")
 
             ("c" "Code Snippet" entry (file+olp+datetree "~/Dropbox/org/tasks.org")
-        ;;;; Prompt for tag and language
+             ;; Prompt for tag and language
              "* %u  %?\n\t%F\n\t#+BEGIN_SRC %^{language}\n\t\t%i\n\t#+END_SRC")
 
             ("y" "Yakety" entry (file "~/Dropbox/org/yakety.org")
-             "* TODO  %?\n SCHEDULED: %^u\n :LOGBOOK:\n  - State \"TODO\"       from              %U\n  :END:")
+             "* TODO  %?\n SCHEDULED: %^u\n :LOGBOOK:\n  - State \"TODO\" from %U\n :END:")
 
             ("j" "Journal" entry (file+olp+datetree "~/Dropbox/org/journal.org")
              "* %u %?"
