@@ -27,31 +27,60 @@ non-existent ticket, etc."
     (ignore-errors
       (json-read-from-string
        (shell-command-to-string
-        (concat "jira list "
-                (concat "--query " jira-query)
-                " --queryfields='status,assignee,subtasks,description,issuetype,customfield_10002'"
-                " --template=debug"))))))
+        (concat
+         "jira list "
+         (concat "--query " jira-query)
+         " --queryfields='status,assignee,subtasks,description,issuetype,customfield_10002,customfield_10004'"
+         " --template=debug"))))))
+
+(defvar jira--status->todo
+  '(("Todo" . "TODO")
+    ("In Progress" . "INPROGRESS")
+    ("Code Review" . "CODEREVIEW")
+    ("Ready to Test in Dev" . "DEVTEST")
+    ("Ready to Push to Stage" . "STAGEPUSH")
+    ("Ready to Test in Stage" . "STAGETEST")
+    ("Ready to Release to Production" . "RELEASEREADY")
+    ("Ready to Smoke test" . "SMOKEREADY")
+    ("Blocked" . "BLOCKED")
+    ("Done" . "DONE")))
+
+(defun jira--issue-status->todo (issue)
+  (print (aget-in issue 'fields 'status 'name))
+  (print (a-get jira--status->todo
+                (aget-in issue 'fields 'status 'name)))
+  (a-get jira--status->todo
+         (aget-in issue 'fields 'status 'name)))
 
 (defun jira--issue->properties (issue)
-  (let ((node-fn (lambda (a)
-                   (let ((title (car a))
-                         (value (cdr a)))
-                     (when value
-                       `(node-property
-                         (:key ,title :value ,value))))))
-        (nodes `(("Summary" . ,(aget-in issue 'fields 'summary))
-                 ("Ticket" . ,(aget-in issue 'key))
-                 ("Assignee" . ,(aget-in issue 'fields 'assignee 'name))
-                 ("Status" . ,(aget-in issue 'fields 'status 'name))
-                 ("Type" . ,(aget-in issue 'fields 'issuetype 'name))
-                 ("Points" . ,(aget-in issue 'fields 'customfield_10002)))))
-    (mapcar node-fn nodes)))
+  (cl-flet ((parse-sprintname (s)
+                              (string-match "name=[^,]*" s)
+                              (replace-regexp-in-string "name=" "" (match-string 0 s))))
+    (let ((node-fn (lambda (a)
+                     (let ((title (car a))
+                           (value (cdr a)))
+                       (when value
+                         `(node-property
+                           (:key ,title :value ,value))))))
+          (nodes `(("Summary" . ,(aget-in issue 'fields 'summary))
+                   ("Ticket" . ,(aget-in issue 'key))
+                   ("Assignee" . ,(aget-in issue 'fields 'assignee 'name))
+                   ("Status" . ,(aget-in issue 'fields 'status 'name))
+                   ("Type" . ,(aget-in issue 'fields 'issuetype 'name))
+                   ("Points" . ,(aget-in issue 'fields 'customfield_10002))
+                   ("Sprint" . ,(-> issue
+                                    (aget-in 'fields 'customfield_10004)
+                                    (elt 0)
+                                    (parse-sprintname))))))
+      (mapcar node-fn nodes))))
 
 (defun jira--issue->org-element (issue)
   (let* ((summary (aget-in issue 'fields 'summary))
          (ticket (aget-in issue 'key)))
     `(headline
-      (:level 1 :title ,(concat ticket ": " summary))
+      (:level 1
+       :title ,(concat ticket ": " summary)
+       :todo-keyword ,(jira--issue-status->todo issue))
       (section
        nil
        (property-drawer
@@ -61,17 +90,23 @@ non-existent ticket, etc."
 (defun jira-list (data)
   "Using json data from go-jira list type of request, displays it in an Org-mode buffer."
   (interactive)
-  (let* ((org-text (org-element-interpret-data
+  (let* ((headers (concat
+                   "#+TODO: TODO(t) INPROGRESS(i) CODEREVIEW(c) DEVTEST(d) | STAGEPUSH(s) STAGETEST RELEASEREADY BLOCKED DONE \n"
+                   "#+COLUMNS: %0( ) %10Ticket %50Summary %12TODO %20Assignee %1Points( ) %Sprint\n"))
+         (org-text (org-element-interpret-data
                     (mapcar 'jira--issue->org-element
                             (alist-get 'issues data))))
          (temp-buf (get-buffer-create "jira-list")))
     (switch-to-buffer-other-window temp-buf)
     (set-buffer temp-buf)
     (with-current-buffer temp-buf
+      (erase-buffer)
+      (insert headers)
       (insert org-text)
       (funcall 'org-mode)
       (setq after-change-functions nil)
-      (org-indent-region (point-min) (point-max)))))
+      (org-indent-region (point-min) (point-max))
+      (org-columns t))))
 
 ;; (jira-list (jira--mine))
 
