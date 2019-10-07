@@ -8,10 +8,26 @@
 ;; Version: 0.0.1
 
 ;;; Commentary:
+(require 'a)
 (defvar jira-base-url "" "Jira base url, e.g: https://jira.mycompany.com.")
 (defvar jira-project "scrum-" "Default Jira project prefix.")
 
-(defun jira--get-ticket-details (ticket-number)
+(defvar go-jira-mode-map (make-sparse-keymap)
+  "Keymap for minor mode variable `go-jira-mode'.")
+
+(define-key go-jira-mode-map (kbd "q") #'go-jira-quit)
+(evil-make-overriding-map go-jira-mode-map)
+(evil-define-minor-mode-key 'normal 'go-jira-mode-map "q" #'go-jira-quit)
+
+(define-minor-mode go-jira-mode
+  "Jira tickets view minor mode
+\\{go-jira-mode-map}"
+  :group 'jira
+  :lighter " Jira"
+  :init-value nil
+  :keymap go-jira-mode-map)
+
+(defun go-jira--get-ticket-details (ticket-number)
   "Attempts to run go-jira cli for given TICKET-NUMBER.
 If successful, returns hashmap.
 
@@ -22,37 +38,46 @@ non-existent ticket, etc."
      (shell-command-to-string
       (concat "jira view " ticket-number " --template=debug")))))
 
-(defun jira--mine ()
-  (let ((jira-query "'project = SCRUM and resolution = unresolved and assignee=currentuser() and issuetype != Sub-task ORDER BY updatedDate DESC'"))
-    (ignore-errors
-      (json-read-from-string
-       (shell-command-to-string
-        (concat
-         "jira list "
-         (concat "--query " jira-query)
-         " --queryfields='status,assignee,subtasks,description,issuetype,customfield_10002,customfield_10004'"
-         " --template=debug"))))))
+(defun go-jira-query (jira-query)
+  (ignore-errors
+    (json-read-from-string
+     (shell-command-to-string
+      (concat
+       "jira list "
+       (concat "--query " jira-query " ")
+       "--queryfields='status,assignee,subtasks,description,issuetype,labels,customfield_10002,customfield_10004' "
+       "--template=debug")))))
 
-(defvar jira--status->todo
-  '(("Todo" . "TODO")
-    ("In Progress" . "INPROGRESS")
-    ("Code Review" . "CODEREVIEW")
-    ("Ready to Test in Dev" . "DEVTEST")
-    ("Ready to Push to Stage" . "STAGEPUSH")
-    ("Ready to Test in Stage" . "STAGETEST")
+(defun go-jira--mine ()
+  (let ((query "'project = SCRUM and resolution = unresolved and assignee=currentuser() and issuetype != Sub-task ORDER BY updatedDate DESC'"))
+    (go-jira-query query)))
+
+(defun go-jira--backlog ()
+  (let ((query
+         (concat
+          "'project = SCRUM "
+          "and resolution = unresolved and issuetype != Sub-task "
+          "and labels in (CCC, burndown4watt)"
+          "and updated > \"-5d\"'")))
+    (go-jira-query query)))
+
+(defvar go-jira--status->todo
+  '(("To Do"                          . "TODO")
+    ("In Progress"                    . "INPROGRESS")
+    ("Code Review"                    . "CODEREVIEW")
+    ("Ready to Test in Dev"           . "DEVTEST")
+    ("Ready to Push to Stage"         . "STAGEPUSH")
+    ("Ready to Test in Stage"         . "STAGETEST")
     ("Ready to Release to Production" . "RELEASEREADY")
-    ("Ready to Smoke test" . "SMOKEREADY")
-    ("Blocked" . "BLOCKED")
-    ("Done" . "DONE")))
+    ("Ready to Smoke test"            . "SMOKEREADY")
+    ("Blocked"                        . "BLOCKED")
+    ("Done"                           . "DONE")))
 
-(defun jira--issue-status->todo (issue)
-  (print (aget-in issue 'fields 'status 'name))
-  (print (a-get jira--status->todo
-                (aget-in issue 'fields 'status 'name)))
-  (a-get jira--status->todo
+(defun go-jira--issue-status->todo (issue)
+  (a-get go-jira--status->todo
          (aget-in issue 'fields 'status 'name)))
 
-(defun jira--issue->properties (issue)
+(defun go-jira--issue->properties (issue)
   (cl-flet ((parse-sprintname (s)
                               (string-match "name=[^,]*" s)
                               (replace-regexp-in-string "name=" "" (match-string 0 s))))
@@ -62,68 +87,81 @@ non-existent ticket, etc."
                        (when value
                          `(node-property
                            (:key ,title :value ,value))))))
-          (nodes `(("Summary" . ,(aget-in issue 'fields 'summary))
-                   ("Ticket" . ,(aget-in issue 'key))
+          (nodes `(("Summary"  . ,(aget-in issue 'fields 'summary))
+                   ("Ticket"   . ,(aget-in issue 'key))
                    ("Assignee" . ,(aget-in issue 'fields 'assignee 'name))
-                   ("Status" . ,(aget-in issue 'fields 'status 'name))
-                   ("Type" . ,(aget-in issue 'fields 'issuetype 'name))
-                   ("Points" . ,(aget-in issue 'fields 'customfield_10002))
-                   ("Sprint" . ,(-> issue
-                                    (aget-in 'fields 'customfield_10004)
-                                    (elt 0)
-                                    (parse-sprintname))))))
+                   ("Status"   . ,(aget-in issue 'fields 'status 'name))
+                   ("Type"     . ,(aget-in issue 'fields 'issuetype 'name))
+                   ("Points"   . ,(aget-in issue 'fields 'customfield_10002))
+                   ("Labels"   . ,(aget-in issue 'fields 'labels))
+                   ("Sprint"   . ,(-some-> issue
+                                           (aget-in 'fields 'customfield_10004)
+                                           (elt 0)
+                                           (parse-sprintname))))))
       (mapcar node-fn nodes))))
 
-(defun jira--issue->org-element (issue)
+(defun go-jira--issue->org-element (issue)
   (let* ((summary (aget-in issue 'fields 'summary))
          (ticket (aget-in issue 'key)))
     `(headline
       (:level 1
        :title ,(concat ticket ": " summary)
-       :todo-keyword ,(jira--issue-status->todo issue))
+       :todo-keyword ,(go-jira--issue-status->todo issue))
       (section
        nil
        (property-drawer
         nil
-        ,(jira--issue->properties issue))))))
+        ,(go-jira--issue->properties issue))))))
 
-(defun jira-list (data)
+(defun go-jira-list (data)
   "Using json data from go-jira list type of request, displays it in an Org-mode buffer."
   (interactive)
-  (let* ((headers (concat
-                   "#+TODO: TODO(t) INPROGRESS(i) CODEREVIEW(c) DEVTEST(d) | STAGEPUSH(s) STAGETEST RELEASEREADY BLOCKED DONE \n"
-                   "#+COLUMNS: %0( ) %10Ticket %50Summary %12TODO %20Assignee %1Points( ) %Sprint\n"))
-         (org-text (org-element-interpret-data
-                    (mapcar 'jira--issue->org-element
-                            (alist-get 'issues data))))
-         (temp-buf (get-buffer-create "jira-list")))
-    (switch-to-buffer-other-window temp-buf)
-    (set-buffer temp-buf)
-    (with-current-buffer temp-buf
-      (erase-buffer)
-      (insert headers)
-      (insert org-text)
-      (funcall 'org-mode)
-      (setq after-change-functions nil)
-      (org-indent-region (point-min) (point-max))
-      (org-columns t))))
+  (when data
+    (let* ((headers
+            (concat
+             "#+TODO: TODO(t) INPROGRESS(i) CODEREVIEW(c) DEVTEST(d) | STAGEPUSH(s) STAGETEST RELEASEREADY BLOCKED DONE \n"
+             "#+COLUMNS: %0( ) %10Ticket %50Summary %12TODO %20Assignee %1Points( ) %Sprint\n"))
 
-;; (jira-list (jira--mine))
+           (org-text (org-element-interpret-data
+                      (mapcar 'go-jira--issue->org-element
+                              (alist-get 'issues data))))
+           (temp-buf (get-buffer-create "go-jira-list")))
+      (switch-to-buffer-other-window temp-buf)
+      (set-buffer temp-buf)
+      (with-current-buffer temp-buf
+        (erase-buffer)
+        (insert headers)
+        (insert org-text)
+        (funcall 'org-mode)
+        (funcall 'go-jira-mode)
+        (setq after-change-functions nil)
+        (org-indent-region (point-min) (point-max))
+        (org-columns t)))))
 
-;; (mapcar 'jira--issue->org-element
-;;         (alist-get 'issues (jira--mine)))
+;; (go-jira-list (go-jira--mine))
+;; (go-jira-list (go-jira--backlog))
 
-;; (alist-get 'issues (jira--mine))
+;; (mapcar 'go-jira--issue->org-element
+;;         (alist-get 'issues (go-jira--mine)))
 
-(defun jira--get-ticket-summary (ticket-number)
+;; (alist-get 'issues (go-jira--mine))
+
+(defun go-jira--get-ticket-summary (ticket-number)
   "Try to retrieve summary for a given Jira TICKET-NUMBER.
 
 Returns nil, if Jira CLI fails for any reason: auth error,
 non-existent ticket, etc."
   (->> ticket-number
-      jira--get-ticket-details
+      go-jira--get-ticket-details
       (alist-get 'fields)
       (alist-get 'summary)))
+
+(defun go-jira-quit ()
+  "Kill go-jira buffer"
+  (interactive)
+  (when-let* ((buffer (get-buffer "go-jira-list")))
+    (quit-window)
+    (kill-buffer buffer)))
 
 ;; https://emacs.stackexchange.com/questions/10707/in-org-mode-how-to-remove-a-link
 (defun org-kill-link ()
@@ -173,7 +211,7 @@ non-existent ticket, etc."
                  (if (string-match-p jira-project-prefix (downcase (symbol-name w)))
                      (upcase (symbol-name w))
                    (upcase (concat jira-project-prefix (number-to-string ticket))))))
-         (summary (string-trim (jira--get-ticket-summary label)))
+         (summary (string-trim (go-jira--get-ticket-summary label)))
          (summary-lbl (when summary (concat ": " summary))))
 
     (cond ((eq major-mode 'org-mode)
@@ -208,7 +246,7 @@ non-existent ticket, etc."
                          (jira--convert-number-to-ticket-key (read-string "Enter Jira ticket number: "))
                        (jira--convert-number-to-ticket-key w)))
 
-         (summary (jira--get-ticket-summary ticket-key))
+         (summary (go-jira--get-ticket-summary ticket-key))
          (norm-summary
           (-some->>
            summary
@@ -220,5 +258,7 @@ non-existent ticket, etc."
     (kill-new branch-name)
     (message branch-name)
     branch-name))
+
+
 
 (provide 'jira)
