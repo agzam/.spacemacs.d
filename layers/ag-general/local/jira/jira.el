@@ -18,6 +18,7 @@
 (define-key go-jira-mode-map (kbd "q") #'go-jira-quit)
 (evil-make-overriding-map go-jira-mode-map)
 (evil-define-minor-mode-key 'normal 'go-jira-mode-map "q" #'go-jira-quit)
+(define-key go-jira-mode-map [remap org-todo] #'go-jira-transition-current)
 
 (define-minor-mode go-jira-mode
   "Jira tickets view minor mode
@@ -78,16 +79,21 @@ non-existent ticket, etc."
          (aget-in issue 'fields 'status 'name)))
 
 (defun go-jira--issue->properties (issue)
-  (cl-flet ((parse-sprintname (s)
-                              (string-match "name=[^,]*" s)
-                              (replace-regexp-in-string "name=" "" (match-string 0 s))))
-    (let ((node-fn (lambda (a)
-                     (let ((title (car a))
-                           (value (cdr a)))
-                       (when value
-                         `(node-property
-                           (:key ,title :value ,value))))))
-          (nodes `(("Summary"  . ,(aget-in issue 'fields 'summary))
+  "Takes ISSUE - org-element data tree element and adds a bunch
+of relevant properties to it."
+  (cl-flet ((parse-sprintname
+             (s)
+             (string-match "name=[^,]*" s)
+             (replace-regexp-in-string "name=" "" (match-string 0 s)))
+
+            (node-fn
+             (a)
+             (let ((title (car a))
+                   (value (cdr a)))
+               (when value
+                 `(node-property
+                   (:key ,title :value ,value))))))
+    (let ((nodes `(("Summary"  . ,(aget-in issue 'fields 'summary))
                    ("Ticket"   . ,(aget-in issue 'key))
                    ("Assignee" . ,(aget-in issue 'fields 'assignee 'name))
                    ("Status"   . ,(aget-in issue 'fields 'status 'name))
@@ -98,15 +104,15 @@ non-existent ticket, etc."
                                            (aget-in 'fields 'customfield_10004)
                                            (elt 0)
                                            (parse-sprintname))))))
-      (mapcar node-fn nodes))))
+      (mapcar #'node-fn nodes))))
 
 (defun go-jira--issue->org-element (issue)
   (let* ((summary (aget-in issue 'fields 'summary))
          (ticket (aget-in issue 'key)))
     `(headline
       (:level 1
-       :title ,(concat ticket ": " summary)
-       :todo-keyword ,(go-jira--issue-status->todo issue))
+              :title ,(concat ticket ": " summary)
+              :todo-keyword ,(go-jira--issue-status->todo issue))
       (section
        nil
        (property-drawer
@@ -138,6 +144,42 @@ non-existent ticket, etc."
         (org-indent-region (point-min) (point-max))
         (org-columns t)))))
 
+(defun go-jira--valid-transitions (ticket-n)
+  "Returns list of valid status transitions for a given Jira
+ticket."
+  (let ((json
+         (ignore-errors
+           (json-read-from-string
+            (shell-command-to-string
+             (concat "jira transitions " ticket-n " --template=debug"))))))
+    (mapcar (lambda (x) (a-get x 'name))
+            (a-get json 'transitions))))
+
+(defun go-jira-transition (ticket-n)
+  "Change status of Jira issue with ticket number TICKET-N.
+Returns `t` if successful."
+  (interactive)
+  (when-let* ((valid-trans (go-jira--valid-transitions ticket-n))
+              (current-status
+               (car (set-difference
+                     (mapcar 'car go-jira--status->todo)
+                     valid-trans :test #'equal)))
+              (new-status (helm-comp-read
+                           (concat "Change " ticket-n " status from \"" current-status "\" => ")
+                           valid-trans)))
+    (= 0 (call-process
+          "jira" nil (get-buffer "*Messages*") nil
+          "transition"
+          new-status
+          ticket-n
+          "--noedit"))))
+
+(defun go-jira-transition-current ()
+  "Change status of Jira ticket at the point."
+  (interactive)
+  (when-let ((ticket (org-entry-get nil "Ticket")))
+    (go-jira-transition ticket)))
+
 ;; (go-jira-list (go-jira--mine))
 ;; (go-jira-list (go-jira--backlog))
 
@@ -152,9 +194,9 @@ non-existent ticket, etc."
 Returns nil, if Jira CLI fails for any reason: auth error,
 non-existent ticket, etc."
   (->> ticket-number
-      go-jira--get-ticket-details
-      (alist-get 'fields)
-      (alist-get 'summary)))
+       go-jira--get-ticket-details
+       (alist-get 'fields)
+       (alist-get 'summary)))
 
 (defun go-jira-quit ()
   "Kill go-jira buffer"
