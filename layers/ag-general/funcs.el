@@ -75,3 +75,13 @@ OPTIONS can include '(urgency expire-time app-name icon category hint), refer to
   (spacemacs/layouts-transient-state/persp-next)
   (run-at-time "1 sec" nil #'spacemacs/layouts-transient-state/nil))
 ;;; funcs.el ends here
+
+(defun diff-last-two-kills ()
+  "Write the last two kills to temporary files and diff them."
+  (interactive)
+  (let ((old "/tmp/old-kill") (new "/tmp/new-kill"))
+    (with-temp-file new
+      (insert (current-kill 0 t)))
+    (with-temp-file old
+      (insert (current-kill 1 t)))
+    (diff old new "-u" t)))

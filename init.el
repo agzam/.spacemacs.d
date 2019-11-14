@@ -34,7 +34,7 @@ This function should only modify configuration layer settings."
    dotspacemacs-configuration-layers
    '(
      ;; ---- Languages -----
-     csv yaml emacs-lisp lua javascript ag-haskell
+     csv yaml emacs-lisp lua javascript ag-haskell sql
      (html :packages (not pug-mode slim-mode))
      (markdown
       :packages (not mmm-mode)
@@ -470,8 +470,8 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    line-spacing 6
    left-fringe-width 6
    right-fringe-width 0
-   evil-escape-key-sequence "lk"
-   evil-escape-delay 0.1
+   evil-escape-key-sequence "kj"
+   evil-escape-delay 0.3
    frame-background-mode 'dark
    ;; Shell
    ;; system-uses-terminfo nil
@@ -545,9 +545,11 @@ before packages are loaded."
 
    ;; don't quit on esc or jk
    evil-escape-excluded-major-modes '(magit-status-mode
+                                      magit-log-mode
                                       magit-diff-mode
                                       magit-refs-mode
                                       magit-revision-mode
+                                      magit-stash-mode
                                       help-mode paradox-menu-mode)
    ranger-override-dired nil
    delete-by-moving-to-trash nil)

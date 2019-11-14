@@ -43,25 +43,16 @@
               (t (beginning-of-thing 'sexp)))
         (insert "#_")))))
 
-(defun get-current-clj-fn ()
-  "gets fully-qualified name of the current function and copies it to the kill-ring"
+(defun cider-fully-qualified-symbol-at-point ()
   (interactive)
-  (message (kill-new (concat (cider-current-ns) "/" (helm-cmd--get-current-function-name)))))
-
-(defun clj-find-var ()
-  "Attempts to jump-to-definition of the symbol-at-point. If CIDER fails, or not available, falls back to dumb-jump"
-  (interactive)
-  (let ((var (cider-symbol-at-point)))
-    (if (and (cider-connected-p) (cider-var-info var))
-        (unless (eq 'symbol (type-of (cider-find-var nil var)))
-          (dumb-jump-go))
-      (dumb-jump-go))))
-
-(defun cider-fully-qualified-symbol-at-point (args)
-  (interactive "P")
-  (let ((s (cider-interactive-eval (concat "`(" (cider-symbol-at-point t) ")"))))
-    (kill-new s)
-    (message s)))
+  (let ((cb (lambda (x)
+              (when-let ((v (nrepl-dict-get x "value"))
+                         (s (replace-regexp-in-string "[()]" "" v)))
+                (kill-new s)
+                (message s)))))
+    (cider-interactive-eval
+     (concat "`(" (cider-symbol-at-point t) ")")
+     cb)))
 
 (defun re-frame-jump-to-reg ()
   "Borrowed from https://github.com/oliyh/re-jump.el"
@@ -86,5 +77,15 @@
    'imenu-generic-expression
    '("re-frame" "(*reg-\\(event-db\\|sub\\|sub-raw\\|fx\\|event-fx\\|event-ctx\\|cofx\\)[ \n]+\\([^\t \n]+\\)" 2)
    t))
+
+(defun cljr-ns-align ()
+  "Align ns requires."
+  (interactive)
+  (end-of-buffer)
+  (when (re-search-backward "^\(ns.*\\(\n.*\\)*\(:require" nil t nil)
+    (mark-sexp)
+    (align-regexp (region-beginning)
+                  (region-end)
+                  "\\(\\s-*\\)\\s-:")))
 
 ;;; funcs.el ends here
