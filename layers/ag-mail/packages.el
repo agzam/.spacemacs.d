@@ -44,6 +44,7 @@
 (with-eval-after-load 'mu4e
   (setq mu4e-maildir "~/.mail"
         mu4e-get-mail-command "mbsync --all --new --delete --flags --renew --pull --push --create --expunge --verbose"
+        mu4e-view-use-gnus t
         mu4e-update-interval 600
         mu4e-compose-signature-auto-include nil
         mu4e-view-show-images t
@@ -99,21 +100,22 @@
                (smtpmail-smtp-user . "to.plotnick@gmail.com")
                (message-signature-file . "~/.mail/home/.signature")
                (mu4e-compose-signature . (concat "Thanks,\n" "Ag\n"))))
-     ,(make-mu4e-context
-       :name "work"
-       :enter-func (lambda () (mu4e-message "Switch to work"))
-       ;; leave-func not defined
-       :match-func (lambda (msg) (when msg (mu4e-message-maildir-matches msg "^/work/")))
-       :vars '((smtpmail-smtp-server . "smtp.office365.com")
-               (mu4e-sent-folder . "/work/Sent Items")
-               (mu4e-trash-folder . "/work/Deleted Items")
-               (mu4e-refile-folder . "/work/Archive")
-               (mu4e-drafts-folder . "/work/Drafts")
-               (user-mail-address . "ag@dividendfinance.com")
-               (user-full-name . "Ag Ibragimov")
-               (smtpmail-smtp-user . "ag.ibragimov@dividendfinance.com")
-               (message-signature-file . "~/.mail/work/.signature")
-               (mu4e-compose-signature . (concat "-----\nAg Ibragimov\nSoftware Developer | Dividend Finance\ndividendnow.com"))))))
+     ;; ,(make-mu4e-context
+     ;;   :name "work"
+     ;;   :enter-func (lambda () (mu4e-message "Switch to work"))
+     ;;   ;; leave-func not defined
+     ;;   :match-func (lambda (msg) (when msg (mu4e-message-maildir-matches msg "^/work/")))
+     ;;   :vars '((smtpmail-smtp-server . "smtp.office365.com")
+     ;;           (mu4e-sent-folder . "/work/Sent Items")
+     ;;           (mu4e-trash-folder . "/work/Deleted Items")
+     ;;           (mu4e-refile-folder . "/work/Archive")
+     ;;           (mu4e-drafts-folder . "/work/Drafts")
+     ;;           (user-mail-address . "ag@dividendfinance.com")
+     ;;           (user-full-name . "Ag Ibragimov")
+     ;;           (smtpmail-smtp-user . "ag.ibragimov@dividendfinance.com")
+     ;;           (message-signature-file . "~/.mail/work/.signature")
+     ;;           (mu4e-compose-signature . (concat "-----\nAg Ibragimov\nSoftware Developer | Dividend Finance\ndividendnow.com"))))
+     ))
 
   (add-hook 'mu4e-compose-mode-hook #'turn-off-auto-fill)
   (add-hook 'mu4e-compose-mode-hook #'spacemacs/toggle-visual-line-navigation-on)

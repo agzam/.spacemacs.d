@@ -527,7 +527,7 @@ before packages are loaded."
    save-abbrevs t ;; save abbrevs upon exiting Emacs
    uniquify-buffer-name-style 'forward
    company-idle-delay 0.1
-   writeroom-width 100
+   writeroom-width 150
 
    ;;;; Helm
    helm-echo-input-in-header-line nil
@@ -550,7 +550,12 @@ before packages are loaded."
                                       magit-refs-mode
                                       magit-revision-mode
                                       magit-stash-mode
-                                      help-mode paradox-menu-mode)
+                                      magit-process-mode
+                                      help-mode
+                                      paradox-menu-mode
+                                      compilation-mode
+                                      mu4e-headers-mode
+                                      mu4e-view-mode)
    ranger-override-dired nil
    delete-by-moving-to-trash nil)
    ;;;; end setq

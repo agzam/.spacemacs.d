@@ -177,6 +177,11 @@
                     ;; (org-level-6 . (:inherit variable-pitch :height 1.0))
                     ;; (org-level-7 . (:inherit variable-pitch :height 1.0))
                     ;; (org-level-8 . (:inherit variable-pitch :height 1.0))
+
+                    (gnus-cite-1 . (:foreground "SkyBlue3"))
+                    (gnus-cite-2 . (:foreground "light sky blue"))
+                    (gnus-cite-3 . (:foreground "yellow3"))
+                    (mm-uu-extract . (:background "#efeae9"))
                     )))
        (ag/set-faces-attributes faces)))
 
