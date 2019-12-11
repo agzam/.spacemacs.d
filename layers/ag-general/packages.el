@@ -12,14 +12,16 @@
 (defconst ag-general-packages '(helpful
                                 rainbow-mode
                                 helm-pages
-                                evil-mc
+                                ;; evil-mc
                                 edit-indirect
                                 engine-mode
                                 fennel-mode
                                 (spacehammer :location
                                              (recipe :fetcher file
                                                      :path "~/.hammerspoon/"))
-                                (jira :location local)))
+                                (jira :location local)
+                                lsp-mode
+                                ))
 
 (defun ag-general/init-helpful ()
   (use-package helpful
@@ -27,6 +29,7 @@
     (unbind-key "h" help-map)
     (bind-key "hh" 'helpful-symbol help-map)
     (bind-key "ha" 'helpful-at-point help-map)
+    (global-set-key (kbd "C-h k") #'helpful-key)
     (spacemacs/set-leader-keys "hdd" #'helpful-symbol)
     (spacemacs/set-leader-keys-for-major-mode 'emacs-lisp-mode "h h" 'helpful-at-point)
     (evil-define-key 'normal helpful-mode-map "q" 'quit-window)))
@@ -51,7 +54,7 @@
 
 (with-eval-after-load 'ibuf-ext
   (setq
-    ibuffer-old-time 8 ;; buffer considered old after that many hours
+    ibuffer-old-time 8 ; buffer considered old after that many hours
     ibuffer-group-buffers-by 'projects
     ibuffer-expert t
     ibuffer-show-empty-filter-groups nil)
@@ -150,6 +153,7 @@
 (defun ag-general/init-spacehammer ()
   (use-package spacehammer
     :demand t
+    :ensure t
     :config
     (progn
       (spacemacs/transient-state-register-add-bindings 'zoom-frm
@@ -168,5 +172,16 @@
     :config
     (setq jira-base-url "https://jira.dividendsolar.com")
     (global-set-key (kbd "M-o M-j") #'convert-to-jira-link)))
+
+(defun spacemacs//setup-lsp-jump-handler* (&rest modes)
+  "Set jump handler for LSP with the given MODE."
+  (dolist (m modes)
+    (add-to-list (intern (format "spacemacs-jump-handlers-%S" m))
+                 '(xref-find-definitions :async t))))
+
+(defun ag-general/post-init-lsp-mode ()
+  (with-eval-after-load 'lsp-mode
+    (setq lsp-after-open-hook nil)
+    (add-hook 'lsp-after-open-hook (lambda() (spacemacs//lsp-declare-prefixes-for-mode major-mode)))))
 
 ;;; packages.el ends here

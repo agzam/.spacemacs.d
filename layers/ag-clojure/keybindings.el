@@ -16,13 +16,16 @@
                clojurex-mode
                cider-repl-mode))
     (spacemacs/set-leader-keys-for-major-mode m
-      ";" 'cljr-toggle-ignore-form
-      "h h" 'helm-clojuredocs-at-point
-      "'" 'cider-switch-to-repl-buffer
-      "e p" 'cider-pprint-eval-last-sexp-to-comment))
+      ";"   #'cljr-toggle-ignore-form
+      "h h" #'helm-clojuredocs-at-point
+      "'"   #'cider-switch-to-repl-buffer
+      "e p" #'cider-pprint-eval-last-sexp-to-comment))
 
   (spacemacs/set-leader-keys-for-major-mode 'clojurescript-mode
     "g f" #'re-frame-jump-to-reg))
+
+(with-eval-after-load 'lsp-mode
+ (define-key lsp-mode-map [remap xref-find-references] #'lsp-find-references))
 
 (spacemacs/set-leader-keys-for-major-mode 'clojure-mode
   "C" 'clojars-find)

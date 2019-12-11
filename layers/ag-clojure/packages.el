@@ -14,8 +14,7 @@
     helm-clojuredocs
     clojars
     helm-cider
-    flycheck-joker
-    ))
+    lsp-mode))
 
 (defun ag-clojure/init-ac-cider ())
 (defun ag-clojure/init-clojure-mode-extra-font-locking ())
@@ -23,21 +22,34 @@
 (defun ag-clojure/init-clojars ())
 (defun ag-clojure/init-helm-cider ())
 (defun ag-clojure/init-cider-hydra ())
-(defun ag-clojure/init-flycheck-joker ()
-  (require 'flycheck-joker)
-  (with-eval-after-load 'flycheck-clj-kondo
-    (dolist (checker '(clj-kondo-clj clj-kondo-cljs clj-kondo-cljc clj-kondo-edn))
-      (setq flycheck-checkers (cons checker (delq checker flycheck-checkers))))
-    (dolist (checkers '((clj-kondo-clj . clojure-joker)
-                        (clj-kondo-cljs . clojurescript-joker)
-                        (clj-kondo-cljc . clojure-joker)
-                        (clj-kondo-edn . edn-joker)))
-      (flycheck-add-next-checker (car checkers) (cons 'error (cdr checkers))))))
 
-;; (defun ag-clojure/init-flycheck-clj-kondo ())
+(defun ag-clojure/post-init-lsp-mode ()
+  (with-eval-after-load 'lsp-mode
+    (dolist (m '(clojure-mode
+                 clojurec-mode
+                 clojurescript-mode
+                 clojurex-mode))
+      (add-to-list 'lsp-language-id-configuration `(,m . "clojure")))
+
+    (define-key lsp-mode-map (kbd "TAB") #'company-indent-or-complete-common))
+
+  (spacemacs|add-company-backends
+    :backends company-lsp
+    :modes '(clojure-mode clojurescript-mode clojurec-mode)
+    :variables company-minimum-prefix-length 2
+    :append-hooks nil
+    :call-hooks t)
+
+  (setq lsp-enable-indentation nil)
+
+  (defun lsp-init ()
+    (run-at-time "1 sec" nil #'lsp))
+
+  (add-hook 'clojure-mode-hook #'lsp-init)
+  (add-hook 'clojurec-mode-hook #'lsp-init)
+  (add-hook 'clojurescript-mode-hook #'lsp-init))
 
 (with-eval-after-load 'clojure-mode
-
   (setq clojure-enable-fancify-symbols nil
         ;; clojure-indent-style :align-arguments
         clojure-align-forms-automatically t

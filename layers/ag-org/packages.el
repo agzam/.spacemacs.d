@@ -70,7 +70,7 @@
      ;;;; ---- headings ----
     (setq
      org-bullets-bullet-list '("⏣" "◉" "●" "•" "‣" "⋄" "∙")
-     org-goto-interface 'outline-path-completion        ;; org-goto C-c C-j like in org-refile
+     org-goto-interface 'outline-path-completion  ; org-goto C-c C-j like in org-refile
      org-startup-folded t
      org-blank-before-new-entry nil
      org-ellipsis " ↴"
@@ -128,7 +128,6 @@
 
      ;;;; ---- src blocks ----
     (setq
-     ;; org-src-fontify-natively nil                     ; https://github.com/syl20bnr/spacemacs/issues/8455
      org-src-window-setup 'other-window
      org-src-ask-before-returning-to-edit-buffer nil
      ;; org-src-preserve-indentation t

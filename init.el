@@ -34,7 +34,7 @@ This function should only modify configuration layer settings."
    dotspacemacs-configuration-layers
    '(
      ;; ---- Languages -----
-     csv yaml emacs-lisp lua javascript ag-haskell sql
+     csv yaml emacs-lisp lua javascript ag-haskell sql rust
      (html :packages (not pug-mode slim-mode))
      (markdown
       :packages (not mmm-mode)
@@ -47,15 +47,18 @@ This function should only modify configuration layer settings."
                       auto-completion-enable-help-tooltip t
                       auto-completion-enable-sort-by-usage t)
      ;; ---- Tools ----
-     docker emoji fasd helm imenu-list restclient search-engine treemacs
+     docker emoji fasd helm imenu-list restclient search-engine treemacs osx
      ;; (dash :variables
      ;;       helm-dash-docset-path
      ;;       (cond ((eq system-type 'darwin) "~/Library/Application\ Support/Dash/DocSets")))
-     (shell :variables shell-default-shell 'eshell)
+     (shell :variables
+            shell-default-shell 'eshell
+            shell-default-full-span nil)
      ;; --- My own layers ----
      (ag-clojure :variables
                  clojure-enable-clj-refactor t
-                 clojure-enable-linters 'clj-kondo)
+                 clojure-enable-sayid t
+                 clojure-enable-linters '(clj-kondo joker))
      ag-colors
      ag-dired
      ag-general
@@ -65,7 +68,12 @@ This function should only modify configuration layer settings."
      ag-mail
      ag-version-control
      ag-web
-     )
+     (lsp
+      :variables
+      lsp-ui-sideline-enable nil
+      lsp-ui-doc-enable nil
+      lsp-ui-doc-position 'at-point
+      lsp-enable-completion-at-point nil))
 
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -220,7 +228,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; Default font or prioritized list of fonts.
    dotspacemacs-default-font '("Source Code Pro"
-                               :size 14
+                               :size 15
                                :weight normal
                                :width normal)
 
@@ -471,7 +479,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    left-fringe-width 6
    right-fringe-width 0
    evil-escape-key-sequence "kj"
-   evil-escape-delay 0.3
    frame-background-mode 'dark
    ;; Shell
    ;; system-uses-terminfo nil
@@ -506,14 +513,13 @@ before packages are loaded."
 
   (setq
    ;;;; Editor
-   frame-resize-pixelwise t       ;; make sure `(maximize-frame)` leaves no borders
+   frame-resize-pixelwise t ; make sure `(maximize-frame)` leaves no borders
    powerline-default-separator nil
    powerline-center-theme nil
    avy-timeout-seconds 0.4
-   aw-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9)                       ;;;; ace-windows instead of characters shows number
-   linum-format "%3d\u2502"                                    ;;;; nicer line-numbers
-   fill-column 120
-   ;; spacemacs-show-trailing-whitespace nil
+   aw-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9) ; ace-windows instead of characters shows number
+   linum-format "%3d\u2502" ; nicer line-numbers
+   fill-column 150
    tab-width 4
    mouse-wheel-scroll-amount '(0.02)
    mouse-wheel-progressive-speed nil
@@ -524,7 +530,7 @@ before packages are loaded."
    google-translate-default-target-language "en"
    scroll-margin 0
    abbrev-file-name "~/.spacemacs.d/abbrev_defs"
-   save-abbrevs t ;; save abbrevs upon exiting Emacs
+   save-abbrevs t ; save abbrevs upon exiting Emacs
    uniquify-buffer-name-style 'forward
    company-idle-delay 0.1
    writeroom-width 150
@@ -533,7 +539,7 @@ before packages are loaded."
    helm-echo-input-in-header-line nil
    helm-ff--deleting-char-backward t
    helm-follow-mode-persistent nil
-   helm-buffer-details-flag t        ;; Always show details in buffer list when non--nil.
+   helm-buffer-details-flag t ; Always show details in buffer list when non--nil.
    apropos-sort-by-scores t
 
    ;;;; Misc
@@ -541,8 +547,7 @@ before packages are loaded."
    eldoc-idle-delay 0.25
    use-dialog-box nil
    eshell-aliases-file "~/.spacemacs.d/eshell.aliases"
-   dumb-jump-force-searcher 'rg       ;; https://github.com/jacktasia/dumb-jump#emacs-options
-
+   dumb-jump-force-searcher 'rg ; https://github.com/jacktasia/dumb-jump#emacs-options
    ;; don't quit on esc or jk
    evil-escape-excluded-major-modes '(magit-status-mode
                                       magit-log-mode
@@ -554,6 +559,7 @@ before packages are loaded."
                                       help-mode
                                       paradox-menu-mode
                                       compilation-mode
+                                      mu4e-main-mode
                                       mu4e-headers-mode
                                       mu4e-view-mode)
    ranger-override-dired nil
@@ -637,11 +643,6 @@ before packages are loaded."
     :body (find-file "~/dotfile.org/dotfile.org"))
 
   (run-at-time "2 sec" nil #'ag/adjust-themes)
-
-  ;; This commit changed existing behavior:
-  ;; https://github.com/syl20bnr/spacemacs/commit/0e2935b8d6b8473c92d3037a2f6c346b03e606a9
-  ;; until it is fixed, how to load winner manually
-  (winner-mode 1)
 
   ;; TODO: remove when they fix https://github.com/emacsorphanage/helm-swoop/issues/77
   (with-eval-after-load 'helm-swoop

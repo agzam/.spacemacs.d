@@ -67,6 +67,7 @@
 (define-key evil-normal-state-map "Q" 'bury-buffer)
 (define-key evil-normal-state-map (kbd "C-S-e") 'scroll-other-window)
 (define-key evil-normal-state-map (kbd "C-S-y") 'scroll-other-window-down)
+(define-key evil-insert-state-map (kbd "C-'") #'delete-backward-char)
 
 ;;;; ---------------
 ;;;; Smartparens
