@@ -69,7 +69,7 @@
 
      ;;;; ---- headings ----
     (setq
-     org-bullets-bullet-list '("⚫" "◉" "●" "•" "‣" "⋄" "∙")
+     org-bullets-bullet-list '("⏣" "◉" "●" "•" "‣" "⋄" "∙")
      org-goto-interface 'outline-path-completion        ;; org-goto C-c C-j like in org-refile
      org-startup-folded t
      org-blank-before-new-entry nil
