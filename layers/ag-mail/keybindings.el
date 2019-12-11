@@ -18,6 +18,8 @@
     (define-key m (kbd "C-=") 'mu4e-headers-split-view-grow)
     (define-key m (kbd "C--") 'mu4e-headers-split-view-shrink))
 
+  (define-key mu4e-headers-mode-map (kbd "M-SPC") #'hydra-mu4e-headers/body)
+
   ;; prevent accidental closing of headers when you just need to collapse view buffer
   (define-key mu4e-headers-mode-map "q" nil)
   (define-key mu4e-headers-mode-map (kbd "C-q") #'mu4e~headers-quit-buffer)

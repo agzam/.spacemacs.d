@@ -44,7 +44,7 @@
 (with-eval-after-load 'mu4e
   (setq mu4e-maildir "~/.mail"
         mu4e-get-mail-command "mbsync --all --new --delete --flags --renew --pull --push --create --expunge --verbose"
-        mu4e-view-use-gnus t
+        mu4e-view-use-gnus nil
         mu4e-update-interval 600
         mu4e-compose-signature-auto-include nil
         mu4e-view-show-images t
