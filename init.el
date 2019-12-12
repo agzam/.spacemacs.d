@@ -533,7 +533,7 @@ before packages are loaded."
    save-abbrevs t ; save abbrevs upon exiting Emacs
    uniquify-buffer-name-style 'forward
    company-idle-delay 0.1
-   writeroom-width 150
+   writeroom-width 130
 
    ;;;; Helm
    helm-echo-input-in-header-line nil
