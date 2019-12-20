@@ -54,17 +54,17 @@
 
 (with-eval-after-load 'ibuf-ext
   (setq
-    ibuffer-old-time 8 ; buffer considered old after that many hours
-    ibuffer-group-buffers-by 'projects
-    ibuffer-expert t
-    ibuffer-show-empty-filter-groups nil)
+   ibuffer-old-time 8 ; buffer considered old after that many hours
+   ibuffer-group-buffers-by 'projects
+   ibuffer-expert t
+   ibuffer-show-empty-filter-groups nil)
 
   (define-ibuffer-filter unsaved-file-buffers
-    "Toggle current view to buffers whose file is unsaved."
-  (:description "file is unsaved")
-  (ignore qualifier)
-  (and (buffer-local-value 'buffer-file-name buf)
-       (buffer-modified-p buf)))
+      "Toggle current view to buffers whose file is unsaved."
+    (:description "file is unsaved")
+    (ignore qualifier)
+    (and (buffer-local-value 'buffer-file-name buf)
+         (buffer-modified-p buf)))
 
   (define-ibuffer-filter file-buffers
       "Only show buffers backed by a file."
@@ -162,8 +162,27 @@
           ("n" (spacehammer/move-frame-one-display "North"))
           ("p" (spacehammer/move-frame-one-display "South"))))
 
-      (define-advice spacemacs/zoom-frm-transient-state/nil
-          (:after () fix-frame-after-zoom-frm-transient-state)
+      (defun reinforce-frame-full-width-height ()
+        "Set full-width and full-height frame parameters based on
+actual pixel values of frame geometry."
+        (let* ((geom (frame-monitor-attribute 'geometry))
+               (width (nth 2 geom))
+               (height (first (last geom))))
+          (when (< (- width (frame-outer-width)) 25)
+            (set-frame-parameter (selected-frame) 'full-width t))
+          (when (< (- height (frame-outer-height)) 25)
+            (set-frame-parameter (selected-frame) 'full-height t))))
+
+      (define-advice spacemacs/zoom-frm-transient-state/spacemacs/zoom-frm-in
+          (:around (fn) fix-frame-after-zoom-frm-in)
+        (reinforce-frame-full-width-height)
+        (funcall fn)
+        (spacehammer/fix-frame))
+
+      (define-advice spacemacs/zoom-frm-transient-state/spacemacs/zoom-frm-out
+          (:around (fn) fix-frame-after-zoom-frm-out)
+        (reinforce-frame-full-width-height)
+        (funcall fn)
         (spacehammer/fix-frame)))))
 
 (defun ag-general/init-jira ()
