@@ -176,7 +176,7 @@
                      (mode-line . (:underline (:color "#b2b2b2")))
                      (mode-line-inactive . (:underline (:color "#d3d3e7")))
 
-                     (variable-pitch . (:family "Karla" :weight normal :width expanded))
+                     (variable-pitch . (:family "Karla" :weight normal :width expanded :height 160))
 
                      ;; (lsp-lens-face . (:foreground ,default-foreground))
                      (lsp-ui-peek-list . (:background "#f0ece1" :foreground "#866f94"))
@@ -198,7 +198,7 @@
                      ;; org-mode
                      (org-block-begin-line . (:underline ,bg-accent :background ,bg-darker :foreground ,fg-accent :height 0.9 :weight ultra-light))
                      (org-block . (:background ,bg-darker))
-                     (org-block-end-line . (:overline ,bg-accent :background ,bg-darker :foreground ,fg-accent :height 0.8 :weight ultra-light))
+                     (org-block-end-line . (:overline ,bg-accent :background ,bg-darker :foreground ,fg-accent :height 0.9 :weight ultra-light))
                      ;; (org-level-1 . (:inherit variable-pitch :bold t :height 1.3))
                      ;; (org-level-2 . (:inherit variable-pitch :bold t :height 1.2))
                      ;; (org-level-3 . (:inherit variable-pitch :height 1.1))

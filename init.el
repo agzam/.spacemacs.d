@@ -47,7 +47,14 @@ This function should only modify configuration layer settings."
                       auto-completion-enable-help-tooltip t
                       auto-completion-enable-sort-by-usage t)
      ;; ---- Tools ----
-     docker emoji fasd helm imenu-list restclient search-engine treemacs osx
+     docker emoji fasd imenu-list restclient search-engine treemacs osx
+     ;; (helm :variables
+     ;;       helm-completion-style 'emacs
+     ;;       completion-styles '(helm-flex))
+     (ivy :variables
+          ivy-fixed-height-minibuffer t
+          ivy-initial-inputs-alist nil
+          ivy-height 20)
      ;; (dash :variables
      ;;       helm-dash-docset-path
      ;;       (cond ((eq system-type 'darwin) "~/Library/Application\ Support/Dash/DocSets")))
@@ -329,7 +336,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (default nil) (Emacs 24.4+ only)
-   dotspacemacs-maximized-at-startup nil
+   dotspacemacs-maximized-at-startup t
 
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
@@ -479,6 +486,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    left-fringe-width 6
    right-fringe-width 0
    evil-escape-key-sequence "kj"
+   evil-esc-delay 0.3
    frame-background-mode 'dark
    ;; Shell
    ;; system-uses-terminfo nil
@@ -519,7 +527,7 @@ before packages are loaded."
    avy-timeout-seconds 0.4
    aw-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9) ; ace-windows instead of characters shows number
    linum-format "%3d\u2502" ; nicer line-numbers
-   fill-column 150
+   fill-column 170
    tab-width 4
    mouse-wheel-scroll-amount '(0.02)
    mouse-wheel-progressive-speed nil
@@ -549,19 +557,12 @@ before packages are loaded."
    eshell-aliases-file "~/.spacemacs.d/eshell.aliases"
    dumb-jump-force-searcher 'rg ; https://github.com/jacktasia/dumb-jump#emacs-options
    ;; don't quit on esc or jk
-   evil-escape-excluded-major-modes '(magit-status-mode
-                                      magit-log-mode
-                                      magit-diff-mode
-                                      magit-refs-mode
-                                      magit-revision-mode
-                                      magit-stash-mode
-                                      magit-process-mode
+   evil-escape-excluded-major-modes '(compilation-mode
                                       help-mode
-                                      paradox-menu-mode
-                                      compilation-mode
-                                      mu4e-main-mode
-                                      mu4e-headers-mode
-                                      mu4e-view-mode)
+                                      magit-diff-mode magit-log-mode magit-process-mode magit-refs-mode magit-revision-mode magit-stash-mode magit-status-mode mu4e-headers-mode
+                                      mu4e-main-mode mu4e-view-mode
+                                      org-agenda-mode
+                                      paradox-menu-mode)
    ranger-override-dired nil
    delete-by-moving-to-trash nil)
    ;;;; end setq
@@ -648,4 +649,11 @@ before packages are loaded."
   (with-eval-after-load 'helm-swoop
     (define-key helm-swoop-edit-map (kbd "C-c C-c") 'helm-swoop--edit-complete)
     (define-key helm-swoop-edit-map (kbd "C-c C-k") 'helm-swoop--edit-cancel))
+
+
+  ;; make ivy stuff a bit readable in the minibuffer
+  (defun minibuffer-line-spacing ()
+    (setq-local line-spacing 6))
+  (add-hook 'minibuffer-setup-hook #'minibuffer-line-spacing)
+
   )
