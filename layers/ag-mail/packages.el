@@ -60,7 +60,7 @@
         fill-flowed-encode-column 5000
         mu4e-user-mail-address-list '("agzam.ibragimov@gmail.com" "to.plotnick@gmail.com" "ag@mayvenn.com")
         mu4e-compose-complete-only-personal t
-        mu4e-enable-async-operations nil
+        mu4e-enable-async-operations t
         org-mu4e-link-query-in-headers-mode nil
         org-mu4e-convert-to-html t
         ;; customize the reply-quote-string
@@ -83,7 +83,7 @@
 
   (setq
    mu4e-context-policy 'pick-first
-   mu4e-compose-context-policy 'ask
+   mu4e-compose-context-policy 'pick-first
    mu4e-contexts
    `(,(make-mu4e-context
        :name "home"
@@ -127,7 +127,10 @@
           ("xwidget" . mu4e-action-view-with-xwidget)
           ("view in browser" . mu4e-action-view-in-browser)
           ("show this thread" . mu4e-action-show-thread)
-          ("View as pdf" . mu4e-action-view-as-pdf)))
+          ("View as pdf" . mu4e-action-view-as-pdf)
+          ("Find in mailing-list" . mu4e-action-find-in-mailing-list)))
+
+  (add-to-list 'mu4e-headers-actions '("Find in mailing-list" . mu4e-action-find-in-mailing-list))
 
   (add-to-list
    'mu4e-header-info-custom
