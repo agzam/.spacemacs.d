@@ -48,12 +48,13 @@ This function should only modify configuration layer settings."
                       auto-completion-enable-sort-by-usage t)
      ;; ---- Tools ----
      docker emoji fasd imenu-list restclient search-engine treemacs osx
-     ;; (helm :variables
-     ;;       helm-completion-style 'emacs
-     ;;       completion-styles '(helm-flex))
+     ;; helm
      (ivy :variables
           ivy-fixed-height-minibuffer t
           ivy-initial-inputs-alist nil
+          ivy-re-builders-alist '((spacemacs/counsel-search . spacemacs/ivy--regex-plus)
+                                  (ivy-switch-buffer . ivy--regex-plus)
+                                  (t . ivy--regex-fuzzy))
           ivy-height 20)
      ;; (dash :variables
      ;;       helm-dash-docset-path
