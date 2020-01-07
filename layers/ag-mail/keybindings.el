@@ -18,6 +18,7 @@
     (define-key m (kbd "C--") #'mu4e-headers-split-view-shrink)
     (define-key m (kbd "D") #'mu4e-headers-mark-for-trash)
     (define-key m (kbd "M-d") #'mu4e-headers-mark-for-delete)
+    (define-key m (kbd "C-k") #'mu4e-view-headers-prev)
 
     (evilified-state-evilify-map m
       :mode mu4e-headers-mode
@@ -25,6 +26,7 @@
       (kbd "J") (lambda ()
                   (interactive)
                   (mu4e-view-mark-thread '(unmark)))
+      (kbd "C-k" ) #'mu4e-view-headers-prev
       (kbd "C-h") nil))
 
   (define-key mu4e-headers-mode-map (kbd "M-SPC") #'hydra-mu4e-headers/body)

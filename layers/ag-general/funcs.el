@@ -108,3 +108,22 @@ OPTIONS can include '(urgency expire-time app-name icon category hint), refer to
       (insert-buffer-substring buffer-B))
     (diff old new "-u" t)))
 
+(defun toggle-frame-maximized-undecorated ()
+  (interactive)
+  (let* ((frame (selected-frame))
+         (on? (and (frame-parameter frame 'undecorated)
+                   (eq (frame-parameter frame 'fullscreen) 'maximized)))
+         (geom (frame-monitor-attribute 'geometry))
+         (x (first geom))
+         (y (second geom))
+         (display-height (first (last geom))))
+    (if on?
+        (progn
+          (set-frame-parameter frame 'undecorated nil)
+          (toggle-frame-maximized))
+      (progn
+        (set-frame-position frame x y)
+        (set-frame-parameter frame 'fullscreen 'maximized)
+        (set-frame-parameter frame 'undecorated t)
+        (set-frame-height frame (- display-height 26) nil t)
+        (set-frame-position frame x y)))))

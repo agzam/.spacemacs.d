@@ -201,6 +201,7 @@ actual pixel values of frame geometry."
 (defun ag-general/post-init-lsp-mode ()
   (with-eval-after-load 'lsp-mode
     (setq lsp-after-open-hook nil)
+    (setq lsp-eldoc-enable-hover nil)
     (add-hook 'lsp-after-open-hook (lambda() (spacemacs//lsp-declare-prefixes-for-mode major-mode)))))
 
 ;;; packages.el ends here

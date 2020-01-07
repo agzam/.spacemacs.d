@@ -12,10 +12,8 @@
 ;;; Code:
 
 (defun mu4e-prepare-view ()
-  (when (and
-         mu4e-centered-view-p
-         (spacemacs/toggle-fullscreen-frame-status))
-    (spacemacs/toggle-centered-buffer)))
+  (setq writeroom-fullscreen-effect (frame-parameter (selected-frame) 'fullscreen))
+  (spacemacs/toggle-centered-buffer))
 
 (with-eval-after-load 'hydra
   (defhydra hydra-mu4e-headers (:color blue :hint nil)
@@ -212,5 +210,18 @@ If SUBTHREAD is non-nil, only fold the current subthread."
       (message "opening url: " url)
       (browse-url url))))
 
+(defun mu4e-action-open-in-gmail (msg)
+  "Open message in Gmail Web App"
+  (interactive)
+  (let* ((msg-id (mu4e-message-field msg :message-id))
+         (url (concat
+               "https://mail.google.com/mail/u/0/#search/rfc822msgid"
+               (url-hexify-string (concat ":" msg-id)))))
+    (print url)
+    (when url
+      (message "opening url: " url)
+      (browse-url url))))
+
+;; (browse-url "https://mail.google.com/mail/u/0/#search/rfc822msgid%3A0100016f7ebeffe1-d3290aa1-5df8-4b1b-b948-55f05854ff99-000000%40email.amazonses.com")
 
 ;;; funcs.el ends here

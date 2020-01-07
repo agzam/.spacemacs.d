@@ -128,9 +128,11 @@
           ("view in browser" . mu4e-action-view-in-browser)
           ("show this thread" . mu4e-action-show-thread)
           ("View as pdf" . mu4e-action-view-as-pdf)
-          ("Find in mailing-list" . mu4e-action-find-in-mailing-list)))
+          ("find in mailing-list" . mu4e-action-find-in-mailing-list)
+          ("open in Gmail" . mu4e-action-open-in-gmail)))
 
-  (add-to-list 'mu4e-headers-actions '("Find in mailing-list" . mu4e-action-find-in-mailing-list))
+  (add-to-list 'mu4e-headers-actions '("find in mailing-list" . mu4e-action-find-in-mailing-list))
+  (add-to-list 'mu4e-headers-actions '("open in Gmail" . mu4e-action-open-in-gmail))
 
   (add-to-list
    'mu4e-header-info-custom
@@ -211,6 +213,8 @@
   (mu4e-maildirs-extension)
 
   (add-hook 'mu4e-main-mode-hook #'ag-mail/set-mu4e-keys)
+  (add-hook 'mu4e-main-mode-hook (lambda () (mu4e-update-mail-and-index t)))
+
   (add-hook 'mu4e-headers-mode-hook #'ag-mail/set-mu4e-keys)
   (add-hook 'mu4e-view-mode-hook #'ag-mail/set-mu4e-keys))
 
