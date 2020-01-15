@@ -52,9 +52,9 @@ This function should only modify configuration layer settings."
      (ivy :variables
           ivy-fixed-height-minibuffer t
           ivy-initial-inputs-alist nil
-          ivy-re-builders-alist '((spacemacs/counsel-search . spacemacs/ivy--regex-plus)
-                                  (ivy-switch-buffer . ivy--regex-plus)
-                                  (t . ivy--regex-fuzzy))
+          ;; ivy-re-builders-alist '((spacemacs/counsel-search . spacemacs/ivy--regex-plus)
+          ;;                        (ivy-switch-buffer . ivy--regex-plus)
+          ;;                        (t . ivy--regex-plus))
           ivy-height 20)
      ;; (dash :variables
      ;;       helm-dash-docset-path
@@ -92,12 +92,13 @@ This function should only modify configuration layer settings."
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages '(copy-as-format
                                       helm-flycheck
-                                      quelpa-use-package)
+                                      quelpa-use-package
+                                      ivy-posframe)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
 
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages '(window-purpose)
 
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
@@ -586,8 +587,8 @@ before packages are loaded."
         (powerline-buffer-id))))
 
   (add-hook 'prog-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
-  (add-hook 'abbrev-mode-hook #'read-abbrev-file)
-  (remove-hook 'evil-insert-state-exit-hook 'expand-abbrev)
+  ;; (add-hook 'abbrev-mode-hook #'read-abbrev-file)
+  ;; (remove-hook 'evil-insert-state-exit-hook 'expand-abbrev)
 
   (with-eval-after-load 'auto-complete (add-to-list 'ac-dictionary-directories "~/.spacemacs.d/ac-dict"))
 
@@ -634,10 +635,10 @@ before packages are loaded."
     ;; experimenting with helm in a separate frame
     ;; (setq helm-display-function 'helm-display-buffer-in-own-frame
     ;;       helm-display-buffer-reuse-frame t
-    ;;       helm-use-undecorated-frame-option t
-    ;;       helm-display-buffer-width 120
+    ;;       helm-use-undecorated-frame-option nil
+    ;;       helm-display-buffer-width 150
     ;;       helm-display-buffer-height 20)
-    (setq helm-display-function 'helm-default-display-buffer)
+    ;; (setq helm-display-function 'helm-default-display-buffer)
     (setq which-key-sort-order 'which-key-prefix-then-key-order))
 
   (spacemacs|define-custom-layout "@dotfile"

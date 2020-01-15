@@ -44,7 +44,7 @@
   (dolist (buf (list " *Minibuf-0*" " *Minibuf-1*" " *Echo Area 0*" " *Echo Area 1*" " *which-key*"))
     (when (get-buffer buf)
       (with-current-buffer buf
-        (setq-local face-remapping-alist '((default (:height 0.85))))))))
+        (setq-local face-remapping-alist '((default (:height 0.80))))))))
 
 (defun ag/set-faces-attributes (faces)
   "Sets face attributes for given alist of FACES"
@@ -57,7 +57,7 @@
         (apply 'set-face-attribute params)))))
 
 (defun ag/adjust-base16-ocean-colors ()
-  (let* ((base00 "#252933")
+  (let* ((base00 "#1c212e")
          (base01 "#343d46")
          (base02 "#4f5b66")
          (base03 "#65737e")

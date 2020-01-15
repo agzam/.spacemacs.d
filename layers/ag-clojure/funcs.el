@@ -88,4 +88,11 @@
                   (region-end)
                   "\\(\\s-*\\)\\s-:")))
 
+(defun kill-cider-buffers ()
+  "Kill all CIDER buffers without asking any questions. Useful to execute when Emacs gets stuck."
+  (interactive)
+  (flet ((kill-buffer-ask (buffer) (kill-buffer buffer)))
+    (let ((kill-buffer-query-functions
+           (delq 'process-kill-buffer-query-function kill-buffer-query-functions))))
+    (kill-matching-buffers "cider")))
 ;;; funcs.el ends here

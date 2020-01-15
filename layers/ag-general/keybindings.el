@@ -18,14 +18,22 @@
 
 (evil-define-key 'normal diff-mode-map "q" #'quit-window)
 
-(global-set-key (kbd "C-x b") 'spacemacs-layouts/non-restricted-buffer-list-helm)
-(global-set-key (kbd "C-x C-b") 'spacemacs-layouts/non-restricted-buffer-list-helm)
+;; don't override Evil's g and G in dired
+(unbind-key "g" dired-mode-map)
+(unbind-key "G" dired-mode-map)
 
 (when (eq system-type 'darwin)
-  (global-set-key (kbd "s-B") 'lazy-helm/helm-mini)
-  (global-set-key (kbd "s-b") 'spacemacs-layouts/non-restricted-buffer-list-helm)
-  (global-set-key (kbd "H-B") 'lazy-helm/helm-mini)
-  (global-set-key (kbd "H-b") 'spacemacs-layouts/non-restricted-buffer-list-helm)
+  (if (configuration-layer/layer-used-p 'helm)
+      (progn
+        (global-set-key (kbd "s-B") 'lazy-helm/helm-mini)
+        (global-set-key (kbd "s-b") 'spacemacs-layouts/non-restricted-buffer-list-helm)
+        (global-set-key (kbd "H-B") 'lazy-helm/helm-mini)
+        (global-set-key (kbd "H-b") 'spacemacs-layouts/non-restricted-buffer-list-helm))
+    (progn
+      (global-set-key (kbd "s-B") #'ivy-switch-buffer)
+      (global-set-key (kbd "s-b") #'spacemacs-layouts/non-restricted-buffer-list-ivy)
+      (global-set-key (kbd "H-B") 'ivy-switch-buffer)
+      (global-set-key (kbd "H-b") 'spacemacs-layouts/non-restricted-buffer-list-ivy)))
   (global-set-key (kbd "s-[") #'spacemacs/persp-go-prev)
   (global-set-key (kbd "s-]") #'spacemacs/persp-go-next)
   (global-set-key (kbd "H-[") #'spacemacs/persp-go-prev)
@@ -52,7 +60,7 @@
     "k=" #'evil-lisp-state-sp-reindent))
 
 (spacemacs/set-leader-keys
-  "qq" nil                           ;; no unexpected exits
+  "qq" nil  ; no unexpected exits
   "qQ" #'spacemacs/prompt-kill-emacs
   "s/" #'engine/search-google
   "jj" #'avy-goto-char-timer

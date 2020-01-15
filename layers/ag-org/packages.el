@@ -266,9 +266,10 @@
     :config
     (progn
       (setq clocker-keep-org-file-always-visible nil)
-      (add-to-list 'clocker-skip-after-save-hook-on-file-name '(recentf))
+      (add-to-list 'clocker-skip-after-save-hook-on-file-name '("~/.emacs.d/.cache/recentf"))
       (ad-activate 'spacemacs/mode-line-prepare-left)
-      (clocker-mode 1))))
+      ;; (add-hook 'prog-mode-hook 'clocker-mode)
+      )))
 
 (defun ag-org/init-ox-reveal ()
   (use-package ox-reveal
