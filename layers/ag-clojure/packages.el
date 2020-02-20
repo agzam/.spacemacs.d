@@ -25,6 +25,7 @@
 
 (defun ag-clojure/post-init-lsp-mode ()
   (with-eval-after-load 'lsp-mode
+    ;; (setq lsp-clojure-server-command `("java" "-jar" ,(concat (getenv "HOME") "/.clojure/clj-kondo-lsp-server.jar")))
     (dolist (m '(clojure-mode
                  clojurec-mode
                  clojurescript-mode
@@ -47,7 +48,8 @@
 
   (add-hook 'clojure-mode-hook #'lsp-init)
   (add-hook 'clojurec-mode-hook #'lsp-init)
-  (add-hook 'clojurescript-mode-hook #'lsp-init))
+  (add-hook 'clojurescript-mode-hook #'lsp-init)
+  )
 
 (with-eval-after-load 'clojure-mode
   (setq clojure-enable-fancify-symbols nil
@@ -117,6 +119,7 @@
     (clojure.test/async 1)
     (promesa.core/alet 1)
     )
+
   )
 
 (add-hook 'clojurescript-mode-hook #'add-reframe-regs-to-imenu)

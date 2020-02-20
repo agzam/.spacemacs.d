@@ -19,12 +19,12 @@
                  powerline-inactive0
                  powerline-inactive1
                  powerline-inactive2
-                 mode-line
-                 mode-line-inactive
-                 mode-line-highlight
-                 mode-line-buffer-id
-                 mode-line-buffer-id-inactive
-                 mode-line-emphasis
+                 ;; mode-line
+                 ;; mode-line-inactive
+                 ;; mode-line-highlight
+                 ;; mode-line-buffer-id
+                 ;; mode-line-buffer-id-inactive
+                 ;; mode-line-emphasis
                  which-key-docstring-face
                  which-key-group-description-face
                  which-key-command-description-face
@@ -57,7 +57,8 @@
         (apply 'set-face-attribute params)))))
 
 (defun ag/adjust-base16-ocean-colors ()
-  (let* ((base00 "#1c212e")
+  (let* ((base00 "#12141a")
+         (base00*1 "#171a21")
          (base01 "#343d46")
          (base02 "#4f5b66")
          (base03 "#65737e")
@@ -122,8 +123,9 @@
                   (org-link . (:underline t :foreground ,base0B))
                   (org-todo . (:weight bold :foreground ,base0A))
                   (org-done . (:strike-through ,base0D))
-                  (org-block-begin-line . (:underline ,base02 :foreground ,base04 :height 0.9 :weight ultra-light))
-                  (org-block-end-line . (:overline ,base02 :foreground ,base04 :height 0.9 :weight ultra-light))
+                  (org-block-begin-line . (:underline nil :background ,base00*1 :foreground ,base04 :height 0.9 :weight ultra-light))
+                  (org-block . (:background ,base03))
+                  (org-block-end-line . (:overline nil :foreground ,base04 :height 0.9 :weight ultra-light))
                   (org-level-1 . (:foreground ,base0D :bold t :height 1.3))
                   (org-level-2 . (:foreground ,base09 :bold t :height 1.2))
                   (org-level-3 . (:foreground ,base0B :height 1.1))
@@ -141,7 +143,13 @@
                   (trailing-whitespace . (:background ,base01))
                   (mode-line . (:underline (:color ,base01)))
                   (mode-line-inactive . (:underline (:color ,base01)))
-                  (default . (:background ,base00 :foreground ,base05)))))
+                  (default . (:background ,base00 :foreground ,base05))
+
+                  (mode-line . (:height 100))
+                  (mode-line-inactive . (:height 100))
+                  (mode-line-emphasis . (:weight normal))
+
+                  )))
     (ag/set-faces-attributes faces)
     (setq pdf-view-midnight-colors `(,base04 . ,base00))))
 
@@ -196,9 +204,9 @@
                      ;; (lsp-ui-sideline-global . (:foreground ,default-foreground))
 
                      ;; org-mode
-                     (org-block-begin-line . (:underline ,bg-accent :background ,bg-darker :foreground ,fg-accent :height 0.9 :weight ultra-light))
+                     (org-block-begin-line . (:background ,bg-darker :foreground ,fg-accent :height 0.9 :weight ultra-light))
                      (org-block . (:background ,bg-darker))
-                     (org-block-end-line . (:overline ,bg-accent :background ,bg-darker :foreground ,fg-accent :height 0.9 :weight ultra-light))
+                     (org-block-end-line . (:background ,bg-darker :foreground ,fg-accent :height 0.9 :weight ultra-light))
                      ;; (org-level-1 . (:inherit variable-pitch :bold t :height 1.3))
                      ;; (org-level-2 . (:inherit variable-pitch :bold t :height 1.2))
                      ;; (org-level-3 . (:inherit variable-pitch :height 1.1))
@@ -212,6 +220,11 @@
                      (gnus-cite-2 . (:foreground "light sky blue"))
                      (gnus-cite-3 . (:foreground "yellow3"))
                      (mm-uu-extract . (:background "#efeae9"))
+
+
+                     (mode-line . (:height 100))
+                     (mode-line-inactive . (:height 100))
+                     (mode-line-emphasis . (:weight normal))
                      )))
        (ag/set-faces-attributes faces)))
 

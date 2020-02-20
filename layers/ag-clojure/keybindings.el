@@ -10,16 +10,17 @@
 ;;; License: GPLv3
 
 (with-eval-after-load 'cider
-  (dolist (m '(clojure-mode
-               clojurec-mode
-               clojurescript-mode
-               clojurex-mode
-               cider-repl-mode))
+  (spacemacs|forall-clojure-modes m
     (spacemacs/set-leader-keys-for-major-mode m
+      "fl" 'clojure-align
+      "sl" (lambda () (interactive) (cider-find-and-clear-repl-output t))
       ";"   #'cljr-toggle-ignore-form
       "h h" #'helm-clojuredocs-at-point
       "'"   #'cider-switch-to-repl-buffer
-      "e p" #'cider-pprint-eval-last-sexp-to-comment))
+      "e p" #'cider-pprint-eval-last-sexp-to-comment
+      "ss" (if (eq m 'cider-repl-mode)
+               'cider-switch-to-last-clojure-buffer
+             'cider-switch-to-repl-buffer)))
 
   (spacemacs/set-leader-keys-for-major-mode 'clojurescript-mode
     "g f" #'re-frame-jump-to-reg))

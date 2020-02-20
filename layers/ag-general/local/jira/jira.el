@@ -15,9 +15,9 @@
 (defvar go-jira-mode-map (make-sparse-keymap)
   "Keymap for minor mode variable `go-jira-mode'.")
 
-(define-key go-jira-mode-map (kbd "q") #'go-jira-quit)
-(evil-make-overriding-map go-jira-mode-map)
-(evil-define-minor-mode-key 'normal 'go-jira-mode-map "q" #'go-jira-quit)
+;; (define-key go-jira-mode-map (kbd "q") #'go-jira-quit)
+;; (evil-make-overriding-map go-jira-mode-map)
+;; (evil-define-minor-mode-key 'normal 'go-jira-mode-map "q" #'go-jira-quit)
 (define-key go-jira-mode-map [remap org-todo] #'go-jira-transition-current)
 
 (define-minor-mode go-jira-mode
@@ -112,7 +112,8 @@ of relevant properties to it."
     `(headline
       (:level 1
               :title ,(concat ticket ": " summary)
-              :todo-keyword ,(go-jira--issue-status->todo issue))
+              :todo-keyword ,(go-jira--issue-status->todo issue)
+              )
       (section
        nil
        (property-drawer
@@ -126,7 +127,7 @@ of relevant properties to it."
     (let* ((headers
             (concat
              "#+TODO: TODO(t) INPROGRESS(i) CODEREVIEW(c) DEVTEST(d) | STAGEPUSH(s) STAGETEST RELEASEREADY BLOCKED DONE \n"
-             "#+COLUMNS: %0( ) %10Ticket %50Summary %12TODO %20Assignee %1Points( ) %Sprint\n"))
+             "#+COLUMNS: %0( ) %10Ticket %50Summary %12TODO %20Assignee %1Points( ) %Labels %Sprint\n"))
 
            (org-text (org-element-interpret-data
                       (mapcar 'go-jira--issue->org-element
@@ -177,8 +178,14 @@ Returns `t` if successful."
 (defun go-jira-transition-current ()
   "Change status of Jira ticket at the point."
   (interactive)
-  (when-let ((ticket (org-entry-get nil "Ticket")))
-    (go-jira-transition ticket)))
+  (let* ((context (org-element-context))
+         (lnk (org-element-property :raw-link context))
+         (m (string-match "\\w*-[0-9]*" lnk))
+         (jira-ticket (when m (match-string 0 lnk))))
+    (go-jira-transition jira-ticket))
+  ;; (when-let ((ticket (org-entry-get nil "Ticket")))
+  ;;   (go-jira-transition ticket))
+  )
 
 ;; (go-jira-list (go-jira--mine))
 ;; (go-jira-list (go-jira--backlog))

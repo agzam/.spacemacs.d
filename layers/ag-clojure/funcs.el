@@ -95,4 +95,5 @@
     (let ((kill-buffer-query-functions
            (delq 'process-kill-buffer-query-function kill-buffer-query-functions))))
     (kill-matching-buffers "cider")))
+
 ;;; funcs.el ends here

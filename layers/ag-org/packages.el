@@ -209,7 +209,11 @@
 
     ;;; Save tasks.org file automatically
     (defun autosave-tasks-org (persp-name window)
-      (when (string= persp-name "@Org")
+      (when (and (string= persp-name "@Org")
+                 ;; no src editing happening
+                 (not (seq-filter
+                       (lambda (a) (string-match "\\*Org Src" (buffer-name a)))
+                       (buffer-list))))
         (save-some-buffers
          'no-confirm
          (lambda ()
@@ -282,9 +286,7 @@
 
 (defun ag-org/init-latex-fragments ()
   (use-package latex-fragments
-    :demand t
-    :config
-    (add-hook 'post-command-hook 'kk/org-latex-fragment-toggle t)))
+    :demand t))
 
 (with-eval-after-load 'artist
   ;;; artist mode doesn't work properly in evil-mode

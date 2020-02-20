@@ -1,6 +1,8 @@
 ;; -*- mode: emacs-lisp; lexical-binding: t -*-
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
+(setq-default quelpa-build-tar-executable "/usr/local/bin/gtar")
+;; (setq package-check-signature nil)
 
 (defun dotspacemacs/layers ()
   "Layer configuration:
@@ -32,7 +34,7 @@ This function should only modify configuration layer settings."
    dotspacemacs-configuration-layer-path '("~/.spacemacs.d/layers/") ;
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(
+   `(
      ;; ---- Languages -----
      csv yaml emacs-lisp lua javascript ag-haskell sql rust
      (html :packages (not pug-mode slim-mode))
@@ -47,14 +49,17 @@ This function should only modify configuration layer settings."
                       auto-completion-enable-help-tooltip t
                       auto-completion-enable-sort-by-usage t)
      ;; ---- Tools ----
-     docker emoji fasd imenu-list restclient search-engine treemacs osx
-     ;; helm
+     ,(when (eq system-type 'darwin) 'osx)
+     ,(when (eq system-type 'gnu/linux) 'ag-exwm)
+     docker emoji fasd imenu-list restclient search-engine treemacs
      (ivy :variables
           ivy-fixed-height-minibuffer t
           ivy-initial-inputs-alist nil
-          ;; ivy-re-builders-alist '((spacemacs/counsel-search . spacemacs/ivy--regex-plus)
-          ;;                        (ivy-switch-buffer . ivy--regex-plus)
-          ;;                        (t . ivy--regex-plus))
+          ivy-re-builders-alist '((counsel-projectile-find-file . ivy--regex-fuzzy)
+                                  (counsel-projectile-find-dir . ivy--regex-fuzzy)
+                                  (ivy-switch-buffer . ivy--regex-fuzzy)
+                                  (cider-repl-handle-shortcut . ivy--regex-fuzzy)
+                                  (t . ivy--regex-plus))
           ivy-height 20)
      ;; (dash :variables
      ;;       helm-dash-docset-path
@@ -93,6 +98,7 @@ This function should only modify configuration layer settings."
    dotspacemacs-additional-packages '(copy-as-format
                                       helm-flycheck
                                       quelpa-use-package
+                                      dired-narrow
                                       ivy-posframe)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -229,7 +235,7 @@ It should only modify the values of Spacemacs settings."
    ;; refer to the DOCUMENTATION.org for more info on how to create your own
    ;; spaceline theme. Value can be a symbol or list with additional properties.
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
-   dotspacemacs-mode-line-theme '(spacemacs :separator nil :separator-scale 1)
+   dotspacemacs-mode-line-theme '(doom :separator nil :separator-scale 1)
 
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
@@ -359,7 +365,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil unicode symbols are displayed in the mode line.
    ;; If you use Emacs as a daemon and wants unicode characters only in GUI set
    ;; the value to quoted `display-graphic-p'. (default t)
-   dotspacemacs-mode-line-unicode-symbols nil
+   dotspacemacs-mode-line-unicode-symbols t
 
    ;; If non-nil smooth scrolling (native-scrolling) is enabled. Smooth
    ;; scrolling overrides the default behavior of Emacs which recenters point
@@ -506,7 +512,18 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (with-eval-after-load 'auto-highlight-symbol
    (spacemacs/toggle-automatic-symbol-highlight-on))
 
-  (load custom-file))
+  (load custom-file)
+
+  (setq doom-modeline-height 1
+        doom-modeline-major-mode-icon t
+        doom-modeline-icon (display-graphic-p)
+        doom-modeline-major-mode-color-icon t
+        doom-modeline-buffer-file-name-style 'relative-from-project
+        doom-modeline-major-mode-color-icon nil
+        doom-modeline-mu4e t
+        doom-modeline-buffer-encoding nil
+        )
+  )
 
 (defun dotspacemacs/user-load ()
   "Library to load while dumping.
@@ -520,13 +537,13 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
-
   (setq
    ;;;; Editor
    frame-resize-pixelwise t ; make sure `(maximize-frame)` leaves no borders
    powerline-default-separator nil
    powerline-center-theme nil
    avy-timeout-seconds 0.4
+   winum-scope 'frame-local
    aw-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9) ; ace-windows instead of characters shows number
    linum-format "%3d\u2502" ; nicer line-numbers
    fill-column 170
