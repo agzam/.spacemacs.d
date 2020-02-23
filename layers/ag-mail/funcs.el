@@ -12,8 +12,11 @@
 ;;; Code:
 
 (defun mu4e-prepare-view ()
-  (setq writeroom-fullscreen-effect (frame-parameter (selected-frame) 'fullscreen))
-  (spacemacs/toggle-centered-buffer))
+  (run-at-time
+   "0.1 sec" nil
+   (lambda ()
+     (setq writeroom-fullscreen-effect (frame-parameter (selected-frame) 'fullscreen))
+     (spacemacs/toggle-centered-buffer))))
 
 (with-eval-after-load 'hydra
   (defhydra hydra-mu4e-headers (:color blue :hint nil)

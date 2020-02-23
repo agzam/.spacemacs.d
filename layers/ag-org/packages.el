@@ -83,6 +83,7 @@
      org-tags-column -80
      org-startup-indented nil
      org-fontify-whole-heading-line t
+     org-fontify-done-headline t
      )
 
     (add-hook 'org-reveal-start-hook 'end-of-visual-line)

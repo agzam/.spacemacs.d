@@ -57,8 +57,8 @@
         (apply 'set-face-attribute params)))))
 
 (defun ag/adjust-base16-ocean-colors ()
-  (let* ((base00 "#12141a")
-         (base00*1 "#171a21")
+  (let* ((base00 "#242938")
+         (base00*1 "#212533")
          (base01 "#343d46")
          (base02 "#4f5b66")
          (base03 "#65737e")
@@ -122,9 +122,8 @@
                   ;; org-mode
                   (org-link . (:underline t :foreground ,base0B))
                   (org-todo . (:weight bold :foreground ,base0A))
-                  (org-done . (:strike-through ,base0D))
                   (org-block-begin-line . (:underline nil :background ,base00*1 :foreground ,base04 :height 0.9 :weight ultra-light))
-                  (org-block . (:background ,base03))
+                  (org-block . (:background nil))
                   (org-block-end-line . (:overline nil :foreground ,base04 :height 0.9 :weight ultra-light))
                   (org-level-1 . (:foreground ,base0D :bold t :height 1.3))
                   (org-level-2 . (:foreground ,base09 :bold t :height 1.2))
@@ -134,6 +133,8 @@
                   (org-level-6 . (:foreground ,base0C :height 1.0))
                   (org-level-7 . (:foreground ,base07 :height 1.0))
                   (org-level-8 . (:foreground ,base0D :height 1.0))
+                  (org-done . (:strike-through ,base01 :foreground ,base02))
+                  (org-headline-done . (:strike-through ,base01 :foreground ,base02))
 
                   ;; code
                   (font-lock-doc-face . (:foreground ,base02))
@@ -207,6 +208,9 @@
                      (org-block-begin-line . (:background ,bg-darker :foreground ,fg-accent :height 0.9 :weight ultra-light))
                      (org-block . (:background ,bg-darker))
                      (org-block-end-line . (:background ,bg-darker :foreground ,fg-accent :height 0.9 :weight ultra-light))
+                     (org-done .  (:strike-through ,bg-accent-light :foreground ,bg-accent))
+                     (org-headline-done . (:strike-through ,bg-accent-light :foreground ,bg-accent))
+
                      ;; (org-level-1 . (:inherit variable-pitch :bold t :height 1.3))
                      ;; (org-level-2 . (:inherit variable-pitch :bold t :height 1.2))
                      ;; (org-level-3 . (:inherit variable-pitch :height 1.1))
@@ -225,7 +229,8 @@
                      (mode-line . (:height 100))
                      (mode-line-inactive . (:height 100))
                      (mode-line-emphasis . (:weight normal))
-                     )))
+
+                     (cider-debug-code-overlay-face . (:background ,bg-darker)))))
        (ag/set-faces-attributes faces)))
 
     ('base16-ocean (ag/adjust-base16-ocean-colors))))
