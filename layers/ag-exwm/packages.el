@@ -44,9 +44,8 @@
     (setq exwm-layout-show-all-buffers t)
 
     :config
-    (with-eval-after-load 'spaceline-segments
-      (display-time-mode t)
-      (spacemacs/toggle-mode-line-battery-on))
+    (setq doom-modeline--battery-status t)
+    (display-battery-mode t)
 
     ;; All buffers created in EXWM mode are named "*EXWM*". You may want to change
     ;; it in `exwm-update-class-hook' and `exwm-update-title-hook', which are run
@@ -163,7 +162,8 @@
     ;; We can use `M-m h' to access help
     (delete ?\C-h exwm-input-prefix-keys)
 
-    (exwm-input-set-key (kbd "M-x") #'helm-M-x)
+    (define-key key-translation-map (kbd "s-SPC") (kbd "M-m"))
+    (exwm-input-set-key (kbd "M-x") #'counsel-M-x)
     (exwm-input-set-key (kbd "M-:") #'eval-expression)
 
     ;; layouts can be switched by S-return S-return
@@ -175,7 +175,7 @@
     (exwm-input-set-key (kbd "S-s-U") #'winner-redo)
     (exwm-input-set-key (kbd "C-c C-r") #'exwm-reset)
     ;; Change buffers
-    (exwm-input-set-key (kbd "s-b") #'spacemacs-layouts/non-restricted-buffer-list-helm)
+    (exwm-input-set-key (kbd "s-b") #'spacemacs-layouts/non-restricted-buffer-list-ivy)
 
     ;; (push [s-tab] exwm-input-prefix-keys)
     (exwm-input-set-key (kbd "<s-tab>") #'previous-buffer)
@@ -190,8 +190,8 @@
             ([?\M-l] . [right])
             ([?\M-j] . [down])
             ([?\M-k] . [up])
-            ([?\s-j] . [\C-tab])
-            ([?\s-k] . [\C-S-tab])
+            ([?\s-k] . [\C-tab])
+            ([?\s-j] . [\C-S-tab])
             ([?\s-w] . [\C-f4])
             ([?\s-t] . [\C-t])
             ([?\s-r] . [\C-r])
@@ -215,7 +215,7 @@
 
     (add-hook 'window-configuration-change-hook 'exwm--set-local-simulation-keys)
 
-    (exwm-input-set-key (kbd "M-y") #'helm-show-kill-ring)
+    (exwm-input-set-key (kbd "M-y") #'counsel-yank-pop)
 
     (define-advice helm-kill-ring-action-yank (:around (old-function str) exwm-paste)
       "Paste the selection appropriately in exwm mode buffers"
@@ -243,6 +243,7 @@
   (use-package exwm-edit
     :demand t
     :config
+    (setq exwm-edit-split t)
     (defun ag-exwm/on-exwm-edit-compose ()
       (spacemacs/toggle-visual-line-navigation-on)
       (funcall 'markdown-mode))

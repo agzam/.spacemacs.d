@@ -60,7 +60,9 @@ This function should only modify configuration layer settings."
                                   (ivy-switch-buffer . ivy--regex-fuzzy)
                                   (cider-repl-handle-shortcut . ivy--regex-fuzzy)
                                   (t . ivy--regex-plus))
-          ivy-height 20)
+          ivy-height 20
+          ivy-read-action-function 'ivy-hydra-read-action ; until https://github.com/abo-abo/swiper/issues/2469 fixed
+          )
      ;; (dash :variables
      ;;       helm-dash-docset-path
      ;;       (cond ((eq system-type 'darwin) "~/Library/Application\ Support/Dash/DocSets")))

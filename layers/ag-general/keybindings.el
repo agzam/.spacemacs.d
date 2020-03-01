@@ -33,7 +33,14 @@
       (global-set-key (kbd "s-B") #'ivy-switch-buffer)
       (global-set-key (kbd "s-b") #'spacemacs-layouts/non-restricted-buffer-list-ivy)
       (global-set-key (kbd "H-B") 'ivy-switch-buffer)
-      (global-set-key (kbd "H-b") 'spacemacs-layouts/non-restricted-buffer-list-ivy)))
+      (global-set-key (kbd "H-b") 'spacemacs-layouts/non-restricted-buffer-list-ivy)
+
+      ;; open in other-window action
+      (define-key ivy-minibuffer-map
+        (kbd "M-l")
+        (lambda () (interactive)
+          (execute-kbd-macro (kbd "M-o j"))))
+      ))
   (global-set-key (kbd "s-[") #'spacemacs/persp-go-prev)
   (global-set-key (kbd "s-]") #'spacemacs/persp-go-next)
   (global-set-key (kbd "H-[") #'spacemacs/persp-go-prev)

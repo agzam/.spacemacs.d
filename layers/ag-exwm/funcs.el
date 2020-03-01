@@ -71,9 +71,9 @@ With universal argument shows list of windows"
 
 (defun exwm--switch-to-browser ()
   (interactive)
-  (if-let ((buf (exwm--find-app-buffer exwm--default-browser-command)))
+  (if-let ((buf (exwm--find-app-buffer (cdr exwm--default-browser-command))))
       (switch-to-buffer buf)
-    (start-process "browser" nil exwm--default-browser-command)
+    (start-process "browser" nil (car exwm--default-browser-command))
     ;; (start-process "browser" nil "dbus-launch" exwm--default-browser-command)
     ))
 
