@@ -9,16 +9,17 @@
 ;;
 ;;; License: GPLv3
 
-(defconst ag-general-packages '(helpful
+(defconst ag-general-packages `(helpful
                                 rainbow-mode
                                 helm-pages
                                 ;; evil-mc
                                 edit-indirect
                                 engine-mode
                                 fennel-mode
-                                (spacehammer :location
-                                             (recipe :fetcher file
-                                                     :path "~/.hammerspoon/"))
+                                ,(when (eq system-type 'darwin)
+                                   (spacehammer :location
+                                                (recipe :fetcher file
+                                                        :path "~/.hammerspoon/")))
                                 (jira :location local)
                                 lsp-mode
                                 ))
