@@ -16,6 +16,7 @@
                                                    :repo "agzam/direx-el"))
                           ;; dired-quick-sort
                           direx-grep
+                          treemacs
                           ))
 
 (if (eq system-type 'darwin)
@@ -96,6 +97,14 @@
   (use-package dired-quick-sort
     :config
     (dired-quick-sort-setup)))
+
+(defun ag-dired/post-init-treemacs ()
+  (with-eval-after-load 'treemacs-projectile
+   (spacemacs|spacebind
+    "Files manipulation."
+    :global
+    (("p" "Project"
+      ("t" direx-project:jump-to-project-root "Open project in Direx"))))))
 
 ;; (defun ag-dired/init-dired-filetype-face ()
 ;;   (use-package dired-filetype-face

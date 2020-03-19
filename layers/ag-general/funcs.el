@@ -127,3 +127,68 @@ OPTIONS can include '(urgency expire-time app-name icon category hint), refer to
         (set-frame-parameter frame 'undecorated t)
         (set-frame-height frame (- display-height 26) nil t)
         (set-frame-position frame x y)))))
+
+(defun reinforce-frame-full-width-height ()
+  "Set full-width and full-height frame parameters based on
+actual pixel values of frame geometry."
+  (let* ((geom (frame-monitor-attribute 'geometry))
+         (width (nth 2 geom))     ;
+         (height (first (last geom))))
+    (print width)
+    (set-frame-size (selected-frame) (- width 18) height t)
+    ;; (when (< (- width (frame-outer-width)) 20)
+    ;;   (set-frame-parameter (selected-frame) 'full-width t))
+    ;; (when (< (- height (frame-outer-height)) 20)
+    ;;   (set-frame-parameter (selected-frame) 'full-height t))
+    ))
+
+;; TODO: remove when https://github.com/abo-abo/swiper/issues/2454 fixed
+(defun counsel-company ()
+  "Complete using `company-candidates'."
+  (interactive)
+  (company-mode 1)
+  (unless company-candidates
+    (company-complete))
+  (let ((len (cond (company-prefix
+                    (length company-prefix))
+                   (company-common
+                    (length company-common)))))
+    (when len
+      (setq ivy-completion-beg (- (point) len))
+      (setq ivy-completion-end (point))
+      (ivy-read "Candidate: " company-candidates
+                :action #'ivy-completion-in-region-action
+                :caller 'counsel-company))))
+
+(defun heroku-config (app &optional key)
+  "Return config value(s) for given APP as json object. If KEY
+provided, returns its value"
+  (with-temp-buffer
+    (let* ((raw (progn
+                  (call-process
+                   (executable-find "heroku")
+                   nil (current-buffer) nil
+                   "config"
+                   "--app" app
+                   "--json")
+                  (buffer-string)))
+           (parsed (json-read-from-string raw)))
+      (if key
+          (a-get parsed key)
+        parsed))))
+
+(defun pg-app (app)
+  (interactive (list (completing-read "Choose: " '("local" "crawlingchaos-dev"  "crawlingchaos-staging"))))
+  (if (string= app "local")
+      (progn
+        (setenv "PGPASSWORD" "password")
+        (let ((sql-database "cc")
+              (sql-server "localhost")
+              (sql-user "cc_user"))
+          (sql-postgres app)))
+    (let* ((url (url-generic-parse-url (heroku-config app 'DATABASE_URL)))
+           (sql-database (replace-regexp-in-string "\\/" "" (url-filename url)))
+           (sql-server (url-host url))
+           (sql-user (url-user url)))
+      (setenv "PGPASSWORD" (url-password url))
+      (sql-postgres app))))

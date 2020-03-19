@@ -51,9 +51,10 @@ This function should only modify configuration layer settings."
      ;; ---- Tools ----
      ,(when (eq system-type 'darwin) 'osx)
      ,(when (eq system-type 'gnu/linux) 'ag-exwm)
-     docker emoji fasd imenu-list restclient search-engine treemacs
+     docker emoji fasd imenu-list restclient search-engine
      (ivy :variables
           ivy-fixed-height-minibuffer t
+          ivy-enable-advanced-buffer-information t
           ivy-initial-inputs-alist nil
           ivy-re-builders-alist '((counsel-projectile-find-file . ivy--regex-fuzzy)
                                   (counsel-projectile-find-dir . ivy--regex-fuzzy)
@@ -98,7 +99,7 @@ This function should only modify configuration layer settings."
    ;; '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages '(copy-as-format
-                                      helm-flycheck
+                                      ivy-rich
                                       quelpa-use-package
                                       dired-narrow
                                       ivy-posframe)
@@ -587,6 +588,7 @@ before packages are loaded."
                                       paradox-menu-mode)
    ranger-override-dired nil
    delete-by-moving-to-trash nil)
+  (global-hl-line-mode 0)
    ;;;; end setq
 
   (with-eval-after-load 'helm-ag (setq helm-ag-use-agignore t))

@@ -17,7 +17,8 @@
                             (latex-fragments :location local)
                             (org-present :excluded t)
                             (org-journal :excluded t)
-                            (org-brain :excluded t)))
+                            (org-brain :excluded t)
+                            (slack2org :location local)))
 
 (defun ag-org/post-init-org ()
   ;; (with-eval-after-load 'evil-org-mode
@@ -205,7 +206,6 @@
             ('gnu/linux "/usr/share/java/ditaa/ditaa-0_10.jar")
             ('darwin  "/usr/local/Cellar/ditaa/0.11.0/libexec/ditaa-0.11.0-standalone.jar")))
 
-    (add-hook 'org-babel-post-tangle-hook #'ag/set-tangled-file-permissions)
     (add-hook 'org-mode-hook #'abbrev-mode)
 
     ;;; Save tasks.org file automatically
@@ -287,6 +287,10 @@
 
 (defun ag-org/init-latex-fragments ()
   (use-package latex-fragments
+    :demand t))
+
+(defun ag-org/init-slack2org ()
+  (use-package slack2org
     :demand t))
 
 (with-eval-after-load 'artist

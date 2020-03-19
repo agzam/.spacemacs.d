@@ -106,7 +106,7 @@
 (with-eval-after-load 'company
   (define-key company-active-map (kbd "C-n") 'company-select-next)
   (define-key company-active-map (kbd "C-p") 'company-select-previous)
-  (define-key company-active-map (kbd "C-f") 'company-search-candidates))
+  (define-key company-active-map (kbd "C-f") #'company-filter-candidates))
 
 
 ;;; keybindings.el ends here

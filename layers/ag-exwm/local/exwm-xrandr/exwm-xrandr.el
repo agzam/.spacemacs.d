@@ -12,7 +12,7 @@
 (defvar exwm--xrandr-mods
   '((laptop . "xrandr --output VIRTUAL1 --off --output eDP1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output DP1 --off --output HDMI2 --off --output HDMI1 --off --output DP2 --off")
    (external-home . "xrandr --output eDP1 --off --output DP2 --primary --mode 2560x1440")
-   (laptop+external-home . "xrandr --output VIRTUAL1 --off --output eDP1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output DP1 --mode 2560x1440 --pos 1920x0 --rotate normal --output HDMI2 --off --output HDMI1 --off --output DP2 --off"))
+   (laptop+external-home . "xrandr --output eDP1 --mode 1920x1080 --pos 0x0 --rotate normal --output DP1 --off --output DP2 --primary --mode 2560x1440 --pos 1920x0 --rotate normal --output HDMI1 --off --output HDMI2 --off --output VIRTUAL1 --off"))
   "Describes different xrandr modes. One can add values by tweaking display setup in 'arandr' app and saving it into a file, then using those settings here")
 
 (defun exwm-xrandr--set-keybindings ()

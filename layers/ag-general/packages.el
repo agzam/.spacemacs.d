@@ -11,18 +11,16 @@
 
 (defconst ag-general-packages `(helpful
                                 rainbow-mode
-                                helm-pages
                                 ;; evil-mc
                                 edit-indirect
                                 engine-mode
                                 fennel-mode
                                 ,(when (eq system-type 'darwin)
-                                   (spacehammer :location
-                                                (recipe :fetcher file
-                                                        :path "~/.hammerspoon/")))
+                                   '(spacehammer :location local))
                                 (jira :location local)
                                 lsp-mode
-                                ))
+                                lsp-ivy
+                                all-the-icons-ivy-rich))
 
 (defun ag-general/init-helpful ()
   (use-package helpful
@@ -42,10 +40,6 @@
     (add-hook 'css-mode-hook 'rainbow-mode)
     ;; remove rectangles from around the colors
     (setq css-fontify-colors nil)))
-
-(defun ag-general/init-helm-pages ()
-  (use-package helm-pages
-    :defer t))
 
 (with-eval-after-load 'flycheck
   (progn
@@ -154,7 +148,6 @@
 (defun ag-general/init-spacehammer ()
   (use-package spacehammer
     :demand t
-    :ensure t
     :config
     (progn
       (spacemacs/transient-state-register-add-bindings 'zoom-frm
@@ -162,17 +155,6 @@
           ("l" (spacehammer/move-frame-one-display "East"))
           ("n" (spacehammer/move-frame-one-display "North"))
           ("p" (spacehammer/move-frame-one-display "South"))))
-
-      (defun reinforce-frame-full-width-height ()
-        "Set full-width and full-height frame parameters based on
-actual pixel values of frame geometry."
-        (let* ((geom (frame-monitor-attribute 'geometry))
-               (width (nth 2 geom))
-               (height (first (last geom))))
-          (when (< (- width (frame-outer-width)) 25)
-            (set-frame-parameter (selected-frame) 'full-width t))
-          (when (< (- height (frame-outer-height)) 25)
-            (set-frame-parameter (selected-frame) 'full-height t))))
 
       (define-advice spacemacs/zoom-frm-transient-state/spacemacs/zoom-frm-in
           (:around (fn) fix-frame-after-zoom-frm-in)
@@ -184,7 +166,8 @@ actual pixel values of frame geometry."
           (:around (fn) fix-frame-after-zoom-frm-out)
         (reinforce-frame-full-width-height)
         (funcall fn)
-        (spacehammer/fix-frame)))))
+        (spacehammer/fix-frame))))
+  )
 
 (defun ag-general/init-jira ()
   (use-package jira
@@ -201,8 +184,26 @@ actual pixel values of frame geometry."
 
 (defun ag-general/post-init-lsp-mode ()
   (with-eval-after-load 'lsp-mode
-    (setq lsp-after-open-hook nil)
-    (setq lsp-eldoc-enable-hover nil)
-    (add-hook 'lsp-after-open-hook (lambda() (spacemacs//lsp-declare-prefixes-for-mode major-mode)))))
+    (setq lsp-after-open-hook nil
+          lsp-eldoc-enable-hover nil
+          lsp-diagnostic-package :none)
+    (add-hook
+     'lsp-after-open-hook
+     (lambda()
+       (spacemacs//lsp-declare-prefixes-for-mode major-mode)
+       (spacemacs/set-leader-keys-for-minor-mode 'lsp-mode
+         "hh" nil)))))
+
+(defun ag-general/init-lsp-ivy ()
+  (use-package lsp-ivy
+    :defer t
+    :commands lsp))
+
+(defun ag-general/init-all-the-icons-ivy-rich ()
+  (use-package all-the-icons-ivy-rich
+    :ensure t
+    :init
+    (all-the-icons-ivy-rich-mode 1)
+    (setq all-the-icons-ivy-rich-icon-size 0.8)))
 
 ;;; packages.el ends here

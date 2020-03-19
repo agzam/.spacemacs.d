@@ -221,14 +221,6 @@ item COLOR can be \"red\" \"green\" or \"yellow\"."
     (save-buffer)
     (kill-buffer)))
 
-(defun ag/set-tangled-file-permissions ()
-  "Set specific file permissions after `org-babel-tangle'."
-  (let ((fs-lst '(("~/.ssh/config" . #o600)
-                  ("~/.ec" . #o700))))
-    (dolist (el fs-lst)
-      (when (file-exists-p (car el))
-        (set-file-modes (car el) (cdr el))))))
-
 (defun ag/org-meta-return (&optional ignore)
   "Context respecting org-insert."
   (interactive "P")
