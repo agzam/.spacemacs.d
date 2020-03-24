@@ -89,7 +89,7 @@
 
 
 
-(add-hook 'post-command-hook 'org-latex-fragment-toggle-auto)
+;; (add-hook 'post-command-hook 'org-latex-fragment-toggle-auto)
 (setq org-latex-fragment-toggle-helper (byte-compile 'org-latex-fragment-toggle-helper))
 (setq org-latex-fragment-toggle-auto (byte-compile 'org-latex-fragment-toggle-auto))
 

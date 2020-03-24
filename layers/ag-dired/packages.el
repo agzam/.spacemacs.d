@@ -76,6 +76,12 @@
         (define-key map "o" #'spacemacs/dired-open-item-other-window-transient-state/body)
         map))
 
+    (spacemacs|spacebind
+     "Files manipulation."
+     :global
+     (("p" "Project"
+       ("t" direx-project:jump-to-project-root "Open project in Direx"))))
+
     (spacemacs/set-leader-keys-for-major-mode 'direx:direx-mode
       "o" #'direx:find-item-other-window
       "r" #'direx:refresh-whole-tree

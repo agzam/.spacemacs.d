@@ -14,7 +14,8 @@
                                         (github-review
                                          :recipe (:fetcher github
                                                            :repo "charignon/github-review"
-                                                           :files ("github-review.el")))))
+                                                           :files ("github-review.el")))
+                                        git-link))
 
 (setq
  vc-follow-symlinks t
@@ -41,9 +42,9 @@
   ;; Add `git log ORIG_HEAD..HEAD` to magit
   ;; that lets you log only changes since the last pull
   (defun magit-log-orig_head--head (args files)
-   "Compare log since the last pull. i.e.: show only commits between last pull and head"
-   (interactive (magit-log-arguments))
-   (magit-log-other (list "ORIG_HEAD..HEAD") args files))
+    "Compare log since the last pull. i.e.: show only commits between last pull and head"
+    (interactive (magit-log-arguments))
+    (magit-log-other (list "ORIG_HEAD..HEAD") args files))
 
   (transient-append-suffix 'magit-log "l"
     '("p" "orig_head..head" magit-log-orig_head--head))
@@ -86,11 +87,11 @@ i.e.: show only commits that differ between selected (other branch) and current 
   ;; who cares about tags to be displayed in magit-refs buffer?
   (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
 
-)
+  )
 
 (with-eval-after-load 'evil-magit
   ;; don't exit magit on escape-sequence and don't bury its buffer on Esc
- (evil-magit-define-key 'normal 'magit-mode-map "<escape>" nil))
+  (evil-magit-define-key 'normal 'magit-mode-map "<escape>" nil))
 
 (defun ag-version-control/post-init-gist ()
   (setq
@@ -102,11 +103,19 @@ i.e.: show only commits that differ between selected (other branch) and current 
     :ensure t
     :commands magit-status-mode
     :bind (:map magit-status-mode-map
-           ("M-r" . github-review-forge-pr-at-point)
-           :map forge-topic-mode-map
-           ("M-r" . github-review-forge-pr-at-point))
+                ("M-r" . github-review-forge-pr-at-point)
+                :map forge-topic-mode-map
+                ("M-r" . github-review-forge-pr-at-point))
     :config
     (setq github-review-fetch-top-level-and-review-comments t)))
 
+(defun ag-version-control/post-init-git-link ()
+  (defun git-link-master-branch ()
+    (interactive)
+    (let ((git-link-default-branch "master"))
+      (call-interactively 'git-link)))
+
+  (spacemacs/set-leader-keys
+    "glm" #'git-link-master-branch))
 
 ;;; packages.el ends here

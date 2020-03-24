@@ -74,7 +74,7 @@ This function should only modify configuration layer settings."
      (ag-clojure :variables
                  clojure-enable-clj-refactor t
                  clojure-enable-sayid t
-                 clojure-enable-linters '(clj-kondo joker))
+                 clojure-enable-linters '(clj-kondo))
      ag-colors
      ag-dired
      ag-general
@@ -245,7 +245,7 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-colorize-cursor-according-to-state t
 
    ;; Default font or prioritized list of fonts.
-   dotspacemacs-default-font '("Source Code Pro"
+   dotspacemacs-default-font '("JetBrains Mono"
                                :size 15
                                :weight normal
                                :width normal)
@@ -494,7 +494,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    ;; menu-bar-mode t
    exec-path-from-shell-check-startup-files nil
    ;; Editor
-   line-spacing 6
+   line-spacing 8
    left-fringe-width 6
    right-fringe-width 0
    evil-escape-key-sequence "kj"
@@ -564,6 +564,7 @@ before packages are loaded."
    save-abbrevs t ; save abbrevs upon exiting Emacs
    uniquify-buffer-name-style 'forward
    company-idle-delay 0.1
+   company-show-numbers t
    writeroom-width 130
 
    ;;;; Helm

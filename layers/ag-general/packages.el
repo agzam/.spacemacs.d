@@ -20,7 +20,8 @@
                                 (jira :location local)
                                 lsp-mode
                                 lsp-ivy
-                                all-the-icons-ivy-rich))
+                                all-the-icons-ivy-rich
+                                company-tabnine))
 
 (defun ag-general/init-helpful ()
   (use-package helpful
@@ -186,7 +187,8 @@
   (with-eval-after-load 'lsp-mode
     (setq lsp-after-open-hook nil
           lsp-eldoc-enable-hover nil
-          lsp-diagnostic-package :none)
+          lsp-diagnostic-package :none
+          lsp-enable-file-watchers nil)
     (add-hook
      'lsp-after-open-hook
      (lambda()
@@ -205,5 +207,13 @@
     :init
     (all-the-icons-ivy-rich-mode 1)
     (setq all-the-icons-ivy-rich-icon-size 0.8)))
+
+(defun ag-general/init-company-tabnine ()
+  (use-package company-tabnine
+    :ensure t
+    :config
+    (spacemacs|add-company-backends
+      :backends company-tabnine
+      :modes sql-mode sql-interactive-mode)))
 
 ;;; packages.el ends here

@@ -9,6 +9,8 @@
 ;;
 ;;; License: GPLv3
 
+(evil-define-key 'normal dired-mode-map (kbd "gr") #'revert-buffer)
+
 (evil-define-key 'normal direx:direx-mode-map "r" 'direx:refresh-whole-tree)
 (evil-define-key 'normal dired-mode-map "o" 'spacemacs/dired-open-item-other-window-transient-state/body)
 

@@ -36,7 +36,9 @@
      org-read-date-popup-calendar t
      org-capture-templates
           '(("t" "todo" entry (file+olp+datetree "~/Dropbox/org/tasks.org")
-             "* TODO %i %?\nSCHEDULED: %t\n")
+             "* TODO %i %?\nSCHEDULED: %T\n"
+             :time-prompt t
+             )
 
             ("T" "Today" entry (file+olp+datetree "~/Dropbox/org/tasks.org")
              "* TODO %?\nSCHEDULED: %(org-read-date t nil nil nil (current-time))\n")

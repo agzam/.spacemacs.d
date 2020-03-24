@@ -202,7 +202,7 @@
             (:subject . nil))
           mu4e-headers-show-thread nil
           mu4e-headers-include-related nil
-          mu4e-use-fancy-chars t
+          mu4e-use-fancy-chars nil
           mu4e-headers-date-format "%a %d %b %Y %H:%M"
           mu4e-headers-time-format "%H:%M"
           mu4e-view-fields '(:from :to :cc :subject :flags :date :maildir :mailing-list :tags :useragent :attachments :signature :decryption))

@@ -1,3 +1,4 @@
+;; -*- mode: emacs-lisp; lexical-binding: t -*-
 ;;; funcs.el --- ag-general layer functions file for Spacemacs.
 ;;
 ;; Copyright (c) 2012-2016 Sylvain Benner & Contributors
@@ -174,21 +175,24 @@ provided, returns its value"
                   (buffer-string)))
            (parsed (json-read-from-string raw)))
       (if key
-          (a-get parsed key)
+          (alist-get key parsed)
         parsed))))
 
+(defvar pg-app-connections nil "PostgreSQL connections")
+
+(defun pg-app-connections ()
+  (if pg-app-connections pg-app-connections
+    (progn
+      (setq pg-app-connections `(("local" . "postgres://cc_user:password@localhost/cc")
+                                 ("dev" . ,(heroku-config "crawlingchaos-dev" 'DATABASE_URL))
+                                 ("staging" . ,(heroku-config "crawlingchaos-staging" 'DATABASE_URL))))
+      pg-app-connections)))
+
 (defun pg-app (app)
-  (interactive (list (completing-read "Choose: " '("local" "crawlingchaos-dev"  "crawlingchaos-staging"))))
-  (if (string= app "local")
-      (progn
-        (setenv "PGPASSWORD" "password")
-        (let ((sql-database "cc")
-              (sql-server "localhost")
-              (sql-user "cc_user"))
-          (sql-postgres app)))
-    (let* ((url (url-generic-parse-url (heroku-config app 'DATABASE_URL)))
-           (sql-database (replace-regexp-in-string "\\/" "" (url-filename url)))
-           (sql-server (url-host url))
-           (sql-user (url-user url)))
-      (setenv "PGPASSWORD" (url-password url))
-      (sql-postgres app))))
+  (interactive (list (completing-read "Choose: " (mapcar 'car (pg-app-connections)))))
+  (let* ((url (url-generic-parse-url (alist-get app (pg-app-connections) nil nil #'string=)))
+         (sql-database (replace-regexp-in-string "\\/" "" (url-filename url)))
+         (sql-server (url-host url))
+         (sql-user (url-user url)))
+    (setenv "PGPASSWORD" (url-password url))
+    (sql-postgres app)))
