@@ -78,7 +78,8 @@ This function should only modify configuration layer settings."
      ag-colors
      ag-dired
      ag-general
-     ag-lang-tools
+     (ag-lang-tools
+      :variables spell-checking-enable-by-default nil)
      (ag-org
       :variables org-enable-github-support t)
      ag-mail

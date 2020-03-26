@@ -135,6 +135,7 @@
                   (org-level-8 . (:foreground ,base0D :height 1.0))
                   (org-done . (:strike-through ,base01 :foreground ,base02))
                   (org-headline-done . (:strike-through ,base01 :foreground ,base02))
+                  (org-hide . (:foreground ,base00))
 
                   ;; code
                   (font-lock-doc-face . (:foreground ,base02))
@@ -162,9 +163,11 @@
             (default-foreground "#655370")
             (bg-darker "#f7f4eb")
             (bg-accent "#dedae0")
+            (bg-accent-dark "#c7c1c9")
             (bg-accent-light "#efedf0")
             (fg-accent "CadetBlue")
-            (faces `((magit-diff-hunk-heading . (:background ,bg-darker))
+            (faces `((region . (:inverse-video t :foreground ,bg-accent :background ,default-background))
+                     (magit-diff-hunk-heading . (:background ,bg-darker))
                      (magit-diff-hunk-heading-highlight . (:background ,bg-accent-light))
                      (magit-diff-context-highlight . (:background ,bg-darker))
                      (magit-diff-added . (:foreground "#67963d" :background "#e6ffed"))
@@ -177,8 +180,9 @@
                      (smerge-lower . (:foreground "#325e0b" :background "#acf2bd"))
 
                      (trailing-whitespace . (:background ,bg-accent))
+                     (ahs-face . (:background ,bg-accent-light))
                      (ahs-definition-face . (:background "#e6ffed"))
-                     (ahs-plugin-whole-buffer-face . (:background ,bg-accent))
+                     (ahs-plugin-whole-buffer-face . (:foreground ,bg-accent :inverse-video t :background ,default-background))
                      (evil-ex-lazy-highlight . (:background ,bg-accent))
                      (evil-ex-search . (:background "DarkKhaki"))
                      (aw-leading-char-face . (:height 5.0))
@@ -210,6 +214,7 @@
                      (org-block-end-line . (:background ,bg-darker :foreground ,fg-accent :height 0.9 :weight ultra-light))
                      (org-done .  (:strike-through ,bg-accent-light :foreground ,bg-accent))
                      (org-headline-done . (:strike-through ,bg-accent-light :foreground ,bg-accent))
+                     (org-hide . (:foreground ,default-background))
 
                      ;; (org-level-1 . (:inherit variable-pitch :bold t :height 1.3))
                      ;; (org-level-2 . (:inherit variable-pitch :bold t :height 1.2))
