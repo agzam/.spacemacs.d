@@ -15,7 +15,7 @@
 (evil-define-key 'normal dired-mode-map "o" 'spacemacs/dired-open-item-other-window-transient-state/body)
 
 (defun eshell-keybindings-override ()
-  (define-key eshell-mode-map (kbd "C-l")
+  (define-key eshell-mode-map (kbd "C-c C-l")
     (lambda ()
       (interactive)
       (eshell/clear-scrollback)

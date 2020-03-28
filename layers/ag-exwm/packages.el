@@ -226,7 +226,16 @@
             (exwm-input--fake-key ?\C-v))
         (funcall old-function str)))
 
-    (add-hook #'kill-buffer-hook #'fix-exwm-kill-buffer)))
+    (add-hook #'kill-buffer-hook #'fix-exwm-kill-buffer)
+
+    (define-advice spacemacs/zoom-frm-transient-state/spacemacs/zoom-frm-in
+        (:around (fn) fix-frame-after-zoom-frm-in)
+      (funcall fn)
+      (reinforce-frame-full-width-height))
+    (define-advice spacemacs/zoom-frm-transient-state/spacemacs/zoom-frm-out
+        (:around (fn) fix-frame-after-zoom-frm-out)
+      (funcall fn)
+      (reinforce-frame-full-width-height))))
 
 (defun ag-exwm/init-helm-exwm ()
   (use-package helm-exwm

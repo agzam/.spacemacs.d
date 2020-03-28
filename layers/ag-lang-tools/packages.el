@@ -55,4 +55,7 @@
     (spacemacs/set-leader-keys
       "xlg" #'grammarly-save-region-and-run)))
 
-(setq ispell-program-name "aspell")
+(with-eval-after-load 'ispell
+  (setq ispell-program-name "aspell")
+  ;; aspell suggestion mode - ultra-fast
+  (add-to-list 'ispell-extra-args "--sug-mode=ultra"))

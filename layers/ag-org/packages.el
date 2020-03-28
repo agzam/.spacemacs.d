@@ -183,7 +183,7 @@
       (evil-define-key 'evilified org-agenda-mode-map "\C-u" 'universal-argument))
     (add-hook 'org-agenda-mode-hook 'override-evilified-keys)
 
-    ;; (add-hook 'org-mode-hook 'flyspell-mode)
+    (add-hook 'org-mode-hook #'flyspell-mode)
     (add-hook 'org-mode-hook #'ag/org-mode-hook)
     (add-hook 'org-mode-hook #'spacemacs/toggle-visual-line-navigation-on)
     ;; (add-hook 'org-timer-done-hook (lambda () (spacemacs/alert "-- timer done! --")))
