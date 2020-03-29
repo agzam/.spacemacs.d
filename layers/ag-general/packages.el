@@ -216,21 +216,4 @@
       :backends company-tabnine
       :modes sql-mode sql-interactive-mode)))
 
-;; eshell bash-history
-(defun bash-history ()
-  (interactive)
-  (let ((command (with-temp-buffer
-                   (insert-file-contents-literally "~/.bash_history")
-                   (let ((history-list (->
-                                        (buffer-string)
-                                        (split-string "\n" t)
-                                        (delete-duplicates :test #'string=))))
-                     (ivy-read "Command: " history-list)))))
-    (when command
-      (insert command))))
-
-(with-eval-after-load 'evil
-  (evil-define-key 'normal eshell-mode-map (kbd "C-r") #'bash-history)
-  (evil-define-key 'insert eshell-mode-map (kbd "C-r") #'bash-history))
-
 ;;; packages.el ends here

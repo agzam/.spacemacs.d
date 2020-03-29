@@ -66,6 +66,10 @@
     "kf" #'evil-lisp-state-sp-up-sexp
     "k=" #'evil-lisp-state-sp-reindent))
 
+(with-eval-after-load 'evil
+  (evil-define-key 'normal eshell-mode-map (kbd "C-r") #'bash-history)
+  (evil-define-key 'insert eshell-mode-map (kbd "C-r") #'bash-history))
+
 (spacemacs/set-leader-keys
   "qq" nil  ; no unexpected exits
   "qQ" #'spacemacs/prompt-kill-emacs

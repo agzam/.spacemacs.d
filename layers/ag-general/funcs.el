@@ -196,3 +196,33 @@ provided, returns its value"
          (sql-user (url-user url)))
     (setenv "PGPASSWORD" (url-password url))
     (sql-postgres app)))
+
+(defun remove-from-bash-history (str)
+  "Find given STR in bash_history file and remove all occurences of it"
+  (with-temp-buffer
+    (insert-file-contents-literally "~/.bash_history")
+    (let ((history-list (seq-mapcat (lambda (x) (concat x "\n"))
+                                    (seq-remove
+                                     (lambda (x)
+                                       (when (string= x str)
+                                         (print (concat "removing" str)))
+                                       (string= x str))
+                                     (split-string (buffer-string) "\n" t))
+                                    'string)))
+      (erase-buffer)
+      (insert history-list)
+      (write-file "~/.bash_history"))))
+
+(defun bash-history ()
+  "Ivy prompt for bash_history"
+  (interactive)
+  (let ((history-list (with-temp-buffer
+                        (insert-file-contents-literally "~/.bash_history")
+                        (->
+                         (buffer-string)
+                         (split-string "\n" t)
+                         (delete-duplicates :test #'string=)))))
+    (ivy-read "Command: " history-list
+              :action '(1
+                        ("o" insert "insert")
+                        ("d" remove-from-bash-history "delete")))))
