@@ -189,7 +189,9 @@
                      (mode-line . (:underline (:color "#b2b2b2")))
                      (mode-line-inactive . (:underline (:color "#d3d3e7")))
 
-                     (variable-pitch . (:family "Karla" :weight normal :width expanded :height 160))
+                     (fixed-pitch . (:family "JetBrains Mono" :weight normal :width expanded :height 160))
+                     (variable-pitch . (:family "Noto Sans" :weight normal
+                                                :width ultra-expanded :height 160))
 
                      ;; (lsp-lens-face . (:foreground ,default-foreground))
                      (lsp-ui-peek-list . (:background "#f0ece1" :foreground "#866f94"))

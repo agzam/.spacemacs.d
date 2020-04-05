@@ -15,9 +15,7 @@
                           (direx :location (recipe :fetcher github
                                                    :repo "agzam/direx-el"))
                           ;; dired-quick-sort
-                          direx-grep
-                          treemacs
-                          ))
+                          direx-grep))
 
 (if (eq system-type 'darwin)
     (setq dired-listing-switches "-alh"
@@ -76,11 +74,12 @@
         (define-key map "o" #'spacemacs/dired-open-item-other-window-transient-state/body)
         map))
 
-    (spacemacs|spacebind
-     "Files manipulation."
-     :global
-     (("p" "Project"
-       ("t" direx-project:jump-to-project-root "Open project in Direx"))))
+    (with-eval-after-load 'treemacs
+      (spacemacs/set-leader-keys
+        "pt"  #'direx-project:jump-to-project-root
+        "ft"  (lambda ()
+                (interactive)
+                (direx:find-directory "."))))
 
     (spacemacs/set-leader-keys-for-major-mode 'direx:direx-mode
       "o" #'direx:find-item-other-window
@@ -103,14 +102,6 @@
   (use-package dired-quick-sort
     :config
     (dired-quick-sort-setup)))
-
-(defun ag-dired/post-init-treemacs ()
-  (with-eval-after-load 'treemacs-projectile
-   (spacemacs|spacebind
-    "Files manipulation."
-    :global
-    (("p" "Project"
-      ("t" direx-project:jump-to-project-root "Open project in Direx"))))))
 
 ;; (defun ag-dired/init-dired-filetype-face ()
 ;;   (use-package dired-filetype-face

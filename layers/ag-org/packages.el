@@ -18,7 +18,8 @@
                             (org-present :excluded t)
                             (org-journal :excluded t)
                             (org-brain :excluded t)
-                            (slack2org :location local)))
+                            ;; (slack2org :location local)
+                            ))
 
 (defun ag-org/post-init-org ()
   ;; (with-eval-after-load 'evil-org-mode

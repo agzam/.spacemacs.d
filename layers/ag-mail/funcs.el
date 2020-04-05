@@ -16,7 +16,8 @@
    "0.1 sec" nil
    (lambda ()
      (setq writeroom-fullscreen-effect (frame-parameter (selected-frame) 'fullscreen))
-     (spacemacs/toggle-centered-buffer))))
+     (spacemacs/toggle-centered-buffer)
+     (variable-pitch-mode 1))))
 
 (with-eval-after-load 'hydra
   (defhydra hydra-mu4e-headers (:color blue :hint nil)

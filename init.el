@@ -1,7 +1,7 @@
 ;; -*- mode: emacs-lisp; lexical-binding: t -*-
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
-(setq-default quelpa-build-tar-executable "/usr/local/bin/gtar")
+;; (setq-default quelpa-build-tar-executable "/usr/local/bin/gtar")
 ;; (setq package-check-signature nil)
 
 (defun dotspacemacs/layers ()
@@ -579,7 +579,8 @@ before packages are loaded."
    eldoc-echo-area-use-multiline-p 'always
    eldoc-idle-delay 0.25
    use-dialog-box nil
-   eshell-aliases-file "~/.spacemacs.d/eshell.aliases"
+   eshell-history-file-name "~/.spacemacs.d/.eshell.history"
+   eshell-aliases-file "~/.spacemacs.d/.eshell.aliases"
    dumb-jump-force-searcher 'rg ; https://github.com/jacktasia/dumb-jump#emacs-options
    ;; don't quit on esc or jk
    evil-escape-excluded-major-modes '(compilation-mode
