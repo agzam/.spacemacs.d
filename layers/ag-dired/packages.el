@@ -76,10 +76,7 @@
 
     (with-eval-after-load 'treemacs
       (spacemacs/set-leader-keys
-        "pt"  #'direx-project:jump-to-project-root
-        "ft"  (lambda ()
-                (interactive)
-                (direx:find-directory "."))))
+        "pt"  #'direx:jump-to-project-root-or-current-dir))
 
     (spacemacs/set-leader-keys-for-major-mode 'direx:direx-mode
       "o" #'direx:find-item-other-window

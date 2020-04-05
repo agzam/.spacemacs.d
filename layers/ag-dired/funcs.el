@@ -78,4 +78,15 @@ With prefix argument opens things in the other-window"
   (let ((current-prefix-arg 4))
     (call-interactively 'eshell-action-on-file-or-dir-at-point)))
 
+(defun direx:jump-to-project-root-or-current-dir ()
+  "Open in Direx - project root if there's one, otherwise current directory."
+  (interactive)
+  (let ((buf (direx-project:find-project-root-noselect
+              (or buffer-file-name default-directory))))
+    (if buf
+        (progn
+          (direx:maybe-goto-current-buffer-item buf)
+          (switch-to-buffer buf))
+      (direx:find-directory "."))))
+
 ;;; funcs.el ends here
