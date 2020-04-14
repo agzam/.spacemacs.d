@@ -28,7 +28,8 @@
 (defun ag-dired/init-direx ()
   (use-package direx
     :ensure t
-    :init
+    :config
+    (require 'direx-project)
     (defun direx:item-collapse-recursively (item)
       (direx:item-collapse item)
       (dolist (child (direx:item-children item))
@@ -48,7 +49,7 @@
           (fit-window-to-buffer)
           (window-resize (selected-window) 4 0 nil))))
 
-    (defvar direx:file-keymap
+    (setq direx:file-keymap
       (let ((map (make-sparse-keymap)))
         (define-key map "R" #'direx:do-rename-file)
         (define-key map "C" #'direx:do-copy-files)
