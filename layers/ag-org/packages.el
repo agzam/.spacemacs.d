@@ -187,6 +187,8 @@
     (add-hook 'org-mode-hook #'flyspell-mode)
     (add-hook 'org-mode-hook #'ag/org-mode-hook)
     (add-hook 'org-mode-hook #'spacemacs/toggle-visual-line-navigation-on)
+    (remove-hook 'org-mode-hook #'spacemacs/delay-emoji-cheat-sheet-hook)
+
     ;; (add-hook 'org-timer-done-hook (lambda () (spacemacs/alert "-- timer done! --")))
 
     ;; (require 'ob-http)

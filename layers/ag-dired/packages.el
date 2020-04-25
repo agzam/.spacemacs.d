@@ -28,8 +28,9 @@
 (defun ag-dired/init-direx ()
   (use-package direx
     :ensure t
-    :config
+    :init
     (require 'direx-project)
+    :config
     (defun direx:item-collapse-recursively (item)
       (direx:item-collapse item)
       (dolist (child (direx:item-children item))
@@ -75,16 +76,17 @@
         (define-key map "o" #'spacemacs/dired-open-item-other-window-transient-state/body)
         map))
 
-    (with-eval-after-load 'treemacs
-      (spacemacs/set-leader-keys
-        "pt"  #'direx:jump-to-project-root-or-current-dir))
-
     (spacemacs/set-leader-keys-for-major-mode 'direx:direx-mode
       "o" #'direx:find-item-other-window
       "r" #'direx:refresh-whole-tree
       "\\" #'direx:fit-window
       "RET" #'direx:set-root
       "p" #'direx:expand-root-to-parent)))
+
+(defun ag-dired/post-init-direx ()
+  ;; the execution order matters. If not placed in post-init fn it will be
+  ;; overwritten by Spacemacs' default keybinging
+  (spacemacs/set-leader-keys "pt"  #'direx:jump-to-project-root-or-current-dir))
 
 (defun ag-dired/init-direx-grep ()
   (use-package direx-grep

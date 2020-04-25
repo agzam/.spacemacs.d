@@ -40,7 +40,7 @@
 
 (defun ag-mail/post-init-mu4e ()
   (with-eval-after-load 'mu4e
-    (setq mu4e-maildir "~/.mail"
+    (setq
           mu4e-get-mail-command "mbsync --all --new --delete --flags --renew --pull --push --create --expunge --verbose"
           mu4e-view-use-gnus nil
           mu4e-update-interval 600
@@ -56,7 +56,6 @@
           mu4e-compose-dont-reply-to-self t
           mu4e-compose-format-flowed t
           fill-flowed-encode-column 5000
-          mu4e-user-mail-address-list '("agzam.ibragimov@gmail.com" "to.plotnick@gmail.com" "ag@mayvenn.com")
           mu4e-compose-complete-only-personal t
           mu4e-enable-async-operations t
           org-mu4e-link-query-in-headers-mode nil

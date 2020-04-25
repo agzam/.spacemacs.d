@@ -107,6 +107,9 @@
                   (ahs-plugin-whole-buffer-face . (:foreground ,base0B :background ,base00))
                   (ahs-face . (:foreground ,base0A :background ,base02))
 
+                  (fixed-pitch . (:family "JetBrains Mono" :weight normal :width expanded :height 160))
+                  (variable-pitch . (:family "Noto Sans" :weight normal
+                                             :width ultra-expanded :height 180))
                   ;; avy
                   (aw-leading-char-face . (:height 5.0 :foreground "Orange"))
                   (avy-lead-face . (:height 1.3 :foreground ,base0A))
@@ -191,7 +194,7 @@
 
                      (fixed-pitch . (:family "JetBrains Mono" :weight normal :width expanded :height 160))
                      (variable-pitch . (:family "Noto Sans" :weight normal
-                                                :width ultra-expanded :height 160))
+                                                :width ultra-expanded :height 180))
 
                      ;; (lsp-lens-face . (:foreground ,default-foreground))
                      (lsp-ui-peek-list . (:background "#f0ece1" :foreground "#866f94"))

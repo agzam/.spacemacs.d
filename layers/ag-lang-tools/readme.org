@@ -8,24 +8,27 @@
      brew install sdcv
    #+end_src
 ** download and extract selected dictionaries
-   #+begin_src sh
-     DICTS="http://download.huzheng.org/dict.org/stardict-dictd_www.dict.org_gcide-2.4.2.tar.bz2
-            http://download.huzheng.org/dict.org/stardict-dictd-moby-thesaurus-2.4.2.tar.bz2
-            http://download.huzheng.org/dict.org/stardict-EnglishEtymology-2.4.2.tar.bz2"
+   #+begin_src sh :tangle ~/install-dictionaries :shebang "#!/usr/bin/env zsh"
+     declare -a urls
+     urls=("http://download.huzheng.org/dict.org/stardict-dictd_www.dict.org_gcide-2.4.2.tar.bz2"
+           "http://download.huzheng.org/dict.org/stardict-dictd-moby-thesaurus-2.4.2.tar.bz2"
+           "http://download.huzheng.org/dict.org/stardict-EnglishEtymology-2.4.2.tar.bz2")
 
      mkdir -p ~/.stardict/dic
      mkdir -p ~/Downloads/dictionary/extracted
      cd ~/Downloads/dictionary
 
-     for dic in $DICTS; do
-       curl -o ~/Downloads/dictionary/dict.tar.bz2 $dic
-       mkdir -p ./extracted
-       tar -xvf ./dict.tar.bz2 -C ./extracted --strip-components=1
-       cp ~/Downloads/dictionary/extracted/* ~/.stardict/dic/
-       rm -rf ./extracted
+     for url in "${urls[@]}"; do
+         echo "Downloading $url ..."
+         curl -o ~/Downloads/dictionary/dict.tar.bz2 $url
+         echo "Extracting ..."
+         mkdir -p ./extracted
+         tar -xvf ./dict.tar.bz2 -C ./extracted --strip-components=1
+         echo "Copying ..."
+         cp ~/Downloads/dictionary/extracted/* ~/.stardict/dic/
+         rm -rf ./extracted
      done
 
      cd ~
      rm -rf ~/Downloads/dictionary
-
    #+end_src

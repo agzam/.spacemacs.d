@@ -19,15 +19,22 @@
     (define-key m (kbd "D") #'mu4e-headers-mark-for-trash)
     (define-key m (kbd "M-d") #'mu4e-headers-mark-for-delete)
     (define-key m (kbd "C-k") #'mu4e-view-headers-prev)
-
+    (define-key m (kbd "C-j") #'mu4e-view-headers-next)
+    (evil-define-key 'normal m (kbd "C-j") #'mu4e-view-headers-next)
     (evilified-state-evilify-map m
       :mode mu4e-headers-mode
       :bindings
       (kbd "J") (lambda ()
                   (interactive)
                   (mu4e-view-mark-thread '(unmark)))
+      (kbd "C-j") #'mu4e-view-headers-next
       (kbd "C-k" ) #'mu4e-view-headers-prev
-      (kbd "C-h") nil))
+      (kbd "C-h") nil)
+    (evilified-state-evilify-map m
+      :mode mu4e-view-mode
+      :bindings
+      (kbd "C-j") #'mu4e-view-headers-next
+      (kbd "C-k" ) #'mu4e-view-headers-prev))
 
   (define-key mu4e-headers-mode-map (kbd "M-SPC") #'hydra-mu4e-headers/body)
   (define-key mu4e-headers-mode-map (kbd "TAB") 'mu4e-headers-toggle-thread-folding)

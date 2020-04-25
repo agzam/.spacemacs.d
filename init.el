@@ -589,6 +589,7 @@ before packages are loaded."
                                       mu4e-main-mode mu4e-view-mode
                                       org-agenda-mode
                                       paradox-menu-mode)
+   Man-notify-method 'pushy
    ranger-override-dired nil
    delete-by-moving-to-trash nil)
   (global-hl-line-mode 0)
@@ -682,5 +683,4 @@ before packages are loaded."
   (defun minibuffer-line-spacing ()
     (setq-local line-spacing 6))
   (add-hook 'minibuffer-setup-hook #'minibuffer-line-spacing)
-
   )
