@@ -558,8 +558,6 @@ before packages are loaded."
    scroll-margin 2
    smooth-scroll-margin 2
    default-input-method 'russian-computer
-   google-translate-default-source-language "ru"
-   google-translate-default-target-language "en"
    scroll-margin 0
    abbrev-file-name "~/.spacemacs.d/abbrev_defs"
    save-abbrevs t ; save abbrevs upon exiting Emacs

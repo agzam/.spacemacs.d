@@ -59,3 +59,21 @@
   (setq ispell-program-name "aspell")
   ;; aspell suggestion mode - ultra-fast
   (add-to-list 'ispell-extra-args "--sug-mode=ultra"))
+
+(with-eval-after-load 'google-translate
+  (setq google-translate-pop-up-buffer-set-focus t
+        google-translate-default-source-language "ru"
+        google-translate-default-target-language "en")
+
+  ;; to listen. on Mac:
+  ;; brew cask install mplayer-osx-extended
+  ;; ln -s '/Applications/MPlayer OSX Extended.app/Contents/Resources/Binaries/mpextended.mpBinaries/Contents/MacOS' /usr/local/bin/mplayer
+  (setf google-translate-listen-program
+        (if (eq system-type 'darwin)
+            "/usr/local/bin/mplayer"
+          "/usr/bin/mplayer"))
+
+  (setq google-translate-input-method-auto-toggling t
+        google-translate-preferable-input-methods-alist
+        '((nil . ("en"))
+          (russian-computer . ("ru")))))
