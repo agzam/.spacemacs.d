@@ -50,7 +50,7 @@ This function should only modify configuration layer settings."
                       auto-completion-enable-sort-by-usage t)
      ;; ---- Tools ----
      ,(when (eq system-type 'darwin) 'osx)
-     ,(when (eq system-type 'gnu/linux) 'ag-exwm)
+     ;; ,(when (eq system-type 'gnu/linux) 'ag-exwm)
      docker emoji fasd imenu-list restclient search-engine
      (ivy :variables
           ivy-fixed-height-minibuffer t
@@ -68,7 +68,7 @@ This function should only modify configuration layer settings."
      ;;       helm-dash-docset-path
      ;;       (cond ((eq system-type 'darwin) "~/Library/Application\ Support/Dash/DocSets")))
      (shell :variables
-            shell-default-shell 'eshell
+            shell-default-shell 'shell
             shell-default-full-span nil)
      ;; --- My own layers ----
      (ag-clojure :variables
@@ -209,8 +209,8 @@ It should only modify the values of Spacemacs settings."
    ;; `recents' `bookmarks' `projects' `agenda' `todos'.
    ;; List sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
-   dotspacemacs-startup-lists '((recents . 5)
-                                (projects . 7))
+   dotspacemacs-startup-lists '((recents . 10)
+                                (projects . 5))
 
    ;; True if the home buffer should respond to resize events. (default t)
    dotspacemacs-startup-buffer-responsive nil
@@ -565,6 +565,7 @@ before packages are loaded."
    company-idle-delay 0.1
    company-show-numbers t
    writeroom-width 130
+   sentence-end-double-space t
 
    ;;;; Helm
    helm-echo-input-in-header-line nil

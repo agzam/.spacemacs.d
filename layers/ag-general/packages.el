@@ -150,7 +150,17 @@
   (use-package spacehammer
     :demand t
     :config
+
     (progn
+      (defun on-spacehammer-edit-with-emacs (buffer-name pid title)
+        (with-current-buffer (get-buffer buffer-name)
+          (spacemacs/evil-search-clear-highlight)
+          (spacemacs/toggle-visual-line-navigation-on)
+          (markdown-mode)
+          (evil-insert 1)))
+
+      (add-hook 'spacehammer/edit-with-emacs-hook 'on-spacehammer-edit-with-emacs)
+
       (spacemacs/transient-state-register-add-bindings 'zoom-frm
         '(("h" (spacehammer/move-frame-one-display "West"))
           ("l" (spacehammer/move-frame-one-display "East"))
@@ -167,8 +177,7 @@
           (:around (fn) fix-frame-after-zoom-frm-out)
         (reinforce-frame-full-width-height)
         (funcall fn)
-        (spacehammer/fix-frame))))
-  )
+        (spacehammer/fix-frame)))))
 
 (defun ag-general/init-jira ()
   (use-package jira
