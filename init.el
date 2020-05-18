@@ -50,7 +50,6 @@ This function should only modify configuration layer settings."
                       auto-completion-enable-sort-by-usage t)
      ;; ---- Tools ----
      ,(when (eq system-type 'darwin) 'osx)
-     ;; ,(when (eq system-type 'gnu/linux) 'ag-exwm)
      docker emoji fasd imenu-list restclient search-engine
      (ivy :variables
           ivy-fixed-height-minibuffer t

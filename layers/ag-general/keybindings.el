@@ -22,29 +22,28 @@
 (unbind-key "g" dired-mode-map)
 (unbind-key "G" dired-mode-map)
 
-(when (eq system-type 'darwin)
-  (if (configuration-layer/layer-used-p 'helm)
-      (progn
-        (global-set-key (kbd "s-B") 'lazy-helm/helm-mini)
-        (global-set-key (kbd "s-b") 'spacemacs-layouts/non-restricted-buffer-list-helm)
-        (global-set-key (kbd "H-B") 'lazy-helm/helm-mini)
-        (global-set-key (kbd "H-b") 'spacemacs-layouts/non-restricted-buffer-list-helm))
+(if (configuration-layer/layer-used-p 'helm)
     (progn
-      (global-set-key (kbd "s-B") #'ivy-switch-buffer)
-      (global-set-key (kbd "s-b") #'spacemacs-layouts/non-restricted-buffer-list-ivy)
-      (global-set-key (kbd "H-B") 'ivy-switch-buffer)
-      (global-set-key (kbd "H-b") 'spacemacs-layouts/non-restricted-buffer-list-ivy)
+      (global-set-key (kbd "s-B") 'lazy-helm/helm-mini)
+      (global-set-key (kbd "s-b") 'spacemacs-layouts/non-restricted-buffer-list-helm)
+      (global-set-key (kbd "H-B") 'lazy-helm/helm-mini)
+      (global-set-key (kbd "H-b") 'spacemacs-layouts/non-restricted-buffer-list-helm))
+  (progn
+    (global-set-key (kbd "s-B") #'ivy-switch-buffer)
+    (global-set-key (kbd "s-b") #'spacemacs-layouts/non-restricted-buffer-list-ivy)
+    (global-set-key (kbd "H-B") 'ivy-switch-buffer)
+    (global-set-key (kbd "H-b") 'spacemacs-layouts/non-restricted-buffer-list-ivy)
 
-      ;; open in other-window action
-      (define-key ivy-minibuffer-map
-        (kbd "M-l")
-        (lambda () (interactive)
-          (execute-kbd-macro (kbd "M-o j"))))
-      ))
-  (global-set-key (kbd "s-[") #'spacemacs/persp-go-prev)
-  (global-set-key (kbd "s-]") #'spacemacs/persp-go-next)
-  (global-set-key (kbd "H-[") #'spacemacs/persp-go-prev)
-  (global-set-key (kbd "H-]") #'spacemacs/persp-go-next))
+    ;; open in other-window action
+    (define-key ivy-minibuffer-map
+      (kbd "M-l")
+      (lambda () (interactive)
+        (execute-kbd-macro (kbd "M-o j"))))
+    ))
+(global-set-key (kbd "s-[") #'spacemacs/persp-go-prev)
+(global-set-key (kbd "s-]") #'spacemacs/persp-go-next)
+(global-set-key (kbd "H-[") #'spacemacs/persp-go-prev)
+(global-set-key (kbd "H-]") #'spacemacs/persp-go-next)
 
 (with-eval-after-load 'helm
   (define-key helm-map (kbd "C-c M-i") 'helm-copy-to-buffer))
