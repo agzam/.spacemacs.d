@@ -50,6 +50,7 @@ This function should only modify configuration layer settings."
                       auto-completion-enable-sort-by-usage t)
      ;; ---- Tools ----
      ,(when (eq system-type 'darwin) 'osx)
+     ,(when (eq system-type 'gnu/linux) 'common-lisp)
      docker emoji fasd imenu-list restclient search-engine
      (ivy :variables
           ivy-fixed-height-minibuffer t
@@ -586,7 +587,8 @@ before packages are loaded."
                                       magit-diff-mode magit-log-mode magit-process-mode magit-refs-mode magit-revision-mode magit-stash-mode magit-status-mode mu4e-headers-mode
                                       mu4e-main-mode mu4e-view-mode
                                       org-agenda-mode
-                                      paradox-menu-mode)
+                                      paradox-menu-mode
+                                      appropos-mode)
    Man-notify-method 'pushy
    ranger-override-dired nil
    delete-by-moving-to-trash nil)
