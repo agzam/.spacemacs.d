@@ -230,7 +230,9 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(spacemacs-light base16-ocean)
+   dotspacemacs-themes (if (< 21 (nth 2 (decode-time)))     ; after 9PM
+                           '(base16-ocean spacemacs-light)  ; load dark theme first
+                         '(spacemacs-light base16-ocean))
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
    ;; `all-the-icons', `custom', `doom', `vim-powerline' and `vanilla'. The
@@ -527,14 +529,14 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
         doom-modeline-major-mode-color-icon nil
         doom-modeline-mu4e t
         doom-modeline-buffer-encoding nil
-        )
-  )
+        ))
 
 (defun dotspacemacs/user-load ()
   "Library to load while dumping.
 This function is called only while dumping Spacemacs configuration. You can
 `require' or `load' the libraries of your choice that will be included in the
-dump.")
+dump."
+  )
 
 (defun dotspacemacs/user-config ()
   "Configuration for user code:
@@ -683,4 +685,8 @@ before packages are loaded."
   (defun minibuffer-line-spacing ()
     (setq-local line-spacing 6))
   (add-hook 'minibuffer-setup-hook #'minibuffer-line-spacing)
+
+  ;; (if (< (nth 2 (decode-time)) 21)                             ; after 9PM
+  ;;     (spacemacs/load-theme (nth 1 dotspacemacs-themes) nil t) ; load dark theme
+  ;;   (spacemacs/load-theme (nth 0 dotspacemacs-themes) nil t))
   )

@@ -66,6 +66,7 @@
     "k=" #'evil-lisp-state-sp-reindent))
 
 (with-eval-after-load 'evil
+  (evil-define-key 'normal shell-mode-map (kbd "C-l") #'comint-clear-buffer)
   (evil-define-key 'normal eshell-mode-map (kbd "C-r") #'bash-history)
   (evil-define-key 'insert eshell-mode-map (kbd "C-r") #'bash-history))
 

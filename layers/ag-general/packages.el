@@ -225,4 +225,18 @@
       :backends company-tabnine
       :modes sql-mode sql-interactive-mode)))
 
+
+(when (eq system-type 'gnu/linux)
+  (defun on-stump-edit-with-emacs (buffer-name window-title window-class window-id)
+    (delete-other-windows)
+    (with-current-buffer (get-buffer buffer-name)
+      (spacemacs/evil-search-clear-highlight)
+      (spacemacs/toggle-visual-line-navigation-on)
+      (markdown-mode)
+      (evil-insert)
+      (variable-pitch-mode)
+      (flyspell-mode)))
+
+  (add-hook 'stump/edit-with-emacs-hook 'on-stump-edit-with-emacs))
+
 ;;; packages.el ends here
