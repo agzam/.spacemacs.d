@@ -230,9 +230,10 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes (if (< 21 (nth 2 (decode-time)))     ; after 9PM
-                           '(base16-ocean spacemacs-light)  ; load dark theme first
-                         '(spacemacs-light base16-ocean))
+   dotspacemacs-themes (let ((hr (nth 2 (decode-time))))
+                         (if (or (< hr 8) (< 21 hr))         ; between 9PM and 8AM
+                             '(base16-ocean spacemacs-light) ; load dark theme first
+                           '(spacemacs-light base16-ocean)))
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
    ;; `all-the-icons', `custom', `doom', `vim-powerline' and `vanilla'. The
@@ -503,9 +504,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    evil-escape-key-sequence "kj"
    evil-esc-delay 0.3
    frame-background-mode 'dark
-   ;; Shell
-   ;; system-uses-terminfo nil
-   ;; shell-default-shell 'shell
    eyebrowse-keymap-prefix (kbd "C-x C-x"))
 
   (setq
@@ -580,8 +578,6 @@ before packages are loaded."
    eldoc-echo-area-use-multiline-p 'always
    eldoc-idle-delay 0.25
    use-dialog-box nil
-   eshell-history-file-name "~/.spacemacs.d/.eshell.history"
-   eshell-aliases-file "~/.spacemacs.d/.eshell.aliases"
    dumb-jump-force-searcher 'rg ; https://github.com/jacktasia/dumb-jump#emacs-options
    ;; don't quit on esc or jk
    evil-escape-excluded-major-modes '(compilation-mode

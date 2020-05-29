@@ -197,27 +197,28 @@ provided, returns its value"
     (setenv "PGPASSWORD" (url-password url))
     (sql-postgres app)))
 
-(defun remove-from-bash-history (str)
+(defun remove-from-shell-history (str)
   "Find given STR in bash_history file and remove all occurences of it"
-  (with-temp-buffer
-    (insert-file-contents-literally "~/.bash_history")
-    (let ((history-list (seq-mapcat (lambda (x) (concat x "\n"))
-                                    (seq-remove
-                                     (lambda (x)
-                                       (when (string= x str)
-                                         (print (concat "removing" str)))
-                                       (string= x str))
-                                     (split-string (buffer-string) "\n" t))
-                                    'string)))
-      (erase-buffer)
-      (insert history-list)
-      (write-file "~/.bash_history"))))
+  (let ((hist-file (getenv "HISTFILE")))
+    (with-temp-buffer
+      (insert-file-contents-literally hist-file)
+      (let ((history-list (seq-mapcat (lambda (x) (concat x "\n"))
+                                      (seq-remove
+                                       (lambda (x)
+                                         (when (string= x str)
+                                           (print (concat "removing" str)))
+                                         (string= x str))
+                                       (split-string (buffer-string) "\n" t))
+                                      'string)))
+        (erase-buffer)
+        (insert history-list)
+        (write-file hist-file)))))
 
-(defun bash-history ()
+(defun shell-history ()
   "Ivy prompt for bash_history"
   (interactive)
   (let ((history-list (with-temp-buffer
-                        (insert-file-contents-literally "~/.bash_history")
+                        (insert-file-contents-literally (getenv "HISTFILE"))
                         (->
                          (buffer-string)
                          (split-string "\n" t)
@@ -225,4 +226,4 @@ provided, returns its value"
     (ivy-read "Command: " history-list
               :action '(1
                         ("o" insert "insert")
-                        ("d" remove-from-bash-history "delete")))))
+                        ("d" remove-from-shell-history "delete")))))

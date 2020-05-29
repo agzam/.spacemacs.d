@@ -19,7 +19,6 @@
                                    '(spacehammer :location "~/.hammerspoon"))
                                 (jira :location local)
                                 lsp-mode
-                                lsp-ivy
                                 all-the-icons-ivy-rich
                                 company-tabnine))
 
@@ -206,11 +205,6 @@
        (spacemacs/set-leader-keys-for-minor-mode 'lsp-mode
          "hh" nil)))))
 
-(defun ag-general/init-lsp-ivy ()
-  (use-package lsp-ivy
-    :defer t
-    :commands lsp))
-
 (defun ag-general/init-all-the-icons-ivy-rich ()
   (use-package all-the-icons-ivy-rich
     :ensure t
@@ -239,5 +233,24 @@
       (flyspell-mode)))
 
   (add-hook 'stump/edit-with-emacs-hook 'on-stump-edit-with-emacs))
+
+(defun comint-write-history-on-exit (process event)
+  (comint-write-input-ring))
+
+(defun turn-on-comint-history ()
+  (when-let ((proc (get-buffer-process (current-buffer))))
+    (set-process-sentinel proc 'comint-write-history-on-exit)
+    (setq comint-input-ring-file-name (or (getenv "HISTFILE") "~/.zsh_history"))
+    (comint-read-input-ring 'silent)))
+
+(add-hook 'shell-mode-hook 'turn-on-comint-history)
+(add-hook 'shell-pop-out-hook 'comint-write-input-ring)
+(add-hook 'shell-pop-process-exit-hook 'comint-write-input-ring)
+
+
+(setq eshell-history-file-name (getenv "HISTFILE")
+      eshell-aliases-file "~/.spacemacs.d/.eshell.aliases")
+
+;; (remove-hook 'kill-buffer-hook 'comint-write-history-on-exit)
 
 ;;; packages.el ends here
