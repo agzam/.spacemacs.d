@@ -16,7 +16,7 @@
                                 engine-mode
                                 fennel-mode
                                 ,(when (eq system-type 'darwin)
-                                   '(spacehammer :location local))
+                                   '(spacehammer :location "~/.hammerspoon"))
                                 (jira :location local)
                                 lsp-mode
                                 lsp-ivy
@@ -157,6 +157,7 @@
           (spacemacs/evil-search-clear-highlight)
           (spacemacs/toggle-visual-line-navigation-on)
           (markdown-mode)
+          (variable-pitch-mode)
           (evil-insert 1)))
 
       (add-hook 'spacehammer/edit-with-emacs-hook 'on-spacehammer-edit-with-emacs)
