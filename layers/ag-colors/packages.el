@@ -136,8 +136,8 @@
                   (org-level-6 . (:foreground ,base0C :height 1.0))
                   (org-level-7 . (:foreground ,base07 :height 1.0))
                   (org-level-8 . (:foreground ,base0D :height 1.0))
-                  (org-done . (:strike-through ,base01 :foreground ,base02))
-                  (org-headline-done . (:strike-through ,base01 :foreground ,base02))
+                  (org-done . (:foreground ,base02))
+                  (org-headline-done . (:foreground ,base02))
                   (org-hide . (:foreground ,base00))
 
                   ;; code
@@ -217,8 +217,8 @@
                      (org-block-begin-line . (:background ,bg-darker :foreground ,fg-accent :height 0.9 :weight ultra-light))
                      (org-block . (:background ,bg-darker))
                      (org-block-end-line . (:background ,bg-darker :foreground ,fg-accent :height 0.9 :weight ultra-light))
-                     (org-done .  (:strike-through ,bg-accent-light :foreground ,bg-accent))
-                     (org-headline-done . (:strike-through ,bg-accent-light :foreground ,bg-accent))
+                     (org-done .  (:foreground ,bg-accent))
+                     (org-headline-done . (:foreground ,bg-accent))
                      (org-hide . (:foreground ,default-background))
 
                      ;; (org-level-1 . (:inherit variable-pitch :bold t :height 1.3))

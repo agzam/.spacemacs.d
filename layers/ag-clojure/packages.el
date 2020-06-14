@@ -51,11 +51,6 @@
   (add-hook 'clojurescript-mode-hook #'lsp-init))
 
 (with-eval-after-load 'clojure-mode
-  (add-hook
-   'cider-mode-hook
-   (lambda ()
-     (add-hook 'eldoc-documentation-functions #'cider-doc nil t)))
-
   (setq clojure-enable-fancify-symbols nil
         ;; clojure-indent-style :align-arguments
         clojure-align-forms-automatically t
