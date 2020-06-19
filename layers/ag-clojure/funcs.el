@@ -43,16 +43,29 @@
               (t (beginning-of-thing 'sexp)))
         (insert "#_")))))
 
-(defun cider-fully-qualified-symbol-at-point ()
+(defun clj-fully-qualified-symbol-at-point ()
   (interactive)
-  (let ((cb (lambda (x)
-              (when-let ((v (nrepl-dict-get x "value"))
-                         (s (replace-regexp-in-string "[()]" "" v)))
-                (kill-new s)
-                (message s)))))
-    (cider-interactive-eval
-     (concat "`(" (cider-symbol-at-point t) ")")
-     cb)))
+  (let ((sym (cond ((lsp--capability :hoverProvider)
+                    (let ((s (-some->> (lsp--text-document-position-params)
+                               (lsp--make-request "textDocument/hover")
+                               (lsp--send-request)
+                               (gethash "contents")
+                               (gethash "value"))))
+                      (string-match "\\(```\n\\)\\(.*\\)\n\\(```\\)" s)
+                      (match-string 2 s))
+
+                    (cider-connected-p)
+                    (let ((cb (lambda (x)
+                                (when-let ((v (nrepl-dict-get x "value"))
+                                           (s (replace-regexp-in-string "[()]" "" v)))
+                                  (kill-new s)
+                                  (message s)))))
+                      (cider-interactive-eval
+                       (concat "`(" (cider-symbol-at-point t) ")")
+                       cb))
+                    (t (message "Neither lsp nor cider are connected"))))))
+    (kill-new sym)
+    sym))
 
 (defun re-frame-jump-to-reg ()
   "Borrowed from https://github.com/oliyh/re-jump.el"

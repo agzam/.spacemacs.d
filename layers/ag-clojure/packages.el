@@ -67,6 +67,8 @@
         ahs-include "^\\_<\\(?:\\s_\\|\\sw\\)+\\_>$"
         )
 
+  (add-to-list 'ivy-re-builders-alist '(cider-find-ns . ivy--regex-fuzzy))
+
   ;; (dolist (form '(re-frame.core/reg-sub
   ;;                 re-frame.core/reg-fx
   ;;                 re-frame.core/reg-sub

@@ -20,7 +20,8 @@
       "ep" #'cider-pprint-eval-last-sexp-to-comment
       "ss" (if (eq m 'cider-repl-mode)
                'cider-switch-to-last-clojure-buffer
-             'cider-switch-to-repl-buffer)))
+             'cider-switch-to-repl-buffer)
+      "ii" #'clj-fully-qualified-symbol-at-point))
 
   (spacemacs/set-leader-keys-for-major-mode 'clojurescript-mode
     "g f" #'re-frame-jump-to-reg))
