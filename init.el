@@ -61,6 +61,7 @@ This function should only modify configuration layer settings."
                                   (counsel-projectile-find-dir . ivy--regex-fuzzy)
                                   (ivy-switch-buffer . ivy--regex-fuzzy)
                                   (cider-repl-handle-shortcut . ivy--regex-fuzzy)
+                                  (helpful-symbol . ivy--regex-fuzzy)
                                   (t . ivy--regex-plus))
           ivy-height 20
           ivy-read-action-function 'ivy-hydra-read-action ; until https://github.com/abo-abo/swiper/issues/2469 fixed

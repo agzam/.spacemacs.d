@@ -18,7 +18,8 @@
                           :repo "gucong/emacs-sdcv"))
     (emacs-grammarly :location (recipe
                                 :fetcher github
-                                :repo "mmagnus/emacs-grammarly"))))
+                                :repo "mmagnus/emacs-grammarly"))
+    google-translate))
 
 (defun ag-lang-tools/init-mw-thesaurus ()
   (use-package mw-thesaurus
@@ -55,12 +56,7 @@
     (spacemacs/set-leader-keys
       "xlg" #'grammarly-save-region-and-run)))
 
-(with-eval-after-load 'ispell
-  (setq ispell-program-name "aspell")
-  ;; aspell suggestion mode - ultra-fast
-  (add-to-list 'ispell-extra-args "--sug-mode=ultra"))
-
-(with-eval-after-load 'google-translate
+(defun ag-lang-tools/post-init-google-translate ()
   (setq google-translate-pop-up-buffer-set-focus t
         google-translate-default-source-language "ru"
         google-translate-default-target-language "en")
@@ -77,3 +73,8 @@
         google-translate-preferable-input-methods-alist
         '((nil . ("en"))
           (russian-computer . ("ru")))))
+
+(with-eval-after-load 'ispell
+  (setq ispell-program-name "aspell")
+  ;; aspell suggestion mode
+  (add-to-list 'ispell-extra-args "--sug-mode=bad-spellers"))

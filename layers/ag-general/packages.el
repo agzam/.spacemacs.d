@@ -70,30 +70,6 @@
   (define-key ibuffer-mode-map (kbd "/ u") #'ibuffer-filter-by-unsaved-file-buffers)
   (define-key ibuffer-mode-map (kbd "/ F") #'ibuffer-filter-by-file-buffers))
 
-;; Taken from the discussion here: https://github.com/syl20bnr/spacemacs/issues/2669
-;; TODO: remove this when official method is implemented in Spacmacs
-(defun ag-general/init-evil-mc ()
-  (use-package evil-mc
-    :init
-    (unbind-key "C-t")
-    :config
-    (add-hook 'prog-mode-hook 'turn-on-evil-mc-mode)
-    (add-hook 'text-mode-hook 'turn-on-evil-mc-mode)
-
-    (defun evil--mc-make-cursor-at-col (startcol _endcol orig-line)
-      (move-to-column startcol)
-      (unless (= (line-number-at-pos) orig-line)
-        (evil-mc-make-cursor-here)))
-    (defun evil-mc-make-vertical-cursors (beg end)
-      (interactive (list (region-beginning) (region-end)))
-      (evil-mc-pause-cursors)
-      (apply-on-rectangle #'evil--mc-make-cursor-at-col
-                          beg end (line-number-at-pos (point)))
-      (evil-mc-resume-cursors)
-      (evil-normal-state)
-      (move-to-column (evil-mc-column-number (if (> end beg)
-                                                 beg
-                                               end))))))
 (defun ag-general/init-edit-indirect ()
   (use-package edit-indirect
     :config

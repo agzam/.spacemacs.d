@@ -13,11 +13,10 @@
 
 (defun ag-mail/set-mu4e-keys ()
   (dolist (m '(mu4e-headers-mode-map mu4e-view-mode-map))
-    (define-key m (kbd "C-h") nil)
+    (evil-define-key 'evilified m "\C-h" nil)
     (define-key m (kbd "C-=") #'mu4e-headers-split-view-grow)
     (define-key m (kbd "C--") #'mu4e-headers-split-view-shrink)
-    (define-key m (kbd "D") #'mu4e-headers-mark-for-trash)
-    (define-key m (kbd "M-d") #'mu4e-headers-mark-for-delete)
+    (define-key m (kbd "D") #'mu4e-headers-mark-for-delete)
     (define-key m (kbd "C-k") #'mu4e-view-headers-prev)
     (define-key m (kbd "C-j") #'mu4e-view-headers-next)
     (evil-define-key 'normal m (kbd "C-j") #'mu4e-view-headers-next)

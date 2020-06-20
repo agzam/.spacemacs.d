@@ -40,6 +40,9 @@
 
 (defun ag-mail/post-init-mu4e ()
   (with-eval-after-load 'mu4e
+
+    (add-to-list 'mu4e-bookmarks '(:name "inbox" :key ?i :query "maildir:/home/inbox"))
+
     (setq
           mu4e-get-mail-command "mbsync --all --new --delete --flags --renew --pull --push --create --expunge --verbose"
           mu4e-view-use-gnus nil
