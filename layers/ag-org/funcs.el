@@ -221,31 +221,6 @@ item COLOR can be \"red\" \"green\" or \"yellow\"."
     (save-buffer)
     (kill-buffer)))
 
-(defun ag/org-meta-return (&optional ignore)
-  "Context respecting org-insert."
-  (interactive "P")
-  (if ignore
-      (org-return-indent)
-    (cond
-     ;; checkbox
-     ((org-at-item-checkbox-p) (org-insert-todo-heading nil))
-     ;; item
-     ((org-at-item-p) (org-insert-item))
-     ;; todo element
-     ;; ((org-element-property :todo-keyword (org-element-context))
-     ;;  (org-insert-todo-heading 4))
-     ;; heading
-     ((org-at-heading-p) (org-insert-heading-respect-content))
-     ;; plain text item
-     ((string-or-null-p (org-context))
-      (progn
-        (let ((org-list-use-circular-motion t))
-          (org-beginning-of-item)
-          (end-of-line)
-          (ag/org-meta-return))))
-     ;; fall-through case
-     (t (org-return-indent)))))
-
 (defun convert-markdown-link-to-org ()
   (interactive)
   (when (markdown-link-p)

@@ -36,12 +36,12 @@
     (setq
      org-read-date-popup-calendar t
      org-capture-templates
-          '(("t" "todo" entry (file+olp+datetree "~/Dropbox/org/tasks.org")
+          '(("T" "todo" entry (file+olp+datetree "~/Dropbox/org/tasks.org")
              "* TODO %i %?\nSCHEDULED: %T\n"
              :time-prompt t
              )
 
-            ("T" "Today" entry (file+olp+datetree "~/Dropbox/org/tasks.org")
+            ("t" "Today" entry (file+olp+datetree "~/Dropbox/org/tasks.org")
              "* TODO %?\nSCHEDULED: %(org-read-date t nil nil nil (current-time))\n")
 
             ("i" "Immediate" entry (file+olp+datetree "~/Dropbox/org/tasks.org")
@@ -187,12 +187,13 @@
     (add-hook 'org-mode-hook #'flyspell-mode)
     (add-hook 'org-mode-hook #'ag/org-mode-hook)
     (add-hook 'org-mode-hook #'spacemacs/toggle-visual-line-navigation-on)
+    (add-hook 'org-mode-hook #'org-indent-mode)
     (remove-hook 'org-mode-hook #'spacemacs/delay-emoji-cheat-sheet-hook)
 
     ;; (add-hook 'org-timer-done-hook (lambda () (spacemacs/alert "-- timer done! --")))
 
     ;; (require 'ob-http)
-    ;; (require 'ob-clojure)
+    (require 'ob-clojure)
     (require 'ob-ditaa)
     (org-babel-do-load-languages
      'org-babel-load-languages
@@ -227,7 +228,16 @@
     (add-hook 'persp-before-switch-functions 'autosave-tasks-org)
 
     (add-to-list 'org-modules 'org-tempo t)
-    ))
+
+    ;; Smarter org-return in lists. RET in plain lists would insert items, or
+    ;; checkboxes - depending on the current context. C-j splits the line.
+    (defun org-return--around (old-fn &rest args)
+      (let ((context (org-element-lineage (org-element-at-point) '(item))))
+        (if (and context (not args))
+            (org-insert-item (org-element-property :checkbox context))
+          (apply old-fn args))))
+
+    (advice-add 'org-return :around 'org-return--around)))
 
 (defun ag-org/post-init-org-pomodoro ()
   (with-eval-after-load 'org-pomodoro
