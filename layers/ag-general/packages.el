@@ -179,7 +179,8 @@
      (lambda()
        (spacemacs//lsp-declare-prefixes-for-mode major-mode)
        (spacemacs/set-leader-keys-for-minor-mode 'lsp-mode
-         "hh" nil)))))
+         "hh" nil
+         "," #'lsp-ui-doc-glance)))))
 
 (defun ag-general/init-all-the-icons-ivy-rich ()
   (use-package all-the-icons-ivy-rich

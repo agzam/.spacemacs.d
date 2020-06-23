@@ -221,11 +221,13 @@
                  (not (seq-filter
                        (lambda (a) (string-match "\\*Org Src" (buffer-name a)))
                        (buffer-list))))
-        (save-some-buffers
-         'no-confirm
-         (lambda ()
-           (string= (abbreviate-file-name buffer-file-name) "~/Dropbox/org/tasks.org")))))
-    (add-hook 'persp-before-switch-functions 'autosave-tasks-org)
+        (when-let ((fname (abbreviate-file-name buffer-file-name)))
+          (save-some-buffers
+           'no-confirm
+           (lambda ()
+             (string= fname "~/Dropbox/org/tasks.org"))))))
+
+    (add-hook 'persp-before-switch-functions #'autosave-tasks-org)
 
     (add-to-list 'org-modules 'org-tempo t)
 

@@ -22,7 +22,8 @@
 (setq
  ls-lisp-dirs-first t
  ls-lisp-use-insert-directory-program nil
- dired-auto-revert-buffer t)
+ dired-auto-revert-buffer t
+ dired-listing-switches "-aBhl")
 
 (defun ag-dired/init-direx ()
   (use-package direx

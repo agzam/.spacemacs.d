@@ -80,7 +80,8 @@
   "swg" #'helm-google-suggest
   ;; "ou" #'spacemacs/avy-open-url
   ;;;; add a page-break
-  "iP" (kbd "i C-q C-l <RET><escape>"))
+  "iP" (kbd "i C-q C-l <RET><escape>")
+  "tN" #'global-display-line-numbers-mode)
 
 (define-key evil-normal-state-map (kbd "s-a") #'mark-whole-buffer)
 (define-key evil-normal-state-map "Q" 'bury-buffer)
