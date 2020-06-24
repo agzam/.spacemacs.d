@@ -215,19 +215,25 @@
     (add-hook 'org-mode-hook #'abbrev-mode)
 
     ;;; Save tasks.org file automatically
-    (defun autosave-tasks-org (persp-name window)
-      (when (and (string= persp-name "@Org")
-                 ;; no src editing happening
-                 (not (seq-filter
-                       (lambda (a) (string-match "\\*Org Src" (buffer-name a)))
-                       (buffer-list))))
-        (when-let ((fname (abbreviate-file-name buffer-file-name)))
-          (save-some-buffers
-           'no-confirm
-           (lambda ()
-             (string= fname "~/Dropbox/org/tasks.org"))))))
+    (defun autosave-tasks-org (next-persp window)
+      (when (and (not (string= next-persp "@Org"))
+                 (-some-> (get-current-persp)
+                   (persp-name)
+                   (string= "@Org")))
+        (let* ((tasksfile "~/Dropbox/org/tasks.org")
+               (fname (abbreviate-file-name buffer-file-name)))
+          (when (and (string= fname tasksfile)
+                     ;; no src editing happening
+                     (not (seq-filter
+                           (lambda (a)
+                             (string-match "\\*Org
+                             Src" (buffer-name a)))
+                           (buffer-list))))
+            (save-some-buffers
+             'no-confirm
+             (lambda () (string= fname tasksfile)))))))
 
-    (add-hook 'persp-before-switch-functions #'autosave-tasks-org)
+    (add-hook 'persp-before-switch-functions 'autosave-tasks-org)
 
     (add-to-list 'org-modules 'org-tempo t)
 
