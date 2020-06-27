@@ -567,6 +567,7 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+
   (setq
    ;;;; Editor
    frame-resize-pixelwise t ; make sure `(maximize-frame)` leaves no borders
@@ -607,7 +608,10 @@ before packages are loaded."
    ;; don't quit on esc or jk
    evil-escape-excluded-major-modes '(compilation-mode
                                       help-mode
-                                      magit-diff-mode magit-log-mode magit-process-mode magit-refs-mode magit-revision-mode magit-stash-mode magit-status-mode mu4e-headers-mode
+                                      magit-diff-mode magit-log-mode
+                                      magit-process-mode magit-refs-mode
+                                      magit-revision-mode magit-stash-mode
+                                      magit-status-mode mu4e-headers-mode
                                       mu4e-main-mode mu4e-view-mode
                                       org-agenda-mode
                                       paradox-menu-mode
@@ -616,99 +620,41 @@ before packages are loaded."
    Man-notify-method 'pushy
    ranger-override-dired nil
    delete-by-moving-to-trash nil)
-  (global-hl-line-mode 0)
-   ;;;; end setq
 
-  (with-eval-after-load 'helm-ag (setq helm-ag-use-agignore t))
-
-  (with-eval-after-load 'spaceline-segments
-    (spaceline-toggle-buffer-encoding-abbrev-off)
-    (spaceline-toggle-purpose-off))
-
-  (with-eval-after-load 'spaceline-config
-    (spacemacs/toggle-mode-line-org-clock-on)
-    (spacemacs/toggle-mode-line-version-control-off)
-    (spacemacs/toggle-mode-line-minor-modes-off)
-    (spacemacs/toggle-mode-line-responsive-off)
-
-    (spaceline-define-segment buffer-id
-      (if (buffer-file-name)
-          (abbreviate-file-name (buffer-file-name))
-        (powerline-buffer-id))))
-
+  (global-hl-line-mode -1)
   (add-hook 'prog-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
-  ;; (add-hook 'abbrev-mode-hook #'read-abbrev-file)
-  ;; (remove-hook 'evil-insert-state-exit-hook 'expand-abbrev)
 
-  (with-eval-after-load 'auto-complete (add-to-list 'ac-dictionary-directories "~/.spacemacs.d/ac-dict"))
-
-  ;; ---------------
-  ;; Haskell
-  ;; ---------------
-  (add-to-list 'exec-path "~/Library/haskell/bin/")
-
-  ;; ---------------
-  ;; Text
-  ;; ---------------
   (add-hook 'markdown-mode-hook #'flyspell-mode)
   (add-hook 'markdown-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
 
-  ;; -----------
-  ;; Perspectives
-  ;; ----------
+  ;;;;;;;;;;;;;
+  ;; Layouts ;;
+  ;;;;;;;;;;;;;
   (setq-default perspective-enable-persp-projectile t
                 persp-auto-save-opt 0
                 persp-switch-wrap nil
                 persp-kill-foreign-buffer-behaviour 'kill)
 
-  ;; -----------
-  ;; Yasnippet
-  ;; ----------
-  (with-eval-after-load 'yasnippet (add-to-list 'yas-snippet-dirs "~/.spacemacs.d/snippets"))
-
   (remove-hook 'diff-mode-hook 'whitespace-mode)
 
-  ;; -----------
-  ;; Backups
-  ;; ----------
-  (setq version-control t
-        backup-by-copying t
-        kept-new-versions 64
-        kept-old-versions 0
-        delete-old-versions nil)
-  (setq backup-directory-alist '(("." . ".bak")))
-  (savehist-mode -1)
+  ;;;;;;;;;;;;;
+  ;; Backups ;;
+  ;;;;;;;;;;;;;
+  ;; (setq version-control t
+  ;;       backup-by-copying t
+  ;;       kept-new-versions 64
+  ;;       kept-old-versions 0
+  ;;       delete-old-versions nil)
+  ;; (setq backup-directory-alist '(("." . ".bak")))
+  ;; (savehist-mode -1)
 
-  ;; (magit-wip-after-save-mode 1)
+  (run-at-time
+   "1 sec" nil
+   (lambda ()
+     (global-display-line-numbers-mode -1)
+     (ag/adjust-themes)))
 
-  (with-eval-after-load 'helm
-    ;; experimenting with helm in a separate frame
-    ;; (setq helm-display-function 'helm-display-buffer-in-own-frame
-    ;;       helm-display-buffer-reuse-frame t
-    ;;       helm-use-undecorated-frame-option nil
-    ;;       helm-display-buffer-width 150
-    ;;       helm-display-buffer-height 20)
-    ;; (setq helm-display-function 'helm-default-display-buffer)
-    (setq which-key-sort-order 'which-key-prefix-then-key-order))
-
-  (spacemacs|define-custom-layout "@dotfile"
-    :binding "d"
-    :body (find-file "~/dotfile.org/dotfile.org"))
-
-  (run-at-time "2 sec" nil #'ag/adjust-themes)
-
-  ;; TODO: remove when they fix https://github.com/emacsorphanage/helm-swoop/issues/77
-  (with-eval-after-load 'helm-swoop
-    (define-key helm-swoop-edit-map (kbd "C-c C-c") 'helm-swoop--edit-complete)
-    (define-key helm-swoop-edit-map (kbd "C-c C-k") 'helm-swoop--edit-cancel))
-
-
-  ;; make ivy stuff a bit readable in the minibuffer
+  ;; make Ivy stuff a bit readable in the minibuffer
   (defun minibuffer-line-spacing ()
     (setq-local line-spacing 6))
-  (add-hook 'minibuffer-setup-hook #'minibuffer-line-spacing)
-
-  ;; (if (< (nth 2 (decode-time)) 21)                             ; after 9PM
-  ;;     (spacemacs/load-theme (nth 1 dotspacemacs-themes) nil t) ; load dark theme
-  ;;   (spacemacs/load-theme (nth 0 dotspacemacs-themes) nil t))
-  )
+  (add-hook 'minibuffer-setup-hook #'minibuffer-line-spacing))
