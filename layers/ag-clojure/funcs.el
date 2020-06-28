@@ -109,4 +109,15 @@
            (delq 'process-kill-buffer-query-function kill-buffer-query-functions))))
     (kill-matching-buffers "cider")))
 
+(defun format-edn ()
+  "Formats edn without cider"
+  (interactive)
+  (let ((start (when mark-active (region-beginning)))
+        (end (when mark-active (region-end))))
+    (let ((jet (executable-find "jet")))
+      (call-process-region
+       start end jet
+       :delete '(t nil)
+       :display "--pretty"))))
+
 ;;; funcs.el ends here
