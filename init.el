@@ -657,4 +657,7 @@ before packages are loaded."
   ;; make Ivy stuff a bit readable in the minibuffer
   (defun minibuffer-line-spacing ()
     (setq-local line-spacing 6))
-  (add-hook 'minibuffer-setup-hook #'minibuffer-line-spacing))
+  (add-hook 'minibuffer-setup-hook #'minibuffer-line-spacing)
+
+  (when (eq system-type 'gnu/linux)
+    (display-battery-mode 1)))
