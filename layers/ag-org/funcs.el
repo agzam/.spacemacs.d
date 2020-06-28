@@ -230,6 +230,27 @@ item COLOR can be \"red\" \"green\" or \"yellow\"."
       (markdown-kill-thing-at-point)
       (org-insert-link nil url desc))))
 
+(defun autosave-tasks-org (next-persp window)
+  "Save tasks.org file automatically. To be used with
+persp-before-switch-functions hook."
+  (when (and buffer-file-name
+             (not (string= next-persp "@Org"))
+             (-some-> (get-current-persp)
+               (persp-name)
+               (string= "@Org")))
+    (let* ((tasksfile "~/Dropbox/org/tasks.org")
+           (fname (abbreviate-file-name buffer-file-name)))
+      (when (and (string= fname tasksfile)
+                 ;; no src editing happening
+                 (not (seq-filter
+                       (lambda (a)
+                         (string-match "\\*Org
+                             Src" (buffer-name a)))
+                       (buffer-list))))
+        (save-some-buffers
+         'no-confirm
+         (lambda () (string= fname tasksfile)))))))
+
 (provide 'funcs)
 
 ;;; funcs.el ends here
