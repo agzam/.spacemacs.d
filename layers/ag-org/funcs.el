@@ -251,6 +251,26 @@ persp-before-switch-functions hook."
          'no-confirm
          (lambda () (string= fname tasksfile)))))))
 
+(defun get-gh-item-title (uri &optional include-number?)
+  "Based on given GitHub URI for pull-request or issue,
+  return the title of that pull-request or issue."
+  (when (string-match "\\(github.com\\).*\\(issues\\|pull\\)" uri) ; either PR or issue
+    (pcase-let* ((`(_ _ ,owner ,repo ,type ,number) (remove "" (split-string uri "/")))
+                 (gh-resource (format "/repos/%s/%s/%s/%s"
+                                      owner
+                                      repo
+                                      (if (string= type "pull") "pulls" type)
+                                      number))
+                 (resp (ghub-get gh-resource nil :auth 'forge)))
+      (when resp
+        (format "%s%s" (alist-get 'title resp)
+                (when include-number? (format " #%s" number)))))))
+
+(defun org-link-make-description-function* (link desc)
+  (cond ((string-match "\\(github.com\\).*\\(issues\\|pull\\)" link)
+         (get-gh-item-title link :with-number))
+        (t desc)))
+
 (provide 'funcs)
 
 ;;; funcs.el ends here

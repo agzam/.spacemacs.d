@@ -226,7 +226,9 @@
             (org-insert-item (org-element-property :checkbox context))
           (apply old-fn args))))
 
-    (advice-add 'org-return :around 'org-return--around)))
+    (advice-add 'org-return :around 'org-return--around)
+
+    (setq org-link-make-description-function 'org-link-make-description-function*)))
 
 (defun ag-org/post-init-org-pomodoro ()
   (with-eval-after-load 'org-pomodoro
