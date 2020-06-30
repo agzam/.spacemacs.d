@@ -77,15 +77,26 @@ OPTIONS can include '(urgency expire-time app-name icon category hint), refer to
   (run-at-time "1 sec" nil #'spacemacs/layouts-transient-state/nil))
 ;;; funcs.el ends here
 
-(defun diff-last-two-kills ()
-  "Write the last two kills to temporary files and diff them."
-  (interactive)
-  (let ((old "/tmp/old-kill") (new "/tmp/new-kill"))
-    (with-temp-file new
-      (insert (current-kill 0 t)))
-    (with-temp-file old
-      (insert (current-kill 1 t)))
-    (diff old new "-u" t)))
+(defun diff-last-two-kills (&optional ediff?)
+  "Diff last couple of things in the kill-ring. With prefix open ediff."
+  (interactive "P")
+  (let* ((old "/tmp/old-kill")
+         (new "/tmp/new-kill")
+         (prev-ediff-quit-hook ediff-quit-hook))
+    (cl-flet ((kill-temps
+               ()
+               (dolist (f (list old new))
+                 (kill-buffer (find-buffer-visiting f)))
+               (setq ediff-quit-hook prev-ediff-quit-hook)))
+      (with-temp-file new
+        (insert (current-kill 0 t)))
+      (with-temp-file old
+        (insert (current-kill 1 t)))
+      (if ediff?
+          (progn
+            (add-hook 'ediff-quit-hook #'kill-temps)
+            (ediff old new))
+        (diff old new "-u" t)))))
 
 (defun diff-buffers (buffer-A buffer-B)
   "Diff two buffers."
