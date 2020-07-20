@@ -51,10 +51,10 @@
                                (lsp--send-request)
                                (gethash "contents")
                                (gethash "value"))))
-                      (string-match "\\(```\n\\)\\(.*\\)\n\\(```\\)" s)
-                      (match-string 2 s))
+                      (string-match "\\(```.*\n\\)\\(.*\\)\n\\(```\\)" s)
+                      (string-trim (match-string 2 s))))
 
-                    (cider-connected-p)
+                   ((cider-connected-p)
                     (let ((cb (lambda (x)
                                 (when-let ((v (nrepl-dict-get x "value"))
                                            (s (replace-regexp-in-string "[()]" "" v)))
@@ -62,8 +62,9 @@
                                   (message s)))))
                       (cider-interactive-eval
                        (concat "`(" (cider-symbol-at-point t) ")")
-                       cb))
-                    (t (message "Neither lsp nor cider are connected"))))))
+                       cb)))
+                   (t (message "Neither lsp nor cider are connected")))))
+    (message sym)
     (kill-new sym)
     sym))
 

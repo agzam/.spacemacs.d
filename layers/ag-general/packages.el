@@ -177,6 +177,7 @@
     (add-hook
      'lsp-after-open-hook
      (lambda()
+       (lsp-modeline-code-actions-mode -1)
        (spacemacs//lsp-declare-prefixes-for-mode major-mode)
        (spacemacs/set-leader-keys-for-minor-mode 'lsp-mode
          "hh" nil

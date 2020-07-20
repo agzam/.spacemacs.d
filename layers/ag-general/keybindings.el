@@ -34,6 +34,11 @@
     (global-set-key (kbd "H-B") 'ivy-switch-buffer)
     (global-set-key (kbd "H-b") 'spacemacs-layouts/non-restricted-buffer-list-ivy)
 
+    (evil-define-key '(normal) ivy-occur-grep-mode-map (kbd "n") #'evil-ex-search-next)
+    (evil-define-key '(normal) ivy-occur-grep-mode-map (kbd "p") #'evil-ex-search-previous)
+    (evil-define-key '(normal) ivy-occur-grep-mode-map (kbd "gg") #'evil-goto-first-line)
+    (evil-define-key '(normal) ivy-occur-grep-mode-map (kbd "gr") #'ivy-occur-revert-buffer)
+
     ;; open in other-window action
     (define-key ivy-minibuffer-map
       (kbd "M-l")
@@ -83,6 +88,9 @@
   "iP" (kbd "i C-q C-l <RET><escape>")
   "tN" #'global-display-line-numbers-mode)
 
+(spacemacs/transient-state-register-add-bindings 'zoom-frm
+  '(("m" (toggle-frame-maximized-undecorated))))
+
 (define-key evil-normal-state-map (kbd "s-a") #'mark-whole-buffer)
 (define-key evil-normal-state-map "Q" 'bury-buffer)
 (define-key evil-normal-state-map (kbd "C-S-e") 'scroll-other-window)
@@ -102,6 +110,10 @@
 (define-key Info-mode-map (kbd "H") 'Info-up)
 (define-key Info-mode-map (kbd "C-o") 'Info-prev)
 (define-key Info-mode-map (kbd "C-i") 'Info-next)
+(evil-define-key '(normal) Info-mode-map (kbd "gg") 'evil-goto-first-line)
+(evil-define-key '(normal) Info-mode-map (kbd "G") 'evil-goto-line)
+(evil-define-key '(normal) Info-mode-map (kbd "C-j") 'Info-goto-node-web)
+
 (unbind-key "n" Info-mode-map)
 (unbind-key "p" Info-mode-map)
 
