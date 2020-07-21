@@ -140,9 +140,15 @@ item COLOR can be \"red\" \"green\" or \"yellow\"."
    ((eq system-type 'gnu/linux)
     (notify-send "org-pomodoro" "Let's get to it" '(category "started")))))
 
-;;;; completion on Tab for `#+` stuff
 (defun ag/org-mode-hook ()
-  (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
+  ;; completion on Tab for `#+` stuff
+  ;; (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t)
+
+  (variable-pitch-mode)
+  ;; fix indentation for variable pitch
+  (require 'org-indent)
+  (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
+  )
 
 (defun ag/add-days-to-ifttt-date (datetime days)
   "Takes DATETIME in ifttt.com format e.g. `February 23, 2017 at 11:00AM` and turns it into emacs-lisp datetime and then adds given number of DAYS."

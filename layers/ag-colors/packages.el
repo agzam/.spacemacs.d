@@ -19,8 +19,8 @@
                  powerline-inactive0
                  powerline-inactive1
                  powerline-inactive2
-                 ;; mode-line
-                 ;; mode-line-inactive
+                 mode-line
+                 mode-line-inactive
                  ;; mode-line-highlight
                  ;; mode-line-buffer-id
                  ;; mode-line-buffer-id-inactive
@@ -39,12 +39,12 @@
                  persp-face-lighter-nil-persp)))
     (dolist (f faces)
       (when (facep f)
-        (set-face-attribute f nil :height 0.9))))
+        (set-face-attribute f nil :height 0.8))))
 
   (dolist (buf (list " *Minibuf-0*" " *Minibuf-1*" " *Echo Area 0*" " *Echo Area 1*" " *which-key*"))
     (when (get-buffer buf)
       (with-current-buffer buf
-        (setq-local face-remapping-alist '((default (:height 0.80))))))))
+        (setq-local face-remapping-alist '((default (:height 0.8))))))))
 
 (defun ag/set-faces-attributes (faces)
   "Sets face attributes for given alist of FACES"
@@ -108,8 +108,8 @@
                   (ahs-face . (:foreground ,base0A :background ,base02))
 
                   (fixed-pitch . (:family "JetBrains Mono" :weight normal :width expanded :height 160))
-                  (variable-pitch . (:family "Noto Sans" :weight normal
-                                             :width ultra-expanded :height 180))
+                  (variable-pitch . (:family "Open Sans" :weight normal
+                                             :width expanded :height 180))
                   ;; avy
                   (aw-leading-char-face . (:height 5.0 :foreground "Orange"))
                   (avy-lead-face . (:height 1.3 :foreground ,base0A))
@@ -124,10 +124,16 @@
 
                   ;; org-mode
                   (org-link . (:underline t :foreground ,base0B))
-                  (org-todo . (:weight bold :foreground ,base0A))
-                  (org-block-begin-line . (:underline nil :background ,base00*1 :foreground ,base04 :height 0.9 :weight ultra-light))
-                  (org-block . (:background nil))
-                  (org-block-end-line . (:overline nil :foreground ,base04 :height 0.9 :weight ultra-light))
+                  (org-todo . (:weight bold :foreground ,base0A :inherit fixed-pitch))
+                  (org-block-begin-line . (:underline nil :background ,base01 :foreground ,base04 :height 0.9 :weight ultra-light :inherit fixed-pitch))
+                  (org-block . (:background ,base01 :inherit fixed-pitch))
+                  (org-block-end-line . (:overline nil :background ,base01 :height 0.9 :weight ultra-light :inherit fixed-pitch))
+                  (org-quote . (:background ,base01 :inherit variable-pitch :slant oblique))
+                  (org-date . (:inherit fixed-pitch))
+                  (org-code . (:inherit fixed-pitch))
+                  (org-meta-line . (:inherit fixed-pitch :foreground ,base04 :height 0.9 :weight ultra-light))
+                  (org-special-keyword . (:inherit fixed-pitch))
+                  (org-checkbox . (:background nil :inherit fixed-pitch))
                   (org-level-1 . (:foreground ,base0D :bold t :height 1.3))
                   (org-level-2 . (:foreground ,base09 :bold t :height 1.2))
                   (org-level-3 . (:foreground ,base0B :height 1.1))
@@ -139,6 +145,7 @@
                   (org-done . (:foreground ,base02))
                   (org-headline-done . (:foreground ,base02))
                   (org-hide . (:foreground ,base00))
+                  (org-indent . (:inherit '(org-hide fixed-pitch)))
 
                   ;; code
                   (font-lock-doc-face . (:foreground ,base02))
@@ -158,91 +165,100 @@
     (ag/set-faces-attributes faces)
     (setq pdf-view-midnight-colors `(,base04 . ,base00))))
 
+(defun ag/adjust-spacemacs-light-colors ()
+  (let* ((default-background "#fbf8ef")
+         (default-foreground "#655370")
+         (bg-darker "#f7f4eb")
+         (bg-accent "#dedae0")
+         (bg-accent-dark "#c7c1c9")
+         (bg-accent-light "#efedf0")
+         (fg-accent "CadetBlue")
+         (faces `((region . (:inverse-video t :foreground ,bg-accent :background ,default-background))
+                  (magit-diff-hunk-heading . (:background ,bg-darker))
+                  (magit-diff-hunk-heading-highlight . (:background ,bg-accent-light))
+                  (magit-diff-context-highlight . (:background ,bg-darker))
+                  (magit-diff-added . (:foreground "#67963d" :background "#e6ffed"))
+                  (magit-diff-added-highlight . (:foreground "#325e0b" :background "#e6ffed"))
+                  (magit-diff-removed . (:foreground "#ef6160" :background "#ffeef0"))
+                  (magit-diff-removed-highlight . (:foreground "#d80d0d" :background "#ffeef0"))
+                  (diff-refine-added . (:foreground "#325e0b" :background "#acf2bd"))
+                  (diff-refine-removed . (:foreground "#d80d0d" :background "#fdb8c0"))
+                  (smerge-upper . (:foreground "#d80d0d" :background "#fdb8c0"))
+                  (smerge-lower . (:foreground "#325e0b" :background "#acf2bd"))
+
+                  (trailing-whitespace . (:background ,bg-accent))
+                  (ahs-face . (:background ,bg-accent-light))
+                  (ahs-definition-face . (:background "#e6ffed"))
+                  (ahs-plugin-whole-buffer-face . (:foreground ,bg-accent :inverse-video t :background ,default-background))
+                  (evil-ex-lazy-highlight . (:background ,bg-accent))
+                  (evil-ex-search . (:background "DarkKhaki"))
+                  (aw-leading-char-face . (:height 5.0))
+                  (mode-line . (:underline (:color "#b2b2b2")))
+                  (mode-line-inactive . (:underline (:color "#d3d3e7")))
+
+                  (fixed-pitch . (:family "JetBrains Mono" :weight normal :width expanded :height 160))
+                  (variable-pitch . (:family "Open Sans" :weight normal
+                                             :width expanded :height 180))
+
+                  ;; (lsp-lens-face . (:foreground ,default-foreground))
+                  (lsp-ui-peek-list . (:background "#f0ece1" :foreground "#866f94"))
+                  (lsp-ui-peek-peek . (:background "#f0ece1"))
+                  (lsp-ui-peek-footer . (:background ,bg-accent))
+                  (lsp-ui-peek-header . (:background ,bg-accent))
+                  (lsp-ui-peek-highlight . (:background "#f5f1e6" :foreground "#8b7b96" :box nil))
+                  (lsp-ui-peek-filename . (:background "#f0ece1" :foreground "#c0a9cf"))
+                  (lsp-ui-peek-selection . (:background ,bg-accent))
+
+                  (lsp-ui-sideline-current-symbol . (:foreground ,default-foreground))
+                  (lsp-ui-sideline-symbol . (:foreground ,default-foreground))
+                  (lsp-ui-sideline-code-action . (:foreground "#b7b1ba"))
+                  (lsp-ui-doc-background . (:background "#f0ece1"))
+                  (markdown-code-face . (:foreground ,default-foreground))
+                  (cider-debug-code-overlay-face . (:background "#f0ece1"))
+                  ;; (lsp-ui-sideline-global . (:foreground ,default-foreground))
+
+                  ;; org-mode
+                  (org-block-begin-line . (:background ,bg-darker :foreground ,fg-accent :height 0.9 :weight ultra-light :inherit fixed-pitch))
+                  (org-block . (:background ,bg-darker :inherit fixed-pitch))
+                  (org-block-end-line . (:background ,bg-darker :foreground ,fg-accent :height 0.9 :weight ultra-light :inherit fixed-pitch))
+                  (org-quote . (:background ,bg-darker :inherit variable-pitch :slant oblique))
+                  (org-date . (:inherit fixed-pitch))
+                  (org-code . (:inherit fixed-pitch))
+                  (org-meta-line . (:inherit fixed-pitch :foreground ,fg-accent :height 0.9 :weight ultra-light))
+                  (org-special-keyword . (:inherit fixed-pitch))
+                  (org-checkbox . (:inherit fixed-pitch))
+                  (org-table . (:inherit fixed-pitch))
+                  (org-done .  (:foreground ,bg-accent))
+                  (org-headline-done . (:foreground ,bg-accent))
+                  (org-hide . (:foreground ,default-background))
+                  (org-indent . (:inherit '(org-hide fixed-pitch)))
+
+                  ;; (org-level-1 . (:inherit variable-pitch :bold t :height 1.3))
+                  ;; (org-level-2 . (:inherit variable-pitch :bold t :height 1.2))
+                  ;; (org-level-3 . (:inherit variable-pitch :height 1.1))
+                  ;; (org-level-4 . (:inherit variable-pitch :height 1.0))
+                  ;; (org-level-5 . (:inherit variable-pitch :height 1.0))
+                  ;; (org-level-6 . (:inherit variable-pitch :height 1.0))
+                  ;; (org-level-7 . (:inherit variable-pitch :height 1.0))
+                  ;; (org-level-8 . (:inherit variable-pitch :height 1.0))
+
+                  (gnus-cite-1 . (:foreground "SkyBlue3"))
+                  (gnus-cite-2 . (:foreground "light sky blue"))
+                  (gnus-cite-3 . (:foreground "yellow3"))
+                  (mm-uu-extract . (:background "#efeae9"))
+
+
+                  (mode-line . (:height 100))
+                  (mode-line-inactive . (:height 100))
+                  (mode-line-emphasis . (:weight normal))
+
+                  (cider-debug-code-overlay-face . (:background ,bg-darker)))))
+    (ag/set-faces-attributes faces)))
+
 (defun ag/adjust-themes ()
   (ag/decrease-powerline-fonts)
   (pcase spacemacs--cur-theme
-    ('spacemacs-light
-     (let* ((default-background "#fbf8ef")
-            (default-foreground "#655370")
-            (bg-darker "#f7f4eb")
-            (bg-accent "#dedae0")
-            (bg-accent-dark "#c7c1c9")
-            (bg-accent-light "#efedf0")
-            (fg-accent "CadetBlue")
-            (faces `((region . (:inverse-video t :foreground ,bg-accent :background ,default-background))
-                     (magit-diff-hunk-heading . (:background ,bg-darker))
-                     (magit-diff-hunk-heading-highlight . (:background ,bg-accent-light))
-                     (magit-diff-context-highlight . (:background ,bg-darker))
-                     (magit-diff-added . (:foreground "#67963d" :background "#e6ffed"))
-                     (magit-diff-added-highlight . (:foreground "#325e0b" :background "#e6ffed"))
-                     (magit-diff-removed . (:foreground "#ef6160" :background "#ffeef0"))
-                     (magit-diff-removed-highlight . (:foreground "#d80d0d" :background "#ffeef0"))
-                     (diff-refine-added . (:foreground "#325e0b" :background "#acf2bd"))
-                     (diff-refine-removed . (:foreground "#d80d0d" :background "#fdb8c0"))
-                     (smerge-upper . (:foreground "#d80d0d" :background "#fdb8c0"))
-                     (smerge-lower . (:foreground "#325e0b" :background "#acf2bd"))
-
-                     (trailing-whitespace . (:background ,bg-accent))
-                     (ahs-face . (:background ,bg-accent-light))
-                     (ahs-definition-face . (:background "#e6ffed"))
-                     (ahs-plugin-whole-buffer-face . (:foreground ,bg-accent :inverse-video t :background ,default-background))
-                     (evil-ex-lazy-highlight . (:background ,bg-accent))
-                     (evil-ex-search . (:background "DarkKhaki"))
-                     (aw-leading-char-face . (:height 5.0))
-                     (mode-line . (:underline (:color "#b2b2b2")))
-                     (mode-line-inactive . (:underline (:color "#d3d3e7")))
-
-                     (fixed-pitch . (:family "JetBrains Mono" :weight normal :width expanded :height 160))
-                     (variable-pitch . (:family "Noto Sans" :weight normal
-                                                :width ultra-expanded :height 180))
-
-                     ;; (lsp-lens-face . (:foreground ,default-foreground))
-                     (lsp-ui-peek-list . (:background "#f0ece1" :foreground "#866f94"))
-                     (lsp-ui-peek-peek . (:background "#f0ece1"))
-                     (lsp-ui-peek-footer . (:background ,bg-accent))
-                     (lsp-ui-peek-header . (:background ,bg-accent))
-                     (lsp-ui-peek-highlight . (:background "#f5f1e6" :foreground "#8b7b96" :box nil))
-                     (lsp-ui-peek-filename . (:background "#f0ece1" :foreground "#c0a9cf"))
-                     (lsp-ui-peek-selection . (:background ,bg-accent))
-
-                     (lsp-ui-sideline-current-symbol . (:foreground ,default-foreground))
-                     (lsp-ui-sideline-symbol . (:foreground ,default-foreground))
-                     (lsp-ui-sideline-code-action . (:foreground "#b7b1ba"))
-                     (lsp-ui-doc-background . (:background "#f0ece1"))
-                     (markdown-code-face . (:foreground ,default-foreground))
-                     (cider-debug-code-overlay-face . (:background "#f0ece1"))
-                     ;; (lsp-ui-sideline-global . (:foreground ,default-foreground))
-
-                     ;; org-mode
-                     (org-block-begin-line . (:background ,bg-darker :foreground ,fg-accent :height 0.9 :weight ultra-light))
-                     (org-block . (:background ,bg-darker))
-                     (org-block-end-line . (:background ,bg-darker :foreground ,fg-accent :height 0.9 :weight ultra-light))
-                     (org-done .  (:foreground ,bg-accent))
-                     (org-headline-done . (:foreground ,bg-accent))
-                     (org-hide . (:foreground ,default-background))
-
-                     ;; (org-level-1 . (:inherit variable-pitch :bold t :height 1.3))
-                     ;; (org-level-2 . (:inherit variable-pitch :bold t :height 1.2))
-                     ;; (org-level-3 . (:inherit variable-pitch :height 1.1))
-                     ;; (org-level-4 . (:inherit variable-pitch :height 1.0))
-                     ;; (org-level-5 . (:inherit variable-pitch :height 1.0))
-                     ;; (org-level-6 . (:inherit variable-pitch :height 1.0))
-                     ;; (org-level-7 . (:inherit variable-pitch :height 1.0))
-                     ;; (org-level-8 . (:inherit variable-pitch :height 1.0))
-
-                     (gnus-cite-1 . (:foreground "SkyBlue3"))
-                     (gnus-cite-2 . (:foreground "light sky blue"))
-                     (gnus-cite-3 . (:foreground "yellow3"))
-                     (mm-uu-extract . (:background "#efeae9"))
-
-
-                     (mode-line . (:height 100))
-                     (mode-line-inactive . (:height 100))
-                     (mode-line-emphasis . (:weight normal))
-
-                     (cider-debug-code-overlay-face . (:background ,bg-darker)))))
-       (ag/set-faces-attributes faces)))
-
+    ('spacemacs-light (ag/adjust-spacemacs-light-colors))
     ('base16-ocean (ag/adjust-base16-ocean-colors))))
 
 (defun ag-colors/init-base16-theme ()

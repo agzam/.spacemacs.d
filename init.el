@@ -75,7 +75,7 @@ This function should only modify configuration layer settings."
      ;; --- My own layers ----
      (ag-clojure :variables
                  clojure-enable-clj-refactor t
-                 clojure-enable-sayid t
+                 clojure-enable-sayid nil
                  clojure-enable-linters '(clj-kondo))
      ag-colors
      ag-dired
@@ -105,7 +105,8 @@ This function should only modify configuration layer settings."
                                       ivy-rich
                                       quelpa-use-package
                                       dired-narrow
-                                      ivy-posframe)
+                                      ivy-posframe
+                                      company-posframe)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
 
@@ -359,7 +360,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil `spacemacs/toggle-fullscreen' will not use native fullscreen.
    ;; Use to disable fullscreen animations in OSX. (default nil)
-   dotspacemacs-fullscreen-use-non-native t
+   dotspacemacs-fullscreen-use-non-native nil
 
    ;; If non-nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
@@ -369,7 +370,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil the frame is undecorated when Emacs starts up. Combine this
    ;; variable with `dotspacemacs-maximized-at-startup' in OSX to obtain
    ;; borderless fullscreen. (default nil)
-   dotspacemacs-undecorated-at-startup nil
+   dotspacemacs-undecorated-at-startup t
 
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
@@ -660,4 +661,5 @@ before packages are loaded."
   (add-hook 'minibuffer-setup-hook #'minibuffer-line-spacing)
 
   (when (eq system-type 'gnu/linux)
-    (display-battery-mode 1)))
+    (display-battery-mode 1))
+  (company-posframe-mode))

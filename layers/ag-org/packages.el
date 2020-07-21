@@ -136,6 +136,7 @@
      org-src-window-setup 'other-window
      org-src-ask-before-returning-to-edit-buffer nil
      org-edit-src-content-indentation 0
+     org-fontify-quote-and-verse-blocks t
      ;; org-src-preserve-indentation t
      )
 
