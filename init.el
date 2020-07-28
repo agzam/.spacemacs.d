@@ -592,6 +592,7 @@ before packages are loaded."
    company-idle-delay 0.1
    company-show-numbers t
    writeroom-width 130
+   writeroom-fullscreen-effect nil
    sentence-end-double-space t
 
    ;;;; Helm
@@ -618,6 +619,9 @@ before packages are loaded."
                                       paradox-menu-mode
                                       appropos-mode
                                       image-mode)
+   visible-bell t
+   ring-bell-function 'ignore
+
    Man-notify-method 'pushy
    ranger-override-dired nil
    delete-by-moving-to-trash nil)

@@ -34,6 +34,8 @@
     (global-set-key (kbd "H-B") 'ivy-switch-buffer)
     (global-set-key (kbd "H-b") 'spacemacs-layouts/non-restricted-buffer-list-ivy)
 
+    (define-key ivy-minibuffer-map (kbd "C-c RET") 'ivy-rotate-preferred-builders)
+
     (evil-define-key '(normal) ivy-occur-grep-mode-map (kbd "n") #'evil-ex-search-next)
     (evil-define-key '(normal) ivy-occur-grep-mode-map (kbd "p") #'evil-ex-search-previous)
     (evil-define-key '(normal) ivy-occur-grep-mode-map (kbd "gg") #'evil-goto-first-line)
@@ -86,7 +88,7 @@
   ;; "ou" #'spacemacs/avy-open-url
   ;;;; add a page-break
   "iP" (kbd "i C-q C-l <RET><escape>")
-  "tN" #'global-display-line-numbers-mode)
+  "nn" #'global-display-line-numbers-mode)
 
 (spacemacs/transient-state-register-add-bindings 'zoom-frm
   '(("m" (toggle-frame-maximized-undecorated))))
