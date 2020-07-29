@@ -252,10 +252,9 @@ persp-before-switch-functions hook."
                        (lambda (a)
                          (string-match "\\*Org
                              Src" (buffer-name a)))
-                       (buffer-list))))
-        (save-some-buffers
-         'no-confirm
-         (lambda () (string= fname tasksfile)))))))
+                       (buffer-list)))
+                 (buffer-modified-p (current-buffer)))
+        (save-buffer)))))
 
 (defun get-gh-item-title (uri &optional include-number?)
   "Based on given GitHub URI for pull-request or issue,
