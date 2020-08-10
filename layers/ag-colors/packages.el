@@ -107,7 +107,7 @@
                   (ahs-plugin-whole-buffer-face . (:foreground ,base0B :background ,base00))
                   (ahs-face . (:foreground ,base0A :background ,base02))
 
-                  (fixed-pitch . (:family "JetBrains Mono" :weight normal :width expanded :height 160))
+                  (fixed-pitch . (:family "JetBrains Mono" :weight normal :width expanded))
                   (variable-pitch . (:family "Open Sans" :weight normal
                                              :width expanded :height 180))
                   ;; avy
@@ -196,7 +196,7 @@
                   (mode-line . (:underline (:color "#b2b2b2")))
                   (mode-line-inactive . (:underline (:color "#d3d3e7")))
 
-                  (fixed-pitch . (:family "JetBrains Mono" :weight normal :width expanded :height 160))
+                  (fixed-pitch . (:family "JetBrains Mono" :weight normal :width expanded))
                   (variable-pitch . (:family "Open Sans" :weight normal
                                              :width expanded :height 180))
 
@@ -229,7 +229,7 @@
                   (org-checkbox . (:inherit fixed-pitch))
                   (org-table . (:inherit fixed-pitch))
                   (org-done .  (:foreground ,bg-accent))
-                  (org-headline-done . (:foreground ,bg-accent))
+                  (org-headline-done . (:foreground ,bg-accent-dark))
                   (org-hide . (:foreground ,default-background))
                   (org-indent . (:inherit '(org-hide fixed-pitch)))
 
