@@ -9,28 +9,24 @@
 ;;
 ;;; License: GPLv3
 
-(evil-define-key 'normal dired-mode-map (kbd "gr") #'revert-buffer)
+;; don't override Evil's g and G in dired
+(unbind-key "g" dired-mode-map)
+(unbind-key "G" dired-mode-map)
 
 (evil-define-key 'normal direx:direx-mode-map "r" 'direx:refresh-whole-tree)
-(evil-define-key 'normal dired-mode-map "o" 'spacemacs/dired-open-item-other-window-transient-state/body)
-
-(defun eshell-keybindings-override ()
-  (define-key eshell-mode-map (kbd "C-c C-l")
-    (lambda ()
-      (interactive)
-      (eshell/clear-scrollback)
-      (eshell-reset)))
-  (evil-define-key 'normal eshell-mode-map (kbd "RET") #'eshell-action-on-file-or-dir-at-point)
-  (evil-define-key 'normal eshell-mode-map (kbd "o") #'eshell-action-on-file-or-dir-at-point-other-window)
-  (evil-define-key 'insert eshell-mode-map (kbd "C-p") #'eshell-previous-matching-input-from-input)
-  (evil-define-key 'insert eshell-mode-map (kbd "C-n") #'eshell-next-maching-input-from-input))
+(evil-define-key '(normal evilified) dired-mode-map
+  "o" 'spacemacs/dired-open-item-other-window-transient-state/body
+  "gr" 'revert-buffer
+  (kbd "RET") 'dired-find-alternate-file   ; re-use dired buffer, insead of keeping it open
+  (kbd "C-RET") 'dired-find-file)
+
+(define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)   ; re-use dired buffer, insead of keeping it open
+(define-key dired-mode-map (kbd "C-RET") 'dired-find-file)
 
 ;; This has been bugging me - `<escape> k' gets translated into `M-k' which
 ;; for whatever reason forces direx to jump all the way to the bottom of the tree
 (unbind-key (kbd "M-k"))
 (define-key direx:direx-mode-map (kbd "M-k") #'direx:previous-item)
 (define-key direx:direx-mode-map (kbd "ESC k") #'direx:previous-item)
-
-(add-hook 'eshell-mode-hook #'eshell-keybindings-override t)
 
 ;;; keybindings.el ends here

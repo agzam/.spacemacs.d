@@ -18,10 +18,6 @@
 
 (evil-define-key 'normal diff-mode-map "q" #'quit-window)
 
-;; don't override Evil's g and G in dired
-(unbind-key "g" dired-mode-map)
-(unbind-key "G" dired-mode-map)
-
 (if (configuration-layer/layer-used-p 'helm)
     (progn
       (global-set-key (kbd "s-B") 'lazy-helm/helm-mini)
@@ -36,10 +32,11 @@
 
     (define-key ivy-minibuffer-map (kbd "C-c RET") 'ivy-rotate-preferred-builders)
 
-    (evil-define-key '(normal) ivy-occur-grep-mode-map (kbd "n") #'evil-ex-search-next)
-    (evil-define-key '(normal) ivy-occur-grep-mode-map (kbd "p") #'evil-ex-search-previous)
-    (evil-define-key '(normal) ivy-occur-grep-mode-map (kbd "gg") #'evil-goto-first-line)
-    (evil-define-key '(normal) ivy-occur-grep-mode-map (kbd "gr") #'ivy-occur-revert-buffer)
+    (evil-define-key '(normal evilified) ivy-occur-grep-mode-map
+      "n" #'evil-ex-search-next
+      "p" #'evil-ex-search-previous
+      "gg" #'evil-goto-first-line
+      "gr" #'ivy-occur-revert-buffer)
 
     ;; open in other-window action
     (define-key ivy-minibuffer-map
@@ -72,10 +69,32 @@
     "kf" #'evil-lisp-state-sp-up-sexp
     "k=" #'evil-lisp-state-sp-reindent))
 
+;;;;;;;;;;;
+;; Shell ;;
+;;;;;;;;;;;
+
+(defun eshell-keybindings-override ()
+  (define-key eshell-mode-map (kbd "C-c C-l")
+    (lambda ()
+      (interactive)
+      (eshell/clear-scrollback)
+      (eshell-reset)))
+  (evil-define-key 'normal eshell-mode-map
+    "RET" 'eshell-action-on-file-or-dir-at-point
+    "o" 'eshell-action-on-file-or-dir-at-point-other-window)
+  (evil-define-key 'insert eshell-mode-map
+    (kbd "C-p") 'eshell-previous-matching-input-from-input
+    (kbd "C-n") 'eshell-next-maching-input-from-input))
+
 (with-eval-after-load 'evil
-  (evil-define-key '(normal insert) shell-mode-map (kbd "C-l") #'comint-clear-buffer)
-  (evil-define-key '(normal insert) shell-mode-map (kbd "C-C C-l") #'shell-history)
-  (evil-define-key '(normal insert) eshell-mode-map (kbd "C-C C-l") #'shell-history))
+  (evil-define-key '(normal insert) shell-mode-map
+    (kbd "C-l") #'comint-clear-buffer
+    (kbd "C-C C-l") #'shell-history)
+  (evil-define-key '(normal insert) eshell-mode-map
+    (kbd "C-C C-l") #'shell-history))
+
+(add-hook 'eshell-mode-hook 'eshell-keybindings-override t)
+
 
 (spacemacs/set-leader-keys
   "qq" nil  ; no unexpected exits
@@ -127,5 +146,29 @@
   (define-key company-active-map (kbd "C-p") 'company-select-previous)
   (define-key company-active-map (kbd "C-f") #'company-filter-candidates))
 
+;;;;;;;;;;;;;;;;;;;;
+;; xwidget-webkit ;;
+;;;;;;;;;;;;;;;;;;;;
+
+(with-eval-after-load 'xwidget
+  (evil-define-key '(normal evilified) xwidget-webkit-mode-map
+    "q" 'quit-window
+    "k" 'xwidget-webkit-scroll-down-line
+    "j" 'xwidget-webkit-scroll-up-line
+    "h" 'xwidget-webkit-scroll-backward
+    "l" 'xwidget-webkit-scroll-forward
+    (kbd "C-f") 'xwidget-webkit-scroll-up
+    (kbd "C-b") 'xwidget-webkit-scroll-down
+    "+" 'xwidget-webkit-zoom-in
+    "=" 'xwidget-webkit-zoom-in
+    "-" 'xwidget-webkit-zoom-out
+    "R" 'xwidget-webkit-reload
+    "gr" 'xwidget-webkit-reload
+    "H" 'xwidget-webkit-back
+    "L" 'xwidget-webkit-forward
+    "gu" 'xwidget-webkit-browse-url
+    "gg" 'xwidget-webkit-scroll-top
+    "G" 'xwidget-webkit-scroll-bottom
+    "y" 'xwidget-webkit-copy-selection-as-kill))
 
 ;;; keybindings.el ends here

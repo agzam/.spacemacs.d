@@ -134,6 +134,7 @@
                   (org-meta-line . (:inherit fixed-pitch :foreground ,base04 :height 0.9 :weight ultra-light))
                   (org-special-keyword . (:inherit fixed-pitch))
                   (org-checkbox . (:background nil :inherit fixed-pitch))
+                  (org-table . (:inherit fixed-pitch))
                   (org-level-1 . (:foreground ,base0D :bold t :height 1.3))
                   (org-level-2 . (:foreground ,base09 :bold t :height 1.2))
                   (org-level-3 . (:foreground ,base0B :height 1.1))
@@ -161,7 +162,7 @@
                   (mode-line-inactive . (:height 100))
                   (mode-line-emphasis . (:weight normal))
 
-                  )))
+                  (line-number . (:inherit fixed-pitch)))))
     (ag/set-faces-attributes faces)
     (setq pdf-view-midnight-colors `(,base04 . ,base00))))
 

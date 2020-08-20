@@ -20,7 +20,9 @@
                                 (jira :location local)
                                 lsp-mode
                                 all-the-icons-ivy-rich
-                                company-tabnine))
+                                company-tabnine
+                                (evilify-edebug :location local)
+                                company-posframe))
 
 (defun ag-general/init-helpful ()
   (use-package helpful
@@ -173,7 +175,8 @@
     (setq lsp-after-open-hook nil
           lsp-eldoc-enable-hover nil
           lsp-diagnostic-package :none
-          lsp-enable-file-watchers nil)
+          lsp-enable-file-watchers nil
+          lsp-modeline--enable-code-actions nil)
     (add-hook
      'lsp-after-open-hook
      (lambda()
@@ -198,6 +201,27 @@
       :backends company-tabnine
       :modes sql-mode sql-interactive-mode)))
 
+(defun ag-general/init-evilify-edebug ()
+  (use-package evilify-edebug
+    :commands (edebug)
+    :config
+    (evilify-edebug-setup)))
+
+(defun ag-general/init-company-posframe ()
+  (use-package company-posframe
+    :demand t
+    :init
+    (setq company-posframe-quickhelp-delay nil)
+    :bind (:map company-active-map
+           ("C-h" . (lambda () (interactive) (company-posframe-quickhelp-show)))
+           ("C-c C-d". company-show-doc-buffer)
+           ("C-n" . company-select-next)
+           ("C-p" . company-select-previous)
+           ("C-c C-l". company-show-location)
+           :map company-posframe-active-map
+           ("C-c h" . company-posframe-quickhelp-toggle))
+    :config
+    (company-posframe-mode 1)))
 
 (when (eq system-type 'gnu/linux)
   (defun on-stump-edit-with-emacs (buffer-name window-title window-class window-id)

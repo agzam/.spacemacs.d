@@ -71,7 +71,8 @@ This function should only modify configuration layer settings."
      ;;       (cond ((eq system-type 'darwin) "~/Library/Application\ Support/Dash/DocSets")))
      (shell :variables
             shell-default-shell 'shell
-            shell-default-full-span nil)
+            shell-default-full-span nil
+            comint-input-ignoredups t)
      ;; --- My own layers ----
      (ag-clojure :variables
                  clojure-enable-clj-refactor t
@@ -105,8 +106,7 @@ This function should only modify configuration layer settings."
                                       ivy-rich
                                       quelpa-use-package
                                       dired-narrow
-                                      ivy-posframe
-                                      company-posframe)
+                                      ivy-posframe)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
 
@@ -134,7 +134,7 @@ It should only modify the values of Spacemacs settings."
    ;; to compile Emacs 27 from source following the instructions in file
    ;; EXPERIMENTAL.org at to root of the git repository.
    ;; (default nil)
-   dotspacemacs-enable-emacs-pdumper t
+   dotspacemacs-enable-emacs-pdumper nil
 
    ;; Name of executable file pointing to emacs 27+. This executable must be
    ;; in your PATH.
@@ -365,7 +365,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (default nil) (Emacs 24.4+ only)
-   dotspacemacs-maximized-at-startup t
+   dotspacemacs-maximized-at-startup nil
 
    ;; If non-nil the frame is undecorated when Emacs starts up. Combine this
    ;; variable with `dotspacemacs-maximized-at-startup' in OSX to obtain
@@ -416,7 +416,7 @@ It should only modify the values of Spacemacs settings."
    ;;   :size-limit-kb 1000)
    ;; When used in a plist, `visual' takes precedence over `relative'.
    ;; (default nil)
-   dotspacemacs-line-numbers t
+   dotspacemacs-line-numbers nil
 
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
@@ -534,9 +534,9 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   (setq
    evil-want-fine-undo nil
+   ns-auto-hide-menu-bar t
    ns-use-srgb-colorspace t
    evil-want-C-u-scroll nil
-   ns-auto-hide-menu-bar nil
    exec-path-from-shell-variables '("PATH" "MANPATH" "NVM_DIR" "NODE_PATH" "HOMEBREW_GITHUB_API_TOKEN" "DEV")
    custom-file "~/.spacemacs.d/custom.el")
 
@@ -610,7 +610,7 @@ before packages are loaded."
    ;; don't quit on esc or jk
    evil-escape-excluded-major-modes '(compilation-mode
                                       help-mode
-                                      magit-diff-mode magit-log-mode
+                                      magit-diff-mode magit-log-mode magit-merge-preview-mode
                                       magit-process-mode magit-refs-mode
                                       magit-revision-mode magit-stash-mode
                                       magit-status-mode mu4e-headers-mode
@@ -624,9 +624,10 @@ before packages are loaded."
 
    Man-notify-method 'pushy
    ranger-override-dired nil
-   delete-by-moving-to-trash nil)
+   delete-by-moving-to-trash t)
 
   (global-hl-line-mode -1)
+  (global-page-break-lines-mode -1)
   (add-hook 'prog-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
 
   (add-hook 'markdown-mode-hook #'flyspell-mode)
@@ -641,6 +642,7 @@ before packages are loaded."
                 persp-kill-foreign-buffer-behaviour 'kill)
 
   (remove-hook 'diff-mode-hook 'whitespace-mode)
+  (remove-hook 'comint-output-filter-functions 'comint-postoutput-scroll-to-bottom)
 
   ;;;;;;;;;;;;;
   ;; Backups ;;
@@ -653,11 +655,7 @@ before packages are loaded."
   ;; (setq backup-directory-alist '(("." . ".bak")))
   ;; (savehist-mode -1)
 
-  (run-at-time
-   "1 sec" nil
-   (lambda ()
-     (global-display-line-numbers-mode -1)
-     (ag/adjust-themes)))
+  (run-at-time "2 sec" nil 'ag/adjust-themes)
 
   ;; make Ivy stuff a bit readable in the minibuffer
   (defun minibuffer-line-spacing ()
@@ -665,5 +663,4 @@ before packages are loaded."
   (add-hook 'minibuffer-setup-hook #'minibuffer-line-spacing)
 
   (when (eq system-type 'gnu/linux)
-    (display-battery-mode 1))
-  (company-posframe-mode))
+    (display-battery-mode 1)))

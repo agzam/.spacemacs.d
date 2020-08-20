@@ -11,17 +11,18 @@
 
 (defconst ag-clojure-packages
   '(clojure-mode-extra-font-locking
-    helm-clojuredocs
     clojars
-    helm-cider
-    lsp-mode))
+    lsp-mode
+    (evilify-cider :location local)))
 
 (defun ag-clojure/init-ac-cider ())
 (defun ag-clojure/init-clojure-mode-extra-font-locking ())
-(defun ag-clojure/init-helm-clojuredocs ())
 (defun ag-clojure/init-clojars ())
-(defun ag-clojure/init-helm-cider ())
-(defun ag-clojure/init-cider-hydra ())
+(defun ag-clojure/init-evilify-cider ()
+  (use-package evilify-cider
+    :demand t
+    :config
+    (evilify-cider-setup)))
 
 (defun ag-clojure/post-init-lsp-mode ()
   (with-eval-after-load 'lsp-mode
@@ -120,10 +121,7 @@
     (let-routes 1)
     (context 2)
     (clojure.test/async 1)
-    (promesa.core/alet 1)
-    )
-
-  )
+    (promesa.core/alet 1)))
 
 (add-hook 'clojurescript-mode-hook #'add-reframe-regs-to-imenu)
 ;;; packages.el ends here
