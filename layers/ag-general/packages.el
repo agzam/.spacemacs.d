@@ -22,7 +22,8 @@
                                 company-tabnine
                                 (evilify-edebug :location local)
                                 company-posframe
-                                ivy-posframe))
+                                ivy-posframe
+                                which-key-posframe))
 
 (defun ag-general/init-helpful ()
   (use-package helpful
@@ -227,26 +228,47 @@
 
 (defun ag-general/init-ivy-posframe ()
   (use-package ivy-posframe
-    :init
+    :after ivy
+    :config
     (setq ivy-posframe-parameters
           '((alpha . 100)
             (undecorated . nil)
-            (left-fringe . 2)
-            (right-fringe . 2)
-            (internal-border-width . 5)
+            (left-fringe . 3)
+            (right-fringe . 3)
+            (internal-border-width . 3)
             (unsplittable . t))
           ivy-posframe-width 130
-          ivy-posframe-height 15)
-    :config
-    (setq
-     ivy-posframe-display-functions-alist
+          ivy-posframe-height 20
+          ivy-posframe-border-width 2)
+
+    (setq ivy-posframe-display-functions-alist
      '((t . ivy-posframe-display-at-frame-bottom-left)))
 
     (defun posframe-poshandler-frame-bottom-left-corner (info)
       (cons 20 (- (plist-get info :parent-frame-height)
-                  (+ (plist-get info :posframe-height) 40))))
+                  (+ (plist-get info :posframe-height) 85))))
+
+    (setq posframe-arghandler #'my-posframe-arghandler)
+    (defun my-posframe-arghandler (buffer-or-name arg-name value)
+      (let ((info '(:lines-truncate t)))
+        (or (plist-get info arg-name) value)))
 
     (ivy-posframe-mode 1)))
+
+(defun ag-general/init-which-key-posframe ()
+  (use-package which-key-posframe
+    :init
+    (setq which-key-posframe-parameters
+          '((undecorated . t)))
+    :config
+    (defun posframe-poshandler-frame-bottom-right-corner (info)
+      (cons (- (plist-get info :parent-frame-width)
+               (+ (plist-get info :posframe-width) 10))
+            (- (plist-get info :parent-frame-height)
+               (+ (plist-get info :posframe-height) 85))))
+    (setq which-key-posframe-poshandler #'posframe-poshandler-frame-bottom-right-corner
+          which-key-min-display-lines 15)
+    (which-key-posframe-mode 1)))
 
 (when (eq system-type 'gnu/linux)
   (defun on-stump-edit-with-emacs (buffer-name window-title window-class window-id)

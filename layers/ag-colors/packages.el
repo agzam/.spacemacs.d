@@ -25,10 +25,10 @@
                  ;; mode-line-buffer-id
                  ;; mode-line-buffer-id-inactive
                  ;; mode-line-emphasis
-                 which-key-docstring-face
-                 which-key-group-description-face
-                 which-key-command-description-face
-                 which-key-local-map-description-face
+                 ;; which-key-docstring-face
+                 ;; which-key-group-description-face
+                 ;; which-key-command-description-face
+                 ;; which-key-local-map-description-face
 
                  spacemacs-micro-state-header-face
                  spacemacs-micro-state-binding-face
@@ -175,6 +175,7 @@
          (bg-accent-light "#efedf0")
          (fg-accent "CadetBlue")
          (faces `((region . (:inverse-video t :foreground ,bg-accent :background ,default-background))
+                  (fringe . (:background ,bg-darker))
                   (magit-diff-hunk-heading . (:background ,bg-darker))
                   (magit-diff-hunk-heading-highlight . (:background ,bg-accent-light))
                   (magit-diff-context-highlight . (:background ,bg-darker))
