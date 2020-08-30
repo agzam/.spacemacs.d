@@ -39,12 +39,12 @@
                  persp-face-lighter-nil-persp)))
     (dolist (f faces)
       (when (facep f)
-        (set-face-attribute f nil :height 0.8))))
+        (set-face-attribute f nil :height 0.85))))
 
   (dolist (buf (list " *Minibuf-0*" " *Minibuf-1*" " *Echo Area 0*" " *Echo Area 1*" " *which-key*"))
     (when (get-buffer buf)
       (with-current-buffer buf
-        (setq-local face-remapping-alist '((default (:height 0.8))))))))
+        (setq-local face-remapping-alist '((default (:height 0.85))))))))
 
 (defun ag/set-faces-attributes (faces)
   "Sets face attributes for given alist of FACES"
@@ -253,7 +253,8 @@
                   (mode-line-inactive . (:height 100))
                   (mode-line-emphasis . (:weight normal))
 
-                  (cider-debug-code-overlay-face . (:background ,bg-darker)))))
+                  (cider-debug-code-overlay-face . (:background ,bg-darker))
+                  (ivy-posframe . (:background ,default-background :foreground ,default-foreground)))))
     (ag/set-faces-attributes faces)))
 
 (defun ag/adjust-themes ()

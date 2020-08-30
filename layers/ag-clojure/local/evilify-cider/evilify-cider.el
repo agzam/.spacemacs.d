@@ -42,7 +42,8 @@ ex. \(cider-debug-mode-send-reply \":next\"\)"
                                           "eval"
                                           "inject"
                                           "inspect"
-                                          "locals")
+                                          "locals"
+                                          "in")
 
 (defun evilify-cider-setup ()
   "Set up `evil' bindings for `cider'."
@@ -68,9 +69,15 @@ ex. \(cider-debug-mode-send-reply \":next\"\)"
     "q" 'evil-collection-cider-debug-quit
     "e" 'evil-collection-cider-debug-eval
     "J" 'evil-collection-cider-debug-inject
-    "I" 'evil-collection-cider-debug-inspect
+    "I" 'evil-collection-cider-debug-in
+    (kbd "C-i") 'evil-collection-cider-debug-inspect
     "L" 'evil-collection-cider-debug-locals
-    "H" 'cider-debug-move-here)
+    "H" 'cider-debug-move-here
+    "l" nil
+    "i" nil
+    "h" nil
+    "j" nil
+    )
 
   (evil-define-key '(normal visual) cider-mode-map
     ;; "gd" 'cider-find-var

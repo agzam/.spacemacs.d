@@ -34,7 +34,9 @@
 
     (evil-define-key '(normal evilified) ivy-occur-grep-mode-map
       "n" #'evil-ex-search-next
-      "p" #'evil-ex-search-previous
+      "p" #'evil-ex-search-previous)
+
+    (evil-define-key '(normal evilified) ivy-occur-mode-map
       "gg" #'evil-goto-first-line
       "gr" #'ivy-occur-revert-buffer)
 
@@ -42,8 +44,8 @@
     (define-key ivy-minibuffer-map
       (kbd "M-l")
       (lambda () (interactive)
-        (execute-kbd-macro (kbd "M-o j"))))
-    ))
+        (execute-kbd-macro (kbd "M-o j"))))))
+
 (global-set-key (kbd "s-[") #'spacemacs/persp-go-prev)
 (global-set-key (kbd "s-]") #'spacemacs/persp-go-next)
 (global-set-key (kbd "H-[") #'spacemacs/persp-go-prev)
@@ -170,5 +172,12 @@
     "gg" 'xwidget-webkit-scroll-top
     "G" 'xwidget-webkit-scroll-bottom
     "y" 'xwidget-webkit-copy-selection-as-kill))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; multiple-cursors, evil-mc ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(with-eval-after-load 'evil-mc
+  ;; add cursors on right-click
+  (global-set-key (kbd "<mouse-3>") 'evil-mc-toggle-cursor-on-click))
 
 ;;; keybindings.el ends here

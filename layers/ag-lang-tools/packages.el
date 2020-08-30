@@ -23,18 +23,18 @@
 
 (defun ag-lang-tools/init-mw-thesaurus ()
   (use-package mw-thesaurus
-    :demand t
+    ;; :demand t
     :config
     (define-key mw-thesaurus-mode-map [remap evil-record-macro] #'mw-thesaurus--quit)
     (add-hook 'mw-thesaurus-mode-hook 'variable-pitch-mode)
     (spacemacs/set-leader-keys
       "xlm" #'mw-thesaurus-lookup-at-point
-      "xAg" #'add-global-abbrev
-      "xAl" #'add-mode-abbrev)))
+      ;; "xAg" #'add-global-abbrev
+      ;; "xAl" #'add-mode-abbrev
+      )))
 
 (defun ag-lang-tools/init-sdcv-mode ()
   (use-package sdcv-mode
-    :demand t
     :config
     (add-hook 'sdcv-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
 

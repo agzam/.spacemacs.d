@@ -11,18 +11,18 @@
 
 (defconst ag-general-packages `(helpful
                                 rainbow-mode
-                                ;; evil-mc
                                 edit-indirect
                                 engine-mode
                                 fennel-mode
                                 ,(when (eq system-type 'darwin)
                                    '(spacehammer :location "~/.hammerspoon"))
-                                (jira :location local)
+                                ;; (jira :location local)
                                 lsp-mode
                                 all-the-icons-ivy-rich
                                 company-tabnine
                                 (evilify-edebug :location local)
-                                company-posframe))
+                                company-posframe
+                                ivy-posframe))
 
 (defun ag-general/init-helpful ()
   (use-package helpful
@@ -149,17 +149,19 @@
           (:around (fn) fix-frame-after-zoom-frm-in)
         (reinforce-frame-full-width-height)
         (funcall fn)
-        (spacehammer/fix-frame))
+        ;; (spacehammer/fix-frame)
+        )
 
       (define-advice spacemacs/zoom-frm-transient-state/spacemacs/zoom-frm-out
           (:around (fn) fix-frame-after-zoom-frm-out)
         (reinforce-frame-full-width-height)
         (funcall fn)
-        (spacehammer/fix-frame)))))
+        ;; (spacehammer/fix-frame)
+        ))))
 
 (defun ag-general/init-jira ()
   (use-package jira
-    :demand t
+    ;; :demand t
     :config
     (setq jira-base-url "https://jira.dividendsolar.com")
     (global-set-key (kbd "M-o M-j") #'convert-to-jira-link)))
@@ -222,6 +224,29 @@
            ("C-c h" . company-posframe-quickhelp-toggle))
     :config
     (company-posframe-mode 1)))
+
+(defun ag-general/init-ivy-posframe ()
+  (use-package ivy-posframe
+    :init
+    (setq ivy-posframe-parameters
+          '((alpha . 100)
+            (undecorated . nil)
+            (left-fringe . 2)
+            (right-fringe . 2)
+            (internal-border-width . 5)
+            (unsplittable . t))
+          ivy-posframe-width 130
+          ivy-posframe-height 15)
+    :config
+    (setq
+     ivy-posframe-display-functions-alist
+     '((t . ivy-posframe-display-at-frame-bottom-left)))
+
+    (defun posframe-poshandler-frame-bottom-left-corner (info)
+      (cons 20 (- (plist-get info :parent-frame-height)
+                  (+ (plist-get info :posframe-height) 40))))
+
+    (ivy-posframe-mode 1)))
 
 (when (eq system-type 'gnu/linux)
   (defun on-stump-edit-with-emacs (buffer-name window-title window-class window-id)

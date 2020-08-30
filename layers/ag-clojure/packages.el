@@ -22,7 +22,8 @@
   (use-package evilify-cider
     :demand t
     :config
-    (evilify-cider-setup)))
+    (evilify-cider-setup)
+    (add-hook 'cider--debug-mode-hook #'evilify-cider-setup)))
 
 (defun ag-clojure/post-init-lsp-mode ()
   (with-eval-after-load 'lsp-mode
@@ -38,7 +39,7 @@
   (spacemacs|add-company-backends
     :backends company-lsp
     :modes '(clojure-mode clojurescript-mode clojurec-mode)
-    :variables company-minimum-prefix-length 2
+    :variables company-minimum-prefix-length 3
     :append-hooks nil
     :call-hooks t)
 

@@ -44,10 +44,13 @@ This function should only modify configuration layer settings."
      (shell-scripts :packages (not fish-mode))
      ;; --- Editor  ----
      (auto-completion :variables
-                      auto-completion-tab-key-behavior 'cycle
-                      auto-completion-enable-snippets-in-popup t
                       auto-completion-enable-help-tooltip t
-                      auto-completion-enable-sort-by-usage t)
+                      auto-completion-enable-snippets-in-popup t
+                      auto-completion-enable-sort-by-usage t
+                      auto-completion-tab-key-behavior 'cycle
+                      company-idle-delay 0.1
+                      company-selection-wrap-around t
+                      company-show-numbers t)
      ;; ---- Tools ----
      ,(when (eq system-type 'darwin) 'osx)
      ,(when (eq system-type 'gnu/linux) 'common-lisp)
@@ -105,13 +108,12 @@ This function should only modify configuration layer settings."
    dotspacemacs-additional-packages '(copy-as-format
                                       ivy-rich
                                       quelpa-use-package
-                                      dired-narrow
-                                      ivy-posframe)
+                                      dired-narrow)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
 
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '(window-purpose)
+   dotspacemacs-excluded-packages '()
 
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
@@ -589,8 +591,6 @@ before packages are loaded."
    abbrev-file-name "~/.spacemacs.d/abbrev_defs"
    save-abbrevs t ; save abbrevs upon exiting Emacs
    uniquify-buffer-name-style 'forward
-   company-idle-delay 0.1
-   company-show-numbers t
    writeroom-width 130
    writeroom-fullscreen-effect nil
    sentence-end-double-space t

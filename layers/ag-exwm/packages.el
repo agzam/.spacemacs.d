@@ -27,8 +27,7 @@
     (exwm-xrandr :location local)))
 
 (defun ag-exwm/init-cl-generic ()
-  (use-package cl-generic
-    :demand))
+  (use-package cl-generic))
 
 (defun ag-exwm/init-xelb ()
   (use-package xelb))
