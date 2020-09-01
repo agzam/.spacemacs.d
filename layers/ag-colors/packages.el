@@ -75,12 +75,14 @@
          (base0E "#b48ead")
          (base0F "#ab7967")
          (base10 "#7090af")
+         (default-background base00)
+         (default-foreground base05)
          (faces `(;; magit
                   (magit-popup-disabled-argument . (:foreground ,base02))
                   (magit-popup-option-value . (:foreground ,base08))
                   (magit-popup-argument . (:foreground ,base08))
 
-                  (magit-diff-context-highlight . (:background ,base00))
+                  (magit-diff-context-highlight . (:background ,default-background))
                   (magit-diff-removed . (:foreground ,base08))
                   (magit-diff-added . (:foreground ,base0B))
                   (magit-diff-removed-highlight . (:foreground "#ef6160"))
@@ -104,7 +106,7 @@
                   (diff-hl-insert . (:foreground ,base03 :background ,base0B))
                   (diff-hl-unknown . (:foreground ,base03 :background ,base0A))
 
-                  (ahs-plugin-whole-buffer-face . (:foreground ,base0B :background ,base00))
+                  (ahs-plugin-whole-buffer-face . (:foreground ,base0B :background ,default-background))
                   (ahs-face . (:foreground ,base0A :background ,base02))
 
                   (fixed-pitch . (:family "JetBrains Mono" :weight normal :width expanded))
@@ -145,7 +147,7 @@
                   (org-level-8 . (:foreground ,base0D :height 1.0))
                   (org-done . (:foreground ,base02))
                   (org-headline-done . (:foreground ,base02))
-                  (org-hide . (:foreground ,base00))
+                  (org-hide . (:foreground ,default-background))
                   (org-indent . (:inherit '(org-hide fixed-pitch)))
 
                   ;; code
@@ -156,15 +158,16 @@
                   (trailing-whitespace . (:background ,base01))
                   (mode-line . (:underline (:color ,base01)))
                   (mode-line-inactive . (:underline (:color ,base01)))
-                  (default . (:background ,base00 :foreground ,base05))
+                  (default . (:background ,default-background :foreground ,default-foreground))
 
                   (mode-line . (:height 100))
                   (mode-line-inactive . (:height 100))
                   (mode-line-emphasis . (:weight normal))
 
-                  (line-number . (:inherit fixed-pitch)))))
+                  (line-number . (:inherit fixed-pitch))
+                  (ivy-posframe . (:background ,default-background :foreground ,default-foreground)))))
     (ag/set-faces-attributes faces)
-    (setq pdf-view-midnight-colors `(,base04 . ,base00))))
+    (setq pdf-view-midnight-colors `(,base04 . ,default-background))))
 
 (defun ag/adjust-spacemacs-light-colors ()
   (let* ((default-background "#fbf8ef")

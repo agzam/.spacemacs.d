@@ -96,7 +96,8 @@ This function should only modify configuration layer settings."
       lsp-ui-sideline-enable nil
       lsp-ui-doc-enable nil
       lsp-ui-doc-position 'at-point
-      lsp-enable-completion-at-point nil))
+      lsp-enable-completion-at-point nil
+      lsp-modeline-code-actions-enable nil))
 
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
