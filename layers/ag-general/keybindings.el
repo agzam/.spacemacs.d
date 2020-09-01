@@ -20,17 +20,18 @@
 
 (if (configuration-layer/layer-used-p 'helm)
     (progn
-      (global-set-key (kbd "s-B") 'lazy-helm/helm-mini)
-      (global-set-key (kbd "s-b") 'spacemacs-layouts/non-restricted-buffer-list-helm)
-      (global-set-key (kbd "H-B") 'lazy-helm/helm-mini)
-      (global-set-key (kbd "H-b") 'spacemacs-layouts/non-restricted-buffer-list-helm))
+      (global-set-key (kbd "s-B") #'lazy-helm/helm-mini)
+      (global-set-key (kbd "s-b") #'spacemacs-layouts/non-restricted-buffer-list-helm)
+      (global-set-key (kbd "H-B") #'lazy-helm/helm-mini)
+      (global-set-key (kbd "H-b") #'spacemacs-layouts/non-restricted-buffer-list-helm)
+      (define-key helm-map (kbd "C-c M-i") #'helm-copy-to-buffer))
   (progn
     (global-set-key (kbd "s-B") #'ivy-switch-buffer)
     (global-set-key (kbd "s-b") #'spacemacs-layouts/non-restricted-buffer-list-ivy)
-    (global-set-key (kbd "H-B") 'ivy-switch-buffer)
-    (global-set-key (kbd "H-b") 'spacemacs-layouts/non-restricted-buffer-list-ivy)
+    (global-set-key (kbd "H-B") #'ivy-switch-buffer)
+    (global-set-key (kbd "H-b") #'spacemacs-layouts/non-restricted-buffer-list-ivy)
 
-    (define-key ivy-minibuffer-map (kbd "C-c RET") 'ivy-rotate-preferred-builders)
+    (define-key ivy-minibuffer-map (kbd "C-c RET") #'ivy-rotate-preferred-builders)
 
     (evil-define-key '(normal evilified) ivy-occur-grep-mode-map
       "n" #'evil-ex-search-next
@@ -51,9 +52,7 @@
 (global-set-key (kbd "H-[") #'spacemacs/persp-go-prev)
 (global-set-key (kbd "H-]") #'spacemacs/persp-go-next)
 
-(with-eval-after-load 'helm
-  (define-key helm-map (kbd "C-c M-i") 'helm-copy-to-buffer))
-;;;; restore vanilla universal argument binding
+;;;; restore vanilla universal argument keybinding. Spacemacs redefines it
 (define-key evil-normal-state-map (kbd "C-u") 'universal-argument)
 
 ;;;; wrap `sp-up-sexp` "Move forward out of one level of parentheses", so it can be used in evil-lispy
@@ -97,6 +96,9 @@
 
 (add-hook 'eshell-mode-hook 'eshell-keybindings-override t)
 
+;;;;;;;;;;
+;; Misc ;;
+;;;;;;;;;;
 
 (spacemacs/set-leader-keys
   "qq" nil  ; no unexpected exits
@@ -114,38 +116,38 @@
 (spacemacs/transient-state-register-add-bindings 'zoom-frm
   '(("m" (toggle-frame-maximized-undecorated))))
 
-(define-key evil-normal-state-map (kbd "s-a") #'mark-whole-buffer)
-(define-key evil-normal-state-map "Q" 'bury-buffer)
-(define-key evil-normal-state-map (kbd "C-S-e") 'scroll-other-window)
-(define-key evil-normal-state-map (kbd "C-S-y") 'scroll-other-window-down)
-(define-key evil-insert-state-map (kbd "C-'") #'delete-backward-char)
+(evil-define-key '(normal evilified) global-map
+  (kbd "s-a") #'mark-whole-buffer
+  (kbd "C-S-e") (lambda () (interactive) (scroll-other-window 1))
+  (kbd "C-S-y") (lambda () (interactive) (scroll-other-window-down 1)))
 
 ;;;; ---------------
 ;;;; Smartparens
 ;;;; ---------------
-(dolist (map (list evil-insert-state-map))
-  (define-key map "\M-l" 'sp-slurp-hybrid-sexp)
-  (define-key map "\M-h" 'sp-forward-barf-sexp)
-  (define-key map "\M-L" 'sp-backward-slurp-sexp)
-  (define-key map "\M-H" 'sp-backward-barf-sexp))
+(dolist (m '(lisp-mode-map clojure-mode-map cider-repl-mode-map))
+  (evil-define-key 'insert (symbol-value m)
+    (kbd "M-l") #'sp-forward-slurp-sexp
+    (kbd "M-h") #'sp-forward-barf-sexp
+    (kbd "M-L") #'sp-backward-slurp-sexp
+    (kbd "M-H") #'sp-backward-barf-sexp))
 
 ;;;; making Info-mode keys more suitable for Evil
-(define-key Info-mode-map (kbd "H") 'Info-up)
-(define-key Info-mode-map (kbd "C-o") 'Info-prev)
-(define-key Info-mode-map (kbd "C-i") 'Info-next)
-(evil-define-key '(normal) Info-mode-map (kbd "gg") 'evil-goto-first-line)
-(evil-define-key '(normal) Info-mode-map (kbd "G") 'evil-goto-line)
-(evil-define-key '(normal) Info-mode-map (kbd "C-j") 'Info-goto-node-web)
+(define-key Info-mode-map (kbd "H") #'Info-up)
+(define-key Info-mode-map (kbd "C-o") #'Info-prev)
+(define-key Info-mode-map (kbd "C-i") #'Info-next)
+(define-key Info-mode-map (kbd "C-j") #'Info-goto-node)
+(define-key Info-mode-map (kbd "C-M-j") #'Info-goto-node-web)
+(define-key Info-mode-map (kbd "q") (lambda () (interactive) (Info-exit :kill-window)))
+(dolist (key '("n" "p" "g" "G"))
+  (unbind-key (kbd key) 'Info-mode-map))
 
-(unbind-key "n" Info-mode-map)
-(unbind-key "p" Info-mode-map)
 
 ;;;; -----------
 ;;;; Company
 ;;;; -----------
 (with-eval-after-load 'company
-  (define-key company-active-map (kbd "C-n") 'company-select-next)
-  (define-key company-active-map (kbd "C-p") 'company-select-previous)
+  (define-key company-active-map (kbd "C-n") #'company-select-next)
+  (define-key company-active-map (kbd "C-p") #'company-select-previous)
   (define-key company-active-map (kbd "C-f") #'company-filter-candidates))
 
 ;;;;;;;;;;;;;;;;;;;;
