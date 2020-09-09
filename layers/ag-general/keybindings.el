@@ -47,10 +47,16 @@
       (lambda () (interactive)
         (execute-kbd-macro (kbd "M-o j"))))))
 
-(global-set-key (kbd "s-[") #'spacemacs/persp-go-prev)
-(global-set-key (kbd "s-]") #'spacemacs/persp-go-next)
-(global-set-key (kbd "H-[") #'spacemacs/persp-go-prev)
-(global-set-key (kbd "H-]") #'spacemacs/persp-go-next)
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; layouts & workspaces ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+(dolist (key-fn '((("s-[" "H-[") . spacemacs/persp-go-prev)
+                  (("s-]" "H-]") . spacemacs/persp-go-next)
+                  (("s-{" "H-{") . eyebrowse-prev-window-config)
+                  (("s-}" "H-}") . eyebrowse-next-window-config)))
+  (dolist (k (car key-fn))
+    (global-set-key (kbd k) (symbol-function (cdr key-fn)))))
+
 
 ;;;; restore vanilla universal argument keybinding. Spacemacs redefines it
 (define-key evil-normal-state-map (kbd "C-u") 'universal-argument)
@@ -124,12 +130,17 @@
 ;;;; ---------------
 ;;;; Smartparens
 ;;;; ---------------
-(dolist (m '(lisp-mode-map clojure-mode-map cider-repl-mode-map))
-  (evil-define-key 'insert (symbol-value m)
-    (kbd "M-l") #'sp-forward-slurp-sexp
-    (kbd "M-h") #'sp-forward-barf-sexp
-    (kbd "M-L") #'sp-backward-slurp-sexp
-    (kbd "M-H") #'sp-backward-barf-sexp))
+(defun set-slurp-n-barf-keys (mode-maps)
+  (dolist (m mode-maps)
+    (evil-define-key 'insert (symbol-value m)
+      (kbd "M-l") #'sp-forward-slurp-sexp
+      (kbd "M-h") #'sp-forward-barf-sexp
+      (kbd "M-L") #'sp-backward-slurp-sexp
+      (kbd "M-H") #'sp-backward-barf-sexp)))
+
+(set-slurp-n-barf-keys '(lisp-mode-shared-map))
+(with-eval-after-load 'cider
+  (set-slurp-n-barf-keys '(clojure-mode-map cider-repl-mode-map)))
 
 ;;;; making Info-mode keys more suitable for Evil
 (define-key Info-mode-map (kbd "H") #'Info-up)

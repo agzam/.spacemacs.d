@@ -217,7 +217,19 @@
     (add-hook 'mu4e-main-mode-hook (lambda () (mu4e-update-mail-and-index t)))
 
     (add-hook 'mu4e-headers-mode-hook #'ag-mail/set-mu4e-keys)
-    (add-hook 'mu4e-view-mode-hook #'ag-mail/set-mu4e-keys)))
+    (add-hook 'mu4e-view-mode-hook #'ag-mail/set-mu4e-keys))
+
+  ;; increase font-size in messages
+  (dolist (f '(mu4e-view-body-face mu4e-cited-1-face mu4e-cited-2-face mu4e-cited-3-face mu4e-cited-4-face mu4e-cited-5-face mu4e-cited-6-face mu4e-cited-7-face))
+    (set-face-attribute f nil :height 180))
+
+  (defun mu4e--confirm-empty-subject ()
+    "Allow user to quit when current message subject is empty."
+    (or (message-field-value "Subject")
+        (yes-or-no-p "Really send without Subject? ")
+        (keyboard-quit)))
+
+  (add-hook 'message-send-hook #'mu4e--confirm-empty-subject))
 
 (with-eval-after-load 'mu4e-alert
   ;; Enable Desktop notifications

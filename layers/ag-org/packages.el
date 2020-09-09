@@ -190,7 +190,7 @@
     (add-hook 'org-mode-hook #'ag/org-mode-hook)
     (add-hook 'org-mode-hook #'spacemacs/toggle-visual-line-navigation-on)
     (add-hook 'org-mode-hook #'org-indent-mode)
-    ;; (add-hook 'org-agenda-after-show-hook #'recenter)
+    (add-hook 'org-agenda-after-show-hook #'recenter)
     (remove-hook 'org-mode-hook #'spacemacs/delay-emoji-cheat-sheet-hook)
 
     ;; (add-hook 'org-timer-done-hook (lambda () (spacemacs/alert "-- timer done! --")))

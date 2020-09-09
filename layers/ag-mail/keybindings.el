@@ -13,27 +13,20 @@
 
 (defun ag-mail/set-mu4e-keys ()
   (dolist (m '(mu4e-headers-mode-map mu4e-view-mode-map))
-    (evil-define-key 'evilified m "\C-h" nil)
-    (define-key m (kbd "C-=") #'mu4e-headers-split-view-grow)
-    (define-key m (kbd "C--") #'mu4e-headers-split-view-shrink)
-    (define-key m (kbd "D") #'mu4e-headers-mark-for-delete)
-    (define-key m (kbd "C-k") #'mu4e-view-headers-prev)
-    (define-key m (kbd "C-j") #'mu4e-view-headers-next)
-    (evil-define-key 'normal m (kbd "C-j") #'mu4e-view-headers-next)
-    (evilified-state-evilify-map m
-      :mode mu4e-headers-mode
-      :bindings
+    (evil-define-key '(evilified normal) (symbol-value m)
+      (kbd "C-h") nil
+      (kbd "C-j") #'mu4e-view-headers-next
       (kbd "J") (lambda ()
                   (interactive)
                   (mu4e-view-mark-thread '(unmark)))
       (kbd "C-j") #'mu4e-view-headers-next
-      (kbd "C-k" ) #'mu4e-view-headers-prev
-      (kbd "C-h") nil)
-    (evilified-state-evilify-map m
-      :mode mu4e-view-mode
-      :bindings
-      (kbd "C-j") #'mu4e-view-headers-next
-      (kbd "C-k" ) #'mu4e-view-headers-prev))
+      (kbd "C-k" ) #'mu4e-view-headers-prev)
+
+    (define-key m (kbd "C-j") #'mu4e-view-headers-next)
+    (define-key m (kbd "C-=") #'mu4e-headers-split-view-grow)
+    (define-key m (kbd "C--") #'mu4e-headers-split-view-shrink)
+    (define-key m (kbd "D") #'mu4e-headers-mark-for-delete)
+    (define-key m (kbd "C-k") #'mu4e-view-headers-prev))
 
   (define-key mu4e-headers-mode-map (kbd "M-SPC") #'hydra-mu4e-headers/body)
   (define-key mu4e-headers-mode-map (kbd "TAB") 'mu4e-headers-toggle-thread-folding)
@@ -44,15 +37,14 @@
   (define-key mu4e-headers-mode-map "q" nil)
   (define-key mu4e-headers-mode-map (kbd "C-q") #'mu4e~headers-quit-buffer)
 
-  (define-key mu4e-view-mode-map (kbd "d")
-    (lambda () (interactive) (mu4e-view-mark-subthread '(trash))))
+  (defun ag/mu4e-trash ()
+    (interactive)
+    (when (mu4e-headers-thread-folded?)
+      (mu4e-headers-toggle-thread-folding))
+    (mu4e-headers-mark-thread-using-markpair '(trash) t))
 
-  (define-key mu4e-headers-mode-map (kbd "d")
-    (lambda ()
-      (interactive)
-      (when (mu4e-headers-thread-folded?)
-        (mu4e-headers-toggle-thread-folding))
-      (mu4e-headers-mark-thread-using-markpair '(trash) t)))
+  (define-key mu4e-view-mode-map (kbd "d") #'ag/mu4e-trash)
+  (define-key mu4e-headers-mode-map (kbd "d") #'ag/mu4e-trash)
 
   (spacemacs/set-leader-keys-for-major-mode 'mu4e-compose-mode
     dotspacemacs-major-mode-leader-key 'message-send-and-exit

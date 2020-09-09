@@ -646,7 +646,7 @@ before packages are loaded."
   (remove-hook 'comint-output-filter-functions 'comint-postoutput-scroll-to-bottom)
 
   ;;;;;;;;;;;;;
-  ;; Backups ;;
+  ;; backups ;;
   ;;;;;;;;;;;;;
   ;; (setq version-control t
   ;;       backup-by-copying t

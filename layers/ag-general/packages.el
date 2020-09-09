@@ -245,6 +245,11 @@
      '((t . ivy-posframe-display-at-frame-bottom-left)))
 
     (defun posframe-poshandler-frame-bottom-left-corner (info)
+      ;; somehow without this, ivy-posframe won't pick up current theme colors
+      ;; even though for example which-key-posframe works fine
+      (set-face-attribute 'ivy-posframe nil :background nil :foreground nil)
+      (set-face-attribute 'fringe nil :background nil)
+
       (cons 20 (- (plist-get info :parent-frame-height)
                   (+ (plist-get info :posframe-height) 85))))
 
