@@ -228,7 +228,7 @@ It should only modify the values of Spacemacs settings."
                                 (projects . 5))
 
    ;; True if the home buffer should respond to resize events. (default t)
-   dotspacemacs-startup-buffer-responsive nil
+   dotspacemacs-startup-buffer-responsive t
 
    ;; Default major mode for a new empty buffer. Possible values are mode
    ;; names such as `text-mode'; and `nil' to use Fundamental mode.
@@ -368,12 +368,12 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (default nil) (Emacs 24.4+ only)
-   dotspacemacs-maximized-at-startup nil
+   dotspacemacs-maximized-at-startup t
 
    ;; If non-nil the frame is undecorated when Emacs starts up. Combine this
    ;; variable with `dotspacemacs-maximized-at-startup' in OSX to obtain
    ;; borderless fullscreen. (default nil)
-   dotspacemacs-undecorated-at-startup t
+   dotspacemacs-undecorated-at-startup nil
 
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
@@ -532,7 +532,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    right-fringe-width 0
    evil-escape-key-sequence "kj"
    evil-esc-delay 0.3
-   frame-background-mode 'dark
    eyebrowse-keymap-prefix (kbd "C-x C-x"))
 
   (setq

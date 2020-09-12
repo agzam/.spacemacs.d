@@ -91,6 +91,7 @@
      )
 
     (add-hook 'org-reveal-start-hook 'end-of-visual-line)
+    (add-hook 'occur-mode-find-occurrence-hook 'outline-show-subtree)
 
      ;;;; ---- lists ----
     (setq

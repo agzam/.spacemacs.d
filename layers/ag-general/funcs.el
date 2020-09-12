@@ -65,17 +65,31 @@ OPTIONS can include '(urgency expire-time app-name icon category hint), refer to
     (insert "¯\\\\\\_(ツ)_/¯")))
 
 (defun spacemacs/persp-go-prev ()
-  "Switch to previous Spacemacs layout by briefly flashing layouts panel - so user can see where they're going"
+  "Switch to previous Spacemacs layout by briefly flashing transient panel, so user can see where they're going"
   (interactive)
   (spacemacs/layouts-transient-state/persp-prev)
   (run-at-time "1 sec" nil #'spacemacs/layouts-transient-state/nil))
 
 (defun spacemacs/persp-go-next ()
-  "Switch to next Spacemacs layout by briefly flashing layouts panel - so user can see where they're going"
+  "Switch to next Spacemacs layout by briefly flashing transient panel, so user can see where they're going"
   (interactive)
   (spacemacs/layouts-transient-state/persp-next)
   (run-at-time "1 sec" nil #'spacemacs/layouts-transient-state/nil))
-;;; funcs.el ends here
+
+(defun spacemacs/eyebrowse-go-prev ()
+  "Switch to previous Workspace by briefly flashing the transient panel, so user can see where they're going"
+  (interactive)
+  (spacemacs/workspaces-transient-state/eyebrowse-prev-window-config)
+  (run-at-time "1 sec" nil #'spacemacs/workspaces-transient-state/nil))
+
+(defun spacemacs/eyebrowse-go-next ()
+  "Switch to next Workspace by briefly flashing the transient panel, so user can see where they're going"
+  (interactive)
+  (if (= 1 (length (mapcar 'car (eyebrowse--get 'window-configs))))
+      ;; add new if there's only one workspace
+      (spacemacs/workspaces-transient-state/eyebrowse-create-window-config)
+    (spacemacs/workspaces-transient-state/eyebrowse-next-window-config))
+  (run-at-time "1 sec" nil #'spacemacs/workspaces-transient-state/nil))
 
 (defun diff-last-two-kills (&optional ediff?)
   "Diff last couple of things in the kill-ring. With prefix open ediff."
@@ -239,3 +253,6 @@ provided, returns its value"
               :action '(1
                         ("o" insert "insert")
                         ("d" remove-from-shell-history "delete")))))
+
+
+;;; funcs.el ends here

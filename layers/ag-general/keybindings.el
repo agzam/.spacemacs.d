@@ -52,8 +52,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 (dolist (key-fn '((("s-[" "H-[") . spacemacs/persp-go-prev)
                   (("s-]" "H-]") . spacemacs/persp-go-next)
-                  (("s-{" "H-{") . eyebrowse-prev-window-config)
-                  (("s-}" "H-}") . eyebrowse-next-window-config)))
+                  (("s-{" "H-{") . spacemacs/eyebrowse-go-prev)
+                  (("s-}" "H-}") . spacemacs/eyebrowse-go-next)))
   (dolist (k (car key-fn))
     (global-set-key (kbd k) (symbol-function (cdr key-fn)))))
 
@@ -113,7 +113,7 @@
   "jj" #'avy-goto-char-timer
   "ja" #'beginning-of-defun
   "je" #'end-of-defun
-  "swg" #'helm-google-suggest
+  "swg" #'counsel-google
   ;; "ou" #'spacemacs/avy-open-url
   ;;;; add a page-break
   "iP" (kbd "i C-q C-l <RET><escape>")

@@ -20,7 +20,6 @@
 (defun ag-clojure/init-clojars ())
 (defun ag-clojure/init-evilify-cider ()
   (use-package evilify-cider
-    :demand t
     :config
     (evilify-cider-setup)
     (add-hook 'cider--debug-mode-hook #'evilify-cider-setup)))

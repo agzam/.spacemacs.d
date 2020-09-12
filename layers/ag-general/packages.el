@@ -23,7 +23,9 @@
                                 (evilify-edebug :location local)
                                 company-posframe
                                 ivy-posframe
-                                which-key-posframe))
+                                which-key-posframe
+                                grip-mode
+                                ))
 
 (defun ag-general/init-helpful ()
   (use-package helpful
@@ -275,6 +277,14 @@
           which-key-min-display-lines 15)
     (which-key-posframe-mode 1)))
 
+(defun ag-general/init-grip-mode ()
+  (use-package grip-mode
+    :config
+    (spacemacs/set-leader-keys-for-major-mode 'markdown-mode
+      "v" 'grip-mode)
+    (spacemacs/set-leader-keys-for-major-mode 'org-mode
+      "v" 'grip-mode)))
+
 (when (eq system-type 'gnu/linux)
   (defun on-stump-edit-with-emacs (buffer-name window-title window-class window-id)
     (delete-other-windows)
@@ -298,12 +308,39 @@
     (comint-read-input-ring 'silent)))
 
 (add-hook 'shell-mode-hook 'turn-on-comint-history)
+(add-hook 'shell-mode-hook 'spacemacs/toggle-truncate-lines-on)
 (add-hook 'shell-pop-out-hook 'comint-write-input-ring)
 (add-hook 'shell-pop-process-exit-hook 'comint-write-input-ring)
 
 
 (setq eshell-history-file-name (getenv "HISTFILE")
       eshell-aliases-file "~/.spacemacs.d/.eshell.aliases")
+
+;;;;;;;;;;;;;;;;;;;;;;;
+;; expand region fix ;;
+;;;;;;;;;;;;;;;;;;;;;;;
+;; Expand region for whatever reason ignores lines when expanding, it should
+;; start expanding from a word, then to a line, then to a paragraph, and so
+;; on. But default implementation ignores the line expansion.
+
+(defun er/mark-line ()
+  "Marks entire 'logical' line."
+  (interactive)
+  (evil-end-of-line)
+  (set-mark (point))
+  (evil-first-non-blank))
+
+(setq
+ er/try-expand-list
+ '(er/mark-word
+   er/mark-symbol
+   er/mark-symbol-with-prefix
+   er/mark-line
+   er/mark-next-accessor
+   er/mark-method-call er/mark-inside-quotes
+   er/mark-outside-quotes er/mark-inside-pairs
+   er/mark-outside-pairs er/mark-comment er/mark-url
+   er/mark-email er/mark-defun))
 
 ;; (remove-hook 'kill-buffer-hook 'comint-write-history-on-exit)
 
