@@ -276,6 +276,15 @@ persp-before-switch-functions hook."
          (get-gh-item-title link :with-number))
         (t desc)))
 
+(defun org-return--around (old-fn &rest args)
+  "Smarter org-return in lists. RET in plain lists would insert
+items, or checkboxes - depending on the current context. C-j
+splits the line."
+  (let ((context (org-element-lineage (org-element-at-point) '(item))))
+    (if (and context (< 1 (safe-length args)))
+        (org-insert-item (org-element-property :checkbox context))
+      (apply old-fn args))))
+
 (provide 'funcs)
 
 ;;; funcs.el ends here

@@ -222,14 +222,6 @@
 
     (add-to-list 'org-modules 'org-tempo t)
 
-    ;; Smarter org-return in lists. RET in plain lists would insert items, or
-    ;; checkboxes - depending on the current context. C-j splits the line.
-    (defun org-return--around (old-fn &rest args)
-      (let ((context (org-element-lineage (org-element-at-point) '(item))))
-        (if (and context (not args))
-            (org-insert-item (org-element-property :checkbox context))
-          (apply old-fn args))))
-
     (advice-add 'org-return :around 'org-return--around)
 
     (setq org-link-make-description-function 'org-link-make-description-function*)))
