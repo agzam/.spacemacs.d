@@ -178,7 +178,11 @@
      org-enable-github-support t
      org-enable-bootstrap-support t
      org-format-latex-options (plist-put org-format-latex-options :scale 2)
-     org-format-latex-options (plist-put org-format-latex-options :background nil))
+     org-format-latex-options (plist-put org-format-latex-options :background nil)
+
+
+     org-pretty-entities t
+     org-pretty-entities-include-sub-superscripts t)
 
     (add-to-list 'auto-mode-alist '("\\Dropbox/org/.*\.txt\\'" . org-mode))
 

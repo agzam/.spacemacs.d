@@ -18,7 +18,7 @@
   (evil-define-key 'normal edebug-mode-map
     ;; control
     "s" 'edebug-step-mode
-    "n" 'edebug-next-mode
+    "\C-n" 'edebug-next-mode
     "go" 'edebug-go-mode
     "gO" 'edebug-Go-nonstop-mode
     "t" 'edebug-trace-mode
@@ -29,7 +29,7 @@
     "f" 'edebug-forward-sexp
     "H" 'edebug-goto-here
     "I" 'edebug-instrument-callee
-    "i" 'edebug-step-in
+    "\C-i" 'edebug-step-in
     "o" 'edebug-step-out
 
     ;; quit

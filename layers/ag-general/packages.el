@@ -25,6 +25,7 @@
                                 ivy-posframe
                                 which-key-posframe
                                 grip-mode
+                                expand-region
                                 ))
 
 (defun ag-general/init-helpful ()
@@ -218,13 +219,13 @@
     :init
     (setq company-posframe-quickhelp-delay nil)
     :bind (:map company-active-map
-           ("C-h" . (lambda () (interactive) (company-posframe-quickhelp-show)))
-           ("C-c C-d". company-show-doc-buffer)
-           ("C-n" . company-select-next)
-           ("C-p" . company-select-previous)
-           ("C-c C-l". company-show-location)
-           :map company-posframe-active-map
-           ("C-c h" . company-posframe-quickhelp-toggle))
+                ("C-h" . (lambda () (interactive) (company-posframe-quickhelp-show)))
+                ("C-c C-d". company-show-doc-buffer)
+                ("C-n" . company-select-next)
+                ("C-p" . company-select-previous)
+                ("C-c C-l". company-show-location)
+                :map company-posframe-active-map
+                ("C-c h" . company-posframe-quickhelp-toggle))
     :config
     (company-posframe-mode 1)))
 
@@ -234,28 +235,26 @@
     :config
     (setq ivy-posframe-parameters
           '((alpha . 100)
-            (undecorated . nil)
+            (undecorated . t)
             (left-fringe . 3)
             (right-fringe . 3)
-            (internal-border-width . 3)
+            (internal-border-width . 1)
             (unsplittable . t))
           ivy-posframe-width 130
-          ivy-posframe-height 20
-          ivy-posframe-border-width 2)
+          ivy-posframe-height 20)
 
     (setq ivy-posframe-display-functions-alist
-     '((t . ivy-posframe-display-at-frame-bottom-left)))
+          '((t . ivy-posframe-display-at-frame-bottom-left)))
 
     (defun posframe-poshandler-frame-bottom-left-corner (info)
       ;; somehow without this, ivy-posframe won't pick up current theme colors
       ;; even though for example which-key-posframe works fine
-      (set-face-attribute 'ivy-posframe nil :background nil :foreground nil)
       (set-face-attribute 'fringe nil :background nil)
-
       (cons 20 (- (plist-get info :parent-frame-height)
                   (+ (plist-get info :posframe-height) 85))))
 
     (setq posframe-arghandler #'my-posframe-arghandler)
+
     (defun my-posframe-arghandler (buffer-or-name arg-name value)
       (let ((info '(:lines-truncate t)))
         (or (plist-get info arg-name) value)))
@@ -264,10 +263,10 @@
 
 (defun ag-general/init-which-key-posframe ()
   (use-package which-key-posframe
-    :init
-    (setq which-key-posframe-parameters
-          '((undecorated . t)))
     :config
+    (setq which-key-posframe-parameters
+          '((undecorated . t)
+            (internal-border-width . 1)))
     (defun posframe-poshandler-frame-bottom-right-corner (info)
       (cons (- (plist-get info :parent-frame-width)
                (+ (plist-get info :posframe-width) 10))
@@ -323,25 +322,41 @@
 ;; start expanding from a word, then to a line, then to a paragraph, and so
 ;; on. But default implementation ignores the line expansion.
 
-(defun er/mark-line ()
-  "Marks entire 'logical' line."
-  (interactive)
-  (evil-end-of-line)
-  (set-mark (point))
-  (evil-first-non-blank))
+(defun ag-general/post-init-expand-region ()
+  (setq er/try-expand-list
+        '(er/mark-word
+          mark-between
+          er/mark-symbol
+          er/mark-symbol-with-prefix
+          er/mark-line
+          er/mark-next-accessor
+          er/mark-method-call
+          er/mark-inside-quotes
+          er/mark-outside-quotes
+          er/mark-inside-pairs
+          er/mark-outside-pairs
+          er/mark-comment
+          er/mark-url
+          er/mark-email
+          er/mark-defun))
 
-(setq
- er/try-expand-list
- '(er/mark-word
-   er/mark-symbol
-   er/mark-symbol-with-prefix
-   er/mark-line
-   er/mark-next-accessor
-   er/mark-method-call er/mark-inside-quotes
-   er/mark-outside-quotes er/mark-inside-pairs
-   er/mark-outside-pairs er/mark-comment er/mark-url
-   er/mark-email er/mark-defun))
+  (defun er/add-org-mode-expansions* ()
+    "Adds org-specific expansions for buffers in org-mode"
+    (set (make-local-variable 'er/try-expand-list)
+         '(er/mark-word
+           mark-between
+           er/mark-symbol
+           er/mark-symbol-with-prefix
+           er/mark-line
+           er/mark-org-element
+           er/mark-org-element-parent
+           er/mark-org-code-block
+           er/mark-org-parent))
+    (set (make-local-variable 'er/save-mode-excursion)
+         #'er/save-org-mode-excursion))
 
-;; (remove-hook 'kill-buffer-hook 'comint-write-history-on-exit)
+  (with-eval-after-load 'expand-region
+    (remove-hook 'org-mode-hook 'er/add-org-mode-expansions)
+    (er/enable-mode-expansions 'org-mode 'er/add-org-mode-expansions*)))
 
 ;;; packages.el ends here

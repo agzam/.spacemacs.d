@@ -259,20 +259,29 @@ persp-before-switch-functions hook."
 (defun get-gh-item-title (uri &optional include-number?)
   "Based on given GitHub URI for pull-request or issue,
   return the title of that pull-request or issue."
-  (when (string-match "\\(github.com\\).*\\(issues\\|pull\\)" uri) ; either PR or issue
-    (pcase-let* ((`(_ _ ,owner ,repo ,type ,number) (remove "" (split-string uri "/")))
-                 (gh-resource (format "/repos/%s/%s/%s/%s"
-                                      owner
-                                      repo
-                                      (if (string= type "pull") "pulls" type)
-                                      number))
-                 (resp (ghub-get gh-resource nil :auth 'forge)))
-      (when resp
-        (format "%s%s" (alist-get 'title resp)
-                (when include-number? (format " #%s" number)))))))
+  (cond ((string-match "\\(github.com\\).*\\(issues\\|pull\\)" uri)               ; either PR or issue
+         (pcase-let* ((`(_ _ ,owner ,repo ,type ,number) (remove "" (split-string uri "/")))
+                      (gh-resource (format "/repos/%s/%s/%s/%s"
+                                           owner
+                                           repo
+                                           (if (string= type "pull") "pulls" type)
+                                           number))
+                      (resp (ghub-get gh-resource nil :auth 'forge)))
+           (when resp
+             (format "%s%s" (alist-get 'title resp)
+                     (when include-number? (format " #%s" number))))))
+
+        ((string-match "\\(github.com\\)/[[:alnum:]]*/[[:alnum:]]*" uri)          ; just a link to a repo or file in a branch
+         (pcase-let* ((`(_ _ ,owner ,repo _ ,branch ,dir ,file) (remove "" (split-string uri "/"))))
+           (if (and branch dir file)
+               (format "%s/%s/%s/%s/%s" owner repo branch dir file)
+             (format "%s/%s" owner repo))))
+
+        (t uri)))
 
 (defun org-link-make-description-function* (link desc)
-  (cond ((string-match "\\(github.com\\).*\\(issues\\|pull\\)" link)
+  (cond ((not (s-blank? desc)) desc)
+        ((string-match "\\(github.com\\).*" link)
          (get-gh-item-title link :with-number))
         (t desc)))
 

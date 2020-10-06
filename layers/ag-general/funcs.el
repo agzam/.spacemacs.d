@@ -254,5 +254,40 @@ provided, returns its value"
                         ("o" insert "insert")
                         ("d" remove-from-shell-history "delete")))))
 
+;; override the default function with the one that works with chemacs
+(defun spacemacs/find-user-init-file ()
+  "Edit the `user-init-file', in the current window."
+  (interactive)
+  (find-file-existing
+   (expand-file-name "init.el" user-emacs-directory)))
+
+(defun er/mark-line ()
+  "Marks entire 'logical' line."
+  (interactive)
+  (evil-end-of-line)
+  (set-mark (point))
+  (evil-first-non-blank))
+
+(defun mark-between (&optional inclusive?)
+  "Mark between various delimeters within same line.
+   With INCLUSIVE? marks with delimiters."
+  (interactive)
+  (let* ((pairs '(("/" "/") ("=" "=") ("~" "~") ("(" ")") ("\\[" "\\]") ("<" ">") ("'" "'") ("\"" "\""))))
+    (dolist (pair pairs)
+      (let* ((prev (point))
+             (reg (ignore-errors (evil-select-paren
+                                 (car pair) (cadr pair)
+                                 nil
+                                 nil
+                                 nil 1
+                                 inclusive?))))
+        (when (and reg
+                   (<= (line-beginning-position) (car reg))
+                   (<= (nth 1 reg) (line-end-position)))
+          (deactivate-mark t)
+          (goto-char (nth 1 reg))
+          (set-mark (point))
+          (goto-char (car reg))
+          (return reg))))))
 
 ;;; funcs.el ends here

@@ -595,6 +595,10 @@ before packages are loaded."
    writeroom-fullscreen-effect nil
    sentence-end-double-space t
 
+   ;; https://200ok.ch/posts/2020-09-29_comprehensive_guide_on_handling_long_lines_in_emacs.html
+   bidi-paragraph-direction 'left-to-right
+   bidi-inhibit-bpa t
+
    ;;;; Helm
    helm-echo-input-in-header-line nil
    helm-ff--deleting-char-backward t

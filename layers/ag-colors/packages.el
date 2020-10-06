@@ -133,6 +133,7 @@
                   (org-quote . (:background ,base01 :inherit variable-pitch :slant oblique))
                   (org-date . (:inherit fixed-pitch))
                   (org-code . (:inherit fixed-pitch))
+                  (org-verbatim . (:inherit fixed-pitch))
                   (org-meta-line . (:inherit fixed-pitch :foreground ,base04 :height 0.9 :weight ultra-light))
                   (org-special-keyword . (:inherit fixed-pitch))
                   (org-checkbox . (:background nil :inherit fixed-pitch))
@@ -148,7 +149,7 @@
                   (org-done . (:foreground ,base02))
                   (org-headline-done . (:foreground ,base02))
                   (org-hide . (:foreground ,default-background))
-                  (org-indent . (:inherit '(org-hide fixed-pitch)))
+                  (org-indent . (:inherit 'fixed-pitch))
 
                   ;; code
                   (font-lock-doc-face . (:foreground ,base02))
@@ -229,6 +230,7 @@
                   (org-quote . (:background ,bg-darker :inherit variable-pitch :slant oblique))
                   (org-date . (:inherit fixed-pitch))
                   (org-code . (:inherit fixed-pitch))
+                  (org-verbatim . (:inherit fixed-pitch))
                   (org-meta-line . (:inherit fixed-pitch :foreground ,fg-accent :height 0.9 :weight ultra-light))
                   (org-special-keyword . (:inherit fixed-pitch))
                   (org-checkbox . (:inherit fixed-pitch))
@@ -236,7 +238,7 @@
                   (org-done .  (:foreground ,bg-accent))
                   (org-headline-done . (:foreground ,bg-accent-dark))
                   (org-hide . (:foreground ,default-background))
-                  (org-indent . (:inherit '(org-hide fixed-pitch)))
+                  (org-indent . (:inherit 'fixed-pitch))
 
                   ;; (org-level-1 . (:inherit variable-pitch :bold t :height 1.3))
                   ;; (org-level-2 . (:inherit variable-pitch :bold t :height 1.2))
@@ -265,7 +267,9 @@
   (ag/decrease-powerline-fonts)
   (pcase spacemacs--cur-theme
     ('spacemacs-light (ag/adjust-spacemacs-light-colors))
-    ('base16-ocean (ag/adjust-base16-ocean-colors))))
+    ('base16-ocean (ag/adjust-base16-ocean-colors)))
+  (setq ivy-posframe-border-width 2
+        which-key-posframe-border-width 2))
 
 (defun ag-colors/init-base16-theme ()
   (use-package base16-theme))
