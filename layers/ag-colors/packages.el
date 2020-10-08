@@ -132,7 +132,7 @@
                   (org-block-end-line . (:overline nil :background ,base01 :height 0.9 :weight ultra-light :inherit fixed-pitch))
                   (org-quote . (:background ,base01 :inherit variable-pitch :slant oblique))
                   (org-date . (:inherit fixed-pitch))
-                  (org-code . (:inherit fixed-pitch))
+                  (org-code . (:inherit fixed-pitch :foreground ,base06))
                   (org-verbatim . (:inherit fixed-pitch))
                   (org-meta-line . (:inherit fixed-pitch :foreground ,base04 :height 0.9 :weight ultra-light))
                   (org-special-keyword . (:inherit fixed-pitch))
@@ -149,7 +149,7 @@
                   (org-done . (:foreground ,base02))
                   (org-headline-done . (:foreground ,base02))
                   (org-hide . (:foreground ,default-background))
-                  (org-indent . (:inherit 'fixed-pitch))
+                  (org-indent . (:inherit '(fixed-pitch org-hide)))
 
                   ;; code
                   (font-lock-doc-face . (:foreground ,base02))
@@ -166,7 +166,7 @@
                   (mode-line-emphasis . (:weight normal))
 
                   (line-number . (:inherit fixed-pitch))
-                  (ivy-posframe . (:background ,default-background :foreground ,default-foreground)))))
+                  (ivy-posframe . (:inherit default)))))
     (ag/set-faces-attributes faces)
     (setq pdf-view-midnight-colors `(,base04 . ,default-background))))
 
@@ -229,7 +229,7 @@
                   (org-block-end-line . (:background ,bg-darker :foreground ,fg-accent :height 0.9 :weight ultra-light :inherit fixed-pitch))
                   (org-quote . (:background ,bg-darker :inherit variable-pitch :slant oblique))
                   (org-date . (:inherit fixed-pitch))
-                  (org-code . (:inherit fixed-pitch))
+                  (org-code . (:inherit fixed-pitch :foreground ,fg-accent))
                   (org-verbatim . (:inherit fixed-pitch))
                   (org-meta-line . (:inherit fixed-pitch :foreground ,fg-accent :height 0.9 :weight ultra-light))
                   (org-special-keyword . (:inherit fixed-pitch))
@@ -238,7 +238,7 @@
                   (org-done .  (:foreground ,bg-accent))
                   (org-headline-done . (:foreground ,bg-accent-dark))
                   (org-hide . (:foreground ,default-background))
-                  (org-indent . (:inherit 'fixed-pitch))
+                  (org-indent . (:inherit '(fixed-pitch org-hide)))
 
                   ;; (org-level-1 . (:inherit variable-pitch :bold t :height 1.3))
                   ;; (org-level-2 . (:inherit variable-pitch :bold t :height 1.2))
@@ -260,16 +260,14 @@
                   (mode-line-emphasis . (:weight normal))
 
                   (cider-debug-code-overlay-face . (:background ,bg-darker))
-                  (ivy-posframe . (:background ,default-background :foreground ,default-foreground)))))
+                  (ivy-posframe . (:inherit default)))))
     (ag/set-faces-attributes faces)))
 
 (defun ag/adjust-themes ()
   (ag/decrease-powerline-fonts)
   (pcase spacemacs--cur-theme
     ('spacemacs-light (ag/adjust-spacemacs-light-colors))
-    ('base16-ocean (ag/adjust-base16-ocean-colors)))
-  (setq ivy-posframe-border-width 2
-        which-key-posframe-border-width 2))
+    ('base16-ocean (ag/adjust-base16-ocean-colors))))
 
 (defun ag-colors/init-base16-theme ()
   (use-package base16-theme))

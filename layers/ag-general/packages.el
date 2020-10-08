@@ -233,15 +233,19 @@
   (use-package ivy-posframe
     :after ivy
     :config
-    (setq ivy-posframe-parameters
-          '((alpha . 100)
-            (undecorated . t)
-            (left-fringe . 3)
-            (right-fringe . 3)
-            (internal-border-width . 1)
-            (unsplittable . t))
-          ivy-posframe-width 130
-          ivy-posframe-height 20)
+    (defun ag/ivy-postframe--set-parameters ()
+      (setq ivy-posframe-parameters
+            `((alpha . 100)
+              (undecorated . t)
+              (left-fringe . 3)
+              (right-fringe . 3)
+              (internal-border-width . 1)
+              (unsplittable . t)
+              (background-color . ,(face-attribute 'default :background nil t)))
+            ivy-posframe-width 130
+            ivy-posframe-height 20))
+
+    (add-hook 'spacemacs-post-theme-change-hook 'ag/ivy-postframe--set-parameters)
 
     (setq ivy-posframe-display-functions-alist
           '((t . ivy-posframe-display-at-frame-bottom-left)))
