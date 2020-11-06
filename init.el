@@ -75,7 +75,8 @@ This function should only modify configuration layer settings."
      (shell :variables
             shell-default-shell 'shell
             shell-default-full-span nil
-            comint-input-ignoredups t)
+            comint-input-ignoredups t
+            vterm-max-scrollback 100000)
      ;; --- My own layers ----
      (ag-clojure :variables
                  clojure-enable-clj-refactor t
@@ -540,7 +541,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    ns-use-srgb-colorspace t
    evil-want-C-u-scroll nil
    exec-path-from-shell-variables '("PATH" "MANPATH" "NVM_DIR" "NODE_PATH" "HOMEBREW_GITHUB_API_TOKEN" "DEV")
-   custom-file "~/.spacemacs.d/custom.el")
+   custom-file "~/Dropbox/custom.el")
 
   (with-eval-after-load 'auto-highlight-symbol
    (spacemacs/toggle-automatic-symbol-highlight-on))

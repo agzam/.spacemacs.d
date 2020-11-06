@@ -77,7 +77,7 @@
      org-goto-interface 'outline-path-completion  ; org-goto C-c C-j like in org-refile
      org-startup-folded t
      org-blank-before-new-entry nil
-     org-ellipsis "⁣↴"
+     org-ellipsis " ↴"
      org-M-RET-may-split-line '((headline))
      org-ctrl-k-protect-subtree t
      org-catch-invisible-edits 'smart
@@ -313,4 +313,9 @@
   ;;; right-click bound to middle click in artist mode
   (define-key artist-mode-map [(down-mouse-3)] 'artist-mouse-choose-operation))
 
+(with-eval-after-load 'org-superstar
+  (setq org-superstar-item-bullet-alist
+    '((?* . ?⋆)
+      (?+ . ?◦)
+      (?- . ?•))))
 ;;; packages.el ends here

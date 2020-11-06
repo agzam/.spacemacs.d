@@ -45,16 +45,7 @@
 
 (defun clj-fully-qualified-symbol-at-point ()
   (interactive)
-  (let ((sym (cond ((lsp--capability :hoverProvider)
-                    (let ((s (-some->> (lsp--text-document-position-params)
-                               (lsp--make-request "textDocument/hover")
-                               (lsp--send-request)
-                               (gethash "contents")
-                               (gethash "value"))))
-                      (string-match "\\(```.*\n\\)\\(.*\\)\n\\(```\\)" s)
-                      (string-trim (match-string 2 s))))
-
-                   ((cider-connected-p)
+  (let ((sym (cond ((cider-connected-p)
                     (let ((cb (lambda (x)
                                 (when-let ((v (nrepl-dict-get x "value"))
                                            (s (replace-regexp-in-string "[()]" "" v)))
@@ -63,6 +54,15 @@
                       (cider-interactive-eval
                        (concat "`(" (cider-symbol-at-point t) ")")
                        cb)))
+
+                   ((lsp--capability :hoverProvider)
+                    (let ((s (-some->> (lsp--text-document-position-params)
+                               (lsp--make-request "textDocument/hover")
+                               (lsp--send-request)
+                               (gethash "contents")
+                               (gethash "value"))))
+                      (string-match "\\(```.*\n\\)\\(.*\\)\n\\(```\\)" s)
+                      (string-trim (match-string 2 s))))
                    (t (message "Neither lsp nor cider are connected")))))
     (message sym)
     (kill-new sym)
@@ -120,5 +120,23 @@
        start end jet
        :delete '(t nil)
        :display "--pretty"))))
+
+(defun clojure-unalign (beg end)
+  "Un-align (remove extra spaces) in vertically aligned sexp around the point."
+  (interactive (if (use-region-p)
+                   (list (region-beginning) (region-end))
+                 (save-excursion
+                   (let ((end (progn (end-of-defun)
+                                     (point))))
+                     (clojure-backward-logical-sexp)
+                     (list (point) end)))))
+
+  (save-excursion
+    (save-restriction
+      (narrow-to-region beg end)
+      (goto-char (point-min))
+      (while (re-search-forward "\\s-+" nil t)
+        (replace-match " "))
+      (indent-region beg end))))
 
 ;;; funcs.el ends here

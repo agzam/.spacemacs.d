@@ -269,13 +269,20 @@ persp-before-switch-functions hook."
                       (resp (ghub-get gh-resource nil :auth 'forge)))
            (when resp
              (format "%s%s" (alist-get 'title resp)
-                     (when include-number? (format " #%s" number))))))
+                     (if include-number? (format " #%s" number) "")))))
 
-        ((string-match "\\(github.com\\)/[[:alnum:]]*/[[:alnum:]]*" uri)          ; just a link to a repo or file in a branch
-         (pcase-let* ((`(_ _ ,owner ,repo _ ,branch ,dir ,file) (remove "" (split-string uri "/"))))
-           (if (and branch dir file)
-               (format "%s/%s/%s/%s/%s" owner repo branch dir file)
-             (format "%s/%s" owner repo))))
+        ((string-match "\\(github.com\\).*" uri)          ; just a link to a repo or file in a branch
+         (pcase-let* ((uri*  (->> (split-string uri "/\\|\\?")
+                                  (remove "")
+                                  (-non-nil)))
+                      (`(_ _ ,owner ,repo ,type ,branch ,dir ,file) uri*)
+                      (branch (if (or (string= type "commit") (string= type "tree"))
+                                (substring branch 0 7)        ; trim to short sha
+                              branch))
+                      )
+           (mapconcat
+            'identity (->> (list owner repo type branch dir file) (-non-nil))
+            "/")))
 
         (t uri)))
 

@@ -12,7 +12,8 @@
 (with-eval-after-load 'cider
   (spacemacs|forall-clojure-modes m
     (spacemacs/set-leader-keys-for-major-mode m
-      "fl" 'clojure-align
+      "fl" #'clojure-align
+      "fL" #'clojure-unalign
       "sl" (lambda () (interactive) (cider-find-and-clear-repl-output t))
       ";"   #'cljr-toggle-ignore-form
       "hh" #'cider-clojuredocs

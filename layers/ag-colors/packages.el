@@ -231,6 +231,7 @@
                   (org-date . (:inherit fixed-pitch))
                   (org-code . (:inherit fixed-pitch :foreground ,fg-accent))
                   (org-verbatim . (:inherit fixed-pitch))
+                  (info-quoted-name . (:inherit fixed-pitch))
                   (org-meta-line . (:inherit fixed-pitch :foreground ,fg-accent :height 0.9 :weight ultra-light))
                   (org-special-keyword . (:inherit fixed-pitch))
                   (org-checkbox . (:inherit fixed-pitch))

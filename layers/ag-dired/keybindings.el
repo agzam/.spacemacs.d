@@ -17,11 +17,11 @@
 (evil-define-key '(normal evilified) dired-mode-map
   "o" 'spacemacs/dired-open-item-other-window-transient-state/body
   "gr" 'revert-buffer
-  (kbd "RET") 'dired-find-alternate-file   ; re-use dired buffer, insead of keeping it open
-  (kbd "C-RET") 'dired-find-file)
+  (kbd "RET") 'dired-find-file
+  (kbd "<C-return>") 'dired-find-alternate-file) ; re-use dired buffer, insead of keeping it open
 
 (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)   ; re-use dired buffer, insead of keeping it open
-(define-key dired-mode-map (kbd "C-RET") 'dired-find-file)
+(define-key dired-mode-map (kbd "<C-return>") 'dired-find-alternate-file)
 
 ;; This has been bugging me - `<escape> k' gets translated into `M-k' which
 ;; for whatever reason forces direx to jump all the way to the bottom of the tree

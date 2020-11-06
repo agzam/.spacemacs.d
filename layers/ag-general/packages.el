@@ -241,9 +241,11 @@
               (right-fringe . 3)
               (internal-border-width . 1)
               (unsplittable . t)
-              (background-color . ,(face-attribute 'default :background nil t)))
+              (background-color . ,(face-attribute 'default :background nil t))
+              (foreground-color . ,(face-attribute 'default :foreground nil t)))
             ivy-posframe-width 130
-            ivy-posframe-height 20))
+            ivy-posframe-height 20
+            ivy-posframe-hide-minibuffer nil))
 
     (add-hook 'spacemacs-post-theme-change-hook 'ag/ivy-postframe--set-parameters)
 

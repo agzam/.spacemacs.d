@@ -82,12 +82,13 @@ OPTIONS can include '(urgency expire-time app-name icon category hint), refer to
   (spacemacs/workspaces-transient-state/eyebrowse-prev-window-config)
   (run-at-time "1 sec" nil #'spacemacs/workspaces-transient-state/nil))
 
-(defun spacemacs/eyebrowse-go-next ()
+(defun spacemacs/eyebrowse-go-next (&optional create-new?)
   "Switch to next Workspace by briefly flashing the transient panel, so user can see where they're going"
-  (interactive)
-  (if (= 1 (length (mapcar 'car (eyebrowse--get 'window-configs))))
-      ;; add new if there's only one workspace
-      (spacemacs/workspaces-transient-state/eyebrowse-create-window-config)
+  (interactive "P")
+  (if create-new?
+      (let ((cur-buffer (current-buffer)))
+        (spacemacs/workspaces-transient-state/eyebrowse-create-window-config)
+        (switch-to-buffer cur-buffer))
     (spacemacs/workspaces-transient-state/eyebrowse-next-window-config))
   (run-at-time "1 sec" nil #'spacemacs/workspaces-transient-state/nil))
 

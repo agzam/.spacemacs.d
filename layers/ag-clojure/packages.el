@@ -124,4 +124,8 @@
     (promesa.core/alet 1)))
 
 (add-hook 'clojurescript-mode-hook #'add-reframe-regs-to-imenu)
+
+(with-eval-after-load 'cider-scratch
+  (setq cider-scratch-initial-message "(require '[])"))
+
 ;;; packages.el ends here
