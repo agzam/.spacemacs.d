@@ -260,6 +260,81 @@
     ;; :demand t
     ))
 
+(defun ag-org/init-anki-editor ()
+  ;; Borrowed ideas from https://yiufung.net/post/anki-org
+  (use-package anki-editor
+    :after org
+    :hook (org-capture-after-finalize . anki-editor-reset-cloze-number) ; Reset cloze-number after each capture.
+    :init
+    (setq org-my-anki-file (concat org-default-folder "anki_cards.org"))
+    (with-eval-after-load 'org-capture
+      (dolist (template
+               '(("a" "Anki cards")
+                 ("ab" "Anki basic"
+                  entry
+                  (file+headline org-my-anki-file "Dispatch")
+                  "* %^{prompt|card %<%Y-%m-%d %H:%M>} %^g%^{ANKI_DECK}p\n:PROPERTIES:\n:ANKI_NOTE_TYPE: Basic\n:END:\n** Front\n%?\n** Back\n%x\n"
+                  :jump-to-captured t)
+                 ("ar" "Anki basic & reversed"
+                  entry
+                  (file+headline org-my-anki-file "Dispatch")
+                  "* %^{prompt|card %<%Y-%m-%d %H:%M>} %^g%^{ANKI_DECK}p\n:PROPERTIES:\n:ANKI_NOTE_TYPE: Basic (and reversed card)\n:END:\n** Front\n%?\n** Back\n%x\n"
+                  :jump-to-captured t)
+                 ("ac" "Anki cloze"
+                  entry
+                  (file+headline org-my-anki-file "Dispatch")
+                  "* %^{prompt|card %<%Y-%m-%d %H:%M>} %^g%^{ANKI_DECK}p\n:PROPERTIES:\n:ANKI_NOTE_TYPE: Cloze\n:END:\n** Text\n%?\n** Extra\n%x\n"
+                  :jump-to-captured t)))
+        (add-to-list 'org-capture-templates template)))
+
+    (defun anki-editor-set-org-capture-keys ()
+      (spacemacs/set-leader-keys-for-minor-mode 'org-capture-mode
+        dotspacemacs-major-mode-leader-key 'org-capture-finalize
+        "a" nil
+        "k" nil
+        "kc" 'anki-editor-cloze-region-dont-incr
+        "kC" 'anki-editor-cloze-region-auto-incr
+        "kr" 'anki-editor-reset-cloze-number
+        "kp" 'anki-editor-push-tree))
+
+    (add-hook 'org-capture-mode-hook 'anki-editor-set-org-capture-keys t)
+    :config
+    (setq anki-editor-create-decs t ; Allow anki-editor to create a new deck if it doesn't exist
+          anki-editor-org-tags-as-anki-tags t)
+
+    (defun anki-editor-cloze-region-auto-incr (&optional arg)
+      "Cloze region without hint and increase card number."
+      (interactive)
+      (anki-editor-cloze-region my-anki-editor-cloze-number "")
+      (setq my-anki-editor-cloze-number (1+ my-anki-editor-cloze-number))
+      (forward-sexp))
+
+    (defun anki-editor-cloze-region-dont-incr (&optional arg)
+      "Cloze region without hint using the previous card number."
+      (interactive)
+      (anki-editor-cloze-region (1- my-anki-editor-cloze-number) "")
+      (forward-sexp))
+
+    (defun anki-editor-reset-cloze-number (&optional arg)
+      "Reset cloze number to ARG or 1"
+      (interactive)
+      (setq my-anki-editor-cloze-number (or arg 1)))
+
+    (defun anki-editor-push-tree ()
+      "Push all notes under a tree."
+      (interactive)
+      (anki-editor-push-notes '(4))
+      (anki-editor-reset-cloze-number))
+
+    ;; Initialize
+    (anki-editor-reset-cloze-number)
+
+    (spacemacs/set-leader-keys-for-major-mode 'org-mode
+      "kc" 'anki-editor-cloze-region-dont-incr
+      "kC" 'anki-editor-cloze-region-auto-incr
+      "kr" 'anki-editor-reset-cloze-number
+      "kp" 'anki-editor-push-tree)))
+
 (with-eval-after-load 'artist
   ;;; artist mode doesn't work properly in evil-mode
   ;;; see: https://github.com/syl20bnr/spacemacs/issues/4926
@@ -278,4 +353,5 @@
     '((?* . ?⋆)
       (?+ . ?◦)
       (?- . ?•))))
+
 ;;; packages.el ends here
