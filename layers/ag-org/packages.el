@@ -13,58 +13,52 @@
                             org-pomodoro
                             ;; ox-reveal
                             clocker
-                            org-noter
                             (latex-fragments :location local)
                             (org-present :excluded t)
                             (org-journal :excluded t)
                             (org-brain :excluded t)
                             ;; (slack2org :location local)
-                            ))
+                            anki-editor))
+
+(setq org-default-folder "~/Dropbox/org/")
+(setq org-default-main-file (concat org-default-folder "tasks.org"))
 
 (defun ag-org/post-init-org ()
-  ;; (with-eval-after-load 'evil-org-mode
-    ;; Temporary fix for `o` on collapsed sections
-    ;; until https://github.com/syl20bnr/spacemacs/pull/8200 is fixed
-  ;;  (defun evil-org-eol-call (fun)
-  ;;    "Go to end of line and call provided function.
-  ;;    FUN function callback"
-  ;;    (end-of-visible-line)
-  ;;    (funcall fun)
-  ;;    (evil-append nil)))
+  (with-eval-after-load 'org-capture
+    (dolist (template
+             `(("T" "todo" entry (file+olp+datetree org-default-main-file)
+                "* TODO %i %?\nSCHEDULED: %T\n"
+                :time-prompt t)
+
+               ("t" "Today" entry (file+olp+datetree org-default-main-file)
+                "* TODO %?\nSCHEDULED: %(org-read-date t nil nil nil (current-time))\n")
+
+               ("i" "Immediate" entry (file+olp+datetree org-default-main-file)
+                "* ONGOING %i %?" :clock-in t :clock-resume t :clock-keep t)
+
+               ("s" "Someday" entry (file+headline org-default-main-file "Tasks")
+                "* TODO %?\nSCHEDULED: %(org-read-date t nil nil nil (current-time) \"+1m\")\n")
+
+               ("c" "Code Snippet" entry (file+olp+datetree ,org-default-main-file)
+                ;; Prompt for tag and language
+                "* %u  %?\n\t%F\n\t#+BEGIN_SRC %^{language}\n\t\t%i\n\t#+END_SRC")
+
+               ("y" "Yakety" entry (file ,(concat org-default-folder "yakety.org"))
+                "* TODO  %?\n SCHEDULED: %^u\n :LOGBOOK:\n  - State \"TODO\" from %U\n :END:")
+
+               ("j" "Journal" entry (file+olp+datetree ,(concat org-default-folder "journal.org"))
+                "* %u %?"
+                :time-prompt t
+                :jump-to-captured t)
+
+               ("z" "Currently clocked-in" item (clock)
+                "Note taken on %U \\\ \n%?")))
+      (add-to-list 'org-capture-templates template)))
 
   (with-eval-after-load 'org
     (setq
      org-read-date-popup-calendar t
-     org-capture-templates
-          '(("T" "todo" entry (file+olp+datetree "~/Dropbox/org/tasks.org")
-             "* TODO %i %?\nSCHEDULED: %T\n"
-             :time-prompt t
-             )
 
-            ("t" "Today" entry (file+olp+datetree "~/Dropbox/org/tasks.org")
-             "* TODO %?\nSCHEDULED: %(org-read-date t nil nil nil (current-time))\n")
-
-            ("i" "Immediate" entry (file+olp+datetree "~/Dropbox/org/tasks.org")
-             "* ONGOING %i %?" :clock-in t :clock-resume t :clock-keep t)
-
-            ("s" "Someday" entry (file+headline "~/Dropbox/org/tasks.org" "Tasks")
-             "* TODO %?\nSCHEDULED: %(org-read-date t nil nil nil (current-time) \"+1m\")\n")
-
-            ("c" "Code Snippet" entry (file+olp+datetree "~/Dropbox/org/tasks.org")
-             ;; Prompt for tag and language
-             "* %u  %?\n\t%F\n\t#+BEGIN_SRC %^{language}\n\t\t%i\n\t#+END_SRC")
-
-            ("y" "Yakety" entry (file "~/Dropbox/org/yakety.org")
-             "* TODO  %?\n SCHEDULED: %^u\n :LOGBOOK:\n  - State \"TODO\" from %U\n :END:")
-
-            ("j" "Journal" entry (file+olp+datetree "~/Dropbox/org/journal.org")
-             "* %u %?"
-             :time-prompt t)
-
-            ("z" "Currently clocked-in" item (clock)
-             "Note taken on %U \\\ \n%?")))
-
-    (setq
      org-directory "~/Dropbox/org"
      ort/prefix-arg-directory "~/Dropbox/org"
      org-default-notes-file "~/Dropbox/org/notes.org"
@@ -83,12 +77,13 @@
      org-catch-invisible-edits 'smart
      org-use-property-inheritance nil
      org-hide-emphasis-markers t
+     org-pretty-entities t
+     org-pretty-entities-include-sub-superscripts nil
      org-special-ctrl-a/e t
      org-tags-column -80
      org-startup-indented nil
      org-fontify-whole-heading-line t
-     org-fontify-done-headline t
-     )
+     org-fontify-done-headline t)
 
     (add-hook 'org-reveal-start-hook 'end-of-visual-line)
     (add-hook 'occur-mode-find-occurrence-hook 'outline-show-subtree)
@@ -178,11 +173,7 @@
      org-enable-github-support t
      org-enable-bootstrap-support t
      org-format-latex-options (plist-put org-format-latex-options :scale 2)
-     org-format-latex-options (plist-put org-format-latex-options :background nil)
-
-
-     org-pretty-entities t
-     org-pretty-entities-include-sub-superscripts t)
+     org-format-latex-options (plist-put org-format-latex-options :background nil))
 
     (add-to-list 'auto-mode-alist '("\\Dropbox/org/.*\.txt\\'" . org-mode))
 
@@ -238,37 +229,6 @@
     (add-hook 'org-pomodoro-killed-hook #'pomodoro/on-killed-hook)
     (add-hook 'org-pomodoro-started-hook #'pomodoro/on-started-hook)))
 
-(defun ag-org/init-org-noter ()
-  (use-package org-noter
-    :config
-    (setq org-noter-always-create-frame nil
-          org-noter-insert-note-no-questions t
-          org-noter-separate-notes-from-heading t
-          org-noter-auto-save-last-location t
-          org-noter-kill-frame-at-session-end t
-          org-noter-notes-search-path '("~/Dropbox/org"
-                                        "~/SyncMobile/Books"
-                                        "~/SyncMobile/Books/Papers")
-          org-noter-default-notes-file-names '("notes.org"))
-
-    (defun org-noter-init-pdf-view ()
-      (pdf-view-fit-page-to-window)
-      (pdf-view-auto-slice-minor-mode)
-      (run-at-time "0.5 sec" nil #'org-noter))
-
-    (add-hook 'pdf-view-mode-hook 'org-noter-init-pdf-view)
-
-    (defun org-noter-kill-the-note-buffer (&rest _ignore)
-      (setq notes-fname (org-noter--session-notes-file-path org-noter--session))
-      (setq pdf-fname (buffer-file-name (org-noter--session-doc-buffer org-noter--session)))
-      (run-at-time "0.5 sec" nil (lambda ()
-                                   (kill-buffer (get-file-buffer pdf-fname))
-                                   (switch-to-buffer (get-file-buffer notes-fname))
-                                   (kill-buffer (get-file-buffer notes-fname))
-                                   (makunbound 'notes-fname)
-                                   (makunbound 'pdf-fname))))
-
-    (advice-add #'org-noter-kill-session :before 'org-noter-kill-the-note-buffer)))
 (defadvice spacemacs/mode-line-prepare-left (around compile)
   (setq ad-return-value (clocker-add-clock-in-to-mode-line ad-do-it)))
 
