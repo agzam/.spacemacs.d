@@ -131,6 +131,7 @@
     (setq
      org-src-window-setup 'other-window
      org-src-ask-before-returning-to-edit-buffer nil
+     org-src-tab-acts-natively nil
      org-edit-src-content-indentation 0
      org-fontify-quote-and-verse-blocks t
      ;; org-src-preserve-indentation t
@@ -166,9 +167,9 @@
                           (org-agenda-files :maxlevel . 3))
      org-refile-allow-creating-parent-nodes 'confirm
 
-     org-log-states-order-reversed nil
+     org-log-states-order-reversed t
      org-reverse-note-order nil
-     org-log-into-drawer t
+     org-log-into-drawer nil
      org-log-note 'time
      org-enable-github-support t
      org-enable-bootstrap-support t
@@ -182,7 +183,7 @@
       (evil-define-key 'evilified org-agenda-mode-map "\C-u" 'universal-argument))
     (add-hook 'org-agenda-mode-hook 'override-evilified-keys)
 
-    (add-hook 'org-mode-hook #'flyspell-mode)
+    ;; (add-hook 'org-mode-hook #'flyspell-mode)
     (add-hook 'org-mode-hook #'ag/org-mode-hook)
     (add-hook 'org-mode-hook #'spacemacs/toggle-visual-line-navigation-on)
     (add-hook 'org-mode-hook #'org-indent-mode)
@@ -214,8 +215,6 @@
     (add-hook 'org-mode-hook #'abbrev-mode)
 
     (add-hook 'persp-before-switch-functions 'autosave-tasks-org)
-
-    (add-to-list 'org-modules 'org-tempo t)
 
     (advice-add 'org-return :around 'org-return--around)
 

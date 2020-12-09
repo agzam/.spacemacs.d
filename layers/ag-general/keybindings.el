@@ -148,6 +148,7 @@
 (define-key Info-mode-map (kbd "C-i") #'Info-next)
 (define-key Info-mode-map (kbd "C-j") #'Info-goto-node)
 (define-key Info-mode-map (kbd "C-M-j") #'Info-goto-node-web)
+(define-key Info-mode-map (kbd "v") #'evil-visual-char)
 (define-key Info-mode-map (kbd "q") (lambda () (interactive) (Info-exit :kill-window)))
 (dolist (key '("n" "p" "g" "G"))
   (unbind-key (kbd key) 'Info-mode-map))

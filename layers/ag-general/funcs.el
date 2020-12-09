@@ -76,10 +76,14 @@ OPTIONS can include '(urgency expire-time app-name icon category hint), refer to
   (spacemacs/layouts-transient-state/persp-next)
   (run-at-time "1 sec" nil #'spacemacs/layouts-transient-state/nil))
 
-(defun spacemacs/eyebrowse-go-prev ()
+(defun spacemacs/eyebrowse-go-prev (&optional delete-current?)
   "Switch to previous Workspace by briefly flashing the transient panel, so user can see where they're going"
-  (interactive)
-  (spacemacs/workspaces-transient-state/eyebrowse-prev-window-config)
+  (interactive "P")
+  (if delete-current?
+      (progn
+        (eyebrowse-close-window-config)
+        (message (format "workspace %s removed" (number-to-string (eyebrowse--get 'last-slot)))))
+    (spacemacs/workspaces-transient-state/eyebrowse-prev-window-config))
   (run-at-time "1 sec" nil #'spacemacs/workspaces-transient-state/nil))
 
 (defun spacemacs/eyebrowse-go-next (&optional create-new?)

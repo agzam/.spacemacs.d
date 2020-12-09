@@ -187,7 +187,6 @@
      'lsp-after-open-hook
      (lambda()
        (lsp-modeline-code-actions-mode -1)
-       (spacemacs//lsp-declare-prefixes-for-mode major-mode)
        (spacemacs/set-leader-keys-for-minor-mode 'lsp-mode
          "hh" nil
          "," #'lsp-ui-doc-glance)))))
@@ -231,7 +230,7 @@
 
 (defun ag-general/init-ivy-posframe ()
   (use-package ivy-posframe
-    :after ivy
+    :after (ivy posframe)
     :config
     (defun ag/ivy-postframe--set-parameters ()
       (setq ivy-posframe-parameters
@@ -256,6 +255,7 @@
       ;; somehow without this, ivy-posframe won't pick up current theme colors
       ;; even though for example which-key-posframe works fine
       (set-face-attribute 'fringe nil :background nil)
+      (ag/ivy-postframe--set-parameters)
       (cons 20 (- (plist-get info :parent-frame-height)
                   (+ (plist-get info :posframe-height) 85))))
 
@@ -365,4 +365,16 @@
     (remove-hook 'org-mode-hook 'er/add-org-mode-expansions)
     (er/enable-mode-expansions 'org-mode 'er/add-org-mode-expansions*)))
 
+(with-eval-after-load 'terminal-here
+  (setq terminal-here-terminal-command
+        (lambda (dir)
+          (cond
+           ((eq system-type 'darwin)
+            (list "open" "-a" "iTerm" dir))))))
+
+(with-eval-after-load 'ivy
+  (defun ivy--recenter-after-press ()
+    (with-ivy-window (recenter)))
+
+  (advice-add 'ivy-occur-press :after 'ivy--recenter-after-press))
 ;;; packages.el ends here

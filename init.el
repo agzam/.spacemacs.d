@@ -115,7 +115,7 @@ This function should only modify configuration layer settings."
    dotspacemacs-frozen-packages '()
 
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages '(git-gutter git-gutter+ git-gutter-fringe+)
 
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
@@ -512,7 +512,7 @@ This function defines the environment variables for your Emacs session. By
 default it calls `spacemacs/load-spacemacs-env' which loads the environment
 variables declared in `~/.spacemacs.env' or `~/.spacemacs.d/.spacemacs.env'.
 See the header of this file for more information."
-  (setq spacemacs-env-vars-file "~/.emacs.d/.spacemacs.env")
+  (setq spacemacs-env-vars-file "~/.emacs-profiles/.emacs-spacemacs.d/.spacemacs.env")
   (spacemacs/load-spacemacs-env))
 
 (defun dotspacemacs/user-init ()
@@ -551,12 +551,11 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq doom-modeline-height 1
         doom-modeline-major-mode-icon t
         doom-modeline-icon (display-graphic-p)
-        doom-modeline-major-mode-color-icon t
         doom-modeline-buffer-file-name-style 'relative-from-project
         doom-modeline-major-mode-color-icon nil
         doom-modeline-mu4e t
         doom-modeline-buffer-encoding nil
-        ))
+        doom-modeline-workspace-name nil))
 
 (defun dotspacemacs/user-load ()
   "Library to load while dumping.
@@ -629,13 +628,14 @@ before packages are loaded."
 
    Man-notify-method 'pushy
    ranger-override-dired nil
-   delete-by-moving-to-trash t)
+   delete-by-moving-to-trash t
+   paradox-column-width-package 30)
 
   (global-hl-line-mode -1)
   (global-page-break-lines-mode -1)
   (add-hook 'prog-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
 
-  (add-hook 'markdown-mode-hook #'flyspell-mode)
+  ;; (add-hook 'markdown-mode-hook #'flyspell-mode)
   (add-hook 'markdown-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
 
   ;;;;;;;;;;;;;
@@ -668,4 +668,28 @@ before packages are loaded."
   (add-hook 'minibuffer-setup-hook #'minibuffer-line-spacing)
 
   (when (eq system-type 'gnu/linux)
-    (display-battery-mode 1)))
+    (display-battery-mode 1))
+
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; things to improve latency ;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  (show-smartparens-global-mode -1)
+  (defun eyebrowse-mode-line-indicator ())
+
+  (setq
+   which-key-show-early-on-C-h t
+   which-key-idle-delay 1
+   which-key-idle-secondary-delay nil)
+  (which-key-mode)
+
+  (setq frame-title-format nil) ; so it doesn't run spacemacs/title-prepare
+  (editorconfig-mode -1)
+  )
+
+;; temp workaround for:
+;; https://github.com/atykhonov/google-translate/issues/137
+(with-eval-after-load 'google-translate
+ (defun google-translate--search-tkk ()
+   "Search TKK."
+   (list 430675 2721866130)))

@@ -14,14 +14,14 @@
                               ;; dired-filetype-face
                               (direx :location (recipe :fetcher github
                                                        :repo "agzam/direx-el"))
-                              ;; dired-quick-sort
                               direx-grep
-                              treemacs))
+                              treemacs
+                              dired-subtree))
 
 (add-hook 'dired-mode-hook #'dired-hide-details-mode)
 (setq
  ls-lisp-dirs-first t
- ls-lisp-use-insert-directory-program nil
+ ls-lisp-use-insert-directory-program t
  dired-auto-revert-buffer t
  dired-listing-switches "-aBhl")
 
@@ -98,13 +98,19 @@
     (spacemacs/set-leader-keys-for-major-mode 'direx:direx-mode
       "gg" #'direx-grep:grep-item-from-root)))
 
-(defun ag-dired/init-dired-quick-sort ()
-  (use-package dired-quick-sort
-    :config
-    (dired-quick-sort-setup)))
-
 (defun ag-dired/post-init-treemacs ()
   (treemacs-resize-icons 16))
+
+(defun ag-dired/init-dired-subtree ()
+  (use-package dired-subtree
+    :config
+    (evil-define-key 'normal dired-mode-map
+      (kbd "TAB") 'dired-subtree-toggle
+      "gh" 'dired-subtree-up
+      "gl" 'dired-subtree-down
+      "gc" 'dired-subtree-cycle
+      (kbd "M-j") 'dired-subtree-next-sibling
+      (kbd "M-k") 'dired-subtree-previous-sibling)))
 
 ;; (defun ag-dired/init-dired-filetype-face ()
 ;;   (use-package dired-filetype-face

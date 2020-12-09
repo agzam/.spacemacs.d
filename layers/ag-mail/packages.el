@@ -13,6 +13,11 @@
 (defconst ag-mail-packages '(persp-mode
                              mu4e))
 
+;; things I do for love... I mean, gccemacs
+(with-eval-after-load 'use-package
+  (use-package mu4e
+    :load-path "/usr/local/Cellar/mu/1.4.13/share/emacs/site-lisp/mu/mu4e"))
+
 (defun ag-mail/post-init-persp-mode ()
   (spacemacs|define-custom-layout mu4e-spacemacs-layout-name
     :binding mu4e-spacemacs-layout-binding
@@ -54,7 +59,7 @@
           mu4e-enable-mode-line t
           mu4e-headers-skip-duplicates t
           ;; rename files when moving, needed for mbsync
-          mu4e-index-update-in-background t
+          mu4e-index-update-in-background nil
           mu4e-change-filenames-when-moving t
           mu4e-compose-dont-reply-to-self t
           mu4e-compose-format-flowed t
@@ -119,7 +124,7 @@
 
     (add-hook 'mu4e-compose-mode-hook #'turn-off-auto-fill)
     (add-hook 'mu4e-compose-mode-hook #'spacemacs/toggle-visual-line-navigation-on)
-    (add-hook 'mu4e-compose-mode-hook #'flyspell-mode)
+    ;; (add-hook 'mu4e-compose-mode-hook #'flyspell-mode)
     (add-hook 'mu4e-view-mode-hook 'mu4e-prepare-view)
     (add-hook 'mu4e-compose-mode-hook 'mu4e-prepare-view)
 
@@ -217,11 +222,20 @@
     (add-hook 'mu4e-main-mode-hook (lambda () (mu4e-update-mail-and-index t)))
 
     (add-hook 'mu4e-headers-mode-hook #'ag-mail/set-mu4e-keys)
-    (add-hook 'mu4e-view-mode-hook #'ag-mail/set-mu4e-keys))
+    (add-hook 'mu4e-view-mode-hook #'ag-mail/set-mu4e-keys)
 
-  ;; increase font-size in messages
-  (dolist (f '(mu4e-view-body-face mu4e-cited-1-face mu4e-cited-2-face mu4e-cited-3-face mu4e-cited-4-face mu4e-cited-5-face mu4e-cited-6-face mu4e-cited-7-face))
-    (set-face-attribute f nil :height 180))
+    ;; increase font-size in messages
+    (dolist (f '(mu4e-view-body-face mu4e-cited-1-face mu4e-cited-2-face mu4e-cited-3-face mu4e-cited-4-face mu4e-cited-5-face mu4e-cited-6-face mu4e-cited-7-face))
+      (set-face-attribute f nil :height 180))
+
+    (defun set-mu4e-index-update-parameter (x)
+      (if-let ((mu4e-layout? (-some-> (get-current-persp)
+                               (persp-name)
+                               (string= "@Mu4e"))))
+          (setq mu4e-index-update-in-background nil)
+        (setq mu4e-index-update-in-background t)))
+
+    (add-hook 'persp-activated-functions 'set-mu4e-index-update-parameter))
 
   (defun mu4e--confirm-empty-subject ()
     "Allow user to quit when current message subject is empty."
@@ -234,7 +248,6 @@
 (with-eval-after-load 'mu4e-alert
   ;; Enable Desktop notifications
   (mu4e-alert-set-default-style 'notifications))
-
 
 
 ;;; packages.el ends here
