@@ -11,7 +11,7 @@ This function should only modify configuration layer settings."
    ;; Base distribution to use. This is a layer contained in the directory
    ;; `+distribution'. For now available distributions are `spacemacs-base'
    ;; or `spacemacs'. (default 'spacemacs)
-   dotspacemacs-distribution 'spacemacs
+   dotspacemacs-distribution 'spacemacs-base
 
    ;; Lazy installation of layers (i.e. layers are installed only when a file
    ;; with a supported type is opened). Possible values are `all', `unused'
@@ -35,8 +35,9 @@ This function should only modify configuration layer settings."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    `(
+     ag-general
      ;; ---- Languages -----
-     csv yaml emacs-lisp lua javascript ag-haskell sql rust
+     csv yaml emacs-lisp lua ag-haskell sql rust
      (html :packages (not pug-mode slim-mode))
      (markdown
       :packages (not mmm-mode)
@@ -84,7 +85,6 @@ This function should only modify configuration layer settings."
                  clojure-enable-linters '(clj-kondo))
      ag-colors
      ag-dired
-     ag-general
      (ag-lang-tools
       :variables spell-checking-enable-by-default nil)
      (ag-org

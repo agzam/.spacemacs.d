@@ -9,6 +9,21 @@
 ;;
 ;;; License: GPLv3
 
-(configuration-layer/declare-layers '(ibuffer))
+(configuration-layer/declare-layers '(
+                                      ;; spacemacs-base
+                                      spacemacs-completion
+                                      spacemacs-layouts
+                                      spacemacs-editing
+                                      ;; spacemacs-editing-visual
+                                      spacemacs-evil
+                                      spacemacs-language
+                                      spacemacs-misc
+                                      spacemacs-modeline
+                                      spacemacs-navigation
+                                      spacemacs-org
+                                      spacemacs-project
+                                      ;; spacemacs-purpose
+                                      spacemacs-visual
+                                      ibuffer))
 
 ;;; layers.el ends here

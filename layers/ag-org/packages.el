@@ -189,6 +189,7 @@
     (add-hook 'org-mode-hook #'org-indent-mode)
     (add-hook 'org-agenda-after-show-hook #'recenter)
     (remove-hook 'org-mode-hook #'spacemacs/delay-emoji-cheat-sheet-hook)
+    (remove-hook 'org-mode-hook #'valign-mode)
 
     ;; (add-hook 'org-timer-done-hook (lambda () (spacemacs/alert "-- timer done! --")))
 

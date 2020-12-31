@@ -260,7 +260,7 @@ provided, returns its value"
                         ("d" remove-from-shell-history "delete")))))
 
 ;; override the default function with the one that works with chemacs
-(defun spacemacs/find-user-init-file ()
+(defun ag/find-user-init-file ()
   "Edit the `user-init-file', in the current window."
   (interactive)
   (find-file-existing

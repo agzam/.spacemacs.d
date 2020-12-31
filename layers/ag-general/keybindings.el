@@ -119,6 +119,13 @@
   "iP" (kbd "i C-q C-l <RET><escape>")
   "nn" #'global-display-line-numbers-mode)
 
+(spacemacs|spacebind
+ "Files manipulation."
+ :global
+ (("f" "Files"
+   ("e" "Emacs/Spacemacs"
+    ("i" ag/find-user-init-file "Open Emacs \"init.el\"")))))
+
 (spacemacs/transient-state-register-add-bindings 'zoom-frm
   '(("m" (toggle-frame-maximized-undecorated))))
 
