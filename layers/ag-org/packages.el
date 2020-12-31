@@ -219,7 +219,12 @@
 
     (advice-add 'org-return :around 'org-return--around)
 
-    (setq org-link-make-description-function 'org-link-make-description-function*)))
+    (setq org-link-make-description-function 'org-link-make-description-function*))
+
+  (require 'org-crypt)
+  (org-crypt-use-before-save-magic)
+  (setq org-tags-exclude-from-inheritance '("crypt"))
+  (setq org-crypt-key "E099A30039C121430579BA65CFE12444AF47BD1"))
 
 (defun ag-org/post-init-org-pomodoro ()
   (with-eval-after-load 'org-pomodoro
