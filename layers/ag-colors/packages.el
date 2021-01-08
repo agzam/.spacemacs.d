@@ -150,7 +150,9 @@
                   (org-done . (:foreground ,base02))
                   (org-headline-done . (:foreground ,base02))
                   (org-hide . (:foreground ,default-background))
-                  (org-indent . (:inherit '(fixed-pitch org-hide)))
+                  (org-indent . (:inherit (fixed-pitch org-hide)))
+                  (org-roam-link . (:background ,base01 :foreground ,base0D))
+                  (org-roam-link-invalid . (:background "#45352e"))
 
                   ;; code
                   (font-lock-doc-face . (:foreground ,base02))
@@ -179,7 +181,7 @@
          (bg-accent-dark "#c7c1c9")
          (bg-accent-light "#efedf0")
          (fg-accent "CadetBlue")
-         (faces `((region . (:inverse-video t :foreground ,bg-accent :background ,default-background))
+         (faces `((region . (:inverse-video t :foreground ,bg-accent :background ,default-background :distant-foreground nil))
                   (fringe . (:background ,bg-darker))
                   (magit-diff-hunk-heading . (:background ,bg-darker))
                   (magit-diff-hunk-heading-highlight . (:background ,bg-accent-light))
@@ -241,7 +243,9 @@
                   (org-done .  (:foreground ,bg-accent))
                   (org-headline-done . (:foreground ,bg-accent-dark))
                   (org-hide . (:foreground ,default-background))
-                  (org-indent . (:inherit '(fixed-pitch org-hide)))
+                  (org-indent . (:inherit (fixed-pitch org-hide)))
+                  (org-roam-link . (:background "#fff9de"))
+                  (org-roam-link-invalid . (:background "#fbf3ef"))
 
                   ;; (org-level-1 . (:inherit variable-pitch :bold t :height 1.3))
                   ;; (org-level-2 . (:inherit variable-pitch :bold t :height 1.2))

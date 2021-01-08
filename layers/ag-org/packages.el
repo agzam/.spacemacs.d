@@ -19,6 +19,7 @@
                             (org-brain :excluded t)
                             ;; (slack2org :location local)
                             anki-editor
+                            org-roam
                             company-org-roam
                             org-roam-server
                             ))
@@ -373,64 +374,69 @@
  org-roam-directory "~/Dropbox/org"
  org-roam-db-location "~/Dropbox/org/org-roam.db"
  org-roam-graph-viewer "/usr/bin/open"
+ org-roam-dailies-directory "daily/"
+ org-roam-completion-system 'ivy
  )
 
 (defun ag-org/post-init-org-roam ()
   (add-hook 'after-init-hook 'org-roam-mode)
 
-  (with-eval-after-load 'org-roam
-    (require 'org-roam-protocol)
+  (setq org-roam-db-update-method 'immediate
+        org-roam-tag-sources '(prop vanilla all-directories)
+        org-roam-completion-everywhere t
+        org-roam-link-auto-replace nil)
 
-    (setq org-roam-db-update-method 'immediate
-          org-roam-tag-sources '(prop vanilla)
-          org-roam-completion-everywhere t
+  (setq org-roam-capture-templates
+        '(("d" "default" plain
+           (function org-roam-capture--get-point)
+           "%?"
+           :file-name "%<%Y%m%d%H%M%S>-${slug}"
+           :head "#+title: ${title}\n#+created: %u\n#+last_modified: %U\n#+roam_tags:${tag}\n\n"
+           :unnarrowed t
+           :immediate-finish t))
+        org-roam-capture-ref-templates
+        '(("r" "ref" plain
+           (function org-roam-capture--get-point)
+           ""
+           :file-name "web/%<%Y%m%d%H%M%S>-${slug}"
+           :head "#+title: ${title}\n#+roam_key: ${ref}\n#+created: %u\n#+last_modified: %U\n\n%(zp/org-protocol-insert-selection-dwim \"%i\")"
+           :unnarrowed t)
+          ("i" "incremental" plain
+           (function org-roam-capture--get-point)
+           "* %?\n%(zp/org-protocol-insert-selection-dwim \"%i\")"
+           :file-name "web/%<%Y%m%d%H%M%S>-${slug}"
+           :head "#+title: ${title}\n#+roam_key: ${ref}\n#+created: %u\n#+last_modified: %U\n\n"
+           :unnarrowed t
+           :empty-lines-before 1)
           )
+        org-roam-dailies-capture-templates
+        '(("w" "work" entry
+           #'org-roam-capture--get-point
+           "* %?"
+           :file-name "daily/%<%Y-%m-%d>"
+           :head "#+title: %<%Y-%m-%d>\n#+created: %u\n#+last_modified: %U\n#+roam_tags:daily\n\n"
+           :olp ("Work")
+           :add-created t)
+          ("j" "journal" entry
+           #'org-roam-capture--get-point
+           "* %?"
+           :file-name "daily/%<%Y-%m-%d>"
+           :head "#+title: %<%Y-%m-%d>\n#+created: %u\n#+last_modified: %U\n#+roam_tags:daily\n\n"
+           :olp ("Journal")
+           :add-created t)))
 
-    (setq org-roam-capture-templates
-          '(("d" "default" plain
-             (function org-roam-capture--get-point)
-             "%?"
-             :file-name "${slug}"
-             :head "#+title: ${title}\n#+created: %u\n#+last_modified: %U\n#+roam_tags:${tag}\n\n"
-             :unnarrowed t
-             :immediate-finish t
-             ))
-          org-roam-capture-ref-templates
-          '(("r" "ref" plain
-             (function org-roam-capture--get-point)
-             ""
-             :file-name "web/${slug}"
-             :head "#+title: ${title}\n#+roam_key: ${ref}\n#+created: %u\n#+last_modified: %U\n\n%(zp/org-protocol-insert-selection-dwim \"%i\")"
-             :unnarrowed t)
-            ;; ("i" "incremental" plain
-            ;;  (function org-roam-capture--get-point)
-            ;;  "* %?\n%(zp/org-protocol-insert-selection-dwim \"%i\")"
-            ;;  :file-name "web/${slug}"
-            ;;  :head "#+title: ${title}\n#+roam_key: ${ref}\n#+created: %u\n#+last_modified: %U\n\n"
-            ;;  :unnarrowed t
-            ;;  :empty-lines-before 1)
-            )
-          ;; org-roam-dailies-capture-templates
-          ;; '(("d" "default" entry
-          ;;    #'org-roam-capture--get-point
-          ;;    "* %?"
-          ;;    :file-name "scratch/%<%Y-%m-%d>"
-          ;;    :head "#+title: %<%Y-%m-%d>\n\n"
-          ;;    :add-created t))
-          )
-
-    (define-key spacemacs-org-capture-mode-map (kbd "r") nil)
-    (spacemacs/declare-prefix-for-minor-mode 'spacemacs-org-capture-mode "r" "org-roam")
-    (spacemacs/declare-prefix-for-minor-mode 'spacemacs-org-capture-mode "rt" "org-roam-tags")
-    (spacemacs/set-leader-keys-for-minor-mode 'org-capture-mode
-      "rb" 'org-roam-switch-to-buffer
-      "rf" 'org-roam-find-file
-      "ri" 'org-roam-insert
-      "rI" 'org-roam-insert-immediate
-      "rl" 'org-roam-buffer-toggle-display
-      "rta" 'org-roam-tag-add
-      "rtd" 'org-roam-tag-delete
-      )))
+  (define-key spacemacs-org-capture-mode-map (kbd "r") nil)
+  (spacemacs/declare-prefix-for-minor-mode 'spacemacs-org-capture-mode "r" "org-roam")
+  (spacemacs/declare-prefix-for-minor-mode 'spacemacs-org-capture-mode "rt" "org-roam-tags")
+  (spacemacs/set-leader-keys-for-minor-mode 'org-capture-mode
+    "rb" 'org-roam-switch-to-buffer
+    "rf" 'org-roam-find-file
+    "ri" 'org-roam-insert
+    "rI" 'org-roam-insert-immediate
+    "rl" 'org-roam-buffer-toggle-display
+    "rta" 'org-roam-tag-add
+    "rtd" 'org-roam-tag-delete)
+  )
 
 (defun ag-org/init-company-org-roam ()
   (use-package company-org-roam
