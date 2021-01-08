@@ -88,7 +88,9 @@ This function should only modify configuration layer settings."
      (ag-lang-tools
       :variables spell-checking-enable-by-default nil)
      (ag-org
-      :variables org-enable-github-support t)
+      :variables
+      org-enable-github-support t
+      org-enable-roam-support t)
      ag-mail
      ag-version-control
      ag-web
@@ -573,27 +575,28 @@ before packages are loaded."
 
   (setq
    ;;;; Editor
-   frame-resize-pixelwise t ; make sure `(maximize-frame)` leaves no borders
-   powerline-default-separator nil
-   powerline-center-theme nil
-   avy-timeout-seconds 0.4
-   winum-scope 'frame-local
-   aw-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9) ; ace-windows instead of characters shows number
-   linum-format "%3d\u2502" ; nicer line-numbers
-   fill-column 170
-   tab-width 4
-   mouse-wheel-scroll-amount '(0.02)
-   mouse-wheel-progressive-speed nil
-   scroll-margin 2
-   smooth-scroll-margin 2
-   default-input-method 'russian-computer
-   scroll-margin 0
    abbrev-file-name "~/.spacemacs.d/abbrev_defs"
+   auto-hscroll-mode 'current-line
+   avy-timeout-seconds 0.4
+   aw-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9) ; ace-windows instead of characters shows number
+   default-input-method 'russian-computer
+   fill-column 170
+   frame-resize-pixelwise t ; make sure `(maximize-frame)` leaves no borders
+   linum-format "%3d\u2502" ; nicer line-numbers
+   mouse-wheel-progressive-speed nil
+   mouse-wheel-scroll-amount '(0.02)
+   powerline-center-theme nil
+   powerline-default-separator nil
    save-abbrevs t ; save abbrevs upon exiting Emacs
-   uniquify-buffer-name-style 'forward
-   writeroom-width 130
-   writeroom-fullscreen-effect nil
+   scroll-margin 0
+   scroll-margin 2
    sentence-end-double-space t
+   smooth-scroll-margin 2
+   tab-width 4
+   uniquify-buffer-name-style 'forward
+   winum-scope 'frame-local
+   writeroom-fullscreen-effect nil
+   writeroom-width 130
 
    ;; https://200ok.ch/posts/2020-09-29_comprehensive_guide_on_handling_long_lines_in_emacs.html
    bidi-paragraph-direction 'left-to-right

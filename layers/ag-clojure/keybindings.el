@@ -22,13 +22,15 @@
       "ss" (if (eq m 'cider-repl-mode)
                'cider-switch-to-last-clojure-buffer
              'cider-switch-to-repl-buffer)
-      "ii" #'clj-fully-qualified-symbol-at-point))
+      "ii" #'clj-fully-qualified-symbol-at-point
+      "tl" nil ; keep accidentally pressing, triggering hundreds of tests to run in the REPL
+      ))
 
   (spacemacs/set-leader-keys-for-major-mode 'clojurescript-mode
     "g f" #'re-frame-jump-to-reg))
 
 (with-eval-after-load 'lsp-mode
- (define-key lsp-mode-map [remap xref-find-references] #'lsp-find-references))
+  (define-key lsp-mode-map [remap xref-find-references] #'lsp-find-references))
 
 (spacemacs/set-leader-keys-for-major-mode 'clojure-mode
   "C" 'clojars-find)

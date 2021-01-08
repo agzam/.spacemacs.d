@@ -28,7 +28,7 @@
     (define-key mw-thesaurus-mode-map [remap evil-record-macro] #'mw-thesaurus--quit)
     (add-hook 'mw-thesaurus-mode-hook 'variable-pitch-mode)
     (spacemacs/set-leader-keys
-      "xlm" #'mw-thesaurus-lookup-at-point
+      "xlm" #'mw-thesaurus-lookup-dwim
       ;; "xAg" #'add-global-abbrev
       ;; "xAl" #'add-mode-abbrev
       )))
