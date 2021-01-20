@@ -14,7 +14,7 @@
                                       spacemacs-completion
                                       spacemacs-layouts
                                       spacemacs-editing
-                                      ;; spacemacs-editing-visual
+                                      spacemacs-editing-visual
                                       spacemacs-evil
                                       spacemacs-language
                                       spacemacs-misc

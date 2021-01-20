@@ -176,7 +176,7 @@
 
      org-log-states-order-reversed t
      org-reverse-note-order nil
-     org-log-into-drawer nil
+     org-log-into-drawer t
      org-log-note 'time
      org-enable-github-support t
      org-enable-bootstrap-support t
@@ -384,7 +384,9 @@
   (setq org-roam-db-update-method 'immediate
         org-roam-tag-sources '(prop vanilla all-directories)
         org-roam-completion-everywhere t
-        org-roam-link-auto-replace nil)
+        org-roam-link-auto-replace t
+        org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id
+        )
 
   (setq org-roam-capture-templates
         '(("d" "default" plain
@@ -399,29 +401,27 @@
            (function org-roam-capture--get-point)
            ""
            :file-name "web/%<%Y%m%d%H%M%S>-${slug}"
-           :head "#+title: ${title}\n#+roam_key: ${ref}\n#+created: %u\n#+last_modified: %U\n\n%(zp/org-protocol-insert-selection-dwim \"%i\")"
+           :head "#+title: ${title}\n#+roam_key: ${ref}\n#+created: %u\n#+last_modified: %U\n[[roam:web]]\n\n%(zp/org-protocol-insert-selection-dwim \"%i\")"
            :unnarrowed t)
-          ("i" "incremental" plain
+          ("p" "pocket" plain
            (function org-roam-capture--get-point)
-           "* %?\n%(zp/org-protocol-insert-selection-dwim \"%i\")"
-           :file-name "web/%<%Y%m%d%H%M%S>-${slug}"
-           :head "#+title: ${title}\n#+roam_key: ${ref}\n#+created: %u\n#+last_modified: %U\n\n"
-           :unnarrowed t
-           :empty-lines-before 1)
-          )
+           ""
+           :file-name "read-later/%<%Y%m%d%H%M%S>-${slug}"
+           :head "#+title: ${title}\n#+roam_key: ${ref}\n#+created: %u\n#+last_modified: %U\n[[roam:web]]\n\n%(zp/org-protocol-insert-selection-dwim \"%i\")"
+           :unnarrowed t))
         org-roam-dailies-capture-templates
         '(("w" "work" entry
            #'org-roam-capture--get-point
            "* %?"
-           :file-name "daily/%<%Y-%m-%d>"
-           :head "#+title: %<%Y-%m-%d>\n#+created: %u\n#+last_modified: %U\n#+roam_tags:daily\n\n"
+           :file-name "daily/%<%Y-%m-%d %a>"
+           :head "#+title: %<%Y-%m-%d %A>\n#+created: %u\n#+last_modified: %U\n#+roam_tags:daily\n[[roam:dailies]]\n\n"
            :olp ("Work")
            :add-created t)
           ("j" "journal" entry
            #'org-roam-capture--get-point
            "* %?"
-           :file-name "daily/%<%Y-%m-%d>"
-           :head "#+title: %<%Y-%m-%d>\n#+created: %u\n#+last_modified: %U\n#+roam_tags:daily\n\n"
+           :file-name "daily/%<%Y-%m-%d %a>"
+           :head "#+title: %<%Y-%m-%d %A>\n#+created: %u\n#+last_modified: %U\n#+roam_tags:daily\n\n[[roam:dailies]]\n\n"
            :olp ("Journal")
            :add-created t)))
 
@@ -447,6 +447,7 @@
       :modes org-mode)))
 
 (defun ag-org/init-org-roam-server ()
+  (use-package org-roam-protocol)
   (use-package org-roam-server
     :after (org-roam)
     :config
@@ -460,7 +461,11 @@
           org-roam-server-network-arrows nil
           org-roam-server-network-label-truncate t
           org-roam-server-network-label-truncate-length 60
-          org-roam-server-network-label-wrap-length 20)
+          org-roam-server-network-label-wrap-length 20
+          org-roam-server-link-auto-replace nil
+
+          )
     ))
+
 
 ;;; packages.el ends here

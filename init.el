@@ -550,14 +550,24 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   (load custom-file)
 
-  (setq doom-modeline-height 1
-        doom-modeline-major-mode-icon t
-        doom-modeline-icon (display-graphic-p)
-        doom-modeline-buffer-file-name-style 'relative-from-project
-        doom-modeline-major-mode-color-icon nil
-        doom-modeline-mu4e t
+  (setq doom-modeline--vcs-icon nil
+        doom-modeline--vcs-text nil
         doom-modeline-buffer-encoding nil
-        doom-modeline-workspace-name nil))
+        doom-modeline-buffer-file-name-style 'relative-from-project
+        doom-modeline-buffer-modification-icon nil
+        doom-modeline-buffer-state-icon nil
+        doom-modeline-icon (display-graphic-p)
+        doom-modeline-icon t
+        doom-modeline-major-mode-color-icon nil
+        doom-modeline-major-mode-icon nil
+        doom-modeline-major-mode-icon nil
+        doom-modeline-modal-icon t
+        doom-modeline-mu4e nil
+        doom-modeline-mu4e nil
+        doom-modeline-persp-icon nil
+        doom-modeline-workspace-name nil
+        inhibit-compacting-font-caches t
+        doom-modeline-height 1))
 
 (defun dotspacemacs/user-load ()
   "Library to load while dumping.
@@ -688,11 +698,11 @@ before packages are loaded."
 
   (setq frame-title-format nil) ; so it doesn't run spacemacs/title-prepare
   (editorconfig-mode -1)
+  ;; temp workaround for:
+  ;; https://github.com/atykhonov/google-translate/issues/137
+  (with-eval-after-load 'google-translate-tk
+    (defun google-translate--search-tkk ()
+      "Search TKK."
+      (list 430675 2721866130)))
   )
 
-;; temp workaround for:
-;; https://github.com/atykhonov/google-translate/issues/137
-(with-eval-after-load 'google-translate
- (defun google-translate--search-tkk ()
-   "Search TKK."
-   (list 430675 2721866130)))
