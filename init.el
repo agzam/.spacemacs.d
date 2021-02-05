@@ -616,6 +616,10 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
 
+  ;; disable nonsensical keys
+  (dolist (key '("s-n" "s-p" "s-q" "s-m" "H-q" "C-x C-c"))
+    (unbind-key (kbd key)))
+
   (setq
    ;;;; Editor
    abbrev-file-name "~/.spacemacs.d/abbrev_defs"
@@ -706,7 +710,7 @@ before packages are loaded."
   ;; (setq backup-directory-alist '(("." . ".bak")))
   ;; (savehist-mode -1)
 
-  (run-at-time "2 sec" nil 'ag/adjust-themes)
+  (run-at-time "1 sec" nil 'ag/adjust-themes)
 
   ;; make Ivy stuff a bit readable in the minibuffer
   (defun minibuffer-line-spacing ()
@@ -725,12 +729,13 @@ before packages are loaded."
 
   (setq
    which-key-show-early-on-C-h t
-   which-key-idle-delay 1
-   which-key-idle-secondary-delay nil)
+   which-key-idle-delay 1.0
+   which-key-idle-secondary-delay 0.05)
   (which-key-mode)
 
   (setq frame-title-format nil) ; so it doesn't run spacemacs/title-prepare
   (editorconfig-mode -1)
+
   ;; temp workaround for:
   ;; https://github.com/atykhonov/google-translate/issues/137
   (with-eval-after-load 'google-translate-tk

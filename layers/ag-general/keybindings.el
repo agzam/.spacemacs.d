@@ -9,10 +9,6 @@
 ;;
 ;;; License: GPLv3
 
-;;;; disable nonsensical keys
-(dolist (key '("s-n" "s-p" "s-q" "s-m" "H-q" "C-x C-c"))
-  (unbind-key (kbd key)))
-
 ;;;; don't quit helpful on Esc
 (evil-define-key 'motion help-mode-map (kbd "<escape>") nil)
 
