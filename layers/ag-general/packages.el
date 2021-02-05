@@ -182,7 +182,8 @@
           lsp-eldoc-enable-hover nil
           lsp-diagnostic-package :none
           lsp-enable-file-watchers nil
-          lsp-modeline--enable-code-actions nil)
+          lsp-modeline--enable-code-actions nil
+          lsp-headerline-breadcrumb-enable nil)
     (add-hook
      'lsp-after-open-hook
      (lambda()
@@ -232,55 +233,30 @@
   (use-package ivy-posframe
     :after (ivy posframe)
     :config
-    (defun ag/ivy-postframe--set-parameters ()
-      (setq ivy-posframe-parameters
-            `((alpha . 100)
-              (undecorated . t)
-              (left-fringe . 3)
-              (right-fringe . 3)
-              (internal-border-width . 1)
-              (unsplittable . t)
-              (background-color . ,(face-attribute 'default :background nil t))
-              (foreground-color . ,(face-attribute 'default :foreground nil t)))
-            ivy-posframe-width 130
-            ivy-posframe-height 20
-            ivy-posframe-hide-minibuffer nil))
-
     (add-hook 'spacemacs-post-theme-change-hook 'ag/ivy-postframe--set-parameters)
 
     (setq ivy-posframe-display-functions-alist
-          '((t . ivy-posframe-display-at-frame-bottom-left)))
+          '((t . ag/ivy-posframe-display-at-frame-bottom-left)))
 
-    (defun posframe-poshandler-frame-bottom-left-corner (info)
-      ;; somehow without this, ivy-posframe won't pick up current theme colors
-      ;; even though for example which-key-posframe works fine
-      (set-face-attribute 'fringe nil :background nil)
-      (ag/ivy-postframe--set-parameters)
-      (cons 20 (- (plist-get info :parent-frame-height)
-                  (+ (plist-get info :posframe-height) 85))))
-
-    (setq posframe-arghandler #'my-posframe-arghandler)
-
-    (defun my-posframe-arghandler (buffer-or-name arg-name value)
-      (let ((info '(:lines-truncate t)))
-        (or (plist-get info arg-name) value)))
+    (setq posframe-arghandler #'ag/posframe-arghandler)
 
     (ivy-posframe-mode 1)))
 
 (defun ag-general/init-which-key-posframe ()
   (use-package which-key-posframe
     :config
-    (setq which-key-posframe-parameters
-          '((undecorated . t)
-            (internal-border-width . 1)))
-    (defun posframe-poshandler-frame-bottom-right-corner (info)
-      (cons (- (plist-get info :parent-frame-width)
-               (+ (plist-get info :posframe-width) 10))
-            (- (plist-get info :parent-frame-height)
-               (+ (plist-get info :posframe-height) 85))))
-    (setq which-key-posframe-poshandler #'posframe-poshandler-frame-bottom-right-corner
-          which-key-min-display-lines 15)
-    (which-key-posframe-mode 1)))
+    ;; (setq which-key-posframe-parameters
+    ;;       '((undecorated . t)
+    ;;         (internal-border-width . 1)))
+    ;; (defun posframe-poshandler-frame-bottom-right-corner (info)
+    ;;   (cons (- (plist-get info :parent-frame-width)
+    ;;            (+ (plist-get info :posframe-width) 10))
+    ;;         (- (plist-get info :parent-frame-height)
+    ;;            (+ (plist-get info :posframe-height) 85))))
+    ;; (setq which-key-posframe-poshandler #'posframe-poshandler-frame-bottom-right-corner
+    ;;       which-key-min-display-lines 15)
+    ;; (which-key-posframe-mode 1)
+    ))
 
 (defun ag-general/init-grip-mode ()
   (use-package grip-mode

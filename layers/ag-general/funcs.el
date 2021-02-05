@@ -295,4 +295,34 @@ provided, returns its value"
           (goto-char (car reg))
           (return reg))))))
 
+(defun ag/ivy-postframe--set-parameters ()
+  (setq ivy-posframe-parameters
+        `((alpha . 100)
+          (undecorated . t)
+          (left-fringe . 3)
+          (right-fringe . 3)
+          (internal-border-width . 1)
+          (border-width . 1)
+          (unsplittable . t)
+          (background-color . ,(face-attribute 'default :background nil t))
+          (foreground-color . ,(face-attribute 'default :foreground nil t)))
+        ivy-posframe-width 130
+        ivy-posframe-height 20
+        ivy-posframe-hide-minibuffer nil))
+
+(defun ag/posframe-poshandler-frame-bottom-left-corner (info)
+  ;; somehow without this, ivy-posframe won't pick up current theme colors
+  ;; even though for example which-key-posframe works fine
+  (set-face-attribute 'fringe nil :background nil)
+  ;; (ag/ivy-postframe--set-parameters)
+  (cons 20 (- (plist-get info :parent-frame-height)
+              (+ (plist-get info :posframe-height) 85))))
+
+(defun ag/ivy-posframe-display-at-frame-bottom-left (str)
+  (ivy-posframe--display str #'ag/posframe-poshandler-frame-bottom-left-corner))
+
+(defun ag/posframe-arghandler (buffer-or-name arg-name value)
+  (let ((info '(:lines-truncate t)))
+    (or (plist-get info arg-name) value)))
+
 ;;; funcs.el ends here

@@ -111,7 +111,7 @@
 
                   (fixed-pitch . (:family "JetBrains Mono" :weight normal :width expanded))
                   (variable-pitch . (:family "Open Sans" :weight normal
-                                             :width expanded :height 180))
+                                             :width expanded :height 1.2))
                   ;; avy
                   (aw-leading-char-face . (:height 5.0 :foreground "Orange"))
                   (avy-lead-face . (:height 1.3 :foreground ,base0A))
@@ -130,13 +130,12 @@
                   (org-block-begin-line . (:underline nil :background ,base01 :foreground ,base04 :height 0.9 :weight ultra-light :inherit fixed-pitch))
                   (org-block . (:background ,base01 :inherit fixed-pitch))
                   (org-block-end-line . (:overline nil :background ,base01 :height 0.9 :weight ultra-light :inherit fixed-pitch))
-                  (org-verse . (:background ,base01 :inherit variable-pitch :slant oblique))
-                  (org-quote . (:background ,base01 :inherit org-verse))
+                  (org-verse . (:inherit (variable-pitch org-block)))
+                  (org-quote . (:inherit (org-verse) :slant normal))
                   (org-date . (:inherit fixed-pitch))
                   (org-code . (:inherit fixed-pitch :foreground ,base06))
                   (org-verbatim . (:inherit fixed-pitch))
                   (org-meta-line . (:inherit fixed-pitch :foreground ,base04 :height 0.9 :weight ultra-light))
-                  (org-special-keyword . (:inherit fixed-pitch))
                   (org-checkbox . (:background nil :inherit fixed-pitch))
                   (org-table . (:inherit fixed-pitch))
                   (org-level-1 . (:foreground ,base0D :bold t :height 1.3))
@@ -153,6 +152,9 @@
                   (org-indent . (:inherit (fixed-pitch org-hide)))
                   (org-roam-link . (:background ,base01 :foreground ,base0D))
                   (org-roam-link-invalid . (:background "#45352e"))
+                  (org-drawer . (:foreground ,base02))
+                  (org-special-keyword . (:inherit (org-drawer fixed-pitch) :foreground ,base02))
+                  (org-property-value . (:inherit (org-drawer fixed-pitch) :foreground ,base02))
 
                   ;; code
                   (font-lock-doc-face . (:foreground ,base02))
@@ -207,7 +209,7 @@
 
                   (fixed-pitch . (:family "JetBrains Mono" :weight normal :width expanded))
                   (variable-pitch . (:family "Open Sans" :weight normal
-                                             :width expanded :height 180))
+                                             :width expanded :height 1.2))
 
                   ;; (lsp-lens-face . (:foreground ,default-foreground))
                   (lsp-ui-peek-list . (:background "#f0ece1" :foreground "#866f94"))
@@ -230,8 +232,8 @@
                   (org-block-begin-line . (:background ,bg-darker :foreground ,fg-accent :height 0.9 :weight ultra-light :inherit fixed-pitch))
                   (org-block . (:background ,bg-darker :inherit fixed-pitch))
                   (org-block-end-line . (:background ,bg-darker :foreground ,fg-accent :height 0.9 :weight ultra-light :inherit fixed-pitch))
-                  (org-verse . (:background ,bg-darker :inherit variable-pitch :slant oblique))
-                  (org-quote . (:background ,bg-darker :inherit org-verse))
+                  (org-verse . (:inherit (variable-pitch org-block)))
+                  (org-quote . (:inherit (org-verse) :slant normal))
                   (org-date . (:inherit fixed-pitch))
                   (org-code . (:inherit fixed-pitch :foreground ,fg-accent))
                   (org-verbatim . (:inherit fixed-pitch))
@@ -246,6 +248,9 @@
                   (org-indent . (:inherit (fixed-pitch org-hide)))
                   (org-roam-link . (:background "#fff9de"))
                   (org-roam-link-invalid . (:background "#fbf3ef"))
+                  (org-drawer . (:foreground ,bg-accent-dark))
+                  (org-special-keyword . (:inherit (org-drawer) :foreground ,bg-accent))
+                  (org-property-value . (:inherit (org-drawer) :foreground ,bg-accent))
 
                   ;; (org-level-1 . (:inherit variable-pitch :bold t :height 1.3))
                   ;; (org-level-2 . (:inherit variable-pitch :bold t :height 1.2))

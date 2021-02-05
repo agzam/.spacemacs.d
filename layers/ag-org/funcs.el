@@ -383,6 +383,97 @@ Org-mode properties drawer already, keep the headline and don’t insert
   (unless (string= selection "")
     (format "#+begin_quote\n%s\n#+end_quote" selection)))
 
+(defun looking-at-org-link? ()
+  "Return true if cursor is at org-mode link."
+  (save-mark-and-excursion
+    (let ((end-re "\]\]"))
+      (when (looking-at (concat "\\([^[:blank:]]\\)*" end-re))
+        (search-forward-regexp end-re nil :no-error)
+        (search-backward-regexp "\\[\\[.*" nil :no-error)
+        (set-mark (point))
+        (search-forward-regexp end-re nil :no-error)
+        (exchange-point-and-mark)
+        (equal 0
+               (string-match
+                "\\[\\[.*\\]\\[.*\\]\\]"
+                (buffer-substring (region-beginning) (region-end))))))))
+
+(defun www-get-page-title (url)
+  "Attempts to retrive document.title for a given URL"
+  (let ((temp-buffer-show-function (lambda (x))))
+    (with-output-to-temp-buffer url
+      (with-current-buffer url
+        (url-insert-file-contents url t)
+        (goto-char (point-min))
+        (when (re-search-forward "<title>\\([^<]*\\)</title>" nil t 1)
+          (match-string 1))
+        (setq title (match-string 1))))
+    (kill-buffer url)
+    title))
+
+(defun org-roam--org-heading->note ()
+  "Reads a org heading and captures new note using org-roam-ref template."
+  (interactive)
+  (pcase-let* ((url-regexp "\\(news\\(post\\)?:\\|mailto:\\|file:\\|\\(ftp\\|https?\\|telnet\\|gopher\\|www\\|wais\\)://\\)")
+               (`(,l ,rl ,todo-cookie ,priority ,headline ,tags) (org-heading-components))
+               (tags (split-string tags ":" t))
+               (props (org-entry-properties))
+               (url (a-get props "URL"))
+               (added-at (a-get props "ADDEDAT"))
+               (content (org-agenda-get-some-entry-text (point-marker) most-positive-fixnum))
+               (buf (concat "*org-heading->note *" headline))
+               (roam-links (apply 'concat (mapcar (lambda (x) (format " [[roam:%s]]" x)) tags)))
+               (more-links? t)
+               ;; discard temp buffer after manipulations
+               (temp-buffer-show-function (lambda (x) (kill-buffer x))))
+    ;; using a temp buffer for finding and replacing all url with org-links
+    (with-output-to-temp-buffer buf
+      (with-current-buffer buf
+        (insert (format "%s \n\n* %s %s\n:PROPERTIES:\n:AddedAt: %s\n:END:\n%s"
+                        roam-links
+                        todo-cookie
+                        headline
+                        added-at
+                        content))
+
+        ;; convert urls to org-links
+        (goto-char 0)
+        (while more-links?
+          (setq more-links? (re-search-forward url-regexp nil t))
+          (when (and more-links? (not (looking-at-org-link?)))
+            (er/mark-url)
+            (if-let ((title (www-get-page-title
+                          (buffer-substring (region-beginning) (region-end)))))
+                (progn
+                  (kill-region (region-beginning) (region-end))
+                  (insert (concat "[[" url "][" title "]]")))
+                (forward-word))))
+
+        ;; pick up any first url, if there's no url in the properties drawer
+        (goto-char 0)
+        (unless url
+          (re-search-forward url-regexp nil t)
+          (er/mark-url)
+          (setq url (buffer-substring (region-beginning) (region-end))))
+
+        (setq body (buffer-string))))
+
+    (let* ((uri (org-protocol-sanitize-uri url))
+           (type (and (string-match "^\\([a-z]+\\):" uri) (match-string 1 uri)))
+           (capture-info `((ref . ,uri)
+                           (type . ,type)
+                           (title . ,headline)
+                           (slug . ,(funcall org-roam-title-to-slug-function headline))
+                           (body . ,body)
+                           (orglink . ,(org-link-make-string uri))))
+           (org-roam-capture-templates org-roam-capture-ref-templates)
+           (org-roam-capture--context 'ref)
+           (org-roam-capture--info capture-info)
+           (org-capture-link-is-already-stored t)
+           (template (cdr (assoc 'template capture-info))))
+      (org-roam-capture--capture nil "p")
+      (org-roam-message "Item captured."))))
+
 (provide 'funcs)
 
 ;;; funcs.el ends here

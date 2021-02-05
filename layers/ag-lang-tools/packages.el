@@ -75,6 +75,7 @@
           (russian-computer . ("ru")))))
 
 (with-eval-after-load 'ispell
+  (setq flyspell-issue-message-flag nil) ; printing a message for every word has a negative performance impact
   (setq ispell-program-name "aspell")
   ;; aspell suggestion mode
   (add-to-list 'ispell-extra-args "--sug-mode=bad-spellers"))

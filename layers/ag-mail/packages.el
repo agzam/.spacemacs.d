@@ -46,7 +46,13 @@
 (defun ag-mail/post-init-mu4e ()
   (with-eval-after-load 'mu4e
 
-    (add-to-list 'mu4e-bookmarks '(:name "inbox" :key ?i :query "maildir:/home/inbox"))
+    (setq mu4e-bookmarks
+          '((:name "inbox" :key ?i :query "maildir:/home/inbox")
+            (:name "Unread messages" :query "NOT maildir:/home/[Gmail]/Trash AND flag:unread" :key ?u)
+            (:name "Today's messages" :query "NOT maildir:/home/[Gmail]/Trash AND date:today..now" :key ?t)
+            (:name "Today's everything" :query "date:today..now" :key ?T)
+            (:name "Last 7 days" :query "(NOT maildir:/home/[Gmail]/Trash) AND date:7d..now" :hide-unread t :key ?w)
+            (:name "Messages with images" :query "mime:image/*" :key ?p)))
 
     (setq
           mu4e-get-mail-command "mbsync --all --new --delete --flags --renew --pull --push --create --expunge --verbose"
@@ -226,7 +232,7 @@
 
     ;; increase font-size in messages
     (dolist (f '(mu4e-view-body-face mu4e-cited-1-face mu4e-cited-2-face mu4e-cited-3-face mu4e-cited-4-face mu4e-cited-5-face mu4e-cited-6-face mu4e-cited-7-face))
-      (set-face-attribute f nil :height 180))
+      (set-face-attribute f nil :height 1.2))
 
     (defun set-mu4e-index-update-parameter (x)
       (if-let ((mu4e-layout? (-some-> (get-current-persp)

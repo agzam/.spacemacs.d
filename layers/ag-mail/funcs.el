@@ -12,12 +12,21 @@
 ;;; Code:
 
 (defun mu4e-prepare-view ()
-  (run-at-time
-   "0.1 sec" nil
-   (lambda ()
-     (setq writeroom-fullscreen-effect (frame-parameter (selected-frame) 'fullscreen))
-     (spacemacs/toggle-centered-buffer)
-     (variable-pitch-mode 1))))
+  (makunbound 'mu4e--prepare-view-timer)
+  (setq mu4e--prepare-view-timer
+   (run-at-time
+    "0.05 sec" 0.05
+    (lambda ()
+      (with-current-buffer "*mu4e-view*"
+       (if (bound-and-true-p writeroom-mode)
+           (progn
+             (cancel-timer mu4e--prepare-view-timer)
+             (makunbound 'mu4e--prepare-view-timer))
+         (progn
+           (setq writeroom-fullscreen-effect (frame-parameter (selected-frame) 'fullscreen))
+           (cl-letf ((writeroom-maximize-window nil)
+                     (writeroom-mode-line t))
+             (writeroom-mode 1)))))))))
 
 (with-eval-after-load 'hydra
   (defhydra hydra-mu4e-headers (:color blue :hint nil)
