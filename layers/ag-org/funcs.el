@@ -333,26 +333,12 @@ is not defined."
           pos
         -1))))
 
-(defun zp/org-set-time-file-property (property &optional anywhere pos)
-  "Set the time file PROPERTY in the preamble.
-When ANYWHERE is non-nil, search beyond the preamble.
-If the position of the file PROPERTY has already been computed,
-it can be passed in POS."
-  (when-let ((pos (or pos
-                      (zp/org-find-time-file-property property))))
-    (save-excursion
-      (goto-char pos)
-      (if (looking-at-p " ")
-          (forward-char)
-        (insert " "))
-      (delete-region (point) (line-end-position))
-      (let* ((now (format-time-string "[%Y-%m-%d %a %H:%M]")))
-        (insert now)))))
-
-(defun zp/org-set-last-modified ()
-  "Update the LAST_MODIFIED file property in the preamble."
+(defun org-roam--set-last-modified ()
+  "Update the LAST_MODIFIED file property."
   (when (derived-mode-p 'org-mode)
-    (zp/org-set-time-file-property "LAST_MODIFIED")))
+    (save-mark-and-excursion
+      (goto-char 0)
+      (org-set-property "last_modified" (format-time-string "[%Y-%m-%d %a %H:%M:%S]")))))
 
 ;; Borrowed from https://org-roam.discourse.group/t/creating-an-org-roam-note-from-an-existing-headline
 (defun org-roam-create-note-from-headline ()
@@ -473,6 +459,21 @@ Org-mode properties drawer already, keep the headline and don’t insert
            (template (cdr (assoc 'template capture-info))))
       (org-roam-capture--capture nil "p")
       (org-roam-message "Item captured."))))
+
+(defun org-roam-keywords->prop-drawer ()
+  "Converts file level Roam key/value pairs by putting them in a
+  prop drawer."
+  (interactive)
+  (save-excursion
+    (goto-char 0)
+    (let* ((existing (org-roam--extract-global-props-keyword '("title" "created" "last_modified" "roam_alias" "roam_key" "roam_tags")))
+           (title (alist-get "TITLE" existing nil nil 'string-match)))
+      (dolist (kv existing)
+        (org-set-property (downcase (car kv)) (s-trim (cdr kv)))
+        (flush-lines (concat "#\\+" (downcase (car kv)))))
+      (re-search-forward ":END:\n")
+      (when title
+        (insert (format "* %s\n" title))))))
 
 (provide 'funcs)
 

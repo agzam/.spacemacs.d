@@ -22,14 +22,16 @@
                             org-roam
                             company-org-roam
                             org-roam-server
-                            ))
+                            deft
+                            (org-ref :location
+                                     (recipe :fetcher github
+                                             :repo "jkitchin/org-ref"))))
 
 (setq org-default-folder "~/Dropbox/org/")
 (setq org-default-main-file (concat org-default-folder "tasks.org"))
 
-(add-hook 'before-save-hook 'zp/org-set-last-modified)
-
 (defun ag-org/post-init-org ()
+  (add-hook 'before-save-hook 'org-roam--set-last-modified)
   (with-eval-after-load 'org-capture
     (remove-hook 'org-capture-mode-hook 'spacemacs//org-capture-start)
     (dolist (template
@@ -386,14 +388,15 @@
         org-roam-completion-everywhere nil
         org-roam-link-auto-replace t
         org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id
-        )
+        org-roam-buffer-width 0.15
+        org-roam-buffer-window-parameters '((window-slot . t)))
 
   (setq org-roam-capture-templates
         '(("d" "default" plain
            (function org-roam-capture--get-point)
            "%?"
            :file-name "%<%Y%m%d%H%M%S>-${slug}"
-           :head "#+title: ${title}\n#+created: %u\n#+last_modified: %U\n#+roam_tags:${tag}\n\n"
+           :head ":PROPERTIES:\n:title: ${title}\n:created: %u\n:roam_tags: ${tag}\n:END:\n* ${title}\n"
            :unnarrowed t
            :immediate-finish nil))
         org-roam-capture-ref-templates
@@ -401,27 +404,27 @@
            (function org-roam-capture--get-point)
            ""
            :file-name "web/%<%Y%m%d%H%M%S>-${slug}"
-           :head "#+title: ${title}\n#+created: %u\n#+last_modified: %U\n#+roam_key: ${ref}\\n\n[[roam:web]]\n\n%(zp/org-protocol-insert-selection-dwim \"${body}\")"
+           :head ":PROPERTIES:\n:title: ${title}\n:created: %u\n:roam_key: ${ref}\n:END:\n[[roam:web]]\n* ${title}\n%(zp/org-protocol-insert-selection-dwim \"${body}\")"
            :unnarrowed t)
           ("p" "pocket" plain
            (function org-roam-capture--get-point)
            ""
            :file-name "read-later/%<%Y%m%d%H%M%S>-${slug}"
-           :head "#+title: ${title}\n#+roam_key: ${ref}\n#+created: %u\n#+last_modified: %U\n\n[[roam:web]]\n\n${body}"
+           :head ":PROPERTIES:\n:title: ${title}\n:roam_key: ${ref}\n:created: %u\n:END:\n[[roam:web]]\n* ${title}\n${body}"
            :unnarrowed t))
         org-roam-dailies-capture-templates
         '(("w" "work" entry
            #'org-roam-capture--get-point
            "* %?"
            :file-name "daily/%<%Y-%m-%d %a>"
-           :head "#+title: %<%Y-%m-%d %A>\n#+created: %u\n#+last_modified: %U\n#+roam_tags:daily\n\n[[roam:dailies]]\n\n"
+           :head ":PROPERTIES:\n:title: %<%Y-%m-%d %A>\n:created: %u\n:roam_tags: daily\n:END:\n[[roam:dailies]]\n"
            :olp ("Work")
            :add-created t)
           ("j" "journal" entry
            #'org-roam-capture--get-point
            "* %?"
            :file-name "daily/%<%Y-%m-%d %a>"
-           :head "#+title: %<%Y-%m-%d %A>\n#+created: %u\n#+last_modified: %U\n#+roam_tags:daily\n\n[[roam:dailies]]\n\n"
+           :head ":PROPERTIES:\n:title: %<%Y-%m-%d %A>\n:created: %u\n:roam_tags: daily\n:END:\n[[roam:dailies]]\n"
            :olp ("Journal")
            :add-created t)))
 
