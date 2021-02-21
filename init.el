@@ -584,26 +584,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (with-eval-after-load 'auto-highlight-symbol
    (spacemacs/toggle-automatic-symbol-highlight-on))
 
-  (load custom-file)
-
-  (setq doom-modeline--vcs-icon nil
-        doom-modeline--vcs-text nil
-        doom-modeline-buffer-encoding nil
-        doom-modeline-buffer-file-name-style 'relative-from-project
-        doom-modeline-buffer-modification-icon nil
-        doom-modeline-buffer-state-icon nil
-        doom-modeline-icon (display-graphic-p)
-        doom-modeline-icon t
-        doom-modeline-major-mode-color-icon nil
-        doom-modeline-major-mode-icon nil
-        doom-modeline-major-mode-icon nil
-        doom-modeline-modal-icon t
-        doom-modeline-mu4e nil
-        doom-modeline-mu4e nil
-        doom-modeline-persp-icon nil
-        doom-modeline-workspace-name nil
-        inhibit-compacting-font-caches t
-        doom-modeline-height 1))
+  (load custom-file))
 
 (defun dotspacemacs/user-load ()
   "Library to load while dumping.

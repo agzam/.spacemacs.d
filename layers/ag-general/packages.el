@@ -26,7 +26,37 @@
                                 which-key-posframe
                                 grip-mode
                                 expand-region
-                                ))
+                                doom-modeline))
+
+(defun ag-general/init-doom-modeline ()
+  (use-package doom-modeline
+    :defer t
+    :init
+    (doom-modeline-mode)
+    (doom-modeline-def-modeline
+      'agcustom
+      '(bar window-number workspace-name persp-name buffer-info matches word-count parrot selection-info)
+      '(misc-info battery grip irc mu4e debug repl lsp major-mode process checker buffer-position))
+
+    (defun setup-custom-doom-modeline ()
+      (doom-modeline-set-modeline 'agcustom))
+
+    (add-hook 'doom-modeline-mode-hook 'setup-custom-doom-modeline 90)
+    (add-hook 'find-file-hook 'setup-custom-doom-modeline 90)
+
+    (setq doom-modeline-buffer-encoding nil
+          doom-modeline-buffer-file-name-style 'relative-from-project
+          doom-modeline-buffer-modification-icon nil
+          doom-modeline-buffer-state-icon nil
+          doom-modeline-icon (display-graphic-p)
+          doom-modeline-major-mode-color-icon nil
+          doom-modeline-major-mode-icon nil
+          doom-modeline-modal-icon t
+          doom-modeline-mu4e nil
+          doom-modeline-persp-icon nil
+          inhibit-compacting-font-caches t
+          doom-modeline-height 1
+          doom-modeline-bar-width 1)))
 
 (defun ag-general/init-helpful ()
   (use-package helpful
