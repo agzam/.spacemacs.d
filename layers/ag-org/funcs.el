@@ -236,26 +236,6 @@ item COLOR can be \"red\" \"green\" or \"yellow\"."
       (markdown-kill-thing-at-point)
       (org-insert-link nil url desc))))
 
-(defun autosave-tasks-org (next-persp window)
-  "Save tasks.org file automatically. To be used with
-persp-before-switch-functions hook."
-  (when (and buffer-file-name
-             (not (string= next-persp "@Org"))
-             (-some-> (get-current-persp)
-               (persp-name)
-               (string= "@Org")))
-    (let* ((tasksfile "~/Dropbox/org/tasks.org")
-           (fname (abbreviate-file-name buffer-file-name)))
-      (when (and (string= fname tasksfile)
-                 ;; no src editing happening
-                 (not (seq-filter
-                       (lambda (a)
-                         (string-match "\\*Org
-                             Src" (buffer-name a)))
-                       (buffer-list)))
-                 (buffer-modified-p (current-buffer)))
-        (save-buffer)))))
-
 (defun get-gh-item-title (uri &optional include-number?)
   "Based on given GitHub URI for pull-request or issue,
   return the title of that pull-request or issue."
@@ -334,8 +314,12 @@ is not defined."
         -1))))
 
 (defun org-roam--set-last-modified ()
-  "Update the LAST_MODIFIED file property."
-  (when (derived-mode-p 'org-mode)
+  "Update the LAST_MODIFIED file property of org-roam note."
+  (when (and buffer-file-name
+             (derived-mode-p 'org-mode)
+             ;; buffer dir is the org-roam dir
+             (string= (concat (expand-file-name org-roam-directory) "/")
+                      (expand-file-name (file-name-directory buffer-file-name))))
     (save-mark-and-excursion
       (goto-char 0)
       (org-set-property "last_modified" (format-time-string "[%Y-%m-%d %a %H:%M:%S]")))))
@@ -402,10 +386,10 @@ Org-mode properties drawer already, keep the headline and don’t insert
   (interactive)
   (pcase-let* ((url-regexp "\\(news\\(post\\)?:\\|mailto:\\|file:\\|\\(ftp\\|https?\\|telnet\\|gopher\\|www\\|wais\\)://\\)")
                (`(,l ,rl ,todo-cookie ,priority ,headline ,tags) (org-heading-components))
-               (tags (split-string tags ":" t))
+               (tags (when tags (split-string tags ":" t)))
                (props (org-entry-properties))
-               (url (a-get props "URL"))
-               (added-at (a-get props "ADDEDAT"))
+               (url (alist-get "URL" props nil nil 'string-match))
+               (added-at (alist-get "ADDEDAT" props nil nil 'string-match))
                (content (org-agenda-get-some-entry-text (point-marker) most-positive-fixnum))
                (buf (concat "*org-heading->note *" headline))
                (roam-links (apply 'concat (mapcar (lambda (x) (format " [[roam:%s]]" x)) tags)))
@@ -428,8 +412,8 @@ Org-mode properties drawer already, keep the headline and don’t insert
           (setq more-links? (re-search-forward url-regexp nil t))
           (when (and more-links? (not (looking-at-org-link?)))
             (er/mark-url)
-            (if-let ((title (www-get-page-title
-                          (buffer-substring (region-beginning) (region-end)))))
+            (if-let* ((url (buffer-substring (region-beginning) (region-end)))
+                      (title (www-get-page-title url)))
                 (progn
                   (kill-region (region-beginning) (region-end))
                   (insert (concat "[[" url "][" title "]]")))
@@ -474,6 +458,13 @@ Org-mode properties drawer already, keep the headline and don’t insert
       (re-search-forward ":END:\n")
       (when title
         (insert (format "* %s\n" title))))))
+
+(defun org-roam--reset-roam-buffer-window (&optional win)
+  (run-at-time
+   "0.01" nil
+   (lambda ()
+    (pcase (org-roam-buffer--visibility)
+      ('visible (org-roam-buffer-activate))))))
 
 (provide 'funcs)
 

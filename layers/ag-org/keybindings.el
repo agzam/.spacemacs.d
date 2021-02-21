@@ -11,6 +11,8 @@
 
 (global-set-key (kbd "C-x C-p") 'org-pomodoro)
 (global-set-key (kbd "C-x p") 'org-pomodoro)
+(global-set-key (kbd "C-c C-f") #'org-roam-find-file)
+(org-defkey org-mode-map (kbd "C-c C-f") #'org-roam-find-file)
 
 (evil-define-key 'normal org-mode-map "H" 'org-shiftleft)
 (evil-define-key 'normal org-mode-map "L" 'org-shiftright)

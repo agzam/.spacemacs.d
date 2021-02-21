@@ -192,8 +192,9 @@
       (evil-define-key 'evilified org-agenda-mode-map "\C-u" 'universal-argument))
     (add-hook 'org-agenda-mode-hook 'override-evilified-keys)
 
-    ;; (add-hook 'org-mode-hook #'flyspell-mode)
+    (add-hook 'org-mode-hook #'flyspell-mode)
     (add-hook 'org-mode-hook #'ag/org-mode-hook)
+    (add-hook 'org-mode-hook #'smartparens-mode)
     (add-hook 'org-mode-hook #'spacemacs/toggle-visual-line-navigation-on)
     (add-hook 'org-mode-hook #'org-indent-mode)
     (add-hook 'org-agenda-after-show-hook #'recenter)
@@ -223,8 +224,6 @@
             ('darwin  "/usr/local/Cellar/ditaa/0.11.0/libexec/ditaa-0.11.0-standalone.jar")))
 
     (add-hook 'org-mode-hook #'abbrev-mode)
-
-    (add-hook 'persp-before-switch-functions 'autosave-tasks-org)
 
     (advice-add 'org-return :around 'org-return--around)
 
@@ -389,13 +388,18 @@
         org-roam-link-auto-replace t
         org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id
         org-roam-buffer-width 0.15
-        org-roam-buffer-window-parameters '((window-slot . t)))
+        org-roam-buffer-window-parameters '((side . right)
+                                            (no-delete-other-windows . t)
+                                            (mode-line-format . none)))
+
+  (dolist (p org-roam-doctor--supported-roam-properties)
+    (add-to-list 'org-default-properties p))
 
   (setq org-roam-capture-templates
         '(("d" "default" plain
            (function org-roam-capture--get-point)
            "%?"
-           :file-name "%<%Y%m%d%H%M%S>-${slug}"
+           :file-name "${slug}"
            :head ":PROPERTIES:\n:title: ${title}\n:created: %u\n:roam_tags: ${tag}\n:END:\n* ${title}\n"
            :unnarrowed t
            :immediate-finish nil))
@@ -403,13 +407,19 @@
         '(("r" "ref" plain
            (function org-roam-capture--get-point)
            ""
-           :file-name "web/%<%Y%m%d%H%M%S>-${slug}"
+           :file-name "web/${slug}"
            :head ":PROPERTIES:\n:title: ${title}\n:created: %u\n:roam_key: ${ref}\n:END:\n[[roam:web]]\n* ${title}\n%(zp/org-protocol-insert-selection-dwim \"${body}\")"
+           :unnarrowed t)
+          ("n" "non-browser" plain
+           (function org-roam-capture--get-point)
+           ""
+           :file-name "read-later/${slug}"
+           :head ":PROPERTIES:\n:title: ${title}\n:created: %u\n:END:\n* ${title}\n%(zp/org-protocol-insert-selection-dwim \"${body}\")"
            :unnarrowed t)
           ("p" "pocket" plain
            (function org-roam-capture--get-point)
            ""
-           :file-name "read-later/%<%Y%m%d%H%M%S>-${slug}"
+           :file-name "read-later/${slug}"
            :head ":PROPERTIES:\n:title: ${title}\n:roam_key: ${ref}\n:created: %u\n:END:\n[[roam:web]]\n* ${title}\n${body}"
            :unnarrowed t))
         org-roam-dailies-capture-templates
@@ -428,6 +438,11 @@
            :olp ("Journal")
            :add-created t)))
 
+  ;; org-roam-buffer-window-parameters get reset on Layout/Workspace change,
+  ;; they should be respected
+  (add-hook 'persp-activated-functions #'org-roam--reset-roam-buffer-window)
+  (add-hook 'eyebrowse-post-window-switch-hook #'org-roam--reset-roam-buffer-window)
+
   (with-eval-after-load 'org-capture
     (define-key org-capture-mode-map (kbd "r") nil)
     (spacemacs/declare-prefix-for-minor-mode 'spacemacs-org-capture-mode "r" "org-roam")
@@ -440,14 +455,6 @@
       "rl" 'org-roam-buffer-toggle-display
       "rta" 'org-roam-tag-add
       "rtd" 'org-roam-tag-delete)))
-
-(defun ag-org/init-company-org-roam ()
-  (use-package company-org-roam
-    :after (company)
-    :config
-    (spacemacs|add-company-backends
-      :backends (company-org-roam company-capf company-dabbrev)
-      :modes org-mode)))
 
 (defun ag-org/init-org-roam-server ()
   (use-package org-roam-protocol)
@@ -466,9 +473,37 @@
           org-roam-server-network-label-truncate-length 60
           org-roam-server-network-label-wrap-length 20
           org-roam-server-link-auto-replace nil
-
-          )
+          org-roam-server-network-vis-options
+          "{
+              \"layout\": {\"hierarchical\": {\"enabled\": true}},
+              \"nodes\": { \"font\": { \"size\":11, \"background\":\"rgba(255,255,255,0.8)\"} }
+           }")
     ))
+
+(defun ag-org/init-deft ()
+  (use-package deft
+    :after org
+    :bind
+    ("C-c n d" . deft)
+    :config
+    (setq
+     deft-recursive t
+     deft-use-filter-string-for-filename t
+     deft-default-extension "org"
+     deft-directory "~/Dropbox/org")
+
+    (defun deft-parse-title (file contents)
+      (org-roam-db--get-title file))
+
+    (defun deft-parse-summary (contents title) "")
+    )
+  )
+
+(defun ag-org/post-init-org-ref ()
+  (setq org-ref-default-bibliography '("~/SyncMobile/Papers/references.bib")
+        org-ref-pdf-directory "~/SyncMobile/Papers/"
+        org-ref-bibliography-notes "~/SyncMobile/Papers/notes.org")
+  )
 
 
 ;;; packages.el ends here
