@@ -20,7 +20,7 @@ This function should only modify configuration layer settings."
    ;; lazy install any layer that support lazy installation even the layers
    ;; listed in `dotspacemacs-configuration-layers'. `nil' disable the lazy
    ;; installation feature and you have to explicitly list a layer in the
-   ;; variable `dotspacemacs-configuration-layers' to install it.
+
    ;; (default 'unused)
    dotspacemacs-enable-lazy-installation nil
 
@@ -51,12 +51,14 @@ This function should only modify configuration layer settings."
                       auto-completion-tab-key-behavior 'cycle
                       company-idle-delay 0.1
                       company-selection-wrap-around t
-                      company-show-numbers t)
+                      company-show-numbers t
+                      completion-styles '(basic partial-completion emacs22 flex))
      ;; ---- Tools ----
      ,(when (eq system-type 'darwin) 'osx)
      ,(when (eq system-type 'gnu/linux) 'common-lisp)
      multiple-cursors
-     docker emoji fasd imenu-list restclient search-engine
+     docker fasd imenu-list restclient search-engine
+     treemacs
      (ivy :variables
           ivy-fixed-height-minibuffer t
           ivy-enable-advanced-buffer-information t
@@ -67,9 +69,8 @@ This function should only modify configuration layer settings."
                                   (cider-repl-handle-shortcut . ivy--regex-fuzzy)
                                   (helpful-symbol . ivy--regex-fuzzy)
                                   (t . ivy--regex-plus))
-          ivy-height 20
-          ivy-read-action-function 'ivy-hydra-read-action ; until https://github.com/abo-abo/swiper/issues/2469 fixed
-          )
+          ivy-height 20)
+
      ;; (dash :variables
      ;;       helm-dash-docset-path
      ;;       (cond ((eq system-type 'darwin) "~/Library/Application\ Support/Dash/DocSets")))
@@ -112,7 +113,9 @@ This function should only modify configuration layer settings."
    dotspacemacs-additional-packages '(copy-as-format
                                       ivy-rich
                                       quelpa-use-package
-                                      dired-narrow)
+                                      dired-narrow
+                                      graphql-mode
+                                      apples-mode)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
 

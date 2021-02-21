@@ -45,17 +45,7 @@
 
 (defun clj-fully-qualified-symbol-at-point ()
   (interactive)
-  (let ((sym (cond ((cider-connected-p)
-                    (let ((cb (lambda (x)
-                                (when-let ((v (nrepl-dict-get x "value"))
-                                           (s (replace-regexp-in-string "[()]" "" v)))
-                                  (kill-new s)
-                                  (message s)))))
-                      (cider-interactive-eval
-                       (concat "`(" (cider-symbol-at-point t) ")")
-                       cb)))
-
-                   ((lsp--capability :hoverProvider)
+  (let ((sym (cond ((lsp--capability :hoverProvider)
                     (let ((s (-some->> (lsp--text-document-position-params)
                                (lsp--make-request "textDocument/hover")
                                (lsp--send-request)
@@ -63,6 +53,16 @@
                                (gethash "value"))))
                       (string-match "\\(```.*\n\\)\\(.*\\)\n\\(```\\)" s)
                       (string-trim (match-string 2 s))))
+
+                   ((cider-connected-p)
+                    (let ((cb (lambda (x)
+                                (when-let ((v (nrepl-dict-get x "value"))
+                                           (s (replace-regexp-in-string "[()]" "" v)))
+                                  (message (string-trim s))
+                                  (kill-new s)))))
+                      (cider-interactive-eval
+                       (concat "`(" (cider-symbol-at-point t) ")")
+                       cb)))
                    (t (message "Neither lsp nor cider are connected")))))
     (message sym)
     (kill-new sym)

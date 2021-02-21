@@ -166,8 +166,8 @@
                   (mode-line-inactive . (:underline (:color ,base01)))
                   (default . (:background ,default-background :foreground ,default-foreground))
 
-                  (mode-line . (:height 100))
-                  (mode-line-inactive . (:height 100))
+                  (mode-line . (:height 0.7))
+                  (mode-line-inactive . (:height 0.7))
                   (mode-line-emphasis . (:weight normal))
 
                   (line-number . (:inherit fixed-pitch))
@@ -267,8 +267,8 @@
                   (mm-uu-extract . (:background "#efeae9"))
 
 
-                  (mode-line . (:height 100))
-                  (mode-line-inactive . (:height 100))
+                  (mode-line . (:height 0.7))
+                  (mode-line-inactive . (:height 0.7))
                   (mode-line-emphasis . (:weight normal))
 
                   (cider-debug-code-overlay-face . (:background ,bg-darker))

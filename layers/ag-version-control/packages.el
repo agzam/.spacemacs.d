@@ -25,6 +25,7 @@
   (setq
    ;; version-control-diff-tool 'diff-hl
    magit-save-repository-buffers 'dontask
+   magit-clone-set-remote.pushDefault nil
    version-control-global-margin t
    magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1
    magit-repository-directories '("~/DevProjects" "~/Sandbox")
