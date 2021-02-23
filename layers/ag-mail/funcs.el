@@ -17,16 +17,19 @@
    (run-at-time
     "0.05 sec" 0.05
     (lambda ()
+      (when (and (not (get-buffer "*mu4e-view*"))
+                 (boundp 'mu4e--prepare-view-timer))
+        (cancel-timer mu4e--prepare-view-timer))
       (with-current-buffer "*mu4e-view*"
-       (if (bound-and-true-p writeroom-mode)
-           (progn
-             (cancel-timer mu4e--prepare-view-timer)
-             (makunbound 'mu4e--prepare-view-timer))
-         (progn
-           (setq writeroom-fullscreen-effect (frame-parameter (selected-frame) 'fullscreen))
-           (cl-letf ((writeroom-maximize-window nil)
-                     (writeroom-mode-line t))
-             (writeroom-mode 1)))))))))
+        (if (bound-and-true-p writeroom-mode)
+            (progn
+              (cancel-timer mu4e--prepare-view-timer)
+              (makunbound 'mu4e--prepare-view-timer))
+          (progn
+            (setq writeroom-fullscreen-effect (frame-parameter (selected-frame) 'fullscreen))
+            (cl-letf ((writeroom-maximize-window nil)
+                      (writeroom-mode-line t))
+              (writeroom-mode 1)))))))))
 
 (with-eval-after-load 'hydra
   (defhydra hydra-mu4e-headers (:color blue :hint nil)

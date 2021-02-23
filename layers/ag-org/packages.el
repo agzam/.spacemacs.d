@@ -211,6 +211,7 @@
      '((emacs-lisp . t)
        (shell . t)
        (js . t)
+       (python . t)
        (clojure . t)
        (sql . t)
        (shell . t)

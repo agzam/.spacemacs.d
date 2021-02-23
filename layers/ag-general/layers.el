@@ -18,7 +18,7 @@
                                       spacemacs-evil
                                       spacemacs-language
                                       spacemacs-misc
-                                      spacemacs-modeline
+                                      ;; spacemacs-modeline
                                       spacemacs-navigation
                                       spacemacs-org
                                       spacemacs-project

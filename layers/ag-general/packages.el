@@ -359,6 +359,7 @@
            mark-between
            er/mark-symbol
            er/mark-symbol-with-prefix
+           er/mark-inside-pairs
            er/mark-line
            er/mark-org-element
            er/mark-org-element-parent
@@ -369,7 +370,7 @@
 
   (with-eval-after-load 'expand-region
     (remove-hook 'org-mode-hook 'er/add-org-mode-expansions)
-    (er/enable-mode-expansions 'org-mode 'er/add-org-mode-expansions*)))
+    (er/enable-mode-expansions 'org-mode #'er/add-org-mode-expansions*)))
 
 (with-eval-after-load 'terminal-here
   (setq terminal-here-terminal-command
@@ -383,4 +384,5 @@
     (with-ivy-window (recenter)))
 
   (advice-add 'ivy-occur-press :after 'ivy--recenter-after-press))
+
 ;;; packages.el ends here
