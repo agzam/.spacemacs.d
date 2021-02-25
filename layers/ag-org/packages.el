@@ -377,8 +377,7 @@
  org-roam-db-location "~/Dropbox/org/org-roam.db"
  org-roam-graph-viewer "/usr/bin/open"
  org-roam-dailies-directory "daily/"
- org-roam-completion-system 'ivy
- )
+ org-roam-completion-system 'ivy)
 
 (defun ag-org/post-init-org-roam ()
   (add-hook 'after-init-hook 'org-roam-mode)
@@ -455,7 +454,20 @@
       "rI" 'org-roam-insert-immediate
       "rl" 'org-roam-buffer-toggle-display
       "rta" 'org-roam-tag-add
-      "rtd" 'org-roam-tag-delete)))
+      "rtd" 'org-roam-tag-delete))
+
+  (with-eval-after-load 'persp-mode
+    ;; if I don't do this with a timer, the Org layer persp-post-init logic
+    ;; always runs after and resets it
+    (run-at-time
+     "0.5" nil
+     (lambda ()
+       (spacemacs|define-custom-layout "@Org"
+         :binding "o"
+         :body
+         (progn
+           (find-file (concat org-roam-directory "/index.org"))
+           (org-roam-buffer-activate)))))))
 
 (defun ag-org/init-org-roam-server ()
   (use-package org-roam-protocol)
@@ -478,8 +490,7 @@
           "{
               \"layout\": {\"hierarchical\": {\"enabled\": true}},
               \"nodes\": { \"font\": { \"size\":11, \"background\":\"rgba(255,255,255,0.8)\"} }
-           }")
-    ))
+           }")))
 
 (defun ag-org/init-deft ()
   (use-package deft

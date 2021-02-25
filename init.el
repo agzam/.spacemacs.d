@@ -120,7 +120,7 @@ This function should only modify configuration layer settings."
    dotspacemacs-frozen-packages '()
 
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '(git-gutter git-gutter+ git-gutter-fringe+)
+   dotspacemacs-excluded-packages '()
 
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
@@ -726,6 +726,13 @@ before packages are loaded."
     (defun google-translate--search-tkk ()
       "Search TKK."
       (list 430675 2721866130)))
+
+  ;; show emojis in OSX
+  (when (eq system-type 'darwin)
+    (set-fontset-font
+     t 'symbol
+     (font-spec :family "Apple Color Emoji")
+     nil 'prepend))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will

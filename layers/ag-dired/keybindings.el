@@ -16,7 +16,6 @@
 (evil-define-key 'normal direx:direx-mode-map "r" 'direx:refresh-whole-tree)
 (evil-define-key '(normal evilified) dired-mode-map
   "o" 'spacemacs/dired-open-item-other-window-transient-state/body
-  "s" 'hydra-dired-quick-sort/body
   "gr" 'revert-buffer
   (kbd "RET") 'dired-find-file
   (kbd "<C-return>") 'dired-find-alternate-file) ; re-use dired buffer, insead of keeping it open

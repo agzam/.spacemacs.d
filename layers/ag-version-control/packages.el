@@ -21,7 +21,9 @@
                                                    (recipe
                                                     :fetcher github
                                                     :repo "anticomputer/gh-notify"
-                                                    :branch "dev"))))
+                                                    :branch "dev"))
+                                        (forge-visit-here
+                                         :location "~/sandbox/forge-visit-here")))
 
 (setq
  vc-follow-symlinks t
@@ -34,7 +36,11 @@
    magit-clone-set-remote.pushDefault nil
    version-control-global-margin t
    magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1
-   magit-repository-directories '("~/DevProjects" "~/Sandbox")
+   magit-repository-directories '(("~/work" . 2)
+                                  ("~/Sandbox" . 2)
+                                  ("~/.hammerspoon" . 1)
+                                  ("~/.spacemacs.d" . 1)
+                                  ("~/.emacs-profiles/.emacs-spacemacs.d" . 1))
    ;; magit-show-refs-arguments '("--sort=-committerdate")
    magit-delete-by-moving-to-trash nil
    magit-branch-rename-push-target nil ; do not push renamed/deleted branch to remote automatically
@@ -127,8 +133,19 @@ i.e.: show only commits that differ between selected (other branch) and current 
          (format "# ```suggestion\n%s\n# ```\n"
                  (replace-regexp-in-string "^\\+" "# " s-region)))))
 
-    (evil-define-key '(visual) github-review-mode-map "y" #'github-review--copy-suggestion)
-    
+    (evil-define-key '(visual) github-review-mode-map "M-y" #'github-review--copy-suggestion)
+
+    (defun github-review--after-save-diff (pr-alist diff)
+      (let-alist pr-alist
+        (with-current-buffer
+         (format "%s___%s___%s___%s.diff" .owner .repo .num .sha)
+         (goto-line 1))))
+
+    (advice-add 'github-review-save-diff :after 'github-review--after-save-diff)
+
+    ;; otherwise it messes up with backwards-kill-word when commenting
+    (bind-key (kbd "M-DEL") nil diff-mode-map)
+
     (setq github-review-fetch-top-level-and-review-comments t)))
 
 (defun ag-version-control/post-init-git-link ()
@@ -148,6 +165,11 @@ i.e.: show only commits that differ between selected (other branch) and current 
     :config
     (evil-define-key 'normal gh-notify-mode-map (kbd "RET") 'gh-notify-visit-notification)
     'gh-notify-forge-visit-repo-at-point
+    (evil-define-key 'normal gh-notify-mode-map (kbd "q")
+      (lambda ()
+        (interactive)
+        (spacemacs/kill-this-buffer 4)))
+    (spacemacs/set-leader-keys "agh" #'gh-notify)
     (spacemacs/set-leader-keys-for-major-mode 'gh-notify-mode
       "l" #'gh-notify-retrieve-notifications
       "r" #'gh-notify-reset-filter
@@ -177,6 +199,25 @@ i.e.: show only commits that differ between selected (other branch) and current 
       "/s" #'gh-notify-limit-subscribed
       "/c" #'gh-notify-limit-comment
       "/r" #'gh-notify-limit-review-requested
-      "//" #'gh-notify-limit-none)))
+      "//" #'gh-notiy-limit-none)))
+
+(defun ag-version-control/init-forge-visit-here ()
+  (use-package forge-visit-here
+   :config
+    (spacemacs/set-leader-keys "gfL" #'forge-visit-here)))
+
+(with-eval-after-load 'forge
+  :config
+  (evil-define-key '(normal visual) forge-topic-mode-map "0" #'evil-digit-argument-or-evil-beginning-of-line)
+  (evil-define-key '(normal visual) forge-topic-mode-map "$" #'evil-end-of-line)
+  (evil-define-key 'normal forge-topic-mode-map "v" #'evil-visual-char)
+  (evil-define-key '(normal visual) forge-topic-mode-map "l" #'evil-forward-char)
+  (evil-define-key '(normal visual) forge-topic-mode-map "h" #'evil-backward-char)
+  (evil-define-key '(normal visual) forge-topic-mode-map "w" #'evil-forward-word-begin)
+  (evil-define-key '(normal visual) forge-topic-mode-map "b" #'evil-backward-word-begin))
+
+
+(with-eval-after-load 'git-gutter-fringe+
+  (setq git-gutter-fr+-side 'left-fringe))
 
 ;;; packages.el ends here
