@@ -52,7 +52,8 @@ This function should only modify configuration layer settings."
                       company-idle-delay 0.1
                       company-selection-wrap-around t
                       company-show-numbers t
-                      completion-styles '(basic partial-completion emacs22 flex))
+                      completion-styles '(basic partial-completion emacs22)
+                      )
      ;; ---- Tools ----
      ,(when (eq system-type 'darwin) 'osx)
      ,(when (eq system-type 'gnu/linux) 'common-lisp)

@@ -386,14 +386,15 @@
         org-roam-tag-sources '(prop vanilla all-directories)
         org-roam-completion-everywhere nil
         org-roam-link-auto-replace t
-        org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id
+        ;; org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id
         org-roam-buffer-width 0.15
         org-roam-buffer-window-parameters '((side . right)
                                             (no-delete-other-windows . t)
                                             (mode-line-format . none)))
 
-  (dolist (p org-roam-doctor--supported-roam-properties)
-    (add-to-list 'org-default-properties p))
+  (with-eval-after-load 'org-roam-doctor
+   (dolist (p org-roam-doctor--supported-roam-properties)
+     (add-to-list 'org-default-properties p)))
 
   (setq org-roam-capture-templates
         '(("d" "default" plain

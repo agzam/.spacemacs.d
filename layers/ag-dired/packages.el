@@ -19,12 +19,6 @@
                               dired-subtree))
 
 (add-hook 'dired-mode-hook #'dired-hide-details-mode)
-(setq
- ls-lisp-dirs-first t
- ls-lisp-use-insert-directory-program nil
- dired-auto-revert-buffer t
- ;; dired-use-ls-dired t
- dired-listing-switches "-aBhg")
 
 (defun ag-dired/init-direx ()
   (use-package direx

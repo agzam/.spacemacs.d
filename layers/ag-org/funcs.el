@@ -248,8 +248,10 @@ item COLOR can be \"red\" \"green\" or \"yellow\"."
                                            number))
                       (resp (ghub-get gh-resource nil :auth 'forge)))
            (when resp
-             (format "%s%s" (alist-get 'title resp)
-                     (if include-number? (format " #%s" number) "")))))
+             (let-alist resp
+               (format
+                "|%s/%s| %s%s" owner repo .title
+                (if include-number? (format " #%s" number) ""))))))
 
         ((string-match "\\(github.com\\).*" uri)          ; just a link to a repo or file in a branch
          (pcase-let* ((uri*  (->> (split-string uri "/\\|\\?")
@@ -258,8 +260,7 @@ item COLOR can be \"red\" \"green\" or \"yellow\"."
                       (`(_ _ ,owner ,repo ,type ,branch ,dir ,file) uri*)
                       (branch (if (or (string= type "commit") (string= type "tree"))
                                 (substring branch 0 7)        ; trim to short sha
-                              branch))
-                      )
+                              branch)))
            (mapconcat
             'identity (->> (list owner repo type branch dir file) (-non-nil))
             "/")))
@@ -281,45 +282,14 @@ splits the line."
         (org-insert-item (org-element-property :checkbox context))
       (apply old-fn args))))
 
-
-;;----------------------------------------------------------------------------
-;; Updating time-based metadata
-;; Borrowed from:
-;; https://github.com/zaeph/.emacs.d/blob/master/lisp/zp-org.el#L163
-;;----------------------------------------------------------------------------
-(defun zp/org-find-time-file-property (property &optional anywhere)
-  "Return the position of the time file PROPERTY if it exists.
-When ANYWHERE is non-nil, search beyond the preamble."
-  (save-excursion
-    (goto-char (point-min))
-    (let ((first-heading
-           (save-excursion
-             (re-search-forward org-outline-regexp-bol nil t))))
-      (when (re-search-forward (format "^#\\+%s:" property)
-                               (if anywhere nil first-heading)
-                               t)
-        (point)))))
-
-(defun zp/org-has-time-file-property-p (property &optional anywhere)
-  "Return the position of time file PROPERTY if it is defined.
-As a special case, return -1 if the time file PROPERTY exists but
-is not defined."
-  (when-let ((pos (zp/org-find-time-file-property property anywhere)))
-    (save-excursion
-      (goto-char pos)
-      (if (and (looking-at-p " ")
-               (progn (forward-char)
-                      (org-at-timestamp-p 'lax)))
-          pos
-        -1))))
-
 (defun org-roam--set-last-modified ()
   "Update the LAST_MODIFIED file property of org-roam note."
   (when (and buffer-file-name
              (derived-mode-p 'org-mode)
-             ;; buffer dir is the org-roam dir
-             (string= (concat (expand-file-name org-roam-directory) "/")
-                      (expand-file-name (file-name-directory buffer-file-name))))
+             ;; buffer dir is a subdir of the org-roam dir
+             (string-prefix-p
+              (expand-file-name org-roam-directory)
+              (expand-file-name (file-name-directory buffer-file-name))))
     (save-mark-and-excursion
       (goto-char 0)
       (org-set-property "last_modified" (format-time-string "[%Y-%m-%d %a %H:%M:%S]")))))
@@ -384,6 +354,8 @@ Org-mode properties drawer already, keep the headline and don’t insert
 (defun org-roam--org-heading->note ()
   "Reads a org heading and captures new note using org-roam-ref template."
   (interactive)
+  (require 'expand-region)
+  (require 'org-agenda)
   (pcase-let* ((url-regexp "\\(news\\(post\\)?:\\|mailto:\\|file:\\|\\(ftp\\|https?\\|telnet\\|gopher\\|www\\|wais\\)://\\)")
                (`(,l ,rl ,todo-cookie ,priority ,headline ,tags) (org-heading-components))
                (tags (when tags (split-string tags ":" t)))

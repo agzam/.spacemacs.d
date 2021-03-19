@@ -210,7 +210,7 @@
   (with-eval-after-load 'lsp-mode
     (setq lsp-after-open-hook nil
           lsp-eldoc-enable-hover nil
-          lsp-diagnostic-package :none
+          lsp-diagnostics-provider :flycheck
           lsp-enable-file-watchers nil
           lsp-modeline--enable-code-actions nil
           lsp-headerline-breadcrumb-enable nil)
@@ -371,6 +371,10 @@
   (with-eval-after-load 'expand-region
     (remove-hook 'org-mode-hook 'er/add-org-mode-expansions)
     (er/enable-mode-expansions 'org-mode #'er/add-org-mode-expansions*)))
+
+(defun ag-general/init-flycheck-posframe ()
+  (use-package flycheck-posframe
+    :hook (flycheck-mode . flycheck-posframe-mode)))
 
 (with-eval-after-load 'terminal-here
   (setq terminal-here-terminal-command

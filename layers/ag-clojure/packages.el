@@ -67,8 +67,7 @@
         ;; clojure-align-binding-forms '("binding" "loop" "doseq" "for" "with-open" "with-local-vars" "with-redefs")
 
         ;; make * operator (spacemacs/enter-ahs-forward) to recognize symbols like foo/bar
-        ahs-include "^\\_<\\(?:\\s_\\|\\sw\\)+\\_>$"
-        )
+        ahs-include "^\\_<\\(?:\\s_\\|\\sw\\)+\\_>$")
 
   (add-to-list 'ivy-re-builders-alist '(cider-find-ns . ivy--regex-fuzzy))
 
@@ -101,10 +100,9 @@
 
   (advice-add 'cider-eval-print-last-sexp :around #'before-eval-print-advice)
 
-  (with-eval-after-load 'clojure-mode
-    (dolist (c (string-to-list ":_-?!*"))
-      (modify-syntax-entry c "w" clojure-mode-syntax-table)
-      (modify-syntax-entry c "w" clojurescript-mode-syntax-table)))
+  (dolist (c (string-to-list ":_-?!*"))
+    (modify-syntax-entry c "w" clojure-mode-syntax-table)
+    (modify-syntax-entry c "w" clojurescript-mode-syntax-table))
 
   ;; compojure's fucked indentation
   (define-clojure-indent
@@ -121,11 +119,29 @@
     (let-routes 1)
     (context 2)
     (clojure.test/async 1)
-    (promesa.core/alet 1)))
+    (promesa.core/alet 1))
+
+  (spacemacs|forall-clojure-modes m
+    (spacemacs/set-leader-keys-for-major-mode m
+      "df" 'cider-debug-defun-at-point))
+
+
+  )
 
 (add-hook 'clojurescript-mode-hook #'add-reframe-regs-to-imenu)
 
 (with-eval-after-load 'cider-scratch
   (setq cider-scratch-initial-message "(require '[])"))
+
+(with-eval-after-load 'cider
+  ;; replacing cider's defautl fn, because it annoying opens sometimes cider
+  ;; repl in the same window. even though
+  ;; cider-repl-display-in-current-window set to nil
+  (defun cider--switch-to-repl-buffer (repl-buffer &optional set-namespace)
+    (let ((buffer (current-buffer)))
+      (switch-to-buffer-other-window repl-buffer)
+      (when set-namespace
+        (cider-repl-set-ns (with-current-buffer buffer (cider-current-ns))))
+      (goto-char (point-max)))))
 
 ;;; packages.el ends here

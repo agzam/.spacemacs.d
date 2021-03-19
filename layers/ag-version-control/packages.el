@@ -163,12 +163,14 @@ i.e.: show only commits that differ between selected (other branch) and current 
     :after magit
     :init (require 'gh-notify)
     :config
+    (setq gh-notify-redraw-on-visit t)
     (evil-define-key 'normal gh-notify-mode-map (kbd "RET") 'gh-notify-visit-notification)
     'gh-notify-forge-visit-repo-at-point
     (evil-define-key 'normal gh-notify-mode-map (kbd "q")
       (lambda ()
         (interactive)
         (spacemacs/kill-this-buffer 4)))
+    (define-key gh-notify-mode-map (kbd "C-l") nil)
     (spacemacs/set-leader-keys "agh" #'gh-notify)
     (spacemacs/set-leader-keys-for-major-mode 'gh-notify-mode
       "l" #'gh-notify-retrieve-notifications
@@ -199,7 +201,7 @@ i.e.: show only commits that differ between selected (other branch) and current 
       "/s" #'gh-notify-limit-subscribed
       "/c" #'gh-notify-limit-comment
       "/r" #'gh-notify-limit-review-requested
-      "//" #'gh-notiy-limit-none)))
+      "//" #'gh-notify-limit-none)))
 
 (defun ag-version-control/init-forge-visit-here ()
   (use-package forge-visit-here
