@@ -16,10 +16,26 @@
     (sdcv-mode :location (recipe
                           :fetcher github
                           :repo "gucong/emacs-sdcv"))
-    (emacs-grammarly :location (recipe
-                                :fetcher github
-                                :repo "mmagnus/emacs-grammarly"))
-    google-translate))
+    google-translate
+    (keytar :location
+            (recipe :fetcher github
+                    :repo "emacs-grammarly/keytar"))
+    (lsp-grammarly
+     :location (recipe :fetcher github :repo "emacs-grammarly/lsp-grammarly"))))
+
+(defun ag-lang-tools/init-keytar ()
+  (use-package lsp-grammarly
+    :hook (text-mode . (lambda ()
+                         (require 'lsp-grammarly)
+                         (lsp)))
+    :config
+    (setq lsp-grammarly-domain "technical"
+          lsp-grammarly-audience "expert")))
+
+(defun ag-lang-tools/init-lsp-grammarly ()
+  (use-package keytar
+    :config
+    (require 'keytar)))
 
 (defun ag-lang-tools/init-mw-thesaurus ()
   (use-package mw-thesaurus
@@ -49,12 +65,6 @@
     (evil-define-key 'normal sdcv-mode-map "p" #'sdcv-previous-entry)
     (evil-define-key 'normal sdcv-mode-map (kbd "RET") #'sdcv-search-at-point)
     (evil-define-key 'normal sdcv-mode-map "a" #'sdcv-search-at-point)))
-
-(defun ag-lang-tools/init-emacs-grammarly ()
-  (use-package emacs-grammarly
-    :config
-    (spacemacs/set-leader-keys
-      "xlg" #'grammarly-save-region-and-run)))
 
 (defun ag-lang-tools/post-init-google-translate ()
   (setq google-translate-pop-up-buffer-set-focus t

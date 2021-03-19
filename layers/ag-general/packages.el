@@ -24,9 +24,10 @@
                                 company-posframe
                                 ivy-posframe
                                 which-key-posframe
-                                grip-mode
+                                ;; grip-mode
                                 expand-region
-                                doom-modeline))
+                                doom-modeline
+                                flycheck-posframe))
 
 (defun ag-general/init-doom-modeline ()
   (use-package doom-modeline
