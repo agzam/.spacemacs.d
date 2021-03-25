@@ -236,7 +236,7 @@ item COLOR can be \"red\" \"green\" or \"yellow\"."
       (markdown-kill-thing-at-point)
       (org-insert-link nil url desc))))
 
-(defun get-gh-item-title (uri &optional include-number?)
+(defun get-gh-item-title (uri)
   "Based on given GitHub URI for pull-request or issue,
   return the title of that pull-request or issue."
   (cond ((string-match "\\(github.com\\).*\\(issues\\|pull\\)" uri)               ; either PR or issue
@@ -250,8 +250,7 @@ item COLOR can be \"red\" \"green\" or \"yellow\"."
            (when resp
              (let-alist resp
                (format
-                "|%s/%s| %s%s" owner repo .title
-                (if include-number? (format " #%s" number) ""))))))
+                "%s/%s#%s %s" owner repo number .title)))))
 
         ((string-match "\\(github.com\\).*" uri)          ; just a link to a repo or file in a branch
          (pcase-let* ((uri*  (->> (split-string uri "/\\|\\?")
@@ -270,7 +269,7 @@ item COLOR can be \"red\" \"green\" or \"yellow\"."
 (defun org-link-make-description-function* (link desc)
   (cond ((not (s-blank? desc)) desc)
         ((string-match "\\(github.com\\).*" link)
-         (get-gh-item-title link :with-number))
+         (get-gh-item-title link))
         (t desc)))
 
 (defun org-return--around (old-fn &rest args)
