@@ -19,10 +19,15 @@
 (evil-define-key 'normal org-mode-map "L" 'org-shiftright)
 
 (spacemacs/set-leader-keys-for-major-mode 'org-mode
-  "sa" 'org-toggle-archive-tag
-  "sA" 'org-archive-subtree
-  "sx" 'org-cut-subtree
-  "gl" 'org-goto-last-heading
-  "gd" 'org-goto-datetree-date)
+  "sa" #'org-toggle-archive-tag
+  "sA" #'org-archive-subtree
+  "sx" #'org-cut-subtree
+  "gl" #'org-goto-last-heading
+  "gd" #'org-goto-datetree-date
+  "TL" #'org-toggle-link-display ; otherwise conflicts with lsp bindings
+  )
+
+(spacemacs/set-leader-keys
+  "aoL" #'org-store-link-with-id)
 
 ;;; keybindings.el ends here

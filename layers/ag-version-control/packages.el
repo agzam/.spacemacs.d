@@ -201,7 +201,10 @@ i.e.: show only commits that differ between selected (other branch) and current 
       "/s" #'gh-notify-limit-subscribed
       "/c" #'gh-notify-limit-comment
       "/r" #'gh-notify-limit-review-requested
-      "//" #'gh-notify-limit-none)))
+      "//" #'gh-notify-limit-none)
+
+    ;; always recenter when getting back to gh-notify buffer from forge-buffers
+    (advice-add 'gh-notify--filter-notifications :after 'recenter)))
 
 (defun ag-version-control/init-forge-visit-here ()
   (use-package forge-visit-here

@@ -60,6 +60,12 @@
                 :time-prompt t
                 :jump-to-captured t)
 
+               ("g" "Gym Workout" entry (file+olp+datetree ,(concat org-default-folder "workouts.org"))
+                "* %u %?No exercise day"
+                :time-prompt t
+                :tree-type month
+                :jump-to-captured t)
+
                ("z" "Currently clocked-in" item (clock)
                 "Note taken on %U \\\ \n%?")))
       (add-to-list 'org-capture-templates template)))

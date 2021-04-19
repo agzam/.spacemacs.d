@@ -144,7 +144,7 @@ item COLOR can be \"red\" \"green\" or \"yellow\"."
   ;; completion on Tab for `#+` stuff
   ;; (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t)
 
-  (variable-pitch-mode)
+  ;; (variable-pitch-mode)
   ;; fix indentation for variable pitch
   (require 'org-indent)
   (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
@@ -436,6 +436,11 @@ Org-mode properties drawer already, keep the headline and don’t insert
    (lambda ()
     (pcase (org-roam-buffer--visibility)
       ('visible (org-roam-buffer-activate))))))
+
+(defun org-store-link-with-id (&optional arg)
+  (interactive "P")
+  (let ((org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id))
+    (org-store-link arg :interactive)))
 
 (provide 'funcs)
 

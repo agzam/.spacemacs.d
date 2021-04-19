@@ -160,6 +160,17 @@ OPTIONS can include '(urgency expire-time app-name icon category hint), refer to
     (set-frame-width frame (- display-width 20) nil t)
     (set-frame-position frame x y)))
 
+(defun toggle-frame-full-height ()
+  "Removes the title of the current frame and stretches it out to
+  the display height. To be used on a Mac."
+  (interactive)
+  (if (frame-parameter nil 'undecorated)
+      (set-frame-parameter nil 'undecorated nil)
+    (progn
+      (set-frame-parameter nil 'undecorated t)
+      (set-frame-position nil (car (frame-position)) 0)
+      (set-frame-height nil (- (x-display-pixel-height) 30) nil :pixelwise))))
+
 (defun reinforce-frame-full-width-height ()
   "Set full-width and full-height frame parameters based on
 actual pixel values of frame geometry."
@@ -324,5 +335,6 @@ provided, returns its value"
 (defun ag/posframe-arghandler (buffer-or-name arg-name value)
   (let ((info '(:lines-truncate t)))
     (or (plist-get info arg-name) value)))
+
 
 ;;; funcs.el ends here

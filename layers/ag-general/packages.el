@@ -25,9 +25,11 @@
                                 ivy-posframe
                                 which-key-posframe
                                 ;; grip-mode
+                                ;; undo-fu
                                 expand-region
                                 doom-modeline
-                                flycheck-posframe))
+                                flycheck-posframe
+                                marginalia))
 
 (defun ag-general/init-doom-modeline ()
   (use-package doom-modeline
@@ -214,7 +216,8 @@
           lsp-diagnostics-provider :flycheck
           lsp-enable-file-watchers nil
           lsp-modeline--enable-code-actions nil
-          lsp-headerline-breadcrumb-enable nil)
+          lsp-headerline-breadcrumb-enable nil
+          lsp-enable-completion-at-point t)
     (add-hook
      'lsp-after-open-hook
      (lambda()
@@ -373,9 +376,23 @@
     (remove-hook 'org-mode-hook 'er/add-org-mode-expansions)
     (er/enable-mode-expansions 'org-mode #'er/add-org-mode-expansions*)))
 
+(with-eval-after-load 'flycheck
+  (define-key flycheck-mode-map flycheck-keymap-prefix nil))
+
 (defun ag-general/init-flycheck-posframe ()
   (use-package flycheck-posframe
     :hook (flycheck-mode . flycheck-posframe-mode)))
+
+(defun ag-general/init-marginalia ()
+  (use-package marginalia
+    :bind (:map ivy-minibuffer-map ("M-C" . marginalia-cycle)
+           (:map minibuffer-local-map ("M-C" . marginalia-cycle)))
+   :init
+   (marginalia-mode)
+   :custom
+   (marginalia-annotators
+    '(marginalia-annotators-heavy
+      marginalia-annotators-light))))
 
 (with-eval-after-load 'terminal-here
   (setq terminal-here-terminal-command

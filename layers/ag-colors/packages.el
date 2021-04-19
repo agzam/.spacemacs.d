@@ -167,7 +167,7 @@
                   (default . (:background ,default-background :foreground ,default-foreground))
 
                   (mode-line . (:height 0.7))
-                  (mode-line-inactive . (:height 0.7))
+                  (mode-line-inactive . (:height 1))
                   (mode-line-emphasis . (:weight normal))
 
                   (line-number . (:inherit fixed-pitch))
@@ -268,7 +268,7 @@
 
 
                   (mode-line . (:height 0.7))
-                  (mode-line-inactive . (:height 0.7))
+                  (mode-line-inactive . (:height 1))
                   (mode-line-emphasis . (:weight normal))
 
                   (cider-debug-code-overlay-face . (:background ,bg-darker))

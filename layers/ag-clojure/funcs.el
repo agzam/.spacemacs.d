@@ -43,30 +43,49 @@
               (t (beginning-of-thing 'sexp)))
         (insert "#_")))))
 
-(defun clj-fully-qualified-symbol-at-point ()
-  (interactive)
-  (let ((sym (cond ((lsp--capability :hoverProvider)
-                    (let ((s (-some->> (lsp--text-document-position-params)
-                               (lsp--make-request "textDocument/hover")
-                               (lsp--send-request)
-                               (gethash "contents")
-                               (gethash "value"))))
-                      (string-match "\\(```.*\n\\)\\(.*\\)\n\\(```\\)" s)
-                      (string-trim (match-string 2 s))))
+(defun clj-fully-qualified-symbol-at-point (&optional for-req)
+  "Gets fully qualified Clojure symbol at point. If FOR-REQ argument passed
+gets the name suitable for :require of ns declaration."
+  (interactive "P")
+  (flet ((use-results (x)
+                      (message x)
+                      (kill-new x)
+                      x))
+    (let ((sym (cond ((lsp--capability :hoverProvider)
+                      (let ((s (-some->> (lsp--text-document-position-params)
+                                 (lsp--make-request "textDocument/hover")
+                                 (lsp--send-request)
+                                 (gethash "contents")
+                                 (gethash "value"))))
+                        (string-match "\\(```.*\n\\)\\(.*\\)\n\\(```\\)" s)
+                        (string-trim (match-string 2 s))))
 
-                   ((cider-connected-p)
-                    (let ((cb (lambda (x)
-                                (when-let ((v (nrepl-dict-get x "value"))
-                                           (s (replace-regexp-in-string "[()]" "" v)))
-                                  (message (string-trim s))
-                                  (kill-new s)))))
-                      (cider-interactive-eval
-                       (concat "`(" (cider-symbol-at-point t) ")")
-                       cb)))
-                   (t (message "Neither lsp nor cider are connected")))))
-    (message sym)
-    (kill-new sym)
-    sym))
+                     ((cider-connected-p)
+                      (let ((cb (lambda (x)
+                                  (when-let ((v (nrepl-dict-get x "value"))
+                                             (s (replace-regexp-in-string "[()]" "" v)))
+                                    (message (string-trim s))
+                                    (kill-new s)))))
+                        (cider-interactive-eval
+                         (concat "`(" (cider-symbol-at-point t) ")")
+                         cb)))
+                     (t (message "Neither lsp nor cider are connected")))))
+      (if for-req  ; want ns header name, e.g.: "[foo.core :as foo]"
+          (if-let* ((m (string-match "^\\(.*\\)\\/" sym))) ; attempt to get anything before the slash
+              (let* ((suffix (match-string 1 sym))  ; grab suffix of the symbol i.e. 'foo.core' of 'foo.core/my-thing'
+                     ;; grep for '[foo.core :as ...' in the project
+                     (grepped (string-trim
+                               (shell-command-to-string
+                                (format
+                                 "rg --glob '*.clj' --max-count 1 --no-filename '\\[%s :as' %s"
+                                 suffix
+                                 (projectile-project-root))))))
+                (if-let* ((m (string-match "\\[.*\\]" grepped))
+                          (res (match-string 0 grepped)))
+                    (use-results res)
+                  (use-results (format "[%s :as ]" suffix))))
+            (use-results sym))
+        (use-results sym)))))
 
 (defun re-frame-jump-to-reg ()
   "Borrowed from https://github.com/oliyh/re-jump.el"
@@ -137,6 +156,7 @@
       (goto-char (point-min))
       (while (re-search-forward "\\s-+" nil t)
         (replace-match " "))
-      (indent-region beg end))))
+      (let ((clojure-align-forms-automatically nil))
+       (indent-region beg end)))))
 
 ;;; funcs.el ends here

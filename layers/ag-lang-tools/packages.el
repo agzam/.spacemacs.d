@@ -88,4 +88,13 @@
   (setq flyspell-issue-message-flag nil) ; printing a message for every word has a negative performance impact
   (setq ispell-program-name "aspell")
   ;; aspell suggestion mode
-  (add-to-list 'ispell-extra-args "--sug-mode=bad-spellers"))
+  (add-to-list 'ispell-extra-args "--sug-mode=bad-spellers")
+
+  ;; Change dictionary with the input-method
+  (defun change-dict-after-toggle-input (_ _)
+    (ispell-change-dictionary
+     (if (string= current-input-method "russian-computer")
+         "ru"
+       nil)))
+
+  (advice-add 'toggle-input-method :after 'change-dict-after-toggle-input))

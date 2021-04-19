@@ -123,7 +123,8 @@
     ("i" ag/find-user-init-file "Open Emacs \"init.el\"")))))
 
 (spacemacs/transient-state-register-add-bindings 'zoom-frm
-  '(("m" (toggle-frame-maximized-undecorated))))
+  '(("m" (toggle-frame-maximized-undecorated))
+    ("h" (toggle-frame-full-height))))
 
 (evil-define-key '(normal evilified) global-map
   (kbd "s-a") #'mark-whole-buffer

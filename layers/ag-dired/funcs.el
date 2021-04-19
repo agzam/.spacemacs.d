@@ -89,4 +89,10 @@ With prefix argument opens things in the other-window"
           (switch-to-buffer buf))
       (direx:find-directory "."))))
 
+(defun dired-find-marked-files (&optional arg)
+  "Open each of the marked files, or the file under the point, or when prefix arg, the next N files "
+  (interactive "P")
+  (let* ((fn-list (dired-get-marked-files nil arg)))
+    (mapc 'find-file fn-list)))
+
 ;;; funcs.el ends here
