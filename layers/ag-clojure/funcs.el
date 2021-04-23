@@ -159,4 +159,28 @@ gets the name suitable for :require of ns declaration."
       (let ((clojure-align-forms-automatically nil))
        (indent-region beg end)))))
 
+(defun clojure-map-sort (beg end)
+  "Sort a clojure map"
+  (interactive (if (use-region-p)
+                   (list (region-beginning) (region-end))
+                 (save-excursion
+                   (when (looking-at "\{")
+                     (forward-char))
+                   (let ((end (progn (sp-end-of-sexp)
+                                     (point))))
+                     (sp-beginning-of-sexp)
+                     (backward-char)
+                     (list (point) (+ 1 end))))))
+  (let ((zprint (executable-find "zprint")))
+    (save-excursion
+      (call-process-region
+       beg
+       end
+       (executable-find "zprint")
+       :delete
+       '(t nil)
+       :display
+       "{:map {:comma? false :justify? true}}")
+      (sp-reindent))))
+
 ;;; funcs.el ends here
