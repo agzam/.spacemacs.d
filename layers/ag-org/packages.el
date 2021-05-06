@@ -9,23 +9,26 @@
 ;;
 ;;; License: GPLv3
 
-(defconst ag-org-packages '(org
-                            org-pomodoro
-                            ;; ox-reveal
-                            clocker
-                            (latex-fragments :location local)
-                            (org-present :excluded t)
-                            (org-journal :excluded t)
-                            (org-brain :excluded t)
-                            ;; (slack2org :location local)
-                            anki-editor
-                            org-roam
-                            company-org-roam
-                            org-roam-server
-                            deft
-                            (org-ref :location
-                                     (recipe :fetcher github
-                                             :repo "jkitchin/org-ref"))))
+(defconst ag-org-packages
+  '(org
+    org-pomodoro
+    ;; ox-reveal
+    clocker
+    (latex-fragments :location local)
+    (org-present :excluded t)
+    (org-journal :excluded t)
+    (org-brain :excluded t)
+    ;; (slack2org :location local)
+    anki-editor
+    org-roam
+    (org-roam-server
+     ;; :location local
+     )
+    deft
+    (org-ref :location
+             (recipe :fetcher github
+                     :repo "jkitchin/org-ref"))
+    (org-edit-indirect :location local)))
 
 (setq org-default-folder "~/Dropbox/org/")
 (setq org-default-main-file (concat org-default-folder "tasks.org"))
@@ -524,5 +527,8 @@
         org-ref-bibliography-notes "~/SyncMobile/Papers/notes.org")
   )
 
+(defun ag-org/init-org-edit-indirect ()
+  (use-package org-edit-indirect
+    :after (org)))
 
 ;;; packages.el ends here
