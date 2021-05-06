@@ -13,20 +13,16 @@
 
 (defun org-edit-generic-block (org-element)
   (interactive)
-  (let* ((org-element (or (org-element-property :parent org-element)
-                          org-element))
-         (beg (or (org-element-property :contents-begin org-element)
-                 (progn
-                   (save-excursion
-                    (goto-char (org-element-property :begin org-element))
-                    (forward-line)
-                    (point)))))
-        (end (or (org-element-property :contents-end org-element)
-                 (progn
-                   (goto-char (org-element-property :end org-element))
-                   (forward-line -3)
-                   (move-end-of-line 1)
-                   (point)))))
+  (let* ((el-type (org-element-type (org-element-context org-element)))
+         (parent (org-element-property :parent org-element))
+         (beg (pcase el-type
+                ((or `quote-block `verse-block `comment-block `plain-list)
+                 (org-element-property :contents-begin org-element))
+                (_ (org-element-property :begin (or parent org-element)))))
+         (end (pcase el-type
+                ((or `quote-block `verse-block `comment-block `plain-list)
+                 (org-element-property :contents-end org-element))
+                (_ (org-element-property :end (or parent org-element))))))
     (edit-indirect-region beg end :display)))
 
 (defun org-edit-special+ (&optional arg)
@@ -36,10 +32,10 @@ the original function doesn't let you."
   (interactive "P")
   (let* ((element (org-element-at-point))
          (context (org-element-context element)))
-    (print (org-element-type context))
     (pcase (org-element-type context)
       ((or `quote-block `verse-block `comment-block
-           `paragraph `headline `property-drawer)
+           `paragraph `headline `property-drawer
+           `plain-list `item)
           (org-edit-generic-block element))
       (_ (org-edit-special arg)))))
 
@@ -53,7 +49,10 @@ the original function doesn't let you."
      (end-of-buffer)
      (newline))))
 
-(add-hook 'edit-indirect-before-commit-hook 'org-edit-indirect--before-commit)
+(add-hook 'edit-indirect-before-commit-hook #'org-edit-indirect--before-commit)
+(add-hook 'edit-indirect-after-creation-hook #'outline-show-all)
+
+(define-key org-mode-map (kbd "C-c '") #'org-edit-special+)
 
 (provide 'org-edit-indirect)
 
