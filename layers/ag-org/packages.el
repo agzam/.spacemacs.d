@@ -439,14 +439,16 @@
            :file-name "daily/%<%Y-%m-%d %a>"
            :head ":PROPERTIES:\n:title: %<%Y-%m-%d %A>\n:created: %u\n:roam_tags: daily\n:END:\n[[roam:dailies]]\n"
            :olp ("Work")
-           :add-created t)
+           :add-created t
+           :jump-to-captured t)
           ("j" "journal" entry
            #'org-roam-capture--get-point
            "* %?"
            :file-name "daily/%<%Y-%m-%d %a>"
            :head ":PROPERTIES:\n:title: %<%Y-%m-%d %A>\n:created: %u\n:roam_tags: daily\n:END:\n[[roam:dailies]]\n"
            :olp ("Journal")
-           :add-created t)))
+           :add-created t
+           :jump-to-captured t)))
 
   ;; org-roam-buffer-window-parameters get reset on Layout/Workspace change,
   ;; they should be respected

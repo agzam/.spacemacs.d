@@ -668,7 +668,7 @@ before packages are loaded."
                                       mu4e-main-mode mu4e-view-mode
                                       org-agenda-mode
                                       paradox-menu-mode
-                                      appropos-mode
+                                      apropos-mode
                                       image-mode)
    visible-bell t
    ring-bell-function 'ignore

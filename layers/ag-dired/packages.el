@@ -16,9 +16,16 @@
                                                        :repo "agzam/direx-el"))
                               direx-grep
                               treemacs
-                              dired-subtree))
+                              dired-subtree
+                              dired-posframe))
 
 (add-hook 'dired-mode-hook #'dired-hide-details-mode)
+
+(setf
+ dired-guess-shell-alist-user
+ (cond
+  ((eq system-type 'darwin) '(("" "open")))
+  ((eq system-type 'gnu/linux) '(("" "xdg-open")))))
 
 (defun ag-dired/init-direx ()
   (use-package direx
@@ -106,6 +113,9 @@
       "gc" 'dired-subtree-cycle
       (kbd "M-j") 'dired-subtree-next-sibling
       (kbd "M-k") 'dired-subtree-previous-sibling)))
+
+(defun ag-dired/init-dired-posframe ()
+  (use-package dired-posframe :after (dired)))
 
 ;; (defun ag-dired/init-dired-filetype-face ()
 ;;   (use-package dired-filetype-face

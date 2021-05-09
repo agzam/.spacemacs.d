@@ -18,7 +18,6 @@
                                    '(spacehammer :location "~/.hammerspoon"))
                                 ;; (jira :location local)
                                 lsp-mode
-                                all-the-icons-ivy-rich
                                 company-tabnine
                                 (evilify-edebug :location local)
                                 company-posframe
@@ -29,7 +28,8 @@
                                 expand-region
                                 doom-modeline
                                 flycheck-posframe
-                                marginalia))
+                                marginalia
+                                (let-plist :location local)))
 
 (defun ag-general/init-doom-modeline ()
   (use-package doom-modeline
@@ -364,6 +364,7 @@
            er/mark-symbol
            er/mark-symbol-with-prefix
            er/mark-inside-pairs
+           er/mark-whole-word
            er/mark-line
            er/mark-org-element
            er/mark-org-element-parent
@@ -406,5 +407,8 @@
     (with-ivy-window (recenter)))
 
   (advice-add 'ivy-occur-press :after 'ivy--recenter-after-press))
+
+(defun ag-general/init-let-plist ()
+  (use-package let-plist))
 
 ;;; packages.el ends here
