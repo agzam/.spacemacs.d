@@ -333,7 +333,7 @@
 (defun ag-general/post-init-expand-region ()
   (setq er/try-expand-list
         '(er/mark-word
-          mark-between
+          er/mark-between
           er/mark-symbol
           er/mark-symbol-with-prefix
           er/mark-line
@@ -352,11 +352,10 @@
     "Adds org-specific expansions for buffers in org-mode"
     (set (make-local-variable 'er/try-expand-list)
          '(er/mark-word
-           mark-between
+           er/mark-between
            er/mark-symbol
            er/mark-symbol-with-prefix
            er/mark-inside-pairs
-           er/mark-whole-word
            er/mark-line
            er/mark-org-element
            er/mark-org-element-parent

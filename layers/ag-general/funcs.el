@@ -300,11 +300,11 @@ provided, returns its value"
   (set-mark (point))
   (evil-first-non-blank))
 
-(defun mark-between (&optional inclusive?)
+(defun er/mark-between (&optional inclusive?)
   "Mark between various delimeters within same line.
    With INCLUSIVE? marks with delimiters."
   (interactive)
-  (let* ((pairs '(("/" "/") ("=" "=") ("~" "~") ("(" ")") ("\\[" "\\]") ("<" ">") ("'" "'") ("\"" "\""))))
+  (let* ((pairs '(("/" "/") ("=" "=") ("~" "~") ("(" ")") ("\\[" "\\]") ("<" ">") ("'" "'") ("\"" "\"") (" " " "))))
     (dolist (pair pairs)
       (let* ((prev (point))
              (reg (ignore-errors (evil-select-paren
