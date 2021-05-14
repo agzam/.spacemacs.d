@@ -36,7 +36,7 @@ This function should only modify configuration layer settings."
    `(
      ag-general
      ;; ---- Languages -----
-     csv yaml emacs-lisp lua ag-haskell sql rust
+     csv yaml semantic emacs-lisp lua ag-haskell sql rust
      (html :packages (not pug-mode slim-mode))
      (markdown
       :packages (not mmm-mode)
@@ -111,12 +111,12 @@ This function should only modify configuration layer settings."
    ;; `dotspacemacs/user-config'. To use a local version of a package, use the
    ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '(copy-as-format
-                                      quelpa-use-package
+   dotspacemacs-additional-packages '(apples-mode
+                                      beacon
+                                      copy-as-format
                                       dired-narrow
                                       graphql-mode
-                                      apples-mode
-                                      beacon)
+                                      quelpa-use-package)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
 

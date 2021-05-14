@@ -91,7 +91,7 @@ OPTIONS can include '(urgency expire-time app-name icon category hint), refer to
   (interactive "P")
   (if create-new?
       (let ((cur-buffer (current-buffer)))
-        (spacemacs/workspaces-transient-state/eyebrowse-create-window-config)
+        (spacemacs/clone-workspace)
         (switch-to-buffer cur-buffer))
     (spacemacs/workspaces-transient-state/eyebrowse-next-window-config))
   (run-at-time "1 sec" nil #'spacemacs/workspaces-transient-state/nil))
@@ -170,6 +170,22 @@ OPTIONS can include '(urgency expire-time app-name icon category hint), refer to
       (set-frame-parameter nil 'undecorated t)
       (set-frame-position nil (car (frame-position)) 0)
       (set-frame-height nil (- (x-display-pixel-height) 30) nil :pixelwise))))
+
+(defun center-frame-horizontally (&optional prompt)
+  "Positions the current frame in the middle of the screen,
+vertically stretching it from top to bottom. Useful on ultra-wide monitor.
+With universal argument prompts for the percentage - the horizontal screen estate the frame should occupy."
+  (interactive "P")
+  (let* ((stretch-ratio (string-to-number
+                         (if prompt
+                             (completing-read "Choose: " '("50%" "70%" "80%" "90%") nil t)
+                           "70")))
+         (x-pos (round (* (x-display-pixel-width) (* (/ (- 100 stretch-ratio) 2) 0.01))))
+         (width (round (* (x-display-pixel-width) (* stretch-ratio 0.01)))))
+    (set-frame-position nil x-pos 0)
+    (set-frame-width nil width nil t)
+    (when (not (frame-parameter nil 'undecorated))
+      (toggle-frame-full-height))))
 
 (defun reinforce-frame-full-width-height ()
   "Set full-width and full-height frame parameters based on

@@ -9,27 +9,29 @@
 ;;
 ;;; License: GPLv3
 
-(defconst ag-general-packages `(helpful
-                                rainbow-mode
-                                edit-indirect
-                                engine-mode
-                                fennel-mode
-                                ,(when (eq system-type 'darwin)
-                                   '(spacehammer :location "~/.hammerspoon"))
-                                ;; (jira :location local)
-                                lsp-mode
-                                company-tabnine
-                                (evilify-edebug :location local)
-                                company-posframe
-                                ivy-posframe
-                                which-key-posframe
-                                ;; grip-mode
-                                ;; undo-fu
-                                expand-region
-                                doom-modeline
-                                flycheck-posframe
-                                marginalia
-                                (let-plist :location local)))
+(defconst ag-general-packages
+  `(helpful
+    rainbow-mode
+    edit-indirect
+    engine-mode
+    fennel-mode
+    ,(when (eq system-type 'darwin)
+       '(spacehammer :location "~/.hammerspoon"))
+    ;; (jira :location local)
+    lsp-mode
+    company-tabnine
+    (evilify-edebug :location local)
+    company-posframe
+    ivy-posframe
+    which-key-posframe
+    ;; grip-mode
+    ;; undo-fu
+    expand-region
+    doom-modeline
+    flycheck-posframe
+    marginalia
+    (let-plist :location local)
+    elisp-format))
 
 (defun ag-general/init-doom-modeline ()
   (use-package doom-modeline
@@ -69,7 +71,10 @@
     (bind-key "ha" 'helpful-at-point help-map)
     (global-set-key (kbd "C-h k") #'helpful-key)
     (spacemacs/set-leader-keys "hdd" #'helpful-symbol)
-    (spacemacs/set-leader-keys-for-major-mode 'emacs-lisp-mode "h h" 'helpful-at-point)
+    (spacemacs/set-leader-keys-for-major-mode 'emacs-lisp-mode
+      "hh" 'helpful-at-point
+      "ep" 'pp-eval-last-sexp
+      "eP" 'eval-print-last-sexp)
     (evil-define-key 'normal helpful-mode-map "q" 'quit-window)))
 
 (defun ag-general/init-rainbow-mode ()
@@ -79,12 +84,6 @@
     (add-hook 'css-mode-hook 'rainbow-mode)
     ;; remove rectangles from around the colors
     (setq css-fontify-colors nil)))
-
-(with-eval-after-load 'flycheck
-  (progn
-    (add-hook 'prog-mode-hook 'flycheck-mode)
-    (defun flycheck-mode-off () (flycheck-mode -1))
-    (add-hook 'emacs-lisp-mode-hook #'flycheck-mode-off)))
 
 (with-eval-after-load 'ibuf-ext
   (setq
@@ -225,13 +224,6 @@
        (spacemacs/set-leader-keys-for-minor-mode 'lsp-mode
          "hh" nil
          "," #'lsp-ui-doc-glance)))))
-
-(defun ag-general/init-all-the-icons-ivy-rich ()
-  (use-package all-the-icons-ivy-rich
-    :ensure t
-    :init
-    (all-the-icons-ivy-rich-mode 1)
-    (setq all-the-icons-ivy-rich-icon-size 0.8)))
 
 (defun ag-general/init-company-tabnine ()
   (use-package company-tabnine

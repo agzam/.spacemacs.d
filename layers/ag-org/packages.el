@@ -531,6 +531,6 @@
 
 (defun ag-org/init-org-edit-indirect ()
   (use-package org-edit-indirect
-    :after (org)))
+    :after (org edit-indirect)))
 
 ;;; packages.el ends here
