@@ -21,9 +21,6 @@
     ;; (slack2org :location local)
     anki-editor
     org-roam
-    (org-roam-server
-     ;; :location local
-     )
     deft
     (org-ref :location
              (recipe :fetcher github
@@ -481,28 +478,34 @@
            (find-file (concat org-roam-directory "/index.org"))
            (org-roam-buffer-activate)))))))
 
-(defun ag-org/init-org-roam-server ()
-  (use-package org-roam-protocol)
-  (use-package org-roam-server
-    :after (org-roam)
-    :config
-    (setq org-roam-server-host "127.0.0.1"
-          org-roam-server-port 8080
-          org-roam-server-authenticate nil
-          org-roam-server-export-inline-images t
-          org-roam-server-serve-files nil
-          org-roam-server-served-file-extensions '("pdf" "mp4" "ogv")
-          org-roam-server-network-poll t
-          org-roam-server-network-arrows nil
-          org-roam-server-network-label-truncate t
-          org-roam-server-network-label-truncate-length 60
-          org-roam-server-network-label-wrap-length 20
-          org-roam-server-link-auto-replace nil
-          org-roam-server-network-vis-options
-          "{
-              \"layout\": {\"hierarchical\": {\"enabled\": true}},
-              \"nodes\": { \"font\": { \"size\":11, \"background\":\"rgba(255,255,255,0.8)\"} }
-           }")))
+(defun ag-org/post-init-org-roam-server ()
+  (setq org-roam-server-host "127.0.0.1"
+        org-roam-server-port 8080
+        org-roam-server-authenticate nil
+        org-roam-server-export-inline-images t
+        org-roam-server-serve-files nil
+        org-roam-server-served-file-extensions '("pdf" "mp4" "ogv")
+        org-roam-server-network-poll t
+        org-roam-server-network-arrows nil
+        org-roam-server-network-label-truncate t
+        org-roam-server-network-label-truncate-length 60
+        org-roam-server-network-label-wrap-length 20
+        org-roam-server-link-auto-replace nil
+        org-roam-server-network-vis-options
+        "{
+              \"edges\": {
+                  \"smooth\": false
+              },
+              \"physics\": {
+                  \"hierarchicalRepulsion\": {
+                      \"centralGravity\": 3.1,
+                      \"avoidOverlap\": null
+                  },
+                  \"minVelocity\": 0.75,
+                  \"solver\": \"hierarchicalRepulsion\"
+              },
+              \"nodes\": { \"font\": { \"size\":11, \"background\":\"rgba(255,255,255,0.8)\"}}
+          }"))
 
 (defun ag-org/init-deft ()
   (use-package deft

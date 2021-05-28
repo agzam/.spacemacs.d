@@ -91,7 +91,8 @@ This function should only modify configuration layer settings."
      (ag-org
       :variables
       org-enable-github-support t
-      org-enable-roam-support t)
+      org-enable-roam-support t
+      org-enable-roam-server t)
      ag-mail
      ag-version-control
      ag-web
