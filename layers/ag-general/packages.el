@@ -223,6 +223,7 @@
        (lsp-modeline-code-actions-mode -1)
        (spacemacs/set-leader-keys-for-minor-mode 'lsp-mode
          "hh" nil
+         "gD" #'xref-find-definitions-other-window
          "," #'lsp-ui-doc-glance)))))
 
 (defun ag-general/init-company-tabnine ()
