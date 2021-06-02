@@ -176,11 +176,70 @@ gets the name suitable for :require of ns declaration."
       (call-process-region
        beg
        end
-       (executable-find "zprint")
+       zprint
        :delete
        '(t nil)
        :display
        "{:map {:comma? false :justify? true}}")
       (sp-reindent))))
+
+(defun clojure-edn-json-transform (&optional from-json)
+  "Transforms EDN to JSON and vice-versa using jet cli.
+The direction is determined by current major-mode or can be
+explicitly set by universal argument, if present - attemps to
+convert from JSON."
+  (interactive "P")
+  (let* ((from-json* (or from-json (eq major-mode 'json-mode)))
+         (region (if (use-region-p)
+                     (list (region-beginning) (region-end))
+                   (save-excursion
+                     (when (looking-at "\{")
+                       (forward-char))
+                     (let ((end (progn (sp-end-of-sexp)
+                                       (point))))
+                       (sp-beginning-of-sexp)
+                       (backward-char)
+                       (list (point) (+ 1 end))))))
+         (jet (executable-find "jet"))
+         (params (if from-json*
+                     '("--from" "json" "--to" "edn" "--keywordize" "--pretty")
+                   '("--from" "edn" "--to" "json" "--pretty"))))
+    (when (not jet)
+      (error "jet cli not found"))
+    (save-excursion
+      (apply 'call-process-region
+             (car region)
+             (cadr region)
+             jet
+             :delete
+             '(t nil)
+             :display
+             params)
+      (if from-json*
+          (clojure-mode)
+        (json-mode))
+      (sp-reindent))))
+
+;; redefine clear-repl-buffer, so it also clears the nrepl buffer
+(defun spacemacs/cider-find-and-clear-repl-buffer* ()
+  "Calls cider-find-and-clear-repl-output interactively with C-u prefix
+set so that it clears the whole REPL buffer, not just the output."
+  (interactive)
+  (let ((current-prefix-arg '(4)))
+    (call-interactively 'cider-find-and-clear-repl-output)
+    (when-let ((nrepl-buf (nrepl-make-buffer-name
+                      (nrepl--make-hidden-name nrepl-server-buffer-name-template)
+                      nil :no-dup)))
+      (set-buffer nrepl-buf)
+      (comint-clear-buffer))))
+
+(defun cider-switch-to-nrepl-buffer ()
+  "Calls cider-find-and-clear-repl-output interactively with C-u prefix
+set so that it clears the whole REPL buffer, not just the output."
+  (interactive)
+  (when-let ((nrepl-buf (nrepl-make-buffer-name
+                         (nrepl--make-hidden-name nrepl-server-buffer-name-template)
+                         nil :no-dup)))
+    (switch-to-buffer-other-window nrepl-buf)))
 
 ;;; funcs.el ends here

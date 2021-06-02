@@ -24,7 +24,9 @@
              'cider-switch-to-repl-buffer)
       "ii" #'clj-fully-qualified-symbol-at-point
       "tl" nil ; keep accidentally pressing, triggering hundreds of tests to run in the REPL
-      ))
+      "r-" #'clojure-toggle-ignore
+      "sl" #'spacemacs/cider-find-and-clear-repl-buffer*
+      "sS" #'cider-switch-to-nrepl-buffer))
 
   (spacemacs/set-leader-keys-for-major-mode 'clojurescript-mode
     "g f" #'re-frame-jump-to-reg))
