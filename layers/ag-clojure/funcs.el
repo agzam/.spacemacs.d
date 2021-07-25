@@ -215,10 +215,36 @@ convert from JSON."
              '(t nil)
              :display
              params)
-      (if from-json*
+      (if (or (eq major-mode 'json-mode) from-json*)
           (clojure-mode)
         (json-mode))
       (sp-reindent))))
+
+(defun clojure-add-require (&optional req-str)
+  "Adds a ns import (require) line to Clojure ns header.
+If REQ-STR, is provided, uses that, otherwise tries to grab one
+from the kill-ring.
+
+REQ-STR (or the last item in the kill-ring) is expected to be of
+the form: [foo.core :as [foo]].
+"
+  (interactive)
+  (when-let* ((req-str* (or req-str (current-kill 0 t)))
+              (match? (string-match-p "^\\[[[:alpha:]]*.*\\]$" req-str*)))
+    (goto-char 0)
+    (search-forward ":require")
+    (sp-end-of-sexp)
+    (insert "\n")
+    (insert req-str*)
+    (sp-reindent)
+    (clojure-sort-ns)
+    (goto-char 0)
+    (sp-end-of-next-sexp)
+    (forward-char)
+    (cider-eval-last-sexp)
+    ;; TODO: add a check for when require statement already exists
+    ;; TODO: highlight newly added require
+    ))
 
 ;; redefine clear-repl-buffer, so it also clears the nrepl buffer
 (defun spacemacs/cider-find-and-clear-repl-buffer* ()

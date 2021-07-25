@@ -18,7 +18,9 @@
   "o" 'spacemacs/dired-open-item-other-window-transient-state/body
   "gr" 'revert-buffer
   (kbd "RET") 'dired-find-file
-  (kbd "<C-return>") 'dired-find-alternate-file) ; re-use dired buffer, insead of keeping it open
+  (kbd "<C-return>") 'dired-find-alternate-file ; re-use dired buffer, insead of keeping it open
+
+  "H" #'dired-up-directory)
 
 (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)   ; re-use dired buffer, insead of keeping it open
 (define-key dired-mode-map (kbd "<C-return>") 'dired-find-alternate-file)

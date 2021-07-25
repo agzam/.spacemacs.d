@@ -169,9 +169,9 @@ OPTIONS can include '(urgency expire-time app-name icon category hint), refer to
     (progn
       (set-frame-parameter nil 'undecorated t)
       (set-frame-position nil (car (frame-position)) 0)
-      (set-frame-height nil (- (x-display-pixel-height) 30) nil :pixelwise))))
+      (set-frame-height nil (- (x-display-pixel-height) 29) nil :pixelwise))))
 
-(defun center-frame-horizontally (&optional prompt)
+(defun center-frame-horizontally (&optional prompt percentage)
   "Positions the current frame in the middle of the screen,
 vertically stretching it from top to bottom. Useful on ultra-wide monitor.
 With universal argument prompts for the percentage - the horizontal screen estate the frame should occupy."
@@ -179,7 +179,7 @@ With universal argument prompts for the percentage - the horizontal screen estat
   (let* ((stretch-ratio (string-to-number
                          (if prompt
                              (completing-read "Choose: " '("50%" "70%" "80%" "90%") nil t)
-                           "70")))
+                           (number-to-string (or percentage 70)))))
          (x-pos (round (* (x-display-pixel-width) (* (/ (- 100 stretch-ratio) 2) 0.01))))
          (width (round (* (x-display-pixel-width) (* stretch-ratio 0.01)))))
     (set-frame-position nil x-pos 0)
@@ -304,6 +304,7 @@ provided, returns its value"
   "Mark between various delimeters within same line.
    With INCLUSIVE? marks with delimiters."
   (interactive)
+  (require 'evil-common)
   (let* ((pairs '(("/" "/") ("=" "=") ("~" "~") ("(" ")") ("\\[" "\\]") ("<" ">") ("'" "'") ("\"" "\"") (" " " "))))
     (dolist (pair pairs)
       (let* ((prev (point))
@@ -352,5 +353,21 @@ provided, returns its value"
   (let ((info '(:lines-truncate t)))
     (or (plist-get info arg-name) value)))
 
+(defun eval-last-sexp--around (command &rest args)
+  "In normal-state or motion-state, last sexp ends at point."
+  (if (and (not evil-move-beyond-eol)
+           (or (evil-normal-state-p) (evil-motion-state-p)))
+      (save-excursion
+        (unless (or (eobp) (eolp)) (forward-char))
+        (apply command args))
+    (apply command args)))
+
+;; in evil-mode cursor is at the sexp, so to target the last-sexp, it has to
+;; move past the parentheses
+(with-eval-after-load 'evil
+ (unless evil-move-beyond-eol
+   (advice-add 'eval-last-sexp :around 'eval-last-sexp--around)
+   (advice-add 'eval-print-last-sexp :around 'eval-last-sexp--around)
+   (advice-add 'pp-eval-last-sexp :around 'eval-last-sexp--around)))
 
 ;;; funcs.el ends here

@@ -36,7 +36,55 @@
 
                  persp-face-lighter-buffer-not-in-persp
                  persp-face-lighter-default
-                 persp-face-lighter-nil-persp)))
+                 persp-face-lighter-nil-persp
+
+                 doom-modeline-buffer-timemachine
+                 doom-modeline-battery-error
+                 doom-modeline-battery-critical
+                 doom-modeline-battery-warning
+                 doom-modeline-battery-normal
+                 doom-modeline-battery-full
+                 doom-modeline-battery-charging
+                 doom-modeline-lsp-running
+                 doom-modeline-lsp-error
+                 doom-modeline-lsp-warning
+                 doom-modeline-lsp-success
+                 doom-modeline-repl-warning
+                 doom-modeline-repl-success
+                 doom-modeline-persp-buffer-not-in-persp
+                 doom-modeline-persp-name
+                 doom-modeline-evil-replace-state
+                 doom-modeline-evil-visual-state
+                 doom-modeline-evil-operator-state
+                 doom-modeline-evil-normal-state
+                 doom-modeline-evil-motion-state
+                 doom-modeline-evil-insert-state
+                 doom-modeline-evil-emacs-state
+                 doom-modeline-debug-visual
+                 doom-modeline-bar-inactive
+                 doom-modeline-bar
+                 doom-modeline-unread-number
+                 doom-modeline-notification
+                 doom-modeline-urgent
+                 doom-modeline-warning
+                 doom-modeline-info
+                 doom-modeline-debug
+                 doom-modeline-input-method-alt
+                 doom-modeline-input-method
+                 doom-modeline-host
+                 doom-modeline-panel
+                 doom-modeline-highlight
+                 doom-modeline-project-root-dir
+                 doom-modeline-project-dir
+                 doom-modeline-project-parent-dir
+                 doom-modeline-buffer-minor-mode
+                 doom-modeline-buffer-major-mode
+                 doom-modeline-buffer-modified
+                 doom-modeline-buffer-file
+                 doom-modeline-buffer-path
+                 doom-modeline-vspc-face
+                 doom-modeline-spc-face
+                 )))
     (dolist (f faces)
       (when (facep f)
         (set-face-attribute f nil :height 0.85))))
@@ -107,8 +155,12 @@
                   (diff-hl-unknown . (:foreground ,base03 :background ,base0A))
 
                   (ahs-plugin-whole-buffer-face . (:foreground ,base0B :background ,default-background))
+                  (ahs-plugin-default-face . (:foreground ,base0A :background ,base02))
+                  (ahs-plugin-default-face-unfocused . (:inherit ahs-plugin-default-face))
+                  (ahs-definition-face . (:foreground ,base0A :background ,base03))
                   (ahs-face . (:foreground ,base0A :background ,base02))
 
+                  (region . (:inverse-video t :foreground ,base03 :background ,default-background :distant-foreground nil))
                   (fixed-pitch . (:family "JetBrains Mono" :weight normal :width expanded))
                   (variable-pitch . (:family "Open Sans" :weight normal
                                              :width expanded :height 1.2))
@@ -199,6 +251,8 @@
 
                   (trailing-whitespace . (:background ,bg-accent))
                   (ahs-face . (:background ,bg-accent-light))
+                  (ahs-plugin-default-face . (:background ,bg-accent-light))
+                  (ahs-plugin-default-face-unfocused . (:inherit ahs-plugin-default-face))
                   (ahs-definition-face . (:background "#e6ffed"))
                   (ahs-plugin-whole-buffer-face . (:foreground ,bg-accent :inverse-video t :background ,default-background))
                   (evil-ex-lazy-highlight . (:background ,bg-accent))
@@ -249,8 +303,8 @@
                   (org-roam-link . (:background "#fff9de"))
                   (org-roam-link-invalid . (:background "#fbf3ef"))
                   (org-drawer . (:foreground ,bg-accent-dark))
-                  (org-special-keyword . (:inherit (org-drawer) :foreground ,bg-accent))
-                  (org-property-value . (:inherit (org-drawer) :foreground ,bg-accent))
+                  (org-special-keyword . (:inherit (org-drawer) :foreground ,bg-accent-dark))
+                  (org-property-value . (:inherit (org-drawer) :foreground ,bg-accent-dark))
 
                   ;; (org-level-1 . (:inherit variable-pitch :bold t :height 1.3))
                   ;; (org-level-2 . (:inherit variable-pitch :bold t :height 1.2))

@@ -92,10 +92,13 @@ This function should only modify configuration layer settings."
       :variables
       org-enable-github-support t
       org-enable-roam-support t
-      org-enable-roam-server t)
-     ag-mail
+      org-enable-appear-support t
+      ;; org-roam-server doesn't work anymore in v2. watch: https://github.com/org-roam/org-roam-server/issues/161
+      ;; org-enable-roam-server t
+      )
+     ;; ag-mail
      ag-version-control
-     ag-web
+     ;; ag-web
      (lsp
       :variables
       lsp-ui-sideline-enable nil
@@ -245,6 +248,9 @@ It should only modify the values of Spacemacs settings."
    ;; True if the home buffer should respond to resize events. (default t)
    dotspacemacs-startup-buffer-responsive nil
 
+   ;; Show numbers before the startup list lines. (default t)
+   dotspacemacs-show-startup-list-numbers t
+
    ;; The minimum delay in seconds between number key presses. (default 0.4)
    dotspacemacs-startup-buffer-multi-digit-delay 0.4
 
@@ -283,7 +289,7 @@ It should only modify the values of Spacemacs settings."
    ;; refer to the DOCUMENTATION.org for more info on how to create your own
    ;; spaceline theme. Value can be a symbol or list with additional properties.
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
-   dotspacemacs-mode-line-theme '(doom :separator nil :separator-scale 1)
+   dotspacemacs-mode-line-theme '(spacemacs :separator nil :separator-scale 1)
 
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
@@ -535,6 +541,9 @@ It should only modify the values of Spacemacs settings."
    ;; If it does deactivate it here.
    ;; (default t)
    dotspacemacs-use-clean-aindent-mode t
+
+   ;; Accept SPC as y for prompts if non nil. (default nil)
+   dotspacemacs-use-SPC-as-y nil
 
    ;; If non-nil shift your number row to match the entered keyboard layout
    ;; (only in insert state). Currently supported keyboard layouts are:

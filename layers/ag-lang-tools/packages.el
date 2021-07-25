@@ -18,24 +18,56 @@
                           :repo "gucong/emacs-sdcv"))
     google-translate
     (keytar :location
-            (recipe :fetcher github
-                    :repo "emacs-grammarly/keytar"))
+     (recipe :fetcher github
+             :repo "emacs-grammarly/keytar"))
+    (auth-source-keytar
+     :location
+     (recipe :fetcher github
+             :repo "emacs-grammarly/auth-source-keytar"))
     (lsp-grammarly
-     :location (recipe :fetcher github :repo "emacs-grammarly/lsp-grammarly"))))
+     :location
+     (recipe :fetcher github :repo "emacs-grammarly/lsp-grammarly"))
+
+    define-it
+    ))
 
 (defun ag-lang-tools/init-keytar ()
-  (use-package lsp-grammarly
-    :hook (text-mode . (lambda ()
-                         (require 'lsp-grammarly)
-                         (lsp)))
-    :config
-    (setq lsp-grammarly-domain "technical"
-          lsp-grammarly-audience "expert")))
-
-(defun ag-lang-tools/init-lsp-grammarly ()
   (use-package keytar
     :config
-    (require 'keytar)))
+    (require 'keytar)
+    )
+  ;; (use-package lsp-grammarly
+  ;;   :hook ((text-mode . lsp)
+  ;;          (markdown-mode . lsp))
+  ;;   :config
+  ;;   (setq lsp-grammarly-domain "technical"
+  ;;         lsp-grammarly-audience "expert"))
+  )
+
+;; (defun ag-lang-tools/init-auth-source-keytar ()
+;;   (use-package auth-source-keytar
+;;     :config
+;;     ;; (require 'auth-source-keytar)
+;;     )
+;;   ;; (use-package lsp-grammarly
+;;   ;;   :hook ((text-mode . lsp)
+;;   ;;          (markdown-mode . lsp))
+;;   ;;   :config
+;;   ;;   (setq lsp-grammarly-domain "technical"
+;;   ;;         lsp-grammarly-audience "expert"))
+;;   )
+
+(defun ag-lang-tools/init-lsp-grammarly ()
+  (use-package lsp-grammarly
+    :hook ((text-mode . lsp)
+           (markdown-mode . lsp))
+    :init
+    (setq lsp-grammarly-auto-activate nil)
+    :config
+    (setq lsp-grammarly-domain "technical"
+          lsp-grammarly-audience "expert"))
+  (with-eval-after-load 'lsp-grammarly
+    (setq lsp-grammarly-active-modes (remove 'org-mode lsp-grammarly-active-modes))))
 
 (defun ag-lang-tools/init-mw-thesaurus ()
   (use-package mw-thesaurus
@@ -83,6 +115,16 @@
         google-translate-preferable-input-methods-alist
         '((nil . ("en"))
           (russian-computer . ("ru")))))
+
+(defun ag-lang-tools/init-define-it ()
+  (use-package define-it
+    :config
+    (setq
+     define-it-show-google-translate nil
+     define-it-show-header nil
+     google-translate-default-target-language "ru")
+    (spacemacs/set-leader-keys
+      "xld" #'define-it-at-point)))
 
 (with-eval-after-load 'ispell
   (setq flyspell-issue-message-flag nil) ; printing a message for every word has a negative performance impact

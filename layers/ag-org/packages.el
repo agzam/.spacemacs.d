@@ -20,19 +20,24 @@
     (org-brain :excluded t)
     ;; (slack2org :location local)
     anki-editor
-    org-roam
-    deft
+    (org-roam :location (recipe :fetcher github
+                                :repo "org-roam/org-roam"
+                                :commit "1aba91eacdcec9bbe71580ee935b04f7e1700d6e"))
     (org-ref :location
              (recipe :fetcher github
                      :repo "jkitchin/org-ref"))
     (org-edit-indirect :location local)))
 
-(setq org-default-folder "~/Dropbox/org/")
+(setq org-default-folder "~/Dropbox/org/"
+      org-roam-v2-ack t
+      org-appear-delay 0.5)
+
 (setq org-default-main-file (concat org-default-folder "tasks.org"))
 
 (defun ag-org/post-init-org ()
   (add-hook 'before-save-hook 'org-roam--set-last-modified)
   (with-eval-after-load 'org-capture
+    (require 'org-roam-protocol)
     (remove-hook 'org-capture-mode-hook 'spacemacs//org-capture-start)
     (dolist (template
              `(("T" "todo" entry (file+olp+datetree org-default-main-file)
@@ -71,6 +76,9 @@
       (add-to-list 'org-capture-templates template)))
 
   (with-eval-after-load 'org
+    (require 'org-tempo)
+    (add-to-list 'org-modules 'org-tempo t)
+
     (setq
      org-read-date-popup-calendar t
 
@@ -84,7 +92,7 @@
     (setq
      org-bullets-bullet-list '("⏣" "◉" "●" "•" "‣" "⋄" "∙")
      org-goto-interface 'outline-path-completion  ; org-goto C-c C-j like in org-refile
-     org-startup-folded t
+     org-startup-folded 'nofold
      org-blank-before-new-entry nil
      org-ellipsis " ↴"
      org-M-RET-may-split-line '((headline))
@@ -382,88 +390,86 @@
  org-roam-directory "~/Dropbox/org"
  org-roam-db-location "~/Dropbox/org/org-roam.db"
  org-roam-graph-viewer "/usr/bin/open"
- org-roam-dailies-directory "daily/"
- org-roam-completion-system 'ivy)
+ org-roam-dailies-directory "daily/")
 
 (defun ag-org/post-init-org-roam ()
-  (add-hook 'after-init-hook 'org-roam-mode)
+  ;; (add-hook 'after-init-hook 'org-roam-mode)
 
-  (setq org-roam-db-update-method 'immediate
-        org-roam-tag-sources '(prop vanilla all-directories)
-        org-roam-completion-everywhere nil
-        org-roam-link-auto-replace t
-        ;; org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id
-        org-roam-buffer-width 0.15
-        org-roam-buffer-window-parameters '((side . right)
-                                            (no-delete-other-windows . t)
-                                            (mode-line-format . none)))
+  (setq
+   ;; removed in v2
+   ;; org-roam-db-update-method 'immediate
+   ;; org-roam-tag-sources '(prop vanilla all-directories)
+   org-roam-completion-everywhere t
+   ;; org-roam-link-auto-replace t
+   org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id
 
-  (with-eval-after-load 'org-roam-doctor
-   (dolist (p org-roam-doctor--supported-roam-properties)
-     (add-to-list 'org-default-properties p)))
+   ;; removed in v2
+   ;; org-roam-buffer-width 0.15
+   ;; org-roam-buffer-window-parameters '((side . right)
+   ;;                                     (no-delete-other-windows . t)
+   ;;                                     (mode-line-format . none))
+   )
+
+  ;; (with-eval-after-load 'org-roam-doctor
+  ;;  (dolist (p org-roam-doctor--supported-roam-properties)
+  ;;    (add-to-list 'org-default-properties p)))
 
   (setq org-roam-capture-templates
         '(("d" "default" plain
-           (function org-roam-capture--get-point)
            "%?"
-           :file-name "${slug}"
-           :head ":PROPERTIES:\n:title: ${title}\n:created: %u\n:roam_tags: ${tag}\n:END:\n* ${title}\n"
+           :if-new
+           (file+head
+            "${slug}.org"
+            "\n#+title: ${title}\n")
            :unnarrowed t
-           :immediate-finish nil))
+           :jump-to-captured t))
         org-roam-capture-ref-templates
-        '(("r" "ref" plain
-           (function org-roam-capture--get-point)
-           ""
-           :file-name "web/${slug}"
-           :head ":PROPERTIES:\n:title: ${title}\n:created: %u\n:roam_key: ${ref}\n:END:\n[[roam:web]]\n* ${title}\n%(zp/org-protocol-insert-selection-dwim \"${body}\")"
+        '(("r" "ref" plain "%?" :if-new
+           (file+head "${slug}.org" "#+title: ${title}\n[[id:A7F4AA20-A247-43D2-BCBC-2ED6108AF344][UNREAD]]\n\n%(zp/org-protocol-insert-selection-dwim \"${body}\")")
+           :unnarrowed t
+           :jump-to-captured t
+           )
+          ("n" "non-browser" plain "%?" :if-new
+           (file+head "read-later/${slug}.org" "#+title: ${title}\n%(zp/org-protocol-insert-selection-dwim \"${body}\")")
            :unnarrowed t)
-          ("n" "non-browser" plain
-           (function org-roam-capture--get-point)
-           ""
-           :file-name "read-later/${slug}"
-           :head ":PROPERTIES:\n:title: ${title}\n:created: %u\n:END:\n* ${title}\n%(zp/org-protocol-insert-selection-dwim \"${body}\")"
-           :unnarrowed t)
-          ("p" "pocket" plain
-           (function org-roam-capture--get-point)
-           ""
-           :file-name "read-later/${slug}"
-           :head ":PROPERTIES:\n:title: ${title}\n:roam_key: ${ref}\n:created: %u\n:END:\n[[roam:web]]\n* ${title}\n${body}"
-           :unnarrowed t))
+          ;; ("p" "pocket" plain
+          ;;  (function org-roam-capture--get-point)
+          ;;  ""
+          ;;  :file-name "read-later/${slug}"
+          ;;  :head ":PROPERTIES:\n:roam_key: ${ref}\n:created: %u\n:END:\n[[roam:web]]\n#+titls: ${title}\n${body}"
+          ;;  :unnarrowed t)
+          )
         org-roam-dailies-capture-templates
         '(("w" "work" entry
-           #'org-roam-capture--get-point
-           "* %?"
-           :file-name "daily/%<%Y-%m-%d %a>"
-           :head ":PROPERTIES:\n:title: %<%Y-%m-%d %A>\n:created: %u\n:roam_tags: daily\n:END:\n[[roam:dailies]]\n"
-           :olp ("Work")
-           :add-created t
+           "* Work\n %?"
+           :if-new
+           (file+head "%<%Y-%m-%d %a>.org" "#+title: %<%Y-%m-%d %A>")
            :jump-to-captured t)
           ("j" "journal" entry
-           #'org-roam-capture--get-point
-           "* %?"
-           :file-name "daily/%<%Y-%m-%d %a>"
-           :head ":PROPERTIES:\n:title: %<%Y-%m-%d %A>\n:created: %u\n:roam_tags: daily\n:END:\n[[roam:dailies]]\n"
-           :olp ("Journal")
-           :add-created t
+           "* Journal\n %?"
+           :if-new
+           (file+head "%<%Y-%m-%d %a>.org" "#+title: %<%Y-%m-%d %A>")
            :jump-to-captured t)))
 
   ;; org-roam-buffer-window-parameters get reset on Layout/Workspace change,
   ;; they should be respected
-  (add-hook 'persp-activated-functions #'org-roam--reset-roam-buffer-window)
-  (add-hook 'eyebrowse-post-window-switch-hook #'org-roam--reset-roam-buffer-window)
+  ;; (add-hook 'persp-activated-functions #'org-roam--reset-roam-buffer-window)
+  ;; (add-hook 'eyebrowse-post-window-switch-hook #'org-roam--reset-roam-buffer-window)
 
   (with-eval-after-load 'org-capture
+    (setq org-capture-bookmark nil)
     (define-key org-capture-mode-map (kbd "r") nil)
-    (spacemacs/declare-prefix-for-minor-mode 'spacemacs-org-capture-mode "r" "org-roam")
-    (spacemacs/declare-prefix-for-minor-mode 'spacemacs-org-capture-mode "rt" "org-roam-tags")
+    (define-key magit-section-mode-map (kbd "SPC") nil)
+    ;; (spacemacs/declare-prefix-for-minor-mode 'spacemacs-org-capture-mode "r" "org-roam")
+    ;; (spacemacs/declare-prefix-for-minor-mode 'spacemacs-org-capture-mode "rt" "org-roam-tags")
     (spacemacs/set-leader-keys-for-minor-mode 'org-capture-mode
-      "rb" 'org-roam-switch-to-buffer
-      "rf" 'org-roam-find-file
-      "ri" 'org-roam-insert
-      "rI" 'org-roam-insert-immediate
-      "rl" 'org-roam-buffer-toggle-display
-      "rta" 'org-roam-tag-add
-      "rtd" 'org-roam-tag-delete))
+      ;; "rb" 'org-roam-switch-to-buffer
+      "rf" #'org-roam-node-find
+      "ri" #'org-roam-node-insert
+      "rl" #'org-roam-buffer-toggle
+      "rta" #'org-roam-tag-add
+      "rtd" #'org-roam-tag-delete
+      ))
 
   (with-eval-after-load 'persp-mode
     ;; if I don't do this with a timer, the Org layer persp-post-init logic
@@ -476,7 +482,16 @@
          :body
          (progn
            (find-file (concat org-roam-directory "/index.org"))
-           (org-roam-buffer-activate)))))))
+           ;; (org-roam-buffer-activate)
+           )))))
+  (with-eval-after-load 'org-roam
+    (org-roam-setup)
+    (add-to-list 'display-buffer-alist
+                 '(("\\*org-roam\\*"
+                    (display-buffer-in-direction)
+                    (direction . right)
+                    (window-width . 0.25)
+                    (window-height . fit-window-to-buffer))))))
 
 (defun ag-org/post-init-org-roam-server ()
   (setq org-roam-server-host "127.0.0.1"
@@ -507,30 +522,10 @@
               \"nodes\": { \"font\": { \"size\":11, \"background\":\"rgba(255,255,255,0.8)\"}}
           }"))
 
-(defun ag-org/init-deft ()
-  (use-package deft
-    :after org
-    :bind
-    ("C-c n d" . deft)
-    :config
-    (setq
-     deft-recursive t
-     deft-use-filter-string-for-filename t
-     deft-default-extension "org"
-     deft-directory "~/Dropbox/org")
-
-    (defun deft-parse-title (file contents)
-      (org-roam-db--get-title file))
-
-    (defun deft-parse-summary (contents title) "")
-    )
-  )
-
 (defun ag-org/post-init-org-ref ()
   (setq org-ref-default-bibliography '("~/SyncMobile/Papers/references.bib")
         org-ref-pdf-directory "~/SyncMobile/Papers/"
-        org-ref-bibliography-notes "~/SyncMobile/Papers/notes.org")
-  )
+        org-ref-bibliography-notes "~/SyncMobile/Papers/notes.org"))
 
 (defun ag-org/init-org-edit-indirect ()
   (use-package org-edit-indirect

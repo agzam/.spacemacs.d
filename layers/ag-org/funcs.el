@@ -414,6 +414,7 @@ Org-mode properties drawer already, keep the headline and don’t insert
            (template (cdr (assoc 'template capture-info))))
       (org-roam-capture--capture nil "p")
       (org-roam-message "Item captured."))))
+(make-obsolete 'org-roam--org-heading->note "function breaks in Org-roam v2." "2021-07-21")
 
 (defun org-roam-keywords->prop-drawer ()
   "Converts file level Roam key/value pairs by putting them in a
@@ -437,10 +438,87 @@ Org-mode properties drawer already, keep the headline and don’t insert
     (pcase (org-roam-buffer--visibility)
       ('visible (org-roam-buffer-activate))))))
 
-(defun org-store-link-with-id (&optional arg)
+(defun org-store-link-id-optional (&optional arg)
+  "Stores a link, reversing the value of `org-id-link-to-org-use-id'.
+If it's globally set to create the ID property, then it wouldn't,
+and if it is set to nil, then it would forcefully create the ID."
   (interactive "P")
-  (let ((org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id))
+  (let ((org-id-link-to-org-use-id (not org-id-link-to-org-use-id)))
     (org-store-link arg :interactive)))
+
+(defun org-roam-title-convert ()
+  "Converts drawer based title in org-roam zettel file"
+  (interactive)
+  (save-mark-and-excursion
+    (goto-char 0)
+    (when-let ((title (car (org--property-local-values "title" nil))))
+      (unless (search-forward "#+title" nil :noerror)
+        (goto-char 0)
+        (org-delete-property "title")
+        (search-forward ":END:")
+        (insert "\n")
+        (insert (concat "#+title: " title))))))
+
+(defun org-attach-save-file-list-to-property (dir)
+  "Save list of attachments to ORG_ATTACH_FILES property."
+  (when-let* ((files (org-attach-file-list dir)))
+    (org-set-property "ORG_ATTACH_FILES" (mapconcat #'identity files ", "))))
+
+(defun outline-collapsed? ()
+  "Returns nil if the top outline heading is collapsed (hidden)"
+  (save-excursion
+    (when (org-get-outline-path 'with-self?)
+      (ignore-errors (outline-up-heading 1))
+      (let* ((beg (point))
+             (end (+ 1 (line-end-position))))
+        (not
+         (seq-empty-p
+          (seq-filter
+           (lambda (o)
+             (and (eq (overlay-get o 'invisible) 'outline)
+                  (save-excursion
+                    (goto-char (overlay-start o))
+                    (outline-on-heading-p t))))
+           (overlays-in beg end))))))))
+
+(defun org--get-headline-with-text ()
+  "Grabs top level headline and its content"
+  (save-excursion
+    (save-restriction
+      (ignore-errors (outline-up-heading 1))
+      (let ((heading-shown? (not (outline-collapsed?))))
+        (when heading-shown? (hide-subtree))
+        (let* ((elt (org-element-at-point))
+               (title (org-element-property :title elt))
+               (beg (progn (org-end-of-meta-data t) (point)))
+               (end (progn (outline-next-visible-heading 1) (point))))
+          (when heading-shown? (show-subtree))
+          (list title (buffer-substring-no-properties beg end)))))))
+
+(defun org-roam-refile-to-node ()
+  "Refile heading to another Org-roam node."
+  (interactive)
+  (let* ((headline? (org-get-outline-path 'with-self?))
+         (props (org-entry-properties))
+         (id (org-entry-get nil "id"))
+         (title (if headline?
+                    (org-element-property :title (org-element-at-point))
+                  (cadar (org-collect-keywords '("title")))))
+         (content (cadr (org--get-headline-with-text))))
+    (when headline?
+      (org-cut-subtree))
+    (org-roam-capture-
+     :goto nil
+     :node (org-roam-node-create
+            :title title
+            :properties props
+            :id id)
+     :props '(:immediate-finish nil))
+    (let ((insert-at (plist-get org-capture-plist :position-for-last-stored)))
+      (with-current-buffer (marker-buffer insert-at)
+        (insert content)
+        (mark-whole-buffer)
+        (org-do-promote)))))
 
 (provide 'funcs)
 

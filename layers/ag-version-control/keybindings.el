@@ -15,6 +15,7 @@
   (evil-define-key 'normal magit-mode-map (kbd "M-l") 'magit-log)
   (evil-define-key 'normal magit-mode-map "h" 'evil-backward-char)
   (evil-define-key 'normal magit-mode-map (kbd "M-h") 'magit-dispatch)
+  (evil-define-key 'normal magit-mode-map (kbd "<escape>") nil)
   (evil-define-key 'normal magit-revision-mode-map "q" 'magit-log-bury-buffer))
 
 ;; (with-eval-after-load 'forge

@@ -101,6 +101,7 @@
 ;;;;;;;;;;
 ;; Misc ;;
 ;;;;;;;;;;
+(global-set-key (kbd "H-l") #'recenter)
 
 (spacemacs/set-leader-keys
   "qq" nil  ; no unexpected exits

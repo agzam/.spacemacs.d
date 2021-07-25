@@ -151,8 +151,9 @@ i.e.: show only commits that differ between selected (other branch) and current 
 (defun ag-version-control/post-init-git-link ()
   (defun git-link-master-branch ()
     (interactive)
+    (require 'git-link)
     (let ((git-link-default-branch "master"))
-      (call-interactively 'git-link)))
+      (call-interactively #'git-link)))
 
   (spacemacs/set-leader-keys
     "glm" #'git-link-master-branch))

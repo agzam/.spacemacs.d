@@ -64,6 +64,7 @@
         cider-comment-prefix  " \n;; => "
         cider-inject-dependencies-at-jack-in t
         cider-repl-pop-to-buffer-on-connect t
+        cider-mode-line-show-connection nil             ; otherwise it slows down everything
         ;; clojure-align-binding-forms '("binding" "loop" "doseq" "for" "with-open" "with-local-vars" "with-redefs")
 
         ;; make * operator (spacemacs/enter-ahs-forward) to recognize symbols like foo/bar
@@ -124,8 +125,6 @@
   (spacemacs|forall-clojure-modes m
     (spacemacs/set-leader-keys-for-major-mode m
       "df" 'cider-debug-defun-at-point))
-
-
   )
 
 (add-hook 'clojurescript-mode-hook #'add-reframe-regs-to-imenu)
@@ -137,6 +136,7 @@
   ;; replacing cider's defautl fn, because it annoying opens sometimes cider
   ;; repl in the same window. even though
   ;; cider-repl-display-in-current-window set to nil
+  (setq cider-show-error-buffer 'except-in-repl)
   (defun cider--switch-to-repl-buffer (repl-buffer &optional set-namespace)
     (let ((buffer (current-buffer)))
       (switch-to-buffer-other-window repl-buffer)

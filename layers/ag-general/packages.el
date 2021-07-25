@@ -40,8 +40,19 @@
     (doom-modeline-mode)
     (doom-modeline-def-modeline
       'agcustom
-      '(bar window-number workspace-name persp-name buffer-info matches word-count parrot selection-info)
-      '(misc-info battery grip irc mu4e debug repl lsp major-mode process checker buffer-position))
+      '(bar window-number workspace-name persp-name buffer-info matches
+            ;; word-count parrot selection-info
+            )
+      '(misc-info
+        ;; battery
+        ;; grip
+        ;; irc mu4e debug
+        ;; repl lsp
+        major-mode
+        ;; process
+        ;; checker
+        ;; buffer-position
+        ))
 
     (defun setup-custom-doom-modeline ()
       (doom-modeline-set-modeline 'agcustom))
@@ -61,7 +72,10 @@
           doom-modeline-persp-icon nil
           inhibit-compacting-font-caches t
           doom-modeline-height 1
-          doom-modeline-bar-width 1)))
+          doom-modeline-bar-width 1)
+    :config
+    (defun doom-modeline--font-height () 5)
+    ))
 
 (defun ag-general/init-helpful ()
   (use-package helpful
@@ -365,9 +379,12 @@
     (set (make-local-variable 'er/save-mode-excursion)
          #'er/save-org-mode-excursion))
 
-  (with-eval-after-load 'expand-region
-    (remove-hook 'org-mode-hook 'er/add-org-mode-expansions)
-    (er/enable-mode-expansions 'org-mode #'er/add-org-mode-expansions*)))
+  (with-eval-after-load 'org-mode
+    (remove-hook 'org-mode-hook #'er/add-org-mode-expansions)
+    (er/enable-mode-expansions 'org-mode #'er/add-org-mode-expansions*)
+
+    ;; borrowed from [[https://www.youtube.com/watch?v=4iO7SbGhXoQ&t][Emacs org-attach basics - YouTube]]
+    (add-hook 'org-attach-after-change-hook #'org-attach-save-file-list-to-property)))
 
 (with-eval-after-load 'flycheck
   (define-key flycheck-mode-map flycheck-keymap-prefix nil))
