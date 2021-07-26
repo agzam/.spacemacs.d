@@ -34,28 +34,7 @@
 (defun ag-lang-tools/init-keytar ()
   (use-package keytar
     :config
-    (require 'keytar)
-    )
-  ;; (use-package lsp-grammarly
-  ;;   :hook ((text-mode . lsp)
-  ;;          (markdown-mode . lsp))
-  ;;   :config
-  ;;   (setq lsp-grammarly-domain "technical"
-  ;;         lsp-grammarly-audience "expert"))
-  )
-
-;; (defun ag-lang-tools/init-auth-source-keytar ()
-;;   (use-package auth-source-keytar
-;;     :config
-;;     ;; (require 'auth-source-keytar)
-;;     )
-;;   ;; (use-package lsp-grammarly
-;;   ;;   :hook ((text-mode . lsp)
-;;   ;;          (markdown-mode . lsp))
-;;   ;;   :config
-;;   ;;   (setq lsp-grammarly-domain "technical"
-;;   ;;         lsp-grammarly-audience "expert"))
-;;   )
+    (require 'keytar)))
 
 (defun ag-lang-tools/init-lsp-grammarly ()
   (use-package lsp-grammarly
@@ -76,10 +55,7 @@
     (define-key mw-thesaurus-mode-map [remap evil-record-macro] #'mw-thesaurus--quit)
     (add-hook 'mw-thesaurus-mode-hook 'variable-pitch-mode)
     (spacemacs/set-leader-keys
-      "xlm" #'mw-thesaurus-lookup-dwim
-      ;; "xAg" #'add-global-abbrev
-      ;; "xAl" #'add-mode-abbrev
-      )))
+      "xlm" #'mw-thesaurus-lookup-dwim)))
 
 (defun ag-lang-tools/init-sdcv-mode ()
   (use-package sdcv-mode
@@ -103,9 +79,9 @@
         google-translate-default-source-language "ru"
         google-translate-default-target-language "en")
 
-  ;; to listen. on Mac:
-  ;; brew cask install mplayer-osx-extended
-  ;; ln -s '/Applications/MPlayer OSX Extended.app/Contents/Resources/Binaries/mpextended.mpBinaries/Contents/MacOS' /usr/local/bin/mplayer
+  ;; to use 'listen' feature of google-translate, on Mac:
+  ;; brew install mplayer-osx-extended
+  ;; ln -s '/Applications/MPlayer OSX Extended.app/Contents/Resources/Binaries/mpextended.mpBinaries/Contents/MacOS/mplayer' /usr/local/bin/mplayer
   (setf google-translate-listen-program
         (if (eq system-type 'darwin)
             "/usr/local/bin/mplayer"
@@ -127,7 +103,7 @@
       "xld" #'define-it-at-point)))
 
 (with-eval-after-load 'ispell
-  (setq flyspell-issue-message-flag nil) ; printing a message for every word has a negative performance impact
+  (setq flyspell-issue-message-flag nil)    ; printing a message for every word has a negative performance impact
   (setq ispell-program-name "aspell")
   ;; aspell suggestion mode
   (add-to-list 'ispell-extra-args "--sug-mode=bad-spellers")

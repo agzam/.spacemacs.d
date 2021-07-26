@@ -21,12 +21,12 @@
     ;; (slack2org :location local)
     anki-editor
     (org-roam :location (recipe :fetcher github
-                                :repo "org-roam/org-roam"
-                                :commit "1aba91eacdcec9bbe71580ee935b04f7e1700d6e"))
+                                :repo "org-roam/org-roam"))
     (org-ref :location
              (recipe :fetcher github
                      :repo "jkitchin/org-ref"))
-    (org-edit-indirect :location local)))
+    (org-edit-indirect :location local)
+    expand-region))
 
 (setq org-default-folder "~/Dropbox/org/"
       org-roam-v2-ack t
@@ -242,7 +242,11 @@
 
     (advice-add 'org-return :around 'org-return--around)
 
-    (setq org-link-make-description-function 'org-link-make-description-function*))
+    (setq org-link-make-description-function #'org-link-make-description-function*))
+
+  (with-eval-after-load 'org-attach
+    ;; borrowed from [[https://www.youtube.com/watch?v=4iO7SbGhXoQ&t][Emacs org-attach basics - YouTube]]
+    (add-hook 'org-attach-after-change-hook #'org-attach-save-file-list-to-property))
 
   (require 'org-crypt)
   (org-crypt-use-before-save-magic)
@@ -530,5 +534,26 @@
 (defun ag-org/init-org-edit-indirect ()
   (use-package org-edit-indirect
     :after (org edit-indirect)))
+
+(defun ag-org/post-init-expand-region ()
+  (with-eval-after-load 'expand-region-core
+    (defun er/add-org-mode-expansions* ()
+      "Adds org-specific expansions for buffers in org-mode"
+      (set (make-local-variable 'er/try-expand-list)
+           '(er/mark-word
+             er/mark-between
+             er/mark-symbol
+             er/mark-symbol-with-prefix
+             er/mark-inside-pairs
+             er/mark-line
+             er/mark-org-element
+             er/mark-org-element-parent
+             er/mark-org-code-block
+             er/mark-org-parent))
+      (set (make-local-variable 'er/save-mode-excursion)
+           #'er/save-org-mode-excursion))
+
+    (remove-hook 'org-mode-hook #'er/add-org-mode-expansions)
+    (er/enable-mode-expansions 'org-mode #'er/add-org-mode-expansions*)))
 
 ;;; packages.el ends here

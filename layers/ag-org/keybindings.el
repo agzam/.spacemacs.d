@@ -12,6 +12,7 @@
 (global-set-key (kbd "C-x C-p") 'org-pomodoro)
 (global-set-key (kbd "C-x p") 'org-pomodoro)
 (global-set-key (kbd "C-c C-f") #'org-roam-node-find)
+(global-set-key (kbd "C-c t") #'org-roam/node-find-todos)
 (global-set-key (kbd "C-c r") #'org-roam-dailies-capture-date)
 (org-defkey org-mode-map (kbd "C-c C-f") #'org-roam-node-find)
 

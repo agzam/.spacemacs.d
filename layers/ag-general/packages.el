@@ -361,30 +361,7 @@
           er/mark-comment
           er/mark-url
           er/mark-email
-          er/mark-defun))
-
-  (defun er/add-org-mode-expansions* ()
-    "Adds org-specific expansions for buffers in org-mode"
-    (set (make-local-variable 'er/try-expand-list)
-         '(er/mark-word
-           er/mark-between
-           er/mark-symbol
-           er/mark-symbol-with-prefix
-           er/mark-inside-pairs
-           er/mark-line
-           er/mark-org-element
-           er/mark-org-element-parent
-           er/mark-org-code-block
-           er/mark-org-parent))
-    (set (make-local-variable 'er/save-mode-excursion)
-         #'er/save-org-mode-excursion))
-
-  (with-eval-after-load 'org-mode
-    (remove-hook 'org-mode-hook #'er/add-org-mode-expansions)
-    (er/enable-mode-expansions 'org-mode #'er/add-org-mode-expansions*)
-
-    ;; borrowed from [[https://www.youtube.com/watch?v=4iO7SbGhXoQ&t][Emacs org-attach basics - YouTube]]
-    (add-hook 'org-attach-after-change-hook #'org-attach-save-file-list-to-property)))
+          er/mark-defun)))
 
 (with-eval-after-load 'flycheck
   (define-key flycheck-mode-map flycheck-keymap-prefix nil))

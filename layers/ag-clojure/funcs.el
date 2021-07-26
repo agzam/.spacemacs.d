@@ -17,15 +17,6 @@
     (when (not (equal (buffer-name) nrepl-buf))
       (switch-to-buffer-other-window nrepl-buf))))
 
-;; (with-eval-after-load 'cider
-;;   (advice-add 'cider-jack-in :after #'switch-to-nrepl-window)
-;;   ;; (add-hook 'cider-connected-hook (lambda ()
-;;   ;;                                   (save-selected-window
-;;   ;;                                     (switch-to-nrepl-window)
-;;   ;;                                     (split-window-below-and-focus)
-;;   ;;                                     (switch-to-buffer (cider-current-repl-buffer)))))
-;;   )
-
 (defun clojars-find ()
   "Lookup for symbol at point on clojars. Useful for updating packages in project.clj"
   (interactive)

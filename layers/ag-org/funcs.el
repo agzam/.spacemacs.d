@@ -520,6 +520,71 @@ and if it is set to nil, then it would forcefully create the ID."
         (mark-whole-buffer)
         (org-do-promote)))))
 
+;; filetag helpers borrowed from:
+;; https://magnus.therning.org/2021-07-23-keeping-todo-items-in-org-roam-v2.html
+
+(defun org-roam/get-filetags ()
+  (split-string (or (org-roam-get-keyword "filetags") "")))
+
+(defun org-roam/add-filetag (tag)
+  (let* ((new-tags (cons tag (org-roam/get-filetags)))
+         (new-tags-str (combine-and-quote-strings new-tags)))
+    (org-roam-set-keyword "filetags" new-tags-str)))
+
+(defun org-roam/kill-filetag (tag)
+  (let* ((new-tags (seq-difference (org-roam/get-filetags) `(,tag)))
+         (new-tags-str (combine-and-quote-strings new-tags)))
+    (org-roam-set-keyword "filetags" new-tags-str)))
+
+(defun org-roam/org-todo-keywords->list ()
+  (let ((lst (-partition-by
+              (lambda (s) (string-equal s "|"))
+              (seq-map
+               (lambda (s) (replace-regexp-in-string "\(.*" "" s))
+               (cl-rest (car org-todo-keywords))))))
+    `(,(car lst) ,(caddr lst))))
+
+(defun org-roam/node-find-todos (todo-state)
+  "Finds all nodes with selected TODO state.
+   For headings that would be regular Org-mode TODO cookie,
+   for file notes it's managed with TODO filetag."
+  (interactive "P")
+  (let ((todo-state (or todo-state
+                        (completing-read
+                         "Choose TODO state"
+                         (-flatten (org-roam/org-todo-keywords->list))))))
+    (org-roam-node-find
+     :other-window nil
+     (lambda (node)
+       (or (string-equal todo-state (org-roam-node-todo node))
+           (seq-contains-p (org-roam-node-tags node) todo-state)
+           (seq-contains-p (org-roam-node-tags node) todo-state))))))
+
+(defun org-roam/toggle-todo-state-in-node (&optional new-state)
+  "Togggle TODO filetag in Org-roam node file."
+  (interactive "P")
+  (when (and (not (active-minibuffer-window))
+             (org-roam-file-p))
+    (let* ((all-states (-flatten (org-roam/org-todo-keywords->list)))
+           (new-state (or new-state
+                          (completing-read "Choose TODO state" all-states)))
+           (current (seq-find
+                     (lambda (tag)
+                       (seq-contains-p all-states tag))
+                     (org-roam/get-filetags))))
+      (when current (org-roam/kill-filetag current))
+      (when (not (string-equal current new-state))
+        (org-roam/add-filetag new-state)))))
+
+(defun org-todo--around (old-fn &rest args)
+  (if (and (not (active-minibuffer-window))
+           (org-roam-file-p)
+           (not (ignore-errors (org-get-outline-path 'with-self?))))
+      (funcall 'org-roam/toggle-todo-state-in-node)
+    (apply old-fn args)))
+
+(advice-add 'org-todo :around #'org-todo--around)
+
 (provide 'funcs)
 
 ;;; funcs.el ends here
