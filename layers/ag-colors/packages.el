@@ -13,30 +13,20 @@
 
 (defun ag/decrease-powerline-fonts (&optional theme)
   "Slightly decrease elements of the powerline, which-key and minibuffer"
-  (let ((faces '(powerline-active0
-                 powerline-active1
-                 powerline-active2
-                 powerline-inactive0
-                 powerline-inactive1
-                 powerline-inactive2
-                 mode-line
+  (let ((faces '(mode-line
+                 mode-line-buffer-id
+                 mode-line-emphasis
+                 mode-line-highlight
                  mode-line-inactive
-                 ;; mode-line-highlight
-                 ;; mode-line-buffer-id
-                 ;; mode-line-buffer-id-inactive
-                 ;; mode-line-emphasis
-                 ;; which-key-docstring-face
-                 ;; which-key-group-description-face
-                 ;; which-key-command-description-face
-                 ;; which-key-local-map-description-face
 
-                 spacemacs-micro-state-header-face
-                 spacemacs-micro-state-binding-face
-                 spacemacs-transient-state-title-face
-
-                 persp-face-lighter-buffer-not-in-persp
                  persp-face-lighter-default
                  persp-face-lighter-nil-persp
+                 persp-face-lighter-buffer-not-in-persp
+
+                 eyebrowse-mode-line-active
+                 eyebrowse-mode-line-inactive
+                 eyebrowse-mode-line-separator
+                 eyebrowse-mode-line-delimiters
 
                  doom-modeline-buffer-timemachine
                  doom-modeline-battery-error
@@ -83,16 +73,15 @@
                  doom-modeline-buffer-file
                  doom-modeline-buffer-path
                  doom-modeline-vspc-face
-                 doom-modeline-spc-face
-                 )))
+                 doom-modeline-spc-face)))
     (dolist (f faces)
       (when (facep f)
-        (set-face-attribute f nil :height 0.85))))
+        (set-face-attribute f nil :height 0.8))))
 
   (dolist (buf (list " *Minibuf-0*" " *Minibuf-1*" " *Echo Area 0*" " *Echo Area 1*" " *which-key*"))
     (when (get-buffer buf)
       (with-current-buffer buf
-        (setq-local face-remapping-alist '((default (:height 0.85))))))))
+        (setq-local face-remapping-alist '((default (:height 0.8))))))))
 
 (defun ag/set-faces-attributes (faces)
   "Sets face attributes for given alist of FACES"
@@ -218,9 +207,9 @@
                   (mode-line-inactive . (:underline (:color ,base01)))
                   (default . (:background ,default-background :foreground ,default-foreground))
 
-                  (mode-line . (:height 0.7))
-                  (mode-line-inactive . (:height 1))
-                  (mode-line-emphasis . (:weight normal))
+                  ;; (mode-line . (:height 0.7))
+                  ;; (mode-line-inactive . (:height 1))
+                  ;; (mode-line-emphasis . (:weight normal))
 
                   (line-number . (:inherit fixed-pitch))
                   (ivy-posframe . (:inherit default)))))
@@ -320,10 +309,9 @@
                   (gnus-cite-3 . (:foreground "yellow3"))
                   (mm-uu-extract . (:background "#efeae9"))
 
-
-                  (mode-line . (:height 0.7))
-                  (mode-line-inactive . (:height 1))
-                  (mode-line-emphasis . (:weight normal))
+                  ;; (mode-line . (:height 0.7))
+                  ;; (mode-line-inactive . (:height 1))
+                  ;; (mode-line-emphasis . (:weight normal))
 
                   (cider-debug-code-overlay-face . (:background ,bg-darker))
                   (ivy-posframe . (:inherit default)))))
