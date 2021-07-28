@@ -373,13 +373,16 @@
 (defun ag-general/init-marginalia ()
   (use-package marginalia
     :bind (:map ivy-minibuffer-map ("M-C" . marginalia-cycle)
-           (:map minibuffer-local-map ("M-C" . marginalia-cycle)))
-   :init
-   (marginalia-mode)
-   :custom
-   (marginalia-annotators
-    '(marginalia-annotators-heavy
-      marginalia-annotators-light))))
+                (:map minibuffer-local-map ("M-C" . marginalia-cycle)))
+    :init
+    (marginalia-mode)
+    :custom
+    (marginalia-annotators
+     '(marginalia-annotators-heavy
+       marginalia-annotators-light))
+
+    ;; it otherwise breaks the alignment on ultra-wide
+    (marginalia-margin-threshold 350)))
 
 (with-eval-after-load 'terminal-here
   (setq terminal-here-terminal-command

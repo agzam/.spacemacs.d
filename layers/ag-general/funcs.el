@@ -334,8 +334,8 @@ provided, returns its value"
           (unsplittable . t)
           (background-color . ,(face-attribute 'default :background nil t))
           (foreground-color . ,(face-attribute 'default :foreground nil t)))
-        ivy-posframe-width 130
-        ivy-posframe-height 20
+        ivy-posframe-width 160
+        ivy-posframe-height 15
         ivy-posframe-hide-minibuffer nil))
 
 (defun ag/posframe-poshandler-frame-bottom-left-corner (info)

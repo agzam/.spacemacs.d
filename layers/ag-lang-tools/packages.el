@@ -44,7 +44,9 @@
     (setq lsp-grammarly-auto-activate nil)
     :config
     (setq lsp-grammarly-domain "technical"
-          lsp-grammarly-audience "expert"))
+          lsp-grammarly-audience "expert")
+    (spacemacs/set-leader-keys
+      "xlg" #'lsp-grammarly-check-grammar))
   (with-eval-after-load 'lsp-grammarly
     (setq lsp-grammarly-active-modes (remove 'org-mode lsp-grammarly-active-modes))))
 

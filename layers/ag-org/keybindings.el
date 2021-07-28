@@ -18,6 +18,8 @@
 
 (evil-define-key 'normal org-mode-map "H" #'org-shiftleft)
 (evil-define-key 'normal org-mode-map "L" #'org-shiftright)
+;; (evil-define-key '(normal insert visual) org-mode-map (kbd "C-c i") #'org-roam-node-insert)
+(define-key org-mode-map (kbd "C-c <C-i>") #'org-roam-node-insert)
 
 (spacemacs/set-leader-keys-for-major-mode 'org-mode
   "sa" #'org-toggle-archive-tag
