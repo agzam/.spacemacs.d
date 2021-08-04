@@ -11,6 +11,7 @@
 
 (configuration-layer/declare-layers '(
                                       ;; spacemacs-base
+                                      spacemacs-defaults
                                       spacemacs-completion
                                       spacemacs-layouts
                                       spacemacs-editing

@@ -396,9 +396,12 @@
   (defun ivy--recenter-after-press ()
     (with-ivy-window (recenter)))
 
-  (advice-add 'ivy-occur-press :after 'ivy--recenter-after-press))
+  (advice-add 'ivy-occur-press :after 'ivy--recenter-after-press)
+  (add-hook 'ivy-occur-grep-mode-hook #'evil-evilified-state))
 
 (defun ag-general/init-let-plist ()
   (use-package let-plist))
+
+(add-hook 'Info-selection-hook #'evil-evilified-state)
 
 ;;; packages.el ends here
