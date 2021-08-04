@@ -720,7 +720,14 @@ before packages are loaded."
   ;; (setq backup-directory-alist '(("." . ".bak")))
   ;; (savehist-mode -1)
 
-  (run-at-time "1 sec" nil 'ag/adjust-themes)
+  (center-frame-horizontally nil 50)
+  (run-at-time "1 sec" nil #'ag/adjust-themes)
+
+  ;; Because of imbeciles who built Webex App (it blocks C-S-d system-wide)
+  (spacemacs|spacebind
+   :global
+   (("b" "Buffers"
+     ("H-d" spacemacs/kill-matching-buffers-rudely "Kill buffers..."))))
 
   ;; make Ivy stuff a bit readable in the minibuffer
   (defun minibuffer-line-spacing ()
@@ -764,8 +771,7 @@ before packages are loaded."
 
   ;; Something setting scratch buffer to be read-only and I hate that
   ;; until I fugure it out, I'm gonna use this stupid workaround
-  (add-hook 'spacemacs-scratch-mode-hook (lambda () (read-only-mode -1)))
-  )
+  (add-hook 'spacemacs-scratch-mode-hook (lambda () (read-only-mode -1))))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.

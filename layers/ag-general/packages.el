@@ -230,7 +230,8 @@
           lsp-enable-file-watchers nil
           lsp-modeline--enable-code-actions nil
           lsp-headerline-breadcrumb-enable nil
-          lsp-enable-completion-at-point t)
+          lsp-enable-completion-at-point t
+          lsp-enable-symbol-highlighting nil)
     (add-hook
      'lsp-after-open-hook
      (lambda()
