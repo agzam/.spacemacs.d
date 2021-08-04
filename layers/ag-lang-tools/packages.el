@@ -28,8 +28,7 @@
      :location
      (recipe :fetcher github :repo "emacs-grammarly/lsp-grammarly"))
 
-    define-it
-    ))
+    define-it))
 
 (defun ag-lang-tools/init-keytar ()
   (use-package keytar
@@ -101,8 +100,17 @@
      define-it-show-google-translate nil
      define-it-show-header nil
      google-translate-default-target-language "ru")
-    (spacemacs/set-leader-keys
-      "xld" #'define-it-at-point)))
+
+    (spacemacs/defer-until-after-user-config  ; otherwise, spacemacs-default layer would override the binding
+     (lambda ()                               ; and set it to `duplicate-line-or-region', and it's pretty useles for me
+       (spacemacs/set-leader-keys "xld" #'define-it-at-point)))
+
+    ;; it doesn't pop to the buffer automatically, when definition is fetched
+    (defun define-it--find-buffer (x)
+      (let ((buf (format define-it--buffer-name-format define-it--current-word)))
+        (pop-to-buffer buf)))
+
+    (advice-add 'define-it--in-buffer :after #'define-it--find-buffer)))
 
 (with-eval-after-load 'ispell
   (setq flyspell-issue-message-flag nil)    ; printing a message for every word has a negative performance impact
