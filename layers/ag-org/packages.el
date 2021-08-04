@@ -26,6 +26,9 @@
              (recipe :fetcher github
                      :repo "jkitchin/org-ref"))
     (org-edit-indirect :location local)
+    (org-roam-ui :location (recipe :fetcher github
+                                   :repo "org-roam/org-roam-ui"
+                                   :files ("*.el" "out")))
     expand-region))
 
 (setq org-default-folder "~/Dropbox/org/"
@@ -403,7 +406,7 @@
    ;; removed in v2
    ;; org-roam-db-update-method 'immediate
    ;; org-roam-tag-sources '(prop vanilla all-directories)
-   org-roam-completion-everywhere t
+   org-roam-completion-everywhere nil
    ;; org-roam-link-auto-replace t
    org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id
 
@@ -497,34 +500,15 @@
                     (window-width . 0.25)
                     (window-height . fit-window-to-buffer))))))
 
-(defun ag-org/post-init-org-roam-server ()
-  (setq org-roam-server-host "127.0.0.1"
-        org-roam-server-port 8080
-        org-roam-server-authenticate nil
-        org-roam-server-export-inline-images t
-        org-roam-server-serve-files nil
-        org-roam-server-served-file-extensions '("pdf" "mp4" "ogv")
-        org-roam-server-network-poll t
-        org-roam-server-network-arrows nil
-        org-roam-server-network-label-truncate t
-        org-roam-server-network-label-truncate-length 60
-        org-roam-server-network-label-wrap-length 20
-        org-roam-server-link-auto-replace nil
-        org-roam-server-network-vis-options
-        "{
-              \"edges\": {
-                  \"smooth\": false
-              },
-              \"physics\": {
-                  \"hierarchicalRepulsion\": {
-                      \"centralGravity\": 3.1,
-                      \"avoidOverlap\": null
-                  },
-                  \"minVelocity\": 0.75,
-                  \"solver\": \"hierarchicalRepulsion\"
-              },
-              \"nodes\": { \"font\": { \"size\":11, \"background\":\"rgba(255,255,255,0.8)\"}}
-          }"))
+(defun ag-org/init-org-roam-ui ()
+  (use-package org-roam-ui
+    :after org-roam
+    :hook (spacemacs-post-user-config . org-roam-ui-mode)
+    :config
+    (setq org-roam-ui-port 8081
+          org-roam-ui-sync-theme t
+          org-roam-ui-follow t
+          org-roam-ui-update-on-save t)))
 
 (defun ag-org/post-init-org-ref ()
   (setq org-ref-default-bibliography '("~/SyncMobile/Papers/references.bib")
