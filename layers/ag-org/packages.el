@@ -21,15 +21,17 @@
     ;; (slack2org :location local)
     anki-editor
     (org-roam :location (recipe :fetcher github
-                                :repo "org-roam/org-roam"))
-    (org-ref :location
-             (recipe :fetcher github
-                     :repo "jkitchin/org-ref"))
+                                :repo "org-roam/org-roam"
+                                :files ("*.el" "extensions")))
+    (org-ref :location (recipe :fetcher github
+                               :repo "jkitchin/org-ref"))
     (org-edit-indirect :location local)
     (org-roam-ui :location (recipe :fetcher github
                                    :repo "org-roam/org-roam-ui"
                                    :files ("*.el" "out")))
     expand-region))
+
+(add-to-list 'load-path (concat (configuration-layer/get-elpa-package-install-directory 'org-roam) "extensions"))
 
 (setq org-default-folder "~/Dropbox/org/"
       org-roam-v2-ack t
@@ -40,6 +42,7 @@
 (defun ag-org/post-init-org ()
   (add-hook 'before-save-hook 'org-roam--set-last-modified)
   (with-eval-after-load 'org-capture
+    (require 'org-roam-dailies)
     (require 'org-roam-protocol)
     (remove-hook 'org-capture-mode-hook 'spacemacs//org-capture-start)
     (dolist (template
@@ -447,16 +450,18 @@
           ;;  :unnarrowed t)
           )
         org-roam-dailies-capture-templates
-        '(("w" "work" entry
-           "* Work\n %?"
+        '(("w" "work" plain
+           "%?"
            :if-new
-           (file+head "%<%Y-%m-%d %a>.org" "#+title: %<%Y-%m-%d %A>")
-           :jump-to-captured t)
-          ("j" "journal" entry
-           "* Journal\n %?"
+           (file+head+olp "%<%Y-%m-%d %a>.org" "#+title: %<%Y-%m-%d %A>" ("Work"))
+           :jump-to-captured t
+           :unnarrowed t)
+          ("j" "journal" plain
+           "%?"
            :if-new
-           (file+head "%<%Y-%m-%d %a>.org" "#+title: %<%Y-%m-%d %A>")
-           :jump-to-captured t)))
+           (file+head+olp "%<%Y-%m-%d %a>.org" "#+title: %<%Y-%m-%d %A>" ("Journal"))
+           :jump-to-captured t
+           :unnarrowed t)))
 
   ;; org-roam-buffer-window-parameters get reset on Layout/Workspace change,
   ;; they should be respected
@@ -492,13 +497,13 @@
            ;; (org-roam-buffer-activate)
            )))))
   (with-eval-after-load 'org-roam
-    (org-roam-setup)
+    (org-roam-db-autosync-mode)
     (add-to-list 'display-buffer-alist
                  '(("\\*org-roam\\*"
                     (display-buffer-in-direction)
                     (direction . right)
                     (window-width . 0.25)
-                    (window-height . fit-window-to-buffer))))))
+                    (window-height . fit-window-to-buffer))))
 
 (defun ag-org/init-org-roam-ui ()
   (use-package org-roam-ui
@@ -508,7 +513,8 @@
     (setq org-roam-ui-port 8081
           org-roam-ui-sync-theme t
           org-roam-ui-follow t
-          org-roam-ui-update-on-save t)))
+          org-roam-ui-update-on-save t
+          org-roam-ui-open-on-start nil)))
 
 (defun ag-org/post-init-org-ref ()
   (setq org-ref-default-bibliography '("~/SyncMobile/Papers/references.bib")
