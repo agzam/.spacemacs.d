@@ -9,6 +9,8 @@
 ;;
 ;;; License: GPLv3
 
-(configuration-layer/declare-layers '(mu4e))
+(configuration-layer/declare-layers '(notmuch
+                                      ;; mu4e
+                                      ))
 
 ;;; layers.el ends here

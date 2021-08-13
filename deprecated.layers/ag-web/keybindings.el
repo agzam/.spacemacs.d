@@ -23,8 +23,8 @@
 ;; ------------
 ;; Javascript mode
 ;; ------------
-(evil-define-key 'normal js2-mode-map "zc" 'js2-mode-hide-element)
-(evil-define-key 'normal js2-mode-map "zo" 'js2-mode-show-element)
-(evil-leader/set-key-for-mode 'js2-mode "mhh" 'tern-get-docs)
+;; (evil-define-key 'normal js2-mode-map "zc" 'hs-hide-block)
+;; (evil-define-key 'normal js2-mode-map "zo" 'hs-show-block)
+;; (evil-leader/set-key-for-mode 'js2-mode "mhh" 'tern-get-docs)
 
 ;;; keybindings.el ends here

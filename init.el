@@ -96,9 +96,7 @@ This function should only modify configuration layer settings."
       ;; org-roam-server doesn't work anymore in v2. watch: https://github.com/org-roam/org-roam-server/issues/161
       ;; org-enable-roam-server t
       )
-     ;; ag-mail
      ag-version-control
-     ;; ag-web
      (lsp
       :variables
       lsp-ui-sideline-enable nil

@@ -10,29 +10,35 @@
 ;;; License: GPLv3
 ;;
 ;;; Code:
-(defconst ag-mail-packages '(persp-mode
-                             mu4e))
+(defconst ag-mail-packages '(
+                             ;; persp-mode
+                             ;; mu4e
+                             ;; (mu4e-thread-folding
+                             ;;  :location
+                             ;;  (recipe :fetcher github
+                             ;;          :repo "rougier/mu4e-thread-folding"))
+                             ))
 
 ;; things I do for love... I mean, gccemacs
-(with-eval-after-load 'use-package
-  (use-package mu4e
-    :load-path "/usr/local/Cellar/mu/1.4.13/share/emacs/site-lisp/mu/mu4e"))
+;; (with-eval-after-load 'use-package
+;;   (use-package mu4e
+;;     :load-path "/usr/local/Cellar/mu/1.4.13/share/emacs/site-lisp/mu/mu4e"))
 
 (defun ag-mail/post-init-persp-mode ()
-  (spacemacs|define-custom-layout mu4e-spacemacs-layout-name
-    :binding mu4e-spacemacs-layout-binding
-    :body
-    (progn
-      (call-interactively 'mu4e)
-      (call-interactively 'mu4e-update-index)
+;;   (spacemacs|define-custom-layout mu4e-spacemacs-layout-name
+;;     :binding mu4e-spacemacs-layout-binding
+;;     :body
+;;     (progn
+;;       (call-interactively 'mu4e)
+;;       (call-interactively 'mu4e-update-index)
 
-      (define-advice mu4e~stop (:after nil kill-mu4e-layout-after-mu4e~stop)
-        (when mu4e-spacemacs-kill-layout-on-exit
-          (persp-kill mu4e-spacemacs-layout-name)))
+;;       (define-advice mu4e~stop (:after nil kill-mu4e-layout-after-mu4e~stop)
+;;         (when mu4e-spacemacs-kill-layout-on-exit
+;;           (persp-kill mu4e-spacemacs-layout-name)))
 
-      (define-advice mu4e-headers-quit-buffer
-          (:after nil mu4e-update-mail-after-mu4e-headers-quit-buffer)
-        (mu4e-update-mail-and-index :run-in-the-background))))
+;;       (define-advice mu4e-headers-quit-buffer
+;;           (:after nil mu4e-update-mail-after-mu4e-headers-quit-buffer)
+;;         (mu4e-update-mail-and-index :run-in-the-background))))
 
   ;; TODO: remove when fix available for Spacemacs
   ;; Temporarily disables mu4e layer future because it very often screws up window configuration
@@ -48,16 +54,20 @@
 
     (setq mu4e-bookmarks
           '((:name "inbox" :key ?i :query "maildir:/home/inbox")
-            (:name "Unread messages" :query "NOT maildir:/home/[Gmail]/Trash AND flag:unread" :key ?u)
-            (:name "Today's messages" :query "NOT maildir:/home/[Gmail]/Trash AND date:today..now" :key ?t)
+            (:name "Unread messages" :query "(not \"maildir:/home/[Gmail]/Trash\") and flag:unread" :key ?u)
+            (:name "Today's messages" :query "(not \"maildir:/home/[Gmail]/Trash\") and date:today..now" :key ?t)
             (:name "Today's everything" :query "date:today..now" :key ?T)
-            (:name "Last 7 days" :query "(NOT maildir:/home/[Gmail]/Trash) AND date:7d..now" :hide-unread t :key ?w)
+            (:name "Last 7 days" :query "(not \"maildir:/home/[Gmail]/Trash\") AND date:7d..now" :hide-unread t :key ?w)
             (:name "Messages with images" :query "mime:image/*" :key ?p)))
 
     (setq
-          mu4e-get-mail-command "mbsync --all --new --delete --flags --renew --pull --push --create --expunge --verbose"
+          mu4e-get-mail-command "true"
           mu4e-view-use-gnus nil
-          mu4e-update-interval 600
+          mu4e-update-interval nil
+          mu4e-hide-index-messages t
+          mu4e-index-update-in-background t
+          mu4e-headers-results-limit -1
+          mu4e-enable-async-operations t
           mu4e-compose-signature-auto-include nil
           mu4e-view-show-images t
           mu4e-view-show-addresses t
@@ -65,13 +75,11 @@
           mu4e-enable-mode-line t
           mu4e-headers-skip-duplicates t
           ;; rename files when moving, needed for mbsync
-          mu4e-index-update-in-background nil
           mu4e-change-filenames-when-moving t
           mu4e-compose-dont-reply-to-self t
           mu4e-compose-format-flowed t
           fill-flowed-encode-column 5000
           mu4e-compose-complete-only-personal t
-          mu4e-enable-async-operations t
           org-mu4e-link-query-in-headers-mode nil
           org-mu4e-convert-to-html t
           ;; customize the reply-quote-string
@@ -130,7 +138,7 @@
 
     (add-hook 'mu4e-compose-mode-hook #'turn-off-auto-fill)
     (add-hook 'mu4e-compose-mode-hook #'spacemacs/toggle-visual-line-navigation-on)
-    ;; (add-hook 'mu4e-compose-mode-hook #'flyspell-mode)
+    (add-hook 'mu4e-compose-mode-hook #'flyspell-mode)
     (add-hook 'mu4e-view-mode-hook 'mu4e-prepare-view)
     (add-hook 'mu4e-compose-mode-hook 'mu4e-prepare-view)
 
@@ -153,10 +161,7 @@
                             :help "Message short storage information"
                             :function (lambda (msg)
                                         (let ((shortaccount)
-                                              (maildir (or (mu4e-message-field msg :maildir) ""))
-                                              (mailinglist (or (mu4e-message-field msg :mailing-list) "")))
-                                          (if (not (string= mailinglist ""))
-                                              (setq mailinglist (mu4e-get-mailing-list-shortname mailinglist)))
+                                              (maildir (or (mu4e-message-field msg :maildir) "")))
                                           (when (not (string= maildir ""))
                                             (setq shortaccount
                                                   (substring
@@ -166,17 +171,7 @@
                                             (if (> (length maildir) 15)
                                                 (setq maildir (concat (substring maildir 0 14) "…")))
                                             (setq maildir (concat "[" shortaccount "] " maildir)))
-                                          (cond
-                                           ((and (string= maildir "")
-                                                 (not (string= mailinglist "")))
-                                            mailinglist)
-                                           ((and (not (string= maildir ""))
-                                                 (string= mailinglist ""))
-                                            maildir)
-                                           ((and (not (string= maildir ""))
-                                                 (not (string= mailinglist "")))
-                                            (concat maildir " (" mailinglist ")"))
-                                           (t "")))))))
+                                          maildir)))))
 
     (defun ed/get-mail-header (header-name path)
       (replace-regexp-in-string
@@ -199,33 +194,52 @@
                ((string= useragent "") xmailer)
                (t (concat xmailer " (xmailer)\n" useragent " (user-agent)"))))))))
 
-    (add-to-list 'mu4e-header-info-custom
-                 '(:useragent . (:name "User-Agent"
-                                       :shortname "UserAgt."
-                                       :help "Mail client used by correspondant"
-                                       :function ed/get-origin-mail-system-header)))
+    (add-to-list
+     'mu4e-header-info-custom
+     '(:useragent . (:name "User-Agent"
+                           :shortname "UserAgt."
+                           :help "Mail client used by correspondant"
+                           :function ed/get-origin-mail-system-header)))
 
     ;; headers view should be at 20 percent of frame height
     (setq mu4e-headers-visible-lines (truncate (* (frame-height) 0.2)))
+    (add-to-list
+     'mu4e-header-info-custom
+     '(:empty . (:name "Empty"
+                       :shortname ""
+                       :function (lambda (msg) "  "))))
     (setq mu4e-headers-fields
-          '((:flags . 5)
-            (:human-date . 22)
+          '((:empty . 2)
+            (:flags . 6)
+            (:human-date . 12)
             (:size . 6)
-            (:foldername . 25)
-            (:from-or-to . 25)
+            (:foldername . 15)
+            (:mailing-list . 10)
+            (:from-or-to . 30)
             (:subject . nil))
-          mu4e-headers-show-thread nil
+          mu4e-headers-show-thread t
           mu4e-headers-include-related nil
-          mu4e-use-fancy-chars nil
-          mu4e-headers-date-format "%a %d %b %Y %H:%M"
-          mu4e-headers-time-format "%H:%M"
-          mu4e-view-fields '(:from :to :cc :subject :flags :date :maildir :mailing-list :tags :useragent :attachments :signature :decryption))
+          mu4e-use-fancy-chars t
+          ;; mu4e-headers-date-format "%a %d %b %Y %H:%M"
+          ;; mu4e-headers-time-format "%H:%M"
+          mu4e-view-fields '(:from :to :cc :subject :flags :date :maildir :mailing-list :tags :useragent :attachments :signature :decryption)
+          mu4e-headers-draft-mark '("D" . "🕗")
+          mu4e-headers-flagged-mark '("F" . "⚑")
+          mu4e-headers-new-mark '("N" . "•")
+          mu4e-headers-passed-mark '("P" . "❯")
+          mu4e-headers-replied-mark '("R" . "✏")
+          mu4e-headers-seen-mark '("S" . "✓")
+          mu4e-headers-trashed-mark '("T" . "☠")
+          mu4e-headers-attach-mark '("a" . "📎")
+          mu4e-headers-encrypted-mark '("x" . "🔐")
+          mu4e-headers-signed-mark '("s" . "🎵")
+          mu4e-headers-unread-mark '("u". "●"))
 
     (add-hook 'mu4e-view-mode-hook #'spacemacs/toggle-visual-line-navigation-on)
-    (mu4e-maildirs-extension)
+    ;; (mu4e-maildirs-extension)
 
     (add-hook 'mu4e-main-mode-hook #'ag-mail/set-mu4e-keys)
-    (add-hook 'mu4e-main-mode-hook (lambda () (mu4e-update-mail-and-index t)))
+    ;; (add-hook 'mu4e-main-mode-hook (lambda () (mu4e-update-mail-and-index t)))
 
     (add-hook 'mu4e-headers-mode-hook #'ag-mail/set-mu4e-keys)
     (add-hook 'mu4e-view-mode-hook #'ag-mail/set-mu4e-keys)
@@ -234,14 +248,18 @@
     (dolist (f '(mu4e-view-body-face mu4e-cited-1-face mu4e-cited-2-face mu4e-cited-3-face mu4e-cited-4-face mu4e-cited-5-face mu4e-cited-6-face mu4e-cited-7-face))
       (set-face-attribute f nil :height 1.2))
 
-    (defun set-mu4e-index-update-parameter (x)
-      (if-let ((mu4e-layout? (-some-> (get-current-persp)
-                               (persp-name)
-                               (string= "@Mu4e"))))
-          (setq mu4e-index-update-in-background nil)
-        (setq mu4e-index-update-in-background t)))
+    (set-face-attribute 'mu4e-header-highlight-face nil :weight 'normal)
+    (set-face-attribute 'mu4e-unread-face nil :weight 'normal)
 
-    (add-hook 'persp-activated-functions 'set-mu4e-index-update-parameter))
+    ;; (defun set-mu4e-index-update-parameter (x)
+    ;;   (if-let ((mu4e-layout? (-some-> (get-current-persp)
+    ;;                            (persp-name)
+    ;;                            (string= "@Mu4e"))))
+    ;;       (setq mu4e-index-update-in-background nil)
+    ;;     (setq mu4e-index-update-in-background t)))
+
+    ;; (add-hook 'persp-activated-functions 'set-mu4e-index-update-parameter)
+    )
 
   (defun mu4e--confirm-empty-subject ()
     "Allow user to quit when current message subject is empty."
@@ -250,6 +268,13 @@
         (keyboard-quit)))
 
   (add-hook 'message-send-hook #'mu4e--confirm-empty-subject))
+
+(defun ag-mail/init-mu4e-thread-folding ()
+  (use-package mu4e-thread-folding
+    :commands (mu4e-main-mode)
+    :init
+    (require 'mu4e-thread-folding))
+  )
 
 (with-eval-after-load 'mu4e-alert
   ;; Enable Desktop notifications

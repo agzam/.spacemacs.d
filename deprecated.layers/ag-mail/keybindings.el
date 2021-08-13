@@ -33,16 +33,6 @@
 
   (evil-define-key 'evilified mu4e-main-mode-map "j" 'evil-next-visual-line)
 
-  ;; prevent accidental closing of headers when you just need to collapse view buffer
-  (define-key mu4e-headers-mode-map "q" nil)
-  (define-key mu4e-headers-mode-map (kbd "C-q") #'mu4e~headers-quit-buffer)
-
-  (defun ag/mu4e-trash ()
-    (interactive)
-    (when (mu4e-headers-thread-folded?)
-      (mu4e-headers-toggle-thread-folding))
-    (mu4e-headers-mark-thread-using-markpair '(trash) t))
-
   (define-key mu4e-view-mode-map (kbd "d") #'ag/mu4e-trash)
   (define-key mu4e-headers-mode-map (kbd "d") #'ag/mu4e-trash)
 

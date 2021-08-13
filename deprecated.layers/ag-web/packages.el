@@ -9,7 +9,25 @@
 ;;
 ;;; License: GPLv3
 
-(setq ag-web-packages '())
+(defconst ag-web-packages '(prettier-js
+                            ;; js2-mode
+                            ))
+
+(defun ag-web/init-prettier-js ()
+  (use-package prettier-js
+    :commands prettier-js
+    :init
+    (dolist (mode '(js2-mode))
+      (spacemacs/set-leader-keys-for-major-mode mode
+        "fl" #'prettier-js))))
+
+;; (defun ag-web/post-init-js2-mode ()
+;;   ;; for some reason js2-mode-hide-element, etc. not working - using alternative
+;;   (spacemacs/set-leader-keys-for-major-mode 'js2-mode
+;;     "zc" 'hs-hide-block
+;;     "zo" 'hs-show-block
+;;     "zr" 'hs-show-all
+;;     "ze" 'hs-toggle-hiding))
 
 (with-eval-after-load 'css-mode
   (defun ag/rainbow-mode-on () (rainbow-mode 1))
@@ -28,7 +46,7 @@
         js-indent-level 2
         js2-basic-offset 2
         js2-strict-trailing-comma-warning nil)
-  (add-hook 'js2-mode-hook #'flyspell-prog-mode)
+  ;; (add-hook 'js2-mode-hook #'flyspell-prog-mode)
 
   ;; Flycheck JSCS
   (flycheck-def-config-file-var flycheck-jscs
