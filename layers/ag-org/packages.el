@@ -453,13 +453,13 @@
         '(("w" "work" plain
            "%?"
            :if-new
-           (file+head+olp "%<%Y-%m-%d %a>.org" "#+title: %<%Y-%m-%d %A>" ("Work"))
+           (file+head+olp "%<%Y-%m-%d %a>.org" "#+title: %<%Y-%m-%d %A>" ("Work [[roam:work]]"))
            :jump-to-captured t
            :unnarrowed t)
           ("j" "journal" plain
            "%?"
            :if-new
-           (file+head+olp "%<%Y-%m-%d %a>.org" "#+title: %<%Y-%m-%d %A>" ("Journal"))
+           (file+head+olp "%<%Y-%m-%d %a>.org" "#+title: %<%Y-%m-%d %A>" ("Journal [[roam:journal]]"))
            :jump-to-captured t
            :unnarrowed t)))
 

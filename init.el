@@ -670,17 +670,18 @@ before packages are loaded."
    use-dialog-box nil
    dumb-jump-force-searcher 'rg ; https://github.com/jacktasia/dumb-jump#emacs-options
    ;; don't quit on esc or jk
-   evil-escape-excluded-major-modes '(compilation-mode
+   evil-escape-excluded-major-modes '(apropos-mode
+                                      compilation-mode
                                       help-mode
+                                      image-mode
+                                      ivy-occur-grep-mode
                                       magit-diff-mode magit-log-mode magit-merge-preview-mode
                                       magit-process-mode magit-refs-mode
                                       magit-revision-mode magit-stash-mode
                                       magit-status-mode mu4e-headers-mode
                                       mu4e-main-mode mu4e-view-mode
                                       org-agenda-mode
-                                      paradox-menu-mode
-                                      apropos-mode
-                                      image-mode)
+                                      paradox-menu-mode)
    visible-bell t
    ring-bell-function 'ignore
 

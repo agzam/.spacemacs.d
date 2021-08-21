@@ -103,18 +103,20 @@
 ;;;;;;;;;;
 (global-set-key (kbd "H-l") #'recenter)
 
-(spacemacs/set-leader-keys
-  "qq" nil  ; no unexpected exits
-  "qQ" #'spacemacs/prompt-kill-emacs
-  "s/" #'engine/search-google
-  "jj" #'avy-goto-char-timer
-  "ja" #'beginning-of-defun
-  "je" #'end-of-defun
-  "swg" #'counsel-google
-  ;; "ou" #'spacemacs/avy-open-url
+(spacemacs/defer-until-after-user-config
+ (lambda ()
+   (spacemacs/set-leader-keys
+     "qq" nil  ; no unexpected exits
+     "qQ" #'spacemacs/prompt-kill-emacs
+     "s/" #'engine/search-google
+     "jj" #'avy-goto-char-timer
+     "ja" #'beginning-of-defun
+     "je" #'end-of-defun
+     "swg" #'counsel-google
+     ;; "ou" #'spacemacs/avy-open-url
   ;;;; add a page-break
-  "iP" (kbd "i C-q C-l <RET><escape>")
-  "nn" #'global-display-line-numbers-mode)
+     "iP" (kbd "i C-q C-l <RET><escape>")
+     "nn" #'global-display-line-numbers-mode)))
 
 ;; have to wrap it, so it overrides the default bindings
 (spacemacs/defer-until-after-user-config

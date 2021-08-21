@@ -162,7 +162,7 @@ gets the name suitable for :require of ns declaration."
                      (sp-beginning-of-sexp)
                      (backward-char)
                      (list (point) (+ 1 end))))))
-  (let ((zprint (executable-find "zprint")))
+  (let ((zprint (executable-find "/usr/local/bin/zprint")))
     (save-excursion
       (call-process-region
        beg
@@ -171,7 +171,9 @@ gets the name suitable for :require of ns declaration."
        :delete
        '(t nil)
        :display
-       "{:map {:comma? false :justify? true}}")
+       (concat
+        "{:map {:comma? false :justify? true}"
+        " :set {:sort? true} :style :respect-nl}"))
       (sp-reindent))))
 
 (defun clojure-edn-json-transform (&optional from-json)
