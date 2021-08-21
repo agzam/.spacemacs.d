@@ -526,20 +526,27 @@
     :after (org edit-indirect)))
 
 (defun ag-org/post-init-expand-region ()
-  (with-eval-after-load 'expand-region-core
+  (use-package expand-region
+    :after org
+    :config
+
     (defun er/add-org-mode-expansions* ()
       "Adds org-specific expansions for buffers in org-mode"
       (set (make-local-variable 'er/try-expand-list)
-           '(er/mark-word
-             er/mark-between
-             er/mark-symbol
-             er/mark-symbol-with-prefix
-             er/mark-inside-pairs
-             er/mark-line
-             er/mark-org-element
-             er/mark-org-element-parent
-             er/mark-org-code-block
-             er/mark-org-parent))
+           (append
+            (remove #'er/mark-defun er/try-expand-list)
+            '(er/mark-word
+              er/mark-between
+              er/mark-symbol
+              er/mark-symbol-with-prefix
+              er/mark-inside-pairs
+              org-mark-subtree
+              er/mark-org-element
+              er/mark-org-element-parent
+              er/mark-org-code-block
+              er/mark-sentence
+              er/mark-org-parent
+              er/mark-paragraph)))
       (set (make-local-variable 'er/save-mode-excursion)
            #'er/save-org-mode-excursion))
 
