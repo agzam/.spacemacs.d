@@ -143,8 +143,10 @@
      org-todo-keyword-faces '(("ONGOING" . "orange"))
      org-enforce-todo-dependencies t
      org-enforce-todo-checkbox-dependencies t
-     org-hierarchical-todo-statistics t
-     )
+     org-hierarchical-todo-statistics t)
+
+     ;;;; ---- tables ----
+    (setq org-table-automatic-realign nil)
 
     (defun org-summary-todo (n-done n-not-done)
       "Switch entry to DONE when all subentries are done, to TODO otherwise."
@@ -453,13 +455,16 @@
         '(("w" "work" plain
            "%?"
            :if-new
-           (file+head+olp "%<%Y-%m-%d %a>.org" "#+title: %<%Y-%m-%d %A>" ("Work [[roam:work]]"))
+           (file+head+olp "%<%Y-%m-%d %a>.org" "#+title: %<%Y-%m-%d %a>" ("Work\n[[id:40254A9D-6720-4C58-8807-C65998816830][work]]"))
            :jump-to-captured t
            :unnarrowed t)
           ("j" "journal" plain
            "%?"
            :if-new
-           (file+head+olp "%<%Y-%m-%d %a>.org" "#+title: %<%Y-%m-%d %A>" ("Journal [[roam:journal]]"))
+           (file+head+olp
+            "%<%Y-%m-%d %a>.org"
+            "#+title: %<%Y-%m-%d %a>"
+            ("Journal\n[[id:59BF2462-CAEF-4CA6-B068-81F72DEFDB39][journal]]"))
            :jump-to-captured t
            :unnarrowed t)))
 

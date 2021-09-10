@@ -34,7 +34,8 @@
   "ri" #'org-roam-node-insert
   "ir" #'org-roam-node-insert
   "rl" #'org-roam-buffer-toggle
-  "rf" #'org-roam-node-find)
+  "rf" #'org-roam-node-find
+  "bk" #'org-babel-remove-result)
 
 (spacemacs/set-leader-keys-for-major-mode 'org-roam-mode
   "rf" #'org-roam-node-find

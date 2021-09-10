@@ -212,7 +212,11 @@
                   ;; (mode-line-emphasis . (:weight normal))
 
                   (line-number . (:inherit fixed-pitch))
-                  (ivy-posframe . (:inherit default)))))
+                  (ivy-posframe . (:inherit default))
+
+                  (notmuch-wash-cited-text . (:foreground ,base03))
+                  (message-header-to . (:foreground ,base0C))
+                  (notmuch-crypto-signature-unknown . (:foreground ,base0E :background nil)))))
     (ag/set-faces-attributes faces)
     (setq pdf-view-midnight-colors `(,base04 . ,default-background))))
 
@@ -314,7 +318,11 @@
                   ;; (mode-line-emphasis . (:weight normal))
 
                   (cider-debug-code-overlay-face . (:background ,bg-darker))
-                  (ivy-posframe . (:inherit default)))))
+                  (ivy-posframe . (:inherit default))
+
+                  (notmuch-wash-cited-text . (:foreground ,bg-accent-dark))
+                  (message-header-to . (:foreground ,fg-accent))
+                  (notmuch-crypto-signature-unknown . (:foreground "#fdb8c0" :background nil)))))
     (ag/set-faces-attributes faces)))
 
 (defun ag/adjust-themes ()

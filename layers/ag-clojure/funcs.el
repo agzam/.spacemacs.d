@@ -99,7 +99,7 @@ gets the name suitable for :require of ns declaration."
 (defun add-reframe-regs-to-imenu ()
   (add-to-list
    'imenu-generic-expression
-   '("re-frame" "(*reg-\\(event-db\\|sub\\|sub-raw\\|fx\\|event-fx\\|event-ctx\\|cofx\\)[ \n]+\\([^\t \n]+\\)" 2)
+   '("re-frame" "^(*reg-\\(event-db\\|sub\\|sub-raw\\|fx\\|event-fx\\|event-ctx\\|cofx\\)[ \n]+\\([^\t \n]+\\)" 2)
    t))
 
 (defun cljr-ns-align ()
@@ -208,9 +208,6 @@ convert from JSON."
              '(t nil)
              :display
              params)
-      (if (or (eq major-mode 'json-mode) from-json*)
-          (clojure-mode)
-        (json-mode))
       (sp-reindent))))
 
 (defun clojure-add-require (&optional req-str)

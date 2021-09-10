@@ -102,6 +102,7 @@
 ;; Misc ;;
 ;;;;;;;;;;
 (global-set-key (kbd "H-l") #'recenter)
+(global-set-key (kbd "C-x j j") #'json-mode-beautify)
 
 (spacemacs/defer-until-after-user-config
  (lambda ()

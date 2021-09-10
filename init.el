@@ -626,7 +626,7 @@ Put your configuration code here, except for variables that should be set
 before packages are loaded."
 
   ;; disable nonsensical keys
-  (dolist (key '("s-n" "s-p" "s-q" "s-m" "H-q" "C-x C-c"))
+  (dolist (key '("s-n" "s-p" "s-q" "s-m" "H-q" "H-n" "C-x C-c"))
     (unbind-key (kbd key)))
 
   (setq
@@ -674,6 +674,7 @@ before packages are loaded."
                                       compilation-mode
                                       help-mode
                                       image-mode
+                                      info-mode
                                       ivy-occur-grep-mode
                                       magit-diff-mode magit-log-mode magit-merge-preview-mode
                                       magit-process-mode magit-refs-mode

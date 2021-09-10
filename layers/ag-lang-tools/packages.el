@@ -20,10 +20,6 @@
     (keytar :location
      (recipe :fetcher github
              :repo "emacs-grammarly/keytar"))
-    (auth-source-keytar
-     :location
-     (recipe :fetcher github
-             :repo "emacs-grammarly/auth-source-keytar"))
     (lsp-grammarly
      :location
      (recipe :fetcher github :repo "emacs-grammarly/lsp-grammarly"))

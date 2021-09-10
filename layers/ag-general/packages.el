@@ -187,7 +187,7 @@
           (variable-pitch-mode)
           (evil-insert 1)))
 
-      (add-hook 'spacehammer/edit-with-emacs-hook 'on-spacehammer-edit-with-emacs)
+      (add-hook 'spacehammer/edit-with-emacs-hook #'on-spacehammer-edit-with-emacs)
 
       (spacemacs/transient-state-register-add-bindings 'zoom-frm
         '(("h" (spacehammer/move-frame-one-display "West"))
@@ -231,7 +231,8 @@
           lsp-modeline--enable-code-actions nil
           lsp-headerline-breadcrumb-enable nil
           lsp-enable-completion-at-point t
-          lsp-enable-symbol-highlighting nil)
+          lsp-enable-symbol-highlighting t
+          lsp-enable-imenu nil)
     (add-hook
      'lsp-after-open-hook
      (lambda()
