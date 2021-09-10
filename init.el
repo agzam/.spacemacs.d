@@ -104,6 +104,9 @@ This function should only modify configuration layer settings."
       lsp-ui-doc-position 'at-point
       lsp-enable-completion-at-point nil
       lsp-modeline-code-actions-enable nil))
+      lsp-modeline-code-actions-enable nil)
+     ag-notmuch
+     )
 
    ;; List of additional packages that will be installed without being wrapped
    ;; in a layer (generally the packages are installed only and should still be
