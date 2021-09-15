@@ -54,43 +54,17 @@
 
   ;; Add `git log ORIG_HEAD..HEAD` to magit
   ;; that lets you log only changes since the last pull
-  (defun magit-log-orig_head--head (args files)
-    "Compare log since the last pull. i.e.: show only commits between last pull and head"
-    (interactive (magit-log-arguments))
-    (magit-log-other (list "ORIG_HEAD..HEAD") args files))
-
   (transient-append-suffix 'magit-log "l"
     '("p" "orig_head..head" magit-log-orig_head--head))
-
-  (defun magit-log-other--current (revision)
-    "Compare log between branches à la GitHub style.
-i.e.: show only commits that differ between selected (other branch) and current branch"
-    (interactive (list (magit-read-other-branch-or-commit "Log compare")))
-    (magit-log-other (list (concat revision ".." (magit-get-current-branch))) nil nil))
 
   (transient-append-suffix 'magit-log "l"
     '("R" "other..current" magit-log-other--current))
 
-  (defun magit-log--origin-master ()
-    "Compare log between branches à la GitHub style between current branch and origin/master"
-    (interactive)
-    (magit-log-other (list (concat  "origin/master.." (magit-get-current-branch))) nil nil))
-
   (transient-append-suffix 'magit-log "l"
     '("m" "origin/master..current" magit-log--origin-master))
 
-  (defun magit-diff-range-reversed (rev-or-range &optional args files)
-    "Diff between two branches. Unlike `diff-range` works in opposite order i.e.: `base..current`"
-    (interactive (list (magit-read-other-branch-or-commit "Diff range")))
-    (magit-diff-range (concat rev-or-range ".." (magit-get-current-branch)) args files))
-
   (transient-append-suffix 'magit-diff "d"
     '("R" "Diff range (reversed)" magit-diff-range-reversed))
-
-  (defun magit-diff--origin-master ()
-    "Compare log between branches à la GitHub style between current branch and origin/master"
-    (interactive)
-    (magit-diff-range (concat "origin/master.." (magit-get-current-branch))))
 
   (transient-append-suffix 'magit-diff "d"
     '("m" "origin/master..current" magit-diff--origin-master))
