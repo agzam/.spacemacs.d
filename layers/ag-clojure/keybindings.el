@@ -38,4 +38,6 @@
 (spacemacs/set-leader-keys-for-major-mode 'clojure-mode
   "C" 'clojars-find)
 
+(evil-define-key 'normal cider-test-report-mode-map "n" nil) ; it otherwise gets shadowed by cider key
+
 ;;; keybindings.el ends here

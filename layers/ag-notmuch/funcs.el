@@ -164,11 +164,16 @@ messages in the current thread"
            (headers (plist-get (notmuch-show-get-message-properties) :headers))
            (send-to (concat (plist-get headers :To) ", " (plist-get headers :Cc)))
            (msg-id (notmuch-show-get-message-id :bare))
+
+           ;; figure out the mailing-group index by finding first matching
+           ;; address in send-to field
            (mlist (cl-some
                    (lambda (x)
                      (when (string-match (concat "\\([[:graph:]]*\\)@" x) send-to)
-                       `(,(match-string 1 send-to) ,x)))
+                       ;; email addresses often contain < and >, e.g.: Vasya Pupkin <vasya@mail.ru>
+                       `(,(replace-regexp-in-string "<\\|>" "" (match-string 1 send-to)) ,x)))
                    mailing-groups))
+
            (url
             (pcase mlist
               ;; gnu.org

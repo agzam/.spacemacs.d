@@ -216,7 +216,8 @@
 
                   (notmuch-wash-cited-text . (:foreground ,base03))
                   (message-header-to . (:foreground ,base0C))
-                  (notmuch-crypto-signature-unknown . (:foreground ,base0E :background nil)))))
+                  (notmuch-crypto-signature-unknown . (:foreground ,base0E :background nil))
+                  (notmuch-crypto-signature-good-key . (:foreground ,base0A :background nil)))))
     (ag/set-faces-attributes faces)
     (setq pdf-view-midnight-colors `(,base04 . ,default-background))))
 
@@ -226,6 +227,7 @@
          (bg-darker "#f7f4eb")
          (bg-accent "#dedae0")
          (bg-accent-dark "#c7c1c9")
+         (bg-accent-darker "#b1adb3")
          (bg-accent-light "#efedf0")
          (fg-accent "CadetBlue")
          (faces `((region . (:inverse-video t :foreground ,bg-accent :background ,default-background :distant-foreground nil))
@@ -320,9 +322,10 @@
                   (cider-debug-code-overlay-face . (:background ,bg-darker))
                   (ivy-posframe . (:inherit default))
 
-                  (notmuch-wash-cited-text . (:foreground ,bg-accent-dark))
+                  (notmuch-wash-cited-text . (:foreground ,bg-accent-darker))
                   (message-header-to . (:foreground ,fg-accent))
-                  (notmuch-crypto-signature-unknown . (:foreground "#fdb8c0" :background nil)))))
+                  (notmuch-crypto-signature-unknown . (:foreground "#fdb8c0" :background nil))
+                  (notmuch-crypto-signature-good-key . (:foreground "DarkKhaki" :background nil)))))
     (ag/set-faces-attributes faces)))
 
 (defun ag/adjust-themes ()

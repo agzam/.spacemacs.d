@@ -105,7 +105,9 @@
         ;; patch
         "Po" 'spacemacs/notmuch-show-open-github-patch
         "Pa" 'spacemacs/notmuch-git-apply-patch
-        "PA" 'spacemacs/notmuch-git-apply-patch-part)
+        "PA" 'spacemacs/notmuch-git-apply-patch-part
+        "fg" #'notmuch-open-in-gmail
+        "fl" #'notmuch-find-in-mailing-list)
       ;; Evilify notmuch modes
       ;; Use normal mode map to allow proper editing capabilities
       ;; for the embedded search field in `notmuch-hello-mode`
@@ -130,12 +132,15 @@
       (evilified-state-evilify-map notmuch-show-mode-map
         :mode notmuch-show-mode
         :bindings
-        (kbd "N")   'notmuch-show-next-message
-        (kbd "P")   'notmuch-show-previous-message
+        (kbd "C-n")  #'notmuch-show-next-message
+        (kbd "C-p")  #'notmuch-show-previous-message
         (kbd "p")   'notmuch-show-previous-open-message
-        (kbd "n")   'notmuch-show-next-open-message
         (kbd "o")   'notmuch-show-open-or-close-all
-        (kbd "O")   'spacemacs/notmuch-show-close-all)
+        (kbd "O")   'spacemacs/notmuch-show-close-all
+        (kbd "{")   #'evil-backward-paragraph
+        (kbd "}")   #'evil-forward-paragraph
+        (kbd "[[")   #'evil-backward-section-begin
+        (kbd "]]")   #'evil-forward-section-end)
       (evilified-state-evilify-map notmuch-tree-mode-map
         :mode notmuch-tree-mode
         :bindings
