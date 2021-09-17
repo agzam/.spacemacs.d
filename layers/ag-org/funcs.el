@@ -585,6 +585,27 @@ and if it is set to nil, then it would forcefully create the ID."
 
 (advice-add 'org-todo :around #'org-todo--around)
 
+(defun org-roam--link-to (node-title-or-id)
+  "For a given NODE-TITLE-OR-ID tries to find the node and returns
+Org-link text to the node."
+  (when-let* ((nodes (org-roam-db-query
+                      [:select
+                       [id title]
+                       :from nodes
+                       :where (or (= id $s1)
+                                  (= title $s1))]
+                      node-title-or-id))
+              (node (cl-first nodes)))
+    (apply 'format "[[id:%s][%s]]" node)))
+
+(defun org-roam-capture--add-link-to (node-title-or-id)
+  (with-current-buffer (org-capture-get :buffer)
+   (save-mark-and-excursion
+     (let ((lnk (org-roam--link-to node-title-or-id)))
+       (goto-char 0)
+       (unless (search-forward lnk nil :no-error)
+         lnk)))))
+
 (provide 'funcs)
 
 ;;; funcs.el ends here

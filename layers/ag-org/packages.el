@@ -453,18 +453,21 @@
           )
         org-roam-dailies-capture-templates
         '(("w" "work" plain
-           "%?"
-           :if-new
-           (file+head+olp "%<%Y-%m-%d %a>.org" "#+title: %<%Y-%m-%d %a>" ("Work\n[[id:40254A9D-6720-4C58-8807-C65998816830][work]]"))
-           :jump-to-captured t
-           :unnarrowed t)
-          ("j" "journal" plain
-           "%?"
+           "%(org-roam-capture--add-link-to \"work\") %?"
            :if-new
            (file+head+olp
             "%<%Y-%m-%d %a>.org"
             "#+title: %<%Y-%m-%d %a>"
-            ("Journal\n[[id:59BF2462-CAEF-4CA6-B068-81F72DEFDB39][journal]]"))
+            ("Work"))
+           :jump-to-captured t
+           :unnarrowed t)
+          ("j" "journal" plain
+           "%(org-roam-capture--add-link-to \"journal\") %?"
+           :if-new
+           (file+head+olp
+            "%<%Y-%m-%d %a>.org"
+            "#+title: %<%Y-%m-%d %a>"
+            ("Journal"))
            :jump-to-captured t
            :unnarrowed t)))
 
@@ -485,8 +488,7 @@
       "ri" #'org-roam-node-insert
       "rl" #'org-roam-buffer-toggle
       "rta" #'org-roam-tag-add
-      "rtd" #'org-roam-tag-delete
-      ))
+      "rtd" #'org-roam-tag-delete))
 
   (with-eval-after-load 'persp-mode
     ;; if I don't do this with a timer, the Org layer persp-post-init logic
@@ -508,7 +510,7 @@
                     (display-buffer-in-direction)
                     (direction . right)
                     (window-width . 0.25)
-                    (window-height . fit-window-to-buffer))))
+                    (window-height . fit-window-to-buffer))))))
 
 (defun ag-org/init-org-roam-ui ()
   (use-package org-roam-ui
