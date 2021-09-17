@@ -18,8 +18,7 @@
 
 (evil-define-key 'normal org-mode-map "H" #'org-shiftleft)
 (evil-define-key 'normal org-mode-map "L" #'org-shiftright)
-;; (evil-define-key '(normal insert visual) org-mode-map (kbd "C-c i") #'org-roam-node-insert)
-(define-key org-mode-map (kbd "C-c <C-i>") #'org-roam-node-insert)
+(define-key org-mode-map (kbd "C-c <C-i>") #'org-roam-node-insert+)
 
 (spacemacs/set-leader-keys-for-major-mode 'org-mode
   "sa" #'org-toggle-archive-tag
@@ -31,8 +30,8 @@
   "TL" #'org-toggle-link-display ; otherwise conflicts with lsp bindings
   "n" #'org-next-link
   "p" #'org-previous-link
-  "ri" #'org-roam-node-insert
-  "ir" #'org-roam-node-insert
+  "ri" #'org-roam-node-insert+
+  "ir" #'org-roam-node-insert+
   "rl" #'org-roam-buffer-toggle
   "rf" #'org-roam-node-find
   "bk" #'org-babel-remove-result)
@@ -41,7 +40,7 @@
   "rf" #'org-roam-node-find
   "rl" #'org-roam-buffer-toggle)
 
-(evil-define-key 'insert org-mode-map (kbd "C-c i") #'org-roam-node-insert)
+(evil-define-key 'insert org-mode-map (kbd "C-c i") #'org-roam-node-insert+)
 
 (spacemacs/set-leader-keys
   "aoL" #'org-store-link-id-optional)
