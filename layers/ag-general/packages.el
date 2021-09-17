@@ -95,9 +95,10 @@
     ;; window splits
     (add-to-list
      'display-buffer-alist
-     `(,(rx bos (or "*helpful"
-                    "*info"))
-       (display-buffer-reuse-mode-window)))))
+     `(,(rx bos (or "*helpful" "*info"))
+       (display-buffer-in-side-window)
+       (side . right)
+       (window-width . 0.3)))))
 
 (defun ag-general/init-rainbow-mode ()
   (use-package rainbow-mode

@@ -72,6 +72,13 @@
 
   (add-to-list 'ivy-re-builders-alist '(cider-find-ns . ivy--regex-fuzzy))
 
+  (add-to-list
+   'display-buffer-alist
+   `(,(rx bos (or "*cider-repl" "*nrepl-server"))
+     (display-buffer-in-side-window)
+     (side . right)
+     (window-width . 0.25)))
+
   ;; (dolist (form '(re-frame.core/reg-sub
   ;;                 re-frame.core/reg-fx
   ;;                 re-frame.core/reg-sub
