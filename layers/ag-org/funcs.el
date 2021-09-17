@@ -589,11 +589,12 @@ and if it is set to nil, then it would forcefully create the ID."
   "For a given NODE-TITLE-OR-ID tries to find the node and returns
 Org-link text to the node."
   (when-let* ((nodes (org-roam-db-query
-                      [:select
-                       [id title]
-                       :from nodes
-                       :where (or (= id $s1)
-                                  (= title $s1))]
+                      "select n.id, n.title from nodes n
+                       left join aliases a
+                       on n.id = a.node_id
+                       where n.id = $s1
+                         or title = $s1 collate nocase
+                         or a.alias = $s1 collate nocase"
                       node-title-or-id))
               (node (cl-first nodes)))
     (apply 'format "[[id:%s][%s]]" node)))
