@@ -89,7 +89,15 @@
       "hh" 'helpful-at-point
       "ep" 'pp-eval-last-sexp
       "eP" 'eval-print-last-sexp)
-    (evil-define-key 'normal helpful-mode-map "q" 'quit-window)))
+    (evil-define-key 'normal helpful-mode-map "q" 'quit-window)
+
+    ;; ensure that browsing in Helpful and Info modes doesn't create additional
+    ;; window splits
+    (add-to-list
+     'display-buffer-alist
+     `(,(rx bos (or "*helpful"
+                    "*info"))
+       (display-buffer-reuse-mode-window)))))
 
 (defun ag-general/init-rainbow-mode ()
   (use-package rainbow-mode
@@ -180,14 +188,24 @@
 
     (progn
       (defun on-spacehammer-edit-with-emacs (buffer-name pid title)
+        (select-frame-by-name "edit")
         (with-current-buffer (get-buffer buffer-name)
+          (set-frame-parameter nil 'fullscreen nil)
+          ;; need to set a filename, otherwise lsp in that buffer won't work
+          (set-visited-file-name (format "/tmp/%s_%s_%s" buffer-name pid title))
+          (set-buffer-modified-p nil)
           (spacemacs/evil-search-clear-highlight)
           (spacemacs/toggle-visual-line-navigation-on)
           (markdown-mode)
-          (variable-pitch-mode)
           (evil-insert 1)))
 
       (add-hook 'spacehammer/edit-with-emacs-hook #'on-spacehammer-edit-with-emacs)
+
+      (defun spacehammer-before-finish-edit-with-emacs (bufname pid)
+        (with-current-buffer bufname
+         (set-buffer-modified-p nil)))
+
+      (add-hook 'spacehammer/before-finish-edit-with-emacs-hook #'spacehammer-before-finish-edit-with-emacs)
 
       (spacemacs/transient-state-register-add-bindings 'zoom-frm
         '(("h" (spacehammer/move-frame-one-display "West"))

@@ -103,7 +103,6 @@ This function should only modify configuration layer settings."
       lsp-ui-doc-enable nil
       lsp-ui-doc-position 'at-point
       lsp-enable-completion-at-point nil
-      lsp-modeline-code-actions-enable nil))
       lsp-modeline-code-actions-enable nil)
      ag-notmuch
      )
@@ -121,7 +120,8 @@ This function should only modify configuration layer settings."
                                       copy-as-format
                                       dired-narrow
                                       graphql-mode
-                                      quelpa-use-package)
+                                      quelpa-use-package
+                                      monroe)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
 
@@ -599,6 +599,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    right-fringe-width 0
    evil-escape-key-sequence "kj"
    evil-esc-delay 0.3
+   fill-column 120
    eyebrowse-keymap-prefix (kbd "C-x C-x"))
 
   (setq
@@ -639,7 +640,6 @@ before packages are loaded."
    avy-timeout-seconds 0.4
    aw-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9) ; ace-windows instead of characters shows number
    default-input-method 'russian-computer
-   fill-column 170
    frame-resize-pixelwise t ; make sure `(maximize-frame)` leaves no borders
    linum-format "%3d\u2502" ; nicer line-numbers
    mouse-wheel-progressive-speed nil
