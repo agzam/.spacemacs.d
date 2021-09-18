@@ -105,6 +105,8 @@ This function should only modify configuration layer settings."
       lsp-enable-completion-at-point nil
       lsp-modeline-code-actions-enable nil)
      ag-notmuch
+     ag-mu4e
+     ag-xwidget
      )
 
    ;; List of additional packages that will be installed without being wrapped
@@ -121,7 +123,6 @@ This function should only modify configuration layer settings."
                                       dired-narrow
                                       graphql-mode
                                       quelpa-use-package
-                                      monroe)
                                       monroe
                                       ibuffer-sidebar)
    ;; A list of packages that cannot be updated.
@@ -302,9 +303,7 @@ It should only modify the values of Spacemacs settings."
    ;; a non-negative integer (pixel size), or a floating-point (point size).
    ;; Point size is recommended, because it's device independent. (default 10.0)
    dotspacemacs-default-font '("JetBrains Mono"
-                               :size 16.0
-                               :weight normal
-                               :width normal)
+                               :size 15.5)
 
    ;; The leader key (default "SPC")
    dotspacemacs-leader-key "SPC"

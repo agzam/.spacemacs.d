@@ -675,6 +675,11 @@ in that prop."
               (while (re-search-forward "\\]\\]\\[\\[" nil :no-error)
                 (replace-match "]] [["))))))))
 
+(defun org-roam-show-ui-xwidget ()
+  (interactive)
+  (xwidget-webkit-url-get-create
+   (concat "http://localhost:" (number-to-string org-roam-ui-port))))
+
 (provide 'funcs)
 
 ;;; funcs.el ends here
