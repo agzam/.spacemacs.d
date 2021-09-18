@@ -54,7 +54,7 @@
 (with-eval-after-load 'clojure-mode
   (setq clojure-enable-fancify-symbols nil
         ;; clojure-indent-style :align-arguments
-        clojure-align-forms-automatically t
+        clojure-align-forms-automatically nil
         cljr-favor-prefix-notation nil
         cider-overlays-use-font-lock nil
         cider-repl-use-clojure-font-lock nil

@@ -434,7 +434,7 @@
             "${slug}.org"
             "\n#+title: ${title}\n")
            :unnarrowed t
-           :jump-to-captured t))
+           :jump-to-captured nil))
         org-roam-capture-ref-templates
         '(("r" "ref" plain "%?" :if-new
            (file+head "${slug}.org" "#+title: ${title}\n[[id:A7F4AA20-A247-43D2-BCBC-2ED6108AF344][UNREAD]]\n\n%(zp/org-protocol-insert-selection-dwim \"${body}\")")
@@ -505,12 +505,12 @@
            )))))
   (with-eval-after-load 'org-roam
     (org-roam-db-autosync-mode)
-    (add-to-list 'display-buffer-alist
-                 '(("\\*org-roam\\*"
-                    (display-buffer-in-direction)
-                    (direction . right)
-                    (window-width . 0.25)
-                    (window-height . fit-window-to-buffer))))))
+    (add-to-list
+     'display-buffer-alist
+     '("\\*org-roam\\*"
+       (display-buffer-in-side-window)
+       (side . right)
+       (window-width . 0.2)))))
 
 (defun ag-org/init-org-roam-ui ()
   (use-package org-roam-ui

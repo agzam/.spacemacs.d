@@ -122,6 +122,8 @@ This function should only modify configuration layer settings."
                                       graphql-mode
                                       quelpa-use-package
                                       monroe)
+                                      monroe
+                                      ibuffer-sidebar)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
 

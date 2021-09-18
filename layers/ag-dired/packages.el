@@ -17,7 +17,8 @@
                               direx-grep
                               treemacs
                               dired-subtree
-                              dired-posframe))
+                              dired-posframe
+                              dired-imenu))
 
 (add-hook 'dired-mode-hook #'dired-hide-details-mode)
 
@@ -116,6 +117,9 @@
 
 (defun ag-dired/init-dired-posframe ()
   (use-package dired-posframe :after (dired)))
+
+(defun ag-dired/init-dired-imenu ()
+  (use-package dired-imenu :after (dired)))
 
 ;; (defun ag-dired/init-dired-filetype-face ()
 ;;   (use-package dired-filetype-face
