@@ -48,7 +48,7 @@ gets the name suitable for :require of ns declaration."
                                  (lsp--send-request)
                                  (gethash "contents")
                                  (gethash "value"))))
-                        (string-match "\\(```.*\n\\)\\(.*\\)\n" s)
+                        (string-match "\\(```.*\n\\)\\(\\([[:word:]]\\|[[:graph:]]\\)*\\)" s)
                         (string-trim (match-string 2 s))))
 
                      ((cider-connected-p)

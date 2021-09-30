@@ -638,11 +638,12 @@ in that prop."
                (after (or lines-after 0)))
           (save-mark-and-excursion
             (unless region-text
-             (previous-line before)
-             (beginning-of-line)
-             (set-mark (point))
-             (next-line (+ before after))
-             (end-of-line))
+              (setq prev-pos (point))
+              (previous-line before)
+              (beginning-of-line)
+              (set-mark (point))
+              (next-line (+ before after))
+              (end-of-line))
             (save-restriction
               (narrow-to-region (region-beginning) (region-end))
               (if (org-roam-node-id node-to-insert)
@@ -654,7 +655,9 @@ in that prop."
                     (unless region-text
                       (goto-char 0)
                       (while (re-search-forward re nil :no-error)
-                        (replace-match "")))
+                        (replace-match ""))
+                      (goto-char prev-pos))
+                    (makunbound 'prev-pos)
                     (insert (org-link-make-string
                              (concat "id:" (org-roam-node-id node-to-insert))
                              description)))
@@ -675,10 +678,14 @@ in that prop."
               (while (re-search-forward "\\]\\]\\[\\[" nil :no-error)
                 (replace-match "]] [["))))))))
 
-(defun org-roam-show-ui-xwidget ()
+(defun org-roam-toggle-ui-xwidget ()
   (interactive)
-  (xwidget-webkit-url-get-create
-   (concat "http://localhost:" (number-to-string org-roam-ui-port))))
+  (let ((url (concat "http://localhost:" (number-to-string org-roam-ui-port))))
+    (if-let ((buf (xwidget-webkit-get-url-buffer "localhost:8081")))
+        (if-let ((win (get-buffer-window buf)))
+            (delete-window win)
+          (switch-to-buffer-other-window buf))
+      (xwidget-webkit-url-get-create url "*org-roam-ui*"))))
 
 (provide 'funcs)
 

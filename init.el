@@ -121,10 +121,11 @@ This function should only modify configuration layer settings."
                                       beacon
                                       copy-as-format
                                       dired-narrow
+                                      graphql
                                       graphql-mode
-                                      quelpa-use-package
+                                      ibuffer-sidebar
                                       monroe
-                                      ibuffer-sidebar)
+                                      quelpa-use-package)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
 
@@ -139,7 +140,7 @@ This function should only modify configuration layer settings."
    ;; installs only the used packages but won't delete unused ones. `all'
    ;; installs *all* packages supported by Spacemacs and never uninstalls them.
    ;; (default is `used-only')
-   dotspacemacs-install-packages 'used-only))
+   dotspacemacs-install-packages 'used-but-keep-unused))
 
 (defun dotspacemacs/init ()
   "Initialization:
@@ -600,7 +601,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    right-fringe-width 0
    evil-escape-key-sequence "kj"
    evil-esc-delay 0.3
-   fill-column 120
    eyebrowse-keymap-prefix (kbd "C-x C-x"))
 
   (setq
@@ -633,6 +633,8 @@ before packages are loaded."
   ;; disable nonsensical keys
   (dolist (key '("s-n" "s-p" "s-q" "s-m" "H-q" "H-n" "C-x C-c"))
     (unbind-key (kbd key)))
+
+  (setq-default fill-column 85)
 
   (setq
    ;;;; Editor
@@ -669,8 +671,8 @@ before packages are loaded."
    apropos-sort-by-scores t
 
    ;;;; Misc
-   eldoc-echo-area-use-multiline-p 'always
-   eldoc-idle-delay 0.25
+   eldoc-echo-area-use-multiline-p 'truncate-sym-name-if-fit
+   eldoc-idle-delay 0.5
    use-dialog-box nil
    dumb-jump-force-searcher 'rg ; https://github.com/jacktasia/dumb-jump#emacs-options
    ;; don't quit on esc or jk

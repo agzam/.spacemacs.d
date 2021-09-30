@@ -96,8 +96,9 @@
     (add-to-list
      'display-buffer-alist
      `(,(rx bos (or "*helpful" "*info"))
-       (display-buffer-in-side-window)
-       (side . right)
+       (display-buffer-in-direction)
+       (direction . right)
+       (window . root)
        (window-width . 0.3)))))
 
 (defun ag-general/init-rainbow-mode ()
@@ -244,7 +245,9 @@
 (defun ag-general/post-init-lsp-mode ()
   (with-eval-after-load 'lsp-mode
     (setq lsp-after-open-hook nil
-          lsp-eldoc-enable-hover nil
+          lsp-eldoc-enable-hover t
+          lsp-eldoc-render-all nil
+          lsp-modeline-diagnostics-enable nil
           lsp-diagnostics-provider :flycheck
           lsp-enable-file-watchers nil
           lsp-modeline--enable-code-actions nil

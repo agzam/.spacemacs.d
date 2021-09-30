@@ -33,7 +33,7 @@
   "ri" #'org-roam-node-insert+
   "ir" #'org-roam-node-insert+
   "rl" #'org-roam-buffer-toggle
-  "rw" #'org-roam-show-ui-xwidget
+  "rw" #'org-roam-toggle-ui-xwidget
   "rf" #'org-roam-node-find
   "bk" #'org-babel-remove-result)
 

@@ -508,9 +508,17 @@
     (add-to-list
      'display-buffer-alist
      '("\\*org-roam\\*"
-       (display-buffer-in-side-window)
-       (side . right)
-       (window-width . 0.2)))))
+       (display-buffer-in-direction)
+       (direction . right)
+       (window . root)
+       (window-width . 0.2)))
+    (add-to-list
+     'display-buffer-alist
+     '("\\*org-roam-ui\\*"
+       (display-buffer-in-direction)
+       (direction . right)
+       (window . root)
+       (window-width . 0.4)))))
 
 (defun ag-org/init-org-roam-ui ()
   (use-package org-roam-ui

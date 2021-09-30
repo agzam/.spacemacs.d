@@ -68,15 +68,20 @@
         ;; clojure-align-binding-forms '("binding" "loop" "doseq" "for" "with-open" "with-local-vars" "with-redefs")
 
         ;; make * operator (spacemacs/enter-ahs-forward) to recognize symbols like foo/bar
-        ahs-include "^\\_<\\(?:\\s_\\|\\sw\\)+\\_>$")
+        ahs-include "^\\_<\\(?:\\s_\\|\\sw\\)+\\_>$"
+        cider-eldoc-display-for-symbol-at-point nil
+        cider-eldoc-display-context-dependent-info nil
+        cider-use-xref nil)
 
   (add-to-list 'ivy-re-builders-alist '(cider-find-ns . ivy--regex-fuzzy))
 
   (add-to-list
    'display-buffer-alist
    `(,(rx bos (or "*cider-repl" "*nrepl-server"))
-     (display-buffer-in-side-window)
-     (side . right)
+     (display-buffer-in-direction)
+     (direction . right)
+     (window . root)
+     (dedicated . nil)
      (window-width . 0.25)))
 
   ;; (dolist (form '(re-frame.core/reg-sub

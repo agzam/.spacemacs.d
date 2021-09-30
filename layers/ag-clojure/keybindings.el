@@ -32,9 +32,6 @@
   (spacemacs/set-leader-keys-for-major-mode 'clojurescript-mode
     "g f" #'re-frame-jump-to-reg))
 
-(with-eval-after-load 'lsp-mode
-  (define-key lsp-mode-map [remap xref-find-references] #'lsp-find-references))
-
 (spacemacs/set-leader-keys-for-major-mode 'clojure-mode
   "C" 'clojars-find)
 
