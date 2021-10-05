@@ -208,4 +208,9 @@
   ;; add cursors on right-click
   (global-set-key (kbd "<mouse-3>") 'evil-mc-toggle-cursor-on-click))
 
+(spacemacs/set-leader-keys-for-major-mode 'emacs-lisp-mode
+  "gr" #'xref-find-references
+  "gd" #'xref-find-definitions
+  "gD" #'xref-find-definitions-other-window)
+
 ;;; keybindings.el ends here
