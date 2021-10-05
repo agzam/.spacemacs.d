@@ -120,7 +120,9 @@
     ;; otherwise it messes up with backwards-kill-word when commenting
     (bind-key (kbd "M-DEL") nil diff-mode-map)
 
-    (setq github-review-fetch-top-level-and-review-comments t)))
+    (setq github-review-fetch-top-level-and-review-comments t
+          github-review-view-comments-in-code-lines t
+          github-review-view-comments-in-code-lines-outdated t)))
 
 (defun ag-version-control/post-init-git-link ()
   (defun git-link-master-branch ()
