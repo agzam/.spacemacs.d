@@ -368,6 +368,11 @@ provided, returns its value"
  (unless evil-move-beyond-eol
    (advice-add 'eval-last-sexp :around 'eval-last-sexp--around)
    (advice-add 'eval-print-last-sexp :around 'eval-last-sexp--around)
-   (advice-add 'pp-eval-last-sexp :around 'eval-last-sexp--around)))
+   (advice-add 'pp-eval-last-sexp :around 'eval-last-sexp--around)
+
+   (defun evil-forward-section-begin--after (_count)
+     (recenter))
+
+   (advice-add 'evil-forward-section-begin :after 'evil-forward-section-begin--after)))
 
 ;;; funcs.el ends here

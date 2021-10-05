@@ -459,7 +459,7 @@
             "%<%Y-%m-%d %a>.org"
             "#+title: %<%Y-%m-%d %a>"
             ("Work"))
-           :jump-to-captured t
+           :jump-to-captured nil
            :unnarrowed t)
           ("j" "journal" plain
            "%(org-roam-capture--add-link-to \"journal\") %?"
@@ -468,7 +468,7 @@
             "%<%Y-%m-%d %a>.org"
             "#+title: %<%Y-%m-%d %a>"
             ("Journal"))
-           :jump-to-captured t
+           :jump-to-captured nil
            :unnarrowed t)))
 
   ;; org-roam-buffer-window-parameters get reset on Layout/Workspace change,
