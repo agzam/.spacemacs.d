@@ -518,7 +518,13 @@
        (display-buffer-in-direction)
        (direction . right)
        (window . root)
-       (window-width . 0.4)))))
+       (window-width . 0.4))))
+
+  (defun org-roam-buffer-visit-thing-other-window ()
+    (interactive)
+    (org-roam-node-visit (org-roam-node-at-point) :other-window))
+
+  (define-key org-roam-mode-map (kbd "RET") #'org-roam-buffer-visit-thing-other-window))
 
 (defun ag-org/init-org-roam-ui ()
   (use-package org-roam-ui
