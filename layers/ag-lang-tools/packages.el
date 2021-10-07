@@ -52,7 +52,15 @@
     (define-key mw-thesaurus-mode-map [remap evil-record-macro] #'mw-thesaurus--quit)
     (add-hook 'mw-thesaurus-mode-hook 'variable-pitch-mode)
     (spacemacs/set-leader-keys
-      "xlm" #'mw-thesaurus-lookup-dwim)))
+      "xlm" #'mw-thesaurus-lookup-dwim)
+
+    (add-to-list
+     'display-buffer-alist
+     `(,mw-thesaurus-buffer-name
+       (display-buffer-in-direction)
+       (direction . right)
+       (window . root)
+       (window-width . 0.3)))))
 
 (defun ag-lang-tools/init-sdcv-mode ()
   (use-package sdcv-mode
@@ -69,7 +77,15 @@
     (evil-define-key 'normal sdcv-mode-map "n" #'sdcv-next-entry)
     (evil-define-key 'normal sdcv-mode-map "p" #'sdcv-previous-entry)
     (evil-define-key 'normal sdcv-mode-map (kbd "RET") #'sdcv-search-at-point)
-    (evil-define-key 'normal sdcv-mode-map "a" #'sdcv-search-at-point)))
+    (evil-define-key 'normal sdcv-mode-map "a" #'sdcv-search-at-point)
+
+    (add-to-list
+     'display-buffer-alist
+     `(,sdcv-buffer-name
+       (display-buffer-in-direction)
+       (direction . right)
+       (window . root)
+       (window-width . 0.2)))))
 
 (defun ag-lang-tools/post-init-google-translate ()
   (setq google-translate-pop-up-buffer-set-focus t
@@ -87,15 +103,28 @@
   (setq google-translate-input-method-auto-toggling t
         google-translate-preferable-input-methods-alist
         '((nil . ("en"))
-          (russian-computer . ("ru")))))
+          (russian-computer . ("ru"))))
+
+  ;; it doesn't pop to the buffer automatically
+  (defun google-translate--find-buffer (x)
+    (pop-to-buffer "*Google Translate*"))
+
+  (advice-add 'google-translate-buffer-output-translation :after #'google-translate--find-buffer)
+
+  (add-to-list
+   'display-buffer-alist
+   '("\\*Google Translate\\*"
+     (display-buffer-in-direction)
+     (direction . right)
+     (window . root)
+     (window-width . 0.2))))
 
 (defun ag-lang-tools/init-define-it ()
   (use-package define-it
     :config
     (setq
      define-it-show-google-translate nil
-     define-it-show-header nil
-     google-translate-default-target-language "ru")
+     define-it-show-header nil)
 
     (spacemacs/defer-until-after-user-config  ; otherwise, spacemacs-default layer would override the binding
      (lambda ()                               ; and set it to `duplicate-line-or-region', and it's pretty useles for me
@@ -106,7 +135,14 @@
       (let ((buf (format define-it--buffer-name-format define-it--current-word)))
         (pop-to-buffer buf)))
 
-    (advice-add 'define-it--in-buffer :after #'define-it--find-buffer)))
+    (advice-add 'define-it--in-buffer :after #'define-it--find-buffer)
+    (add-to-list
+     'display-buffer-alist
+     '("\\*define-it:"
+       (display-buffer-in-direction)
+       (direction . right)
+       (window . root)
+       (window-width . 0.2)))))
 
 (with-eval-after-load 'ispell
   (setq flyspell-issue-message-flag nil)    ; printing a message for every word has a negative performance impact
