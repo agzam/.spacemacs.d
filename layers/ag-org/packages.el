@@ -26,6 +26,10 @@
     (org-ref :location (recipe :fetcher github
                                :repo "jkitchin/org-ref"))
     (org-edit-indirect :location local)
+
+    (websocket :location (recipe :fetcher github
+                                 :repo "ahyatt/emacs-websocket"
+                                 :branch "main"))
     (org-roam-ui :location (recipe :fetcher github
                                    :repo "org-roam/org-roam-ui"
                                    :files ("*.el" "out")))
@@ -434,24 +438,18 @@
             "${slug}.org"
             "\n#+title: ${title}\n")
            :unnarrowed t
-           :jump-to-captured nil))
-        org-roam-capture-ref-templates
+           :jump-to-captured nil)))
+
+  (setq org-roam-capture-ref-templates
         '(("r" "ref" plain "%?" :if-new
-           (file+head "${slug}.org" "#+title: ${title}\n[[id:A7F4AA20-A247-43D2-BCBC-2ED6108AF344][UNREAD]]\n\n%(zp/org-protocol-insert-selection-dwim \"${body}\")")
+           (file+head "${slug}.org" "#+title: ${title}\n%(org-roam--link-to \"unread\")")
            :unnarrowed t
-           :jump-to-captured t
-           )
+           :jump-to-captured t)
           ("n" "non-browser" plain "%?" :if-new
            (file+head "read-later/${slug}.org" "#+title: ${title}\n%(zp/org-protocol-insert-selection-dwim \"${body}\")")
-           :unnarrowed t)
-          ;; ("p" "pocket" plain
-          ;;  (function org-roam-capture--get-point)
-          ;;  ""
-          ;;  :file-name "read-later/${slug}"
-          ;;  :head ":PROPERTIES:\n:roam_key: ${ref}\n:created: %u\n:END:\n[[roam:web]]\n#+titls: ${title}\n${body}"
-          ;;  :unnarrowed t)
-          )
-        org-roam-dailies-capture-templates
+           :unnarrowed t)))
+
+  (setq org-roam-dailies-capture-templates
         '(("w" "work" plain
            "%(org-roam-capture--add-link-to \"work\") %?"
            :if-new
@@ -518,24 +516,27 @@
        (display-buffer-in-direction)
        (direction . right)
        (window . root)
-       (window-width . 0.4))))
+       (window-width . 0.4)))
 
-  (defun org-roam-buffer-visit-thing-other-window ()
-    (interactive)
-    (org-roam-node-visit (org-roam-node-at-point) :other-window))
+    (defun org-roam-buffer-visit-thing-other-window ()
+      (interactive)
+      (org-roam-node-visit (org-roam-node-at-point) :other-window))
 
-  (define-key org-roam-mode-map (kbd "RET") #'org-roam-buffer-visit-thing-other-window))
+    (define-key org-roam-mode-map (kbd "RET") #'org-roam-buffer-visit-thing-other-window)))
+
+(defun ag-org/init-websocket ()
+  (use-package websocket))
 
 (defun ag-org/init-org-roam-ui ()
   (use-package org-roam-ui
     :after org-roam
-    :hook (spacemacs-post-user-config . org-roam-ui-mode)
-    :config
+    :init
     (setq org-roam-ui-port 8081
           org-roam-ui-sync-theme t
           org-roam-ui-follow t
           org-roam-ui-update-on-save t
-          org-roam-ui-open-on-start nil)))
+          org-roam-ui-open-on-start nil)
+    (add-hook 'spacemacs-post-user-config-hook #'org-roam-ui-mode)))
 
 (defun ag-org/post-init-org-ref ()
   (setq org-ref-default-bibliography '("~/SyncMobile/Papers/references.bib")
