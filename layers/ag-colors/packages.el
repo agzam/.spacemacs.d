@@ -76,6 +76,7 @@
                  doom-modeline-spc-face)))
     (dolist (f faces)
       (when (facep f)
+        (set-face-attribute f nil :height 1)
         (set-face-attribute f nil :height 0.8))))
 
   (dolist (buf (list " *Minibuf-0*" " *Minibuf-1*" " *Echo Area 0*" " *Echo Area 1*" " *which-key*"))

@@ -85,7 +85,7 @@
        (display-buffer-in-direction)
        (direction . right)
        (window . root)
-       (window-width . 0.2)))))
+       (window-width . 0.25)))))
 
 (defun ag-lang-tools/post-init-google-translate ()
   (setq google-translate-pop-up-buffer-set-focus t
@@ -117,7 +117,7 @@
      (display-buffer-in-direction)
      (direction . right)
      (window . root)
-     (window-width . 0.2))))
+     (window-width . 0.25))))
 
 (defun ag-lang-tools/init-define-it ()
   (use-package define-it
@@ -142,7 +142,7 @@
        (display-buffer-in-direction)
        (direction . right)
        (window . root)
-       (window-width . 0.2)))))
+       (window-width . 0.25)))))
 
 (with-eval-after-load 'ispell
   (setq flyspell-issue-message-flag nil)    ; printing a message for every word has a negative performance impact

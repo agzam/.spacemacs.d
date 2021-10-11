@@ -321,7 +321,7 @@ provided, returns its value"
           (goto-char (nth 1 reg))
           (set-mark (point))
           (goto-char (car reg))
-          (return reg))))))
+          (cl-return reg))))))
 
 (defun ag/ivy-postframe--set-parameters ()
   (setq ivy-posframe-parameters

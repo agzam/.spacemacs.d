@@ -77,7 +77,7 @@
 (defun ag-mu4e/init-mu4e-thread-folding ()
   (use-package mu4e-thread-folding
     :commands (mu4e-main-mode)
-    :init
+    :config
     (mu4e-thread-folding-load)))
 
 
