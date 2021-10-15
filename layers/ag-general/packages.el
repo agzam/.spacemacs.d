@@ -10,8 +10,7 @@
 ;;; License: GPLv3
 
 (defconst ag-general-packages
-  `(helpful
-    rainbow-mode
+  `(rainbow-mode
     edit-indirect
     engine-mode
     fennel-mode
@@ -20,8 +19,7 @@
     ;; (jira :location local)
     lsp-mode
     company-tabnine
-    (evilify-edebug :location local)
-    company-posframe
+    ;; company-posframe
     ivy-posframe
     which-key-posframe
     ;; grip-mode
@@ -29,30 +27,26 @@
     expand-region
     doom-modeline
     flycheck-posframe
-    marginalia
-    (let-plist :location local)
-    elisp-format))
+    marginalia))
 
 (defun ag-general/init-doom-modeline ()
   (use-package doom-modeline
-    :defer t
     :init
     (doom-modeline-mode)
     (doom-modeline-def-modeline
       'agcustom
-      '(bar window-number workspace-name persp-name buffer-info matches
-            ;; word-count parrot selection-info
-            )
-      '(misc-info
-        ;; battery
+      '(bar persp-name workspace-name buffer-info)
+      '(;; battery
         ;; grip
         ;; irc mu4e debug
-        ;; repl lsp
+        ;; repl
+        lsp
         major-mode
+        misc-info
         ;; process
         ;; checker
         ;; buffer-position
-        ))
+        matches selection-info))
 
     (defun setup-custom-doom-modeline ()
       (doom-modeline-set-modeline 'agcustom))
@@ -62,44 +56,20 @@
 
     (setq doom-modeline-buffer-encoding nil
           doom-modeline-buffer-file-name-style 'relative-from-project
-          doom-modeline-buffer-modification-icon nil
-          doom-modeline-buffer-state-icon nil
+          doom-modeline-buffer-modification-icon t
+          doom-modeline-buffer-state-icon t
           doom-modeline-icon (display-graphic-p)
           doom-modeline-major-mode-color-icon nil
           doom-modeline-major-mode-icon nil
-          doom-modeline-modal-icon t
+          doom-modeline-modal-icon nil
           doom-modeline-mu4e nil
-          doom-modeline-persp-icon nil
+          doom-modeline-persp-icon t
+          doom-modeline-display-default-persp-name t
           inhibit-compacting-font-caches t
-          doom-modeline-height 1
-          doom-modeline-bar-width 1)
+          doom-modeline-height 15
+          doom-modeline-bar-width 2)
     :config
-    (defun doom-modeline--font-height () 5)
-    ))
-
-(defun ag-general/init-helpful ()
-  (use-package helpful
-    :config
-    (unbind-key "h" help-map)
-    (bind-key "hh" 'helpful-symbol help-map)
-    (bind-key "ha" 'helpful-at-point help-map)
-    (global-set-key (kbd "C-h k") #'helpful-key)
-    (spacemacs/set-leader-keys "hdd" #'helpful-symbol)
-    (spacemacs/set-leader-keys-for-major-mode 'emacs-lisp-mode
-      "hh" 'helpful-at-point
-      "ep" 'pp-eval-last-sexp
-      "eP" 'eval-print-last-sexp)
-    (evil-define-key 'normal helpful-mode-map "q" 'quit-window)
-
-    ;; ensure that browsing in Helpful and Info modes doesn't create additional
-    ;; window splits
-    (add-to-list
-     'display-buffer-alist
-     `(,(rx bos (or "*helpful" "*info"))
-       (display-buffer-in-direction)
-       (direction . right)
-       (window . root)
-       (window-width . 0.3)))))
+    (defun doom-modeline--font-height () 5)))
 
 (defun ag-general/init-rainbow-mode ()
   (use-package rainbow-mode
@@ -272,12 +242,6 @@
       :backends company-tabnine
       :modes sql-mode sql-interactive-mode)))
 
-(defun ag-general/init-evilify-edebug ()
-  (use-package evilify-edebug
-    :commands (edebug)
-    :config
-    (evilify-edebug-setup)))
-
 (defun ag-general/init-company-posframe ()
   (use-package company-posframe
     :demand t
@@ -358,7 +322,6 @@
 (add-hook 'shell-pop-out-hook 'comint-write-input-ring)
 (add-hook 'shell-pop-process-exit-hook 'comint-write-input-ring)
 
-
 (setq eshell-history-file-name (getenv "HISTFILE")
       eshell-aliases-file "~/.spacemacs.d/.eshell.aliases")
 
@@ -421,9 +384,6 @@
 
   (advice-add 'ivy-occur-press :after 'ivy--recenter-after-press)
   (add-hook 'ivy-occur-grep-mode-hook #'evil-evilified-state))
-
-(defun ag-general/init-let-plist ()
-  (use-package let-plist))
 
 (add-hook 'Info-selection-hook #'evil-evilified-state)
 

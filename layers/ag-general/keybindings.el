@@ -9,9 +9,6 @@
 ;;
 ;;; License: GPLv3
 
-;;;; don't quit helpful on Esc
-(evil-define-key 'motion help-mode-map (kbd "<escape>") nil)
-
 (evil-define-key 'normal diff-mode-map "q" #'quit-window)
 
 (if (configuration-layer/layer-used-p 'helm)
@@ -52,7 +49,6 @@
                   (("s-}" "H-}") . spacemacs/eyebrowse-go-next)))
   (dolist (k (car key-fn))
     (global-set-key (kbd k) (symbol-function (cdr key-fn)))))
-
 
 ;;;; restore vanilla universal argument keybinding. Spacemacs redefines it
 (define-key evil-normal-state-map (kbd "C-u") 'universal-argument)
@@ -119,16 +115,6 @@
      "iP" (kbd "i C-q C-l <RET><escape>")
      "nn" #'global-display-line-numbers-mode)))
 
-;; have to wrap it, so it overrides the default bindings
-(spacemacs/defer-until-after-user-config
- (lambda ()
-   (spacemacs|spacebind
-    "Files manipulation."
-    :global
-    (("f" "Files"
-      ("e" "Emacs/Spacemacs"
-       ("i" ag/find-user-init-file "Open Emacs \"init.el\"")))))))
-
 (spacemacs/transient-state-register-add-bindings 'zoom-frm
   '(("m" toggle-frame-maximized-undecorated :exit t)
     ("h" toggle-frame-full-height :exit t)
@@ -151,8 +137,6 @@
       (kbd "M-H") #'sp-backward-barf-sexp)))
 
 (set-slurp-n-barf-keys '(lisp-mode-shared-map))
-(with-eval-after-load 'cider
-  (set-slurp-n-barf-keys '(clojure-mode-map cider-repl-mode-map)))
 
 ;;;; making Info-mode keys more suitable for Evil
 (define-key Info-mode-map (kbd "H") #'Info-up)
@@ -208,9 +192,9 @@
   ;; add cursors on right-click
   (global-set-key (kbd "<mouse-3>") 'evil-mc-toggle-cursor-on-click))
 
-(spacemacs/set-leader-keys-for-major-mode 'emacs-lisp-mode
-  "gr" #'xref-find-references
-  "gd" #'xref-find-definitions
-  "gD" #'xref-find-definitions-other-window)
+(with-eval-after-load 'paradox
+  (spacemacs/set-leader-keys-for-major-mode 'paradox-menu-mode
+    "r" #'paradox-filter-regexp
+    "f" #'hydra-paradox-filter/body))
 
 ;;; keybindings.el ends here

@@ -35,8 +35,9 @@ This function should only modify configuration layer settings."
    dotspacemacs-configuration-layers
    `(
      ag-general
+     ag-elisp
      ;; ---- Languages -----
-     csv yaml semantic emacs-lisp lua ag-haskell sql rust
+     csv yaml lua ag-haskell sql rust
      (html :packages (not pug-mode slim-mode))
      (markdown
       :packages (not mmm-mode)

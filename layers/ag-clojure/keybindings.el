@@ -30,7 +30,9 @@
       "sS" #'cider-switch-to-nrepl-buffer))
 
   (spacemacs/set-leader-keys-for-major-mode 'clojurescript-mode
-    "g f" #'re-frame-jump-to-reg))
+    "g f" #'re-frame-jump-to-reg)
+
+  (set-slurp-n-barf-keys '(clojure-mode-map cider-repl-mode-map)))
 
 (spacemacs/set-leader-keys-for-major-mode 'clojure-mode
   "C" 'clojars-find)
