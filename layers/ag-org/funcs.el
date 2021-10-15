@@ -708,7 +708,8 @@ in that prop."
 (defun org-roam-toggle-ui-xwidget ()
   (interactive)
   (let ((url (concat "http://localhost:" (number-to-string org-roam-ui-port))))
-    (if-let ((buf (xwidget-webkit-get-url-buffer "localhost:8081")))
+    (if-let ((buf (xwidget-webkit-get-url-buffer
+                   (concat "localhost:" (number-to-string org-roam-ui-port)))))
         (if-let ((win (get-buffer-window buf)))
             (delete-window win)
           (switch-to-buffer-other-window buf))

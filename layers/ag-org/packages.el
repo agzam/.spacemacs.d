@@ -104,7 +104,7 @@
      org-goto-interface 'outline-path-completion  ; org-goto C-c C-j like in org-refile
      org-startup-folded 'nofold
      org-blank-before-new-entry nil
-     org-ellipsis " ↴"
+     org-ellipsis " ⤳"
      org-M-RET-may-split-line '((headline))
      org-ctrl-k-protect-subtree t
      org-catch-invisible-edits 'smart

@@ -46,6 +46,7 @@
 (defun ag-notmuch/init-notmuch ()
   (use-package notmuch
     :defer t
+    :after (evil evil-escape)
     :commands notmuch
     :init
     (progn
@@ -63,10 +64,10 @@
           message-auto-save-directory "/tmp"
           mm-text-html-renderer 'gnus-w3m)
 
-    (with-eval-after-load 'evil-escape
-     (dolist (m '(notmuch-search-mode
-                  notmuch-show-mode))
-       (add-to-list 'evil-escape-excluded-major-modes m)))
+    (dolist (m '(notmuch-search-mode
+                 notmuch-tree-mode
+                 notmuch-show-mode))
+      (add-to-list 'evil-escape-excluded-major-modes m))
 
     (dolist (prefix '(("ms" . "stash")
                       ("mp" . "part")
@@ -131,6 +132,7 @@
     (evilified-state-evilify-map notmuch-show-mode-map
       :mode notmuch-show-mode
       :bindings
+      (kbd "d") #'notmuch-show-delete
       (kbd "C-n")  #'notmuch-show-next-message
       (kbd "C-p")  #'notmuch-show-previous-message
       (kbd "p")   'notmuch-show-previous-open-message
@@ -145,8 +147,10 @@
       :bindings
       (kbd "N") 'notmuch-tree-next-message
       (kbd "P") 'notmuch-tree-prev-message
-      (kbd "d") 'spacemacs/notmuch-tree-message-delete-down
-      (kbd "D") 'spacemacs/notmuch-tree-message-delete-up
+      (kbd "d") #'notmuch-tree-toggle-delete
+      (kbd "D") (lambda ()
+                  (interactive)
+                  (notmuch-tree-toggle-delete :up))
       (kbd "n") 'notmuch-tree-next-matching-message
       (kbd "p") 'notmuch-tree-prev-matching-message
       (kbd "M-d") 'notmuch-tree-scroll-message-window
@@ -168,7 +172,13 @@
       (kbd "M") 'compose-mail-other-frame)
 
     (add-hook 'notmuch-message-mode-hook #'spacemacs/toggle-auto-fill-mode-off)
-    (add-hook 'notmuch-show-hook #'spacemacs/toggle-centered-buffer)))
+    (add-hook 'notmuch-show-hook #'spacemacs/toggle-centered-buffer)
+
+    (defun notmuch-tree-show-message--switch-to-message-window (arg)
+      (setq notmuch-last-tree-window (selected-window))
+      (select-window notmuch-tree-message-window))
+
+    (advice-add 'notmuch-tree-show-message :after #'notmuch-tree-show-message--switch-to-message-window)))
 
 (defun ag-notmuch/pre-init-org ()
   (spacemacs|use-package-add-hook org

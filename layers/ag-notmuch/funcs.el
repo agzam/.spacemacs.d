@@ -203,4 +203,21 @@ messages in the current thread"
         (message "opening url: " url)
         (browse-url url))))
 
+
+(defun notmuch-tree-toggle-delete (&optional up?)
+  (interactive "P")
+  (if (member "deleted" (notmuch-tree-get-tags))
+      (notmuch-tree-tag (list "-deleted"))
+    (notmuch-tree-tag (list "+deleted")))
+  (if up?
+      (notmuch-tree-prev-matching-message)
+   (notmuch-tree-next-matching-message)))
+
+(defun notmuch-show-delete ()
+  (interactive)
+  (when notmuch-last-tree-window
+    (select-window notmuch-last-tree-window))
+    (call-interactively 'notmuch-tree-toggle-delete)
+    (select-window notmuch-tree-message-window))
+
 ;;; funcs.el ends here

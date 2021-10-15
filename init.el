@@ -656,7 +656,7 @@ before packages are loaded."
    tab-width 4
    uniquify-buffer-name-style 'forward
    winum-scope 'frame-local
-   writeroom-fullscreen-effect nil
+   writeroom-fullscreen-effect 'maximized
    writeroom-width 130
 
    ;; https://200ok.ch/posts/2020-09-29_comprehensive_guide_on_handling_long_lines_in_emacs.html

@@ -332,8 +332,8 @@ provided, returns its value"
           (internal-border-width . 1)
           (border-width . 1)
           (unsplittable . t)
-          (background-color . ,(face-attribute 'default :background nil t))
-          (foreground-color . ,(face-attribute 'default :foreground nil t)))
+          (background-color . ,(face-attribute 'default :background))
+          (foreground-color . ,(face-attribute 'default :foreground)))
         ivy-posframe-width 160
         ivy-posframe-height 15
         ivy-posframe-hide-minibuffer nil))

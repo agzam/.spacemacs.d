@@ -11,6 +11,7 @@
 ;;
 ;;; Code:
 
-
+(spacemacs/set-leader-keys-for-major-mode 'notmuch-tree-mode
+  "d" #'notmuch-tree-toggle-delete)
 
 ;;; keybindings.el ends here

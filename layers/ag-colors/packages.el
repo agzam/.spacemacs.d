@@ -77,12 +77,12 @@
     (dolist (f faces)
       (when (facep f)
         (set-face-attribute f nil :height 1)
-        (set-face-attribute f nil :height 0.8))))
+        (set-face-attribute f nil :height 0.85))))
 
   (dolist (buf (list " *Minibuf-0*" " *Minibuf-1*" " *Echo Area 0*" " *Echo Area 1*" " *which-key*"))
     (when (get-buffer buf)
       (with-current-buffer buf
-        (setq-local face-remapping-alist '((default (:height 0.8))))))))
+        (setq-local face-remapping-alist '((default (:height 0.85))))))))
 
 (defun ag/set-faces-attributes (faces)
   "Sets face attributes for given alist of FACES"
