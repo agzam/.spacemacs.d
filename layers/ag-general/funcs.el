@@ -56,6 +56,10 @@ OPTIONS can include '(urgency expire-time app-name icon category hint), refer to
       (insert "¯\\_(ツ)_/¯")
     (insert "¯\\\\\\_(ツ)_/¯")))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; layouts & workspaces ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defun spacemacs/persp-go-prev ()
   "Switch to previous Spacemacs layout by briefly flashing transient panel, so user can see where they're going"
   (interactive)
@@ -88,48 +92,62 @@ OPTIONS can include '(urgency expire-time app-name icon category hint), refer to
     (spacemacs/workspaces-transient-state/eyebrowse-next-window-config))
   (run-at-time "1 sec" nil #'spacemacs/workspaces-transient-state/nil))
 
-(defun diff-last-two-kills (&optional ediff?)
-  "Diff last couple of things in the kill-ring. With prefix open ediff."
-  (interactive "P")
-  (let* ((old "/tmp/old-kill")
-         (new "/tmp/new-kill")
-         (prev-ediff-quit-hook ediff-quit-hook))
-    (cl-flet ((kill-temps
-               ()
-               (dolist (f (list old new))
-                 (kill-buffer (find-buffer-visiting f)))
-               (setq ediff-quit-hook prev-ediff-quit-hook)))
-      (with-temp-file new
-        (insert (current-kill 0 t)))
-      (with-temp-file old
-        (insert (current-kill 1 t)))
-      (if ediff?
-          (progn
-            (add-hook 'ediff-quit-hook #'kill-temps)
-            (ediff old new))
-        (diff old new "-u" t)))))
+(defun fasd-find-file-make-persp ()
+  "Use fasd to open file or directory in a Spacemacs
+layout (persp).
 
-(defun diff-buffers (buffer-A buffer-B)
-  "Diff two buffers."
-  (interactive
-   (let* ((only-two? (eq 2 (count-windows)))
-          (wins (sort (window-list)
-                      (lambda (a b) (< (window-use-time a)
-                                       (window-use-time b)))))
-          (b1 (if only-two?
-                  (window-buffer (first wins))
-                (read-buffer "Buffer A to compare")))
-          (b2 (if only-two?
-                  (window-buffer (second wins))
-                (read-buffer "Buffer B to compare"))))
-     (list b1 b2)))
-  (let ((old "/tmp/old-diff")
-        (new "/tmp/new-diff"))
-    (with-temp-file new
-      (insert-buffer-substring buffer-A))
-    (with-temp-file old
-      (insert-buffer-substring buffer-B))
-    (diff old new "-u" t)))
+ If fasd item's project root already in a layout, switches to
+that layout. If multiple layouts contain the same project root -
+lets you choose one of them."
+  (interactive)
+  (let* ((lexical-binding t)
+         (query (if fasd-enable-initial-prompt
+                    (read-from-minibuffer "Fasd query: ")
+                  ""))
+         (results
+          (split-string
+           (shell-command-to-string
+            (concat "fasd -l -R -a " query))
+           "\n" t))
+         (fpath (when results
+                  ;; set `this-command' to `fasd-find-file' is required because
+                  ;; `read-from-minibuffer' modifies its value, while `ivy-completing-read'
+                  ;; assumes it to be its caller
+                  (setq this-command 'fasd-find-file)
+                  (completing-read "Fasd query: " results nil t)))
+         (proj-dir (projectile-project-root fpath))
+         ;; find perspecitive with matching project-root
+         (get-fname (lambda (buf)
+                      (with-current-buffer buf
+                        (cond ((eq major-mode 'dired-mode) (dired-get-filename))
+                              (t (buffer-file-name))))))
+         (persps (or (seq-filter
+                      (lambda (p)
+                        (when p
+                          (->> p persp-buffers
+                               (seq-map get-fname)
+                               (seq-filter
+                                (lambda (f)
+                                  (string=
+                                   proj-dir
+                                   (projectile-project-root f)))))))
+                      (persp-persps))
+                     (let ((new-persp (persp-add-new
+                                       (-> proj-dir directory-file-name file-name-nondirectory))))
+                       (dired proj-dir)
+                       (list new-persp))))
+         (layout-name (if (< 1 (length persps))
+                          (completing-read "Select layout " (seq-map 'persp-name persps))
+                        (persp-name (car persps)))))
+    (when layout-name
+      (persp-switch layout-name)
+      (find-file fpath)
+      (spacemacs/layouts-transient-state/body)
+      (run-at-time "1.5 sec" nil #'spacemacs/layouts-transient-state/nil))))
+
+;;;;;;;;;;;;;;;;;
+;; Frame funcs ;;
+;;;;;;;;;;;;;;;;;
 
 (defun toggle-frame-maximized-undecorated ()
   (interactive)
@@ -193,59 +211,52 @@ actual pixel values of frame geometry."
     ;;   (set-frame-parameter (selected-frame) 'full-height t))
     ))
 
-;; TODO: remove when https://github.com/abo-abo/swiper/issues/2454 fixed
-(defun counsel-company ()
-  "Complete using `company-candidates'."
-  (interactive)
-  (company-mode 1)
-  (unless company-candidates
-    (company-complete))
-  (let ((len (cond (company-prefix
-                    (length company-prefix))
-                   (company-common
-                    (length company-common)))))
-    (when len
-      (setq ivy-completion-beg (- (point) len))
-      (setq ivy-completion-end (point))
-      (ivy-read "Candidate: " company-candidates
-                :action #'ivy-completion-in-region-action
-                :caller 'counsel-company))))
+;;;;;;;;;;
+;; Diff ;;
+;;;;;;;;;;
 
-(defun heroku-config (app &optional key)
-  "Return config value(s) for given APP as json object. If KEY
-provided, returns its value"
-  (with-temp-buffer
-    (let* ((raw (progn
-                  (call-process
-                   (executable-find "heroku")
-                   nil (current-buffer) nil
-                   "config"
-                   "--app" app
-                   "--json")
-                  (buffer-string)))
-           (parsed (json-read-from-string raw)))
-      (if key
-          (alist-get key parsed)
-        parsed))))
+(defun diff-last-two-kills (&optional ediff?)
+  "Diff last couple of things in the kill-ring. With prefix open ediff."
+  (interactive "P")
+  (let* ((old "/tmp/old-kill")
+         (new "/tmp/new-kill")
+         (prev-ediff-quit-hook ediff-quit-hook))
+    (cl-flet ((kill-temps
+               ()
+               (dolist (f (list old new))
+                 (kill-buffer (find-buffer-visiting f)))
+               (setq ediff-quit-hook prev-ediff-quit-hook)))
+      (with-temp-file new
+        (insert (current-kill 0 t)))
+      (with-temp-file old
+        (insert (current-kill 1 t)))
+      (if ediff?
+          (progn
+            (add-hook 'ediff-quit-hook #'kill-temps)
+            (ediff old new))
+        (diff old new "-u" t)))))
 
-(defvar pg-app-connections nil "PostgreSQL connections")
-
-(defun pg-app-connections ()
-  (if pg-app-connections pg-app-connections
-    (progn
-      (setq pg-app-connections `(("local" . "postgres://cc_user:password@localhost/cc")
-                                 ("dev" . ,(heroku-config "crawlingchaos-dev" 'DATABASE_URL))
-                                 ("staging" . ,(heroku-config "crawlingchaos-staging" 'DATABASE_URL))))
-      pg-app-connections)))
-
-(defun pg-app (app)
-  (interactive (list (completing-read "Choose: " (mapcar 'car (pg-app-connections)))))
-  (let* ((url (url-generic-parse-url (alist-get app (pg-app-connections) nil nil #'string=)))
-         (sql-database (replace-regexp-in-string "\\/" "" (url-filename url)))
-         (sql-server (url-host url))
-         (sql-user (url-user url)))
-    (setenv "PGPASSWORD" (url-password url))
-    (sql-postgres app)))
+(defun diff-buffers (buffer-A buffer-B)
+  "Diff two buffers."
+  (interactive
+   (let* ((only-two? (eq 2 (count-windows)))
+          (wins (sort (window-list)
+                      (lambda (a b) (< (window-use-time a)
+                                       (window-use-time b)))))
+          (b1 (if only-two?
+                  (window-buffer (first wins))
+                (read-buffer "Buffer A to compare")))
+          (b2 (if only-two?
+                  (window-buffer (second wins))
+                (read-buffer "Buffer B to compare"))))
+     (list b1 b2)))
+  (let ((old "/tmp/old-diff")
+        (new "/tmp/new-diff"))
+    (with-temp-file new
+      (insert-buffer-substring buffer-A))
+    (with-temp-file old
+      (insert-buffer-substring buffer-B))
+    (diff old new "-u" t)))
 
 (defun remove-from-shell-history (str)
   "Find given STR in bash_history file and remove all occurences of it"

@@ -113,7 +113,8 @@
      ;; "ou" #'spacemacs/avy-open-url
   ;;;; add a page-break
      "iP" (kbd "i C-q C-l <RET><escape>")
-     "nn" #'global-display-line-numbers-mode)))
+     "nn" #'global-display-line-numbers-mode
+     "fal" #'fasd-find-file-make-persp)))
 
 (spacemacs/transient-state-register-add-bindings 'zoom-frm
   '(("m" toggle-frame-maximized-undecorated :exit t)
