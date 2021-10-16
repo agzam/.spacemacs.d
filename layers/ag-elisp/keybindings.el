@@ -17,4 +17,5 @@
   "gr" #'xref-find-references
   "gd" #'xref-find-definitions
   "gD" #'xref-find-definitions-other-window
-  "," #'elisp-slime-nav-find-elisp-thing-at-point)
+  "," #'elisp-slime-nav-find-elisp-thing-at-point
+  "sl" #'erase-messages-buffer)

@@ -42,5 +42,8 @@
 (defun ag-elisp/init-eldoc-box ()
   (use-package eldoc-box
     :config
-    (set-face-attribute 'eldoc-box-border nil :background nil)
-    (add-hook 'emacs-lisp-mode-hook #'eldoc-box-hover-at-point-mode)))
+    (defun eldoc-box-set-face-attributes ()
+      (set-face-attribute 'eldoc-box-border nil :background "#cecece"))
+    (add-hook 'emacs-lisp-mode-hook #'eldoc-box-hover-at-point-mode)
+    (add-hook 'spacemacs-post-theme-change-hook #'eldoc-box-set-face-attributes)
+    (eldoc-box-set-face-attributes)))

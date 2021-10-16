@@ -113,7 +113,7 @@ lets you choose one of them."
                   ;; set `this-command' to `fasd-find-file' is required because
                   ;; `read-from-minibuffer' modifies its value, while `ivy-completing-read'
                   ;; assumes it to be its caller
-                  (setq this-command 'fasd-find-file)
+                  (setq this-command 'fasd-find-file-make-persp)
                   (completing-read "Fasd query: " results nil t)))
          (proj-dir (projectile-project-root fpath))
          ;; find perspecitive with matching project-root
@@ -134,7 +134,6 @@ lets you choose one of them."
                       (persp-persps))
                      (let ((new-persp (persp-add-new
                                        (-> proj-dir directory-file-name file-name-nondirectory))))
-                       (dired proj-dir)
                        (list new-persp))))
          (layout-name (if (< 1 (length persps))
                           (completing-read "Select layout " (seq-map 'persp-name persps))
@@ -142,8 +141,31 @@ lets you choose one of them."
     (when layout-name
       (persp-switch layout-name)
       (find-file fpath)
+      (delete-other-windows)
       (spacemacs/layouts-transient-state/body)
       (run-at-time "1.5 sec" nil #'spacemacs/layouts-transient-state/nil))))
+
+(defun spacemacs/open-buffer-in-layout ()
+  "Opens current buffer in a different layout.
+
+Often you need to inspect a file from one project in a different
+layout. It's cumbersome to have to manually switch to another
+layout, then split windows and then choose the buffer from the
+list of buffers. This adds ergonomics."
+  (interactive)
+  (let* ((cur-buf (current-buffer))
+         (persp-names (->> (persp-persps)
+                           (seq-map (lambda (p)
+                                      (when p (persp-name p))))
+                           (seq-remove (lambda (pname)
+                                         (or (string= persp-last-persp-name pname)
+                                             (null pname))))))
+         (selected (completing-read "Select Layout: " persp-names)))
+    (persp-switch selected)
+    (split-window-horizontally)
+    (switch-to-buffer cur-buf)
+    (spacemacs/layouts-transient-state/body)
+    (run-at-time "1 sec" nil #'spacemacs/layouts-transient-state/nil)))
 
 ;;;;;;;;;;;;;;;;;
 ;; Frame funcs ;;

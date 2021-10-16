@@ -14,3 +14,10 @@ Example: (aget-in books 'details 'author))."
   (interactive)
   (find-file-existing
    (expand-file-name "init.el" user-emacs-directory)))
+
+(defun erase-messages-buffer ()
+  (interactive)
+  (with-current-buffer (messages-buffer)
+    (read-only-mode -1)
+    (erase-buffer)
+    (read-only-mode +1)))

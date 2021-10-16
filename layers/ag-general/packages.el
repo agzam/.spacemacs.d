@@ -224,7 +224,8 @@
           lsp-headerline-breadcrumb-enable nil
           lsp-enable-completion-at-point t
           lsp-enable-symbol-highlighting t
-          lsp-enable-imenu nil)
+          lsp-enable-imenu nil
+          lsp-ui-flycheck-list-position 'right)
     (add-hook
      'lsp-after-open-hook
      (lambda()
