@@ -538,10 +538,10 @@
           org-roam-ui-open-on-start nil)
     (add-hook 'spacemacs-post-user-config-hook #'org-roam-ui-mode)))
 
-(defun ag-org/post-init-org-ref ()
-  (setq org-ref-default-bibliography '("~/SyncMobile/Papers/references.bib")
-        org-ref-pdf-directory "~/SyncMobile/Papers/"
-        org-ref-bibliography-notes "~/SyncMobile/Papers/notes.org"))
+;; (defun ag-org/post-init-org-ref ()
+;;   (setq org-ref-default-bibliography '("~/SyncMobile/Papers/references.bib")
+;;         org-ref-pdf-directory "~/SyncMobile/Papers/"
+;;         org-ref-bibliography-notes "~/SyncMobile/Papers/notes.org"))
 
 (defun ag-org/init-org-edit-indirect ()
   (use-package org-edit-indirect

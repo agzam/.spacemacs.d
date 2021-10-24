@@ -17,7 +17,6 @@
     ,(when (eq system-type 'darwin)
        '(spacehammer :location "~/.hammerspoon"))
     ;; (jira :location local)
-    lsp-mode
     company-tabnine
     ;; company-posframe
     ivy-posframe
@@ -211,29 +210,6 @@
   (dolist (m modes)
     (add-to-list (intern (format "spacemacs-jump-handlers-%S" m))
                  '(xref-find-definitions :async t))))
-
-(defun ag-general/post-init-lsp-mode ()
-  (with-eval-after-load 'lsp-mode
-    (setq lsp-after-open-hook nil
-          lsp-eldoc-enable-hover t
-          lsp-eldoc-render-all nil
-          lsp-modeline-diagnostics-enable nil
-          lsp-diagnostics-provider :flycheck
-          lsp-enable-file-watchers nil
-          lsp-modeline--enable-code-actions nil
-          lsp-headerline-breadcrumb-enable nil
-          lsp-enable-completion-at-point t
-          lsp-enable-symbol-highlighting t
-          lsp-enable-imenu nil
-          lsp-ui-flycheck-list-position 'right)
-    (add-hook
-     'lsp-after-open-hook
-     (lambda()
-       (lsp-modeline-code-actions-mode -1)
-       (spacemacs/set-leader-keys-for-minor-mode 'lsp-mode
-         "hh" nil
-         "gD" #'xref-find-definitions-other-window
-         "," #'lsp-ui-doc-glance)))))
 
 (defun ag-general/init-company-tabnine ()
   (use-package company-tabnine

@@ -33,9 +33,9 @@ This function should only modify configuration layer settings."
    dotspacemacs-configuration-layer-path '("~/.spacemacs.d/layers/") ;
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   `(
-     ag-general
+   `(ag-general
      ag-elisp
+     ag-lsp
      ;; ---- Languages -----
      csv yaml lua ag-haskell sql rust
      (html :packages (not pug-mode slim-mode))
@@ -98,13 +98,6 @@ This function should only modify configuration layer settings."
       ;; org-enable-roam-server t
       )
      ag-version-control
-     (lsp
-      :variables
-      lsp-ui-sideline-enable nil
-      lsp-ui-doc-enable nil
-      lsp-ui-doc-position 'at-point
-      lsp-enable-completion-at-point nil
-      lsp-modeline-code-actions-enable nil)
      ag-notmuch
      ag-mu4e
      ag-xwidget
@@ -176,7 +169,7 @@ It should only modify the values of Spacemacs settings."
    ;; This variable has no effect if Emacs is launched with the parameter
    ;; `--insecure' which forces the value of this variable to nil.
    ;; (default t)
-   dotspacemacs-elpa-https t
+   dotspacemacs-elpa-https nil
 
    ;; Maximum allowed time in seconds to contact an ELPA repository.
    ;; (default 5)
