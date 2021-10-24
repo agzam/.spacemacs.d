@@ -1,13 +1,5 @@
+;; -*- lexical-binding: t -*-
 ;;; packages.el --- ag-general layer packages file for Spacemacs.
-;;
-;; Copyright (c) 2012-2016 Sylvain Benner & Contributors
-;;
-;; Author: Ag Ibragimov <agzam.ibragimov@gmail.com>
-;; URL: https://github.com/agzam/dot-spacemacs
-;;
-;; This file is not part of GNU Emacs.
-;;
-;;; License: GPLv3
 
 (defconst ag-general-packages
   `(rainbow-mode
@@ -18,7 +10,7 @@
        '(spacehammer :location "~/.hammerspoon"))
     ;; (jira :location local)
     company-tabnine
-    ;; company-posframe
+    company-posframe
     ivy-posframe
     which-key-posframe
     ;; grip-mode
@@ -26,7 +18,9 @@
     expand-region
     doom-modeline
     flycheck-posframe
-    marginalia))
+    marginalia
+    ivy-prescient
+    company-prescient))
 
 (defun ag-general/init-doom-modeline ()
   (use-package doom-modeline
@@ -363,5 +357,17 @@
   (add-hook 'ivy-occur-grep-mode-hook #'evil-evilified-state))
 
 (add-hook 'Info-selection-hook #'evil-evilified-state)
+
+(defun ag-general/init-ivy-prescient ()
+  (use-package ivy-prescient
+    :after ivy
+    :config
+    (ivy-prescient-mode +1)))
+
+(defun ag-general/init-company-prescient ()
+  (use-package company-prescient
+    :after company
+    :hook
+    (company-mode . company-prescient-mode)))
 
 ;;; packages.el ends here

@@ -590,7 +590,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    ;; menu-bar-mode t
    exec-path-from-shell-check-startup-files nil
    ;; Editor
-   line-spacing 8
+   line-spacing 6
    left-fringe-width 6
    right-fringe-width 0
    evil-escape-key-sequence "kj"
