@@ -1,15 +1,5 @@
+;; -*-lexical-binding: t -*-
 ;;; funcs.el --- Org-mode functions
-;;
-;; Copyright (c) 2017 Ag Ibragimov
-;;
-;; Author: Ag Ibragimov
-;; URL: https://github.com/agzam/dot-spacemacs
-;;
-;; This file is not part of GNU Emacs.
-;;
-;;; License: GPLv3
-;;
-;;; Code:
 
 (defun insert-current-date (arg)
   "Insert today's date.
@@ -626,13 +616,40 @@ Org-link text to the node."
               (node (cl-first nodes)))
     (apply 'format "[[id:%s][%s]]" node)))
 
-(defun org-roam-capture--add-link-to (node-title-or-id)
-  (with-current-buffer (org-capture-get :buffer)
-   (save-mark-and-excursion
-     (let ((lnk (org-roam--link-to node-title-or-id)))
-       (goto-char 0)
-       (unless (search-forward lnk nil :no-error)
-         lnk)))))
+(defun org-roam-capture-dailies--set-node-props (node-link)
+  "It's to be used with org-roam-capture and specifically for
+dailies. When called from a capture template it inserts title and
+id, then finds the datetree entry and inserts link to a
+NODE-LINK  - which is title or id or a node."
+  (when-let* ((buf (org-capture-get :buffer)))
+    (with-current-buffer buf
+      (save-excursion
+        (goto-line 1)
+        (unless (org-entry-get (point) "ID")
+          (org-roam-add-property (org-id-new) "ID"))
+        (unless (search-forward "#+title:" nil :no-error)
+          (goto-line 1)
+          (search-forward ":END:" nil :no-error)
+          (forward-line)
+          (insert (format "#+title: %s %s notes\n"
+                          (format-time-string "%B %Y")
+                          (org-capture-get :description)))))
+      (save-excursion
+        (pcase-let* ((`(,sec ,min ,hr ,day ,month ,year) (decode-time (org-capture-get :default-time)))
+                     (date (list month day year))
+                     (link (org-roam--link-to node-link))
+                     (_ (org-datetree-find-date-create date))
+                     (children? (< 0 (1- (length (save-excursion
+                                                   (org-map-entries nil nil 'tree))))))
+                     (level (+ (org-current-level) 1)))
+          (unless children?
+            (save-excursion
+             (org-end-of-meta-data)
+             (insert link)
+             (insert "\n")))
+          (let ((tree-limit (save-excursion (org-end-of-subtree) (point))))
+            (plist-put org-capture-plist :exact-position tree-limit)
+            (concat (make-string level ?*) " ")))))))
 
 (cl-defun org-roam-node-insert+ (&optional lines-before lines-after &key templates info)
   "Improved org-roam-node-insert that additionally also removes conflicting and

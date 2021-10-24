@@ -451,21 +451,19 @@
 
   (setq org-roam-dailies-capture-templates
         '(("w" "work" plain
-           "%(org-roam-capture--add-link-to \"work\") %?"
+           "%(org-roam-capture-dailies--set-node-props \"work\")%?"
            :if-new
-           (file+head+olp
-            "%<%Y-%m-%d %a>.org"
-            "#+title: %<%Y-%m-%d %a>"
-            ("Work"))
+           (file+datetree
+            "%<%Y-%B>-work-notes.org"
+            'day)
            :jump-to-captured nil
            :unnarrowed t)
           ("j" "journal" plain
-           "%(org-roam-capture--add-link-to \"journal\") %?"
+           "%(org-roam-capture-dailies--set-node-props \"journal\")%?"
            :if-new
-           (file+head+olp
-            "%<%Y-%m-%d %a>.org"
-            "#+title: %<%Y-%m-%d %a>"
-            ("Journal"))
+           (file+datetree
+            "%<%Y-%B>-journal-notes.org"
+            'day)
            :jump-to-captured nil
            :unnarrowed t)))
 
