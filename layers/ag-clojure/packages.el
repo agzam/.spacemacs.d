@@ -13,7 +13,8 @@
   '(clojure-mode-extra-font-locking
     clojars
     lsp-mode
-    (evilify-cider :location local)))
+    (evilify-cider :location local)
+    ivy-clojuredocs))
 
 (defun ag-clojure/init-ac-cider ())
 (defun ag-clojure/init-clojure-mode-extra-font-locking ())
@@ -77,8 +78,12 @@
 
   (add-to-list
    'display-buffer-alist
-   `(,(rx bos (or "*cider-repl" "*nrepl-server"))
-     (display-buffer-in-direction)
+   `(,(rx bos (or "*cider-repl"
+                  "*nrepl-server"
+                  "*cider-test-report*"
+                  "*cider-error"))
+     (display-buffer-reuse-window
+      display-buffer-in-direction)
      (direction . right)
      (window . root)
      (dedicated . nil)
@@ -136,8 +141,7 @@
 
   (spacemacs|forall-clojure-modes m
     (spacemacs/set-leader-keys-for-major-mode m
-      "df" 'cider-debug-defun-at-point))
-  )
+      "df" 'cider-debug-defun-at-point)))
 
 (add-hook 'clojurescript-mode-hook #'add-reframe-regs-to-imenu)
 
@@ -155,5 +159,14 @@
       (when set-namespace
         (cider-repl-set-ns (with-current-buffer buffer (cider-current-ns))))
       (goto-char (point-max)))))
+
+
+(defun ag-clojure/init-ivy-clojuredocs ()
+  (use-package ivy-clojuredocs
+    :config
+    (spacemacs|forall-clojure-modes m
+      (spacemacs/set-leader-keys-for-major-mode m
+        "hh" #'ivy-clojuredocs-at-point))))
+
 
 ;;; packages.el ends here

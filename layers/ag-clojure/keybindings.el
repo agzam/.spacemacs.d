@@ -16,7 +16,6 @@
       "fL" #'clojure-unalign
       "sl" (lambda () (interactive) (cider-find-and-clear-repl-output t))
       ";"   #'cljr-toggle-ignore-form
-      "hh" #'cider-clojuredocs
       "'"   #'cider-switch-to-repl-buffer
       "ep" #'cider-pprint-eval-last-sexp-to-comment
       "ss" (if (eq m 'cider-repl-mode)
