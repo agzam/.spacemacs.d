@@ -25,7 +25,8 @@
     (add-to-list
      'display-buffer-alist
      `(,(rx bos (or "*helpful" "*info"))
-       (display-buffer-in-direction)
+       (display-buffer-reuse-window
+        display-buffer-in-direction)
        (direction . right)
        (window . root)
        (window-width . 0.3)))))

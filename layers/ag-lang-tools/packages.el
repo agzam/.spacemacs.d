@@ -57,7 +57,8 @@
     (add-to-list
      'display-buffer-alist
      `(,mw-thesaurus-buffer-name
-       (display-buffer-in-direction)
+       (display-buffer-reuse-window
+        display-buffer-in-direction)
        (direction . right)
        (window . root)
        (window-width . 0.3)))))
@@ -82,7 +83,8 @@
     (add-to-list
      'display-buffer-alist
      `(,sdcv-buffer-name
-       (display-buffer-in-direction)
+       (display-buffer-reuse-window
+        display-buffer-in-direction)
        (direction . right)
        (window . root)
        (window-width . 0.25)))))
@@ -114,7 +116,8 @@
   (add-to-list
    'display-buffer-alist
    '("\\*Google Translate\\*"
-     (display-buffer-in-direction)
+     (display-buffer-reuse-window
+      display-buffer-in-direction)
      (direction . right)
      (window . root)
      (window-width . 0.25))))
@@ -139,7 +142,8 @@
     (add-to-list
      'display-buffer-alist
      '("\\*define-it:"
-       (display-buffer-in-direction)
+       (display-buffer-reuse-window
+        display-buffer-in-direction)
        (direction . right)
        (window . root)
        (window-width . 0.25)))))
