@@ -16,7 +16,8 @@
                                       spacemacs-layouts
                                       spacemacs-editing
                                       spacemacs-editing-visual
-                                      spacemacs-evil
+                                      (spacemacs-evil
+                                       :packages (not evil-exchange))
                                       spacemacs-language
                                       spacemacs-misc
                                       ;; spacemacs-modeline

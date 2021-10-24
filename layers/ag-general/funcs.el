@@ -199,6 +199,8 @@ list of buffers. This adds ergonomics."
   (if (frame-parameter nil 'undecorated)
       (set-frame-parameter nil 'undecorated nil)
     (progn
+      (setq ns-auto-hide-menu-bar t)
+      (setq ns-auto-hide-menu-bar nil)
       (set-frame-parameter nil 'undecorated t)
       (set-frame-position nil (car (frame-position)) 0)
       (set-frame-height nil (- (x-display-pixel-height) 29) nil :pixelwise))))
