@@ -25,7 +25,7 @@
 (defun ag-general/init-doom-modeline ()
   (use-package doom-modeline
     :init
-    (doom-modeline-mode)
+    (require 'doom-modeline)
     (doom-modeline-def-modeline
       'agcustom
       '(bar persp-name workspace-name buffer-info)
@@ -45,7 +45,7 @@
       (doom-modeline-set-modeline 'agcustom))
 
     (add-hook 'doom-modeline-mode-hook 'setup-custom-doom-modeline 90)
-    (add-hook 'find-file-hook 'setup-custom-doom-modeline 90)
+    (add-hook 'after-change-major-mode-hook 'setup-custom-doom-modeline 90)
 
     (setq doom-modeline-buffer-encoding nil
           doom-modeline-buffer-file-name-style 'relative-from-project
@@ -62,6 +62,7 @@
           doom-modeline-height 15
           doom-modeline-bar-width 2)
     :config
+    (doom-modeline-mode +1)
     (defun doom-modeline--font-height () 5)))
 
 (defun ag-general/init-rainbow-mode ()
@@ -215,9 +216,10 @@
 
 (defun ag-general/init-company-posframe ()
   (use-package company-posframe
-    :demand t
+    :hook (company-mode . company-posframe-mode)
     :init
-    (setq company-posframe-quickhelp-delay nil)
+    (setq company-posframe-quickhelp-delay 1
+          company-quickhelp-delay nil)
     :bind (:map company-active-map
                 ("C-h" . (lambda () (interactive) (company-posframe-quickhelp-show)))
                 ("C-c C-d". company-show-doc-buffer)
@@ -225,9 +227,18 @@
                 ("C-p" . company-select-previous)
                 ("C-c C-l". company-show-location)
                 :map company-posframe-active-map
-                ("C-c h" . company-posframe-quickhelp-toggle))
+                ("C-c h" . company-posframe-quickhelp-toggle)
+                ("C-n" . company-select-next)
+                ("C-p" . company-select-previous)
+                :map company-search-map
+                ("C-n" . company-select-next)
+                ("C-p" . company-select-previous))
     :config
-    (company-posframe-mode 1)))
+    (company-posframe-mode 1)
+    ;; doom-modeline keeps re-rendendering through company compleiton changes
+    (add-hook 'company-completion-started-hook (lambda (manual-p) (doom-modeline-mode -1)))
+    (add-hook 'company-completion-finished-hook #'doom-modeline-mode)
+    (add-hook 'company-completion-cancelled-hook #'doom-modeline-mode)))
 
 (defun ag-general/init-ivy-posframe ()
   (use-package ivy-posframe
