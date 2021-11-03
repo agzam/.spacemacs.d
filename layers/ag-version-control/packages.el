@@ -1,14 +1,4 @@
-;; -*- mode: emacs-lisp; lexical-binding: t -*-
-;;; packages.el --- ag-version-control layer packages file for Spacemacs.
-;;
-;; Copyright (c) 2012-2016 Sylvain Benner & Contributors
-;;
-;; Author: Ag Ibragimov <agzam.ibragimov@gmail.com>
-;; URL: https://github.com/agzam/dot-spacemacs
-;;
-;; This file is not part of GNU Emacs.
-;;
-;;; License: GPLv3
+;; -*- lexical-binding: t -*-
 
 (defconst ag-version-control-packages '(magit
                                         gist
@@ -23,7 +13,11 @@
                                                     :repo "anticomputer/gh-notify"
                                                     :branch "dev"))
                                         (forge-visit-here
-                                         :location "~/sandbox/forge-visit-here")))
+                                         :location "~/sandbox/forge-visit-here")
+                                        (code-review :location
+                                                     (recipe
+                                                      :fetcher github
+                                                      :repo "wandersoncferreira/code-review"))))
 
 (setq
  vc-follow-symlinks t
@@ -187,6 +181,30 @@
   (use-package forge-visit-here
    :config
     (spacemacs/set-leader-keys "gfL" #'forge-visit-here)))
+
+(defun ag-version-control/init-code-review ()
+  (use-package code-review
+    :after (magit gh-notify)
+    :config
+    (dolist (m (list magit-status-mode-map
+                     forge-topic-mode-map
+                     gh-notify-mode-map))
+      (evil-define-key 'normal m (kbd "H-r") 'code-review-forge-pr-at-point)
+      (define-key m (kbd "H-r") 'code-review-forge-pr-at-point))
+
+    (with-eval-after-load 'evil-escape
+      (add-to-list 'evil-escape-excluded-major-modes 'code-review-mode))
+
+    (with-eval-after-load 'evil-collection
+      (dolist (binding evil-collection-magit-mode-map-bindings)
+        (pcase-let* ((`(,states _ ,evil-binding ,fn) binding))
+          (dolist (state states)
+            (evil-collection-define-key state 'code-review-mode-map evil-binding fn))))
+     (evil-set-initial-state 'code-review-mode evil-default-state))
+    (evil-define-key '(normal visual) code-review-mode-map (kbd "<escape>") nil)
+    (evil-define-key '(normal visual) code-review-mode-map "," nil)
+    (spacemacs/set-leader-keys-for-major-mode 'code-review-mode
+      "," #'code-review-transient-api)))
 
 (with-eval-after-load 'forge
   :config
