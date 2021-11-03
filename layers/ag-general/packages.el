@@ -19,7 +19,6 @@
     doom-modeline
     flycheck-posframe
     marginalia
-    ivy-prescient
     company-prescient))
 
 (defun ag-general/init-doom-modeline ()
@@ -36,7 +35,7 @@
         lsp
         major-mode
         misc-info
-        ;; process
+        process
         ;; checker
         ;; buffer-position
         matches selection-info))
@@ -44,8 +43,8 @@
     (defun setup-custom-doom-modeline ()
       (doom-modeline-set-modeline 'agcustom))
 
-    (add-hook 'doom-modeline-mode-hook 'setup-custom-doom-modeline 90)
-    (add-hook 'after-change-major-mode-hook 'setup-custom-doom-modeline 90)
+    (add-hook 'doom-mode~ine-mode-hook 'setup-custom-doom-modeline 90)
+    (add-hook 'window-state-change-hook 'setup-custom-doom-modeline)
 
     (setq doom-modeline-buffer-encoding nil
           doom-modeline-buffer-file-name-style 'relative-from-project
@@ -371,16 +370,26 @@
 
 (add-hook 'Info-selection-hook #'evil-evilified-state)
 
-(defun ag-general/init-ivy-prescient ()
-  (use-package ivy-prescient
-    :after ivy
-    :config
-    (ivy-prescient-mode +1)))
-
 (defun ag-general/init-company-prescient ()
   (use-package company-prescient
     :after company
     :hook
     (company-mode . company-prescient-mode)))
+
+;;;;;;;;;;;;;;;;;;;;;
+;; evil minibuffer ;;
+;;;;;;;;;;;;;;;;;;;;;
+
+(setq evil-want-minibuffer t)
+
+(defun evil-init-minibuffer ()
+  "Evil enabled in minibuffer is a blessing and a major headache at the same time. Things don't work as they normally do. But having an option to use evil bindings when needed is nice. Enable evil in the minibuffer, but use emacs state initially."
+  (set (make-local-variable 'evil-echo-state) nil)
+  (smartparens-mode +1)
+  (evil-emacs-state))
+
+(add-hook 'minibuffer-setup-hook 'evil-init-minibuffer 90)
+
+
 
 ;;; packages.el ends here

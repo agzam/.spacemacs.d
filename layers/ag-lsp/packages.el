@@ -26,7 +26,9 @@
           lsp-modeline-code-actions-enable nil
 
           lsp-semantic-tokens-enable nil
-          lsp-lens-enable nil)
+          lsp-lens-enable nil
+
+          ivy-xref-use-file-path t)
     (add-hook
      'lsp-after-open-hook
      (lambda()

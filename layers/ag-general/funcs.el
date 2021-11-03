@@ -116,25 +116,34 @@ lets you choose one of them."
                   (setq this-command 'fasd-find-file-make-persp)
                   (completing-read "Fasd query: " results nil t)))
          (proj-dir (projectile-project-root fpath))
-         ;; find perspecitive with matching project-root
          (get-fname (lambda (buf)
-                      (with-current-buffer buf
-                        (cond ((eq major-mode 'dired-mode) (dired-get-filename))
-                              (t (buffer-file-name))))))
+                      (when (buffer-live-p buf)
+                        (with-current-buffer buf
+                          (cond ((eq major-mode 'dired-mode) (dired-get-filename nil :no-error))
+                                (t (buffer-file-name)))))))
+         ;; find the perspective with a matching project-root by traversing every
+         ;; persp and analyzing every buffer (if buffer's file belongs to the project
+         ;; directory - that's the persp we need)
          (persps (or (seq-filter
                       (lambda (p)
                         (when p
                           (->> p persp-buffers
                                (seq-map get-fname)
+                               (seq-remove 'null)
                                (seq-filter
                                 (lambda (f)
-                                  (string=
-                                   proj-dir
-                                   (projectile-project-root f)))))))
+                                  (when (and proj-dir f)
+                                   (string=
+                                    proj-dir
+                                    (projectile-project-root f))))))))
                       (persp-persps))
+                     ;; if there isn't a single persp that matches - create a new one
                      (let ((new-persp (persp-add-new
-                                       (-> proj-dir directory-file-name file-name-nondirectory))))
+                                       (-> (or proj-dir fpath)
+                                           directory-file-name
+                                           file-name-nondirectory))))
                        (list new-persp))))
+         ;; if multiple matching persps found - prompt to choose
          (layout-name (if (< 1 (length persps))
                           (completing-read "Select layout " (seq-map 'persp-name persps))
                         (persp-name (car persps)))))
@@ -142,8 +151,10 @@ lets you choose one of them."
       (persp-switch layout-name)
       (find-file fpath)
       (delete-other-windows)
-      (spacemacs/layouts-transient-state/body)
-      (run-at-time "1.5 sec" nil #'spacemacs/layouts-transient-state/nil))))
+      ;; flash layouts transient for a moment, to indicate the layout switch
+      (let ((spacemacs--layouts-ts-full-hint-toggle nil))
+        (spacemacs/layouts-transient-state/body)
+        (run-at-time "1.5 sec" nil #'spacemacs/layouts-transient-state/nil)))))
 
 (defun spacemacs/open-buffer-in-layout ()
   "Opens current buffer in a different layout.

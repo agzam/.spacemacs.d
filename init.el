@@ -33,7 +33,8 @@ This function should only modify configuration layer settings."
    dotspacemacs-configuration-layer-path '("~/.spacemacs.d/layers/") ;
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   `(ag-general
+   `(ag-colors
+     ag-general
      ag-elisp
      ag-lsp
      ;; ---- Languages -----
@@ -85,7 +86,6 @@ This function should only modify configuration layer settings."
                  clojure-enable-clj-refactor t
                  clojure-enable-sayid nil
                  clojure-enable-linters '(clj-kondo))
-     ag-colors
      ag-dired
      (ag-lang-tools
       :variables spell-checking-enable-by-default nil)
@@ -100,8 +100,7 @@ This function should only modify configuration layer settings."
      ag-version-control
      ag-notmuch
      ag-mu4e
-     ag-xwidget
-     )
+     ag-xwidget)
 
    ;; List of additional packages that will be installed without being wrapped
    ;; in a layer (generally the packages are installed only and should still be
@@ -256,7 +255,7 @@ It should only modify the values of Spacemacs settings."
    ;; Default major mode for a new empty buffer. Possible values are mode
    ;; names such as `text-mode'; and `nil' to use Fundamental mode.
    ;; (default `text-mode')
-   dotspacemacs-new-empty-buffer-major-mode 'text-mode
+   dotspacemacs-new-empty-buffer-major-mode nil
 
    ;; Default major mode of the scratch buffer (default `text-mode')
    dotspacemacs-scratch-mode 'emacs-lisp-mode
@@ -277,9 +276,9 @@ It should only modify the values of Spacemacs settings."
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes (let ((hr (nth 2 (decode-time))))
-                         (if (or (< hr 8) (< 20 hr))         ; between 9PM and 8AM
-                             '(base16-ocean spacemacs-light) ; load dark theme first
-                           '(spacemacs-light base16-ocean)))
+                         (if (or (< hr 8) (< 20 hr))           ; between 9PM and 8AM
+                             '(spacemacs-dark spacemacs-light) ; load dark theme first
+                           '(spacemacs-light spacemacs-dark)))
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
    ;; `all-the-icons', `custom', `doom', `vim-powerline' and `vanilla'. The
@@ -288,7 +287,7 @@ It should only modify the values of Spacemacs settings."
    ;; refer to the DOCUMENTATION.org for more info on how to create your own
    ;; spaceline theme. Value can be a symbol or list with additional properties.
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
-   dotspacemacs-mode-line-theme '(spacemacs :separator nil :separator-scale 1)
+   dotspacemacs-mode-line-theme 'custom
 
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
@@ -297,8 +296,7 @@ It should only modify the values of Spacemacs settings."
    ;; Default font or prioritized list of fonts. The `:size' can be specified as
    ;; a non-negative integer (pixel size), or a floating-point (point size).
    ;; Point size is recommended, because it's device independent. (default 10.0)
-   dotspacemacs-default-font '("JetBrains Mono"
-                               :size 15.5)
+   dotspacemacs-default-font '("JetBrains Mono" :size 15.5)
 
    ;; The leader key (default "SPC")
    dotspacemacs-leader-key "SPC"
@@ -350,7 +348,7 @@ It should only modify the values of Spacemacs settings."
    ;; Size (in MB) above which spacemacs will prompt to open the large file
    ;; literally to avoid performance issues. Opening a file literally means that
    ;; no major mode or minor modes are active. (default is 1)
-   dotspacemacs-large-file-size 1
+   dotspacemacs-large-file-size 5
 
    ;; Location where to auto-save files. Possible values are `original' to
    ;; auto-save the file in-place, `cache' to auto-save the file to another
@@ -386,7 +384,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil a progress bar is displayed when spacemacs is loading. This
    ;; may increase the boot time on some systems and emacs builds, set it to
    ;; nil to boost the loading time. (default t)
-   dotspacemacs-loading-progress-bar t
+   dotspacemacs-loading-progress-bar nil
 
    ;; If non-nil the frame is fullscreen when Emacs starts up. (default nil)
    ;; (Emacs 24.4+ only)
@@ -472,12 +470,12 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil pressing the closing parenthesis `)' key in insert mode passes
    ;; over any automatically added closing parenthesis, bracket, quote, etc...
    ;; This can be temporary disabled by pressing `C-q' before `)'. (default nil)
-   dotspacemacs-smart-closing-parenthesis nil
+   dotspacemacs-smart-closing-parenthesis t
 
    ;; Select a scope to highlight delimiters. Possible values are `any',
    ;; `current', `all' or `nil'. Default is `all' (highlight any scope and
    ;; emphasis the current one). (default 'all)
-   dotspacemacs-highlight-delimiters 'all
+   dotspacemacs-highlight-delimiters nil
 
    ;; If non-nil, start an Emacs server if one is not already running.
    ;; (default nil)
@@ -519,7 +517,7 @@ It should only modify the values of Spacemacs settings."
    ;; performance issues, instead of calculating the frame title by
    ;; `spacemacs/title-prepare' all the time.
    ;; (default "%I@%S")
-   dotspacemacs-frame-title-format "%t           ― · ―            %b"
+   dotspacemacs-frame-title-format nil
 
    ;; Format specification for setting the icon title format
    ;; (default nil - same as frame-title-format)
@@ -540,7 +538,7 @@ It should only modify the values of Spacemacs settings."
    ;; indent handling like has been reported for `go-mode'.
    ;; If it does deactivate it here.
    ;; (default t)
-   dotspacemacs-use-clean-aindent-mode t
+   dotspacemacs-use-clean-aindent-mode nil
 
    ;; Accept SPC as y for prompts if non-nil. (default nil)
    dotspacemacs-use-SPC-as-y nil
@@ -651,22 +649,18 @@ before packages are loaded."
    uniquify-buffer-name-style 'forward
    winum-scope 'frame-local
    writeroom-fullscreen-effect 'maximized
-   writeroom-width 130
+   writeroom-width 130)
 
    ;; https://200ok.ch/posts/2020-09-29_comprehensive_guide_on_handling_long_lines_in_emacs.html
+  (setq
    bidi-paragraph-direction 'left-to-right
-   bidi-inhibit-bpa t
-
-   ;;;; Helm
-   helm-echo-input-in-header-line nil
-   helm-ff--deleting-char-backward t
-   helm-follow-mode-persistent nil
-   helm-buffer-details-flag t ; Always show details in buffer list when non--nil.
-   apropos-sort-by-scores t
+   bidi-inhibit-bpa t)
 
    ;;;; Misc
+  (setq
+   apropos-sort-by-scores t
    eldoc-echo-area-use-multiline-p 'truncate-sym-name-if-fit
-   eldoc-idle-delay 0.5
+   eldoc-idle-delay 0.8
    use-dialog-box nil
    dumb-jump-force-searcher 'rg ; https://github.com/jacktasia/dumb-jump#emacs-options
    ;; don't quit on esc or jk
@@ -720,8 +714,7 @@ before packages are loaded."
   ;; (setq backup-directory-alist '(("." . ".bak")))
   ;; (savehist-mode -1)
 
-  (center-frame-horizontally nil 50)
-  (run-at-time "1 sec" nil #'ag/adjust-themes)
+  (center-frame-horizontally nil 80)
 
   ;; Because of imbeciles who built Webex App (it blocks C-S-d system-wide)
   (spacemacs|spacebind
@@ -729,20 +722,12 @@ before packages are loaded."
    (("b" "Buffers"
      ("H-d" spacemacs/kill-matching-buffers-rudely "Kill buffers..."))))
 
-  ;; make Ivy stuff a bit readable in the minibuffer
-  (defun minibuffer-line-spacing ()
-    (setq-local line-spacing 6))
-  (add-hook 'minibuffer-setup-hook #'minibuffer-line-spacing)
-
   (when (eq system-type 'gnu/linux)
     (display-battery-mode 1))
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; things to improve latency ;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-  (show-smartparens-global-mode -1)
-  (defun eyebrowse-mode-line-indicator ())
 
   (setq
    which-key-show-early-on-C-h t
